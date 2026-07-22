@@ -68,6 +68,14 @@
 
 **Blocks:** Skill wording and artifact capture, now resolved.
 
+### 2c. Task 06 pilot interpretation
+
+**Decision:** Treat the first Task 06 paired run as a pilot, not a success claim.
+
+**Reason:** File/tool isolation and mechanical browser checks passed, but an independent blind reviewer, host token/time telemetry, CSV fault injection, axe-core evidence, and fresh builder sessions are still missing.
+
+**Blocks:** Scaling to Tasks 1–5 and any Source Hub implementation.
+
 ### 3. Skill autonomy
 
 **Options:** Always stop after UI Contract; plan-and-build when explicitly asked; fully autonomous plan/build/review.

@@ -24,6 +24,7 @@
       }
     },
     "sources": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "facts": {"type": "array", "items": {"type": "string"}},
     "assumptions": {"type": "array", "items": {"type": "string"}},
     "open_questions": {"type": "array", "items": {"type": "string"}}
   }
