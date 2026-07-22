@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Resource Library</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root{color-scheme:light dark;--bg:#f5f7fb;--panel:#fff;--text:#17191c;--muted:#6b7280;--border:#e5e7eb;--accent:#4f46e5;--soft:#eef2ff;--shadow:0 18px 50px rgba(15,23,42,.08)}
+    @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--panel:#181b21;--text:#f5f7fb;--muted:#a8b0bb;--border:#2a2f38;--accent:#8b87ff;--soft:#24233f;--shadow:0 18px 50px rgba(0,0,0,.28)}}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at top left,rgba(79,70,229,.12),transparent 32%),var(--bg);color:var(--text)}
+    .shell{width:min(1440px,calc(100% - 28px));margin:auto;padding:28px 0 60px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.top h1{margin:0;font-size:clamp(2rem,4vw,3.4rem);letter-spacing:-.05em}.top p{max-width:760px;color:var(--muted);line-height:1.6}.switch{display:flex;padding:5px;border:1px solid var(--border);border-radius:999px;background:var(--panel);box-shadow:var(--shadow)}
+    button,input,select{font:inherit}.switch button{border:0;background:transparent;color:var(--muted);padding:10px 15px;border-radius:999px;cursor:pointer}.switch button.active{background:var(--accent);color:#fff}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat,.panel,.toolbar{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow)}.stat{padding:18px;border-radius:18px}.stat strong{display:block;font-size:1.65rem}.stat span{color:var(--muted);font-size:.9rem}
+    .toolbar{display:grid;grid-template-columns:minmax(240px,1fr) repeat(3,minmax(150px,210px));gap:10px;padding:12px;border-radius:20px;margin-bottom:16px;position:sticky;top:10px;z-index:5}.toolbar input,.toolbar select{min-height:46px;border:1px solid var(--border);border-radius:13px;background:var(--panel);color:var(--text);padding:0 13px;outline:none}.toolbar input:focus,.toolbar select:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--soft)}
+    .panel{border-radius:22px;overflow:hidden}.meta{display:flex;justify-content:space-between;padding:17px 20px;color:var(--muted);border-bottom:1px solid var(--border)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;padding:16px}.card{min-height:235px;padding:19px;border:1px solid var(--border);border-radius:17px;background:var(--panel);display:flex;flex-direction:column;gap:14px;transition:.18s}.card:hover{transform:translateY(-3px);border-color:var(--accent)}.head{display:flex;justify-content:space-between;gap:12px}.card h2{font-size:1.08rem;margin:0}.domain,.purpose,.category{color:var(--muted)}.domain{font-size:.8rem;margin-top:5px;word-break:break-all}.purpose{line-height:1.6;flex:1;margin:0}.badge{font-size:.72rem;font-weight:700;padding:6px 9px;border-radius:999px;background:var(--soft);color:var(--accent);white-space:nowrap}.foot{display:flex;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--border)}.category{font-size:.76rem}.visit{color:var(--accent);font-weight:700;text-decoration:none;font-size:.82rem}.empty,.loading,.error{padding:56px 24px;text-align:center;color:var(--muted)}
+    #markdownView{display:none;padding:28px;line-height:1.7}.markdown table{width:100%;border-collapse:collapse;font-size:.88rem;margin:18px 0 34px}.markdown th,.markdown td{border:1px solid var(--border);padding:11px;text-align:left;vertical-align:top}.markdown th{background:var(--soft)}.markdown a{color:var(--accent)}
+    @media(max-width:1000px){.toolbar{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr 1fr}}@media(max-width:700px){.top{flex-direction:column}.stats{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr;position:static}.cards{grid-template-columns:1fr}.meta{flex-direction:column;gap:5px}.markdown table{display:block;overflow-x:auto}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div><h1>Design Resource Library</h1><p>Search, filter, and browse the CSV database or switch to the rendered Markdown document.</p></div>
+    <div class="switch"><button id="libraryTab" class="active">Library</button><button id="markdownTab">Markdown</button></div>
+  </header>
+
+  <section class="stats">
+    <article class="stat"><strong id="total">—</strong><span>Total resources</span></article>
+    <article class="stat"><strong id="categories">—</strong><span>Categories</span></article>
+    <article class="stat"><strong id="free">—</strong><span>Free / open source</span></article>
+    <article class="stat"><strong id="shown">—</strong><span>Current results</span></article>
+  </section>
+
+  <section id="libraryView">
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search resources…" />
+      <select id="category"><option value="">All categories</option></select>
+      <select id="access"><option value="">All access models</option></select>
+      <select id="sort"><option value="az">Name: A–Z</option><option value="za">Name: Z–A</option><option value="category">Category</option><option value="access">Access</option></select>
+    </div>
+    <section class="panel">
+      <div class="meta"><span id="resultText">Loading…</span><span>Source: lib_data/design-resource-library-295.csv</span></div>
+      <div id="cards" class="cards"><div class="loading">Loading CSV…</div></div>
+    </section>
+  </section>
+
+  <section id="markdownView" class="panel markdown"><div class="loading">Loading Markdown…</div></section>
+</main>
+<script>
+const CSV_PATH='./lib_data/design-resource-library-295.csv';
+const MD_PATH='./lib_data/design-resource-library-295.md';
+const state={all:[],filtered:[],mdLoaded:false};
+const el=id=>document.getElementById(id);
+function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'){if(quoted&&n==='"'){field+='"';i++;}else quoted=!quoted;}else if(c===','&&!quoted){row.push(field);field='';}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(field);if(row.some(v=>v.trim()))rows.push(row);row=[];field='';}else field+=c;}if(field||row.length){row.push(field);rows.push(row)}const [headers,...data]=rows;return data.map(r=>headers.reduce((o,h,i)=>(o[h.trim()]=(r[i]||'').trim(),o),{}));}
+function unique(values){return [...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+function fill(select,values){unique(values).forEach(v=>{const o=document.createElement('option');o.value=o.textContent=v;select.appendChild(o);});}
+function domain(url){try{return new URL(url).hostname.replace(/^www\./,'')}catch{return url}}
+function apply(){const q=el('search').value.trim().toLowerCase(),cat=el('category').value,access=el('access').value,sort=el('sort').value;state.filtered=state.all.filter(r=>{const hay=[r.Website,r.URL,r.Category,r.Access,r['Website is for']].join(' ').toLowerCase();return(!q||hay.includes(q))&&(!cat||r.Category===cat)&&(!access||r.Access===access)});state.filtered.sort((a,b)=>sort==='za'?b.Website.localeCompare(a.Website):sort==='category'?(a.Category.localeCompare(b.Category)||a.Website.localeCompare(b.Website)):sort==='access'?(a.Access.localeCompare(b.Access)||a.Website.localeCompare(b.Website)):a.Website.localeCompare(b.Website));render();}
+function render(){el('cards').innerHTML='';el('resultText').textContent=`${state.filtered.length} of ${state.all.length} resources`;el('shown').textContent=state.filtered.length;if(!state.filtered.length){el('cards').innerHTML='<div class="empty">No matching resources.</div>';return;}const frag=document.createDocumentFragment();state.filtered.forEach(r=>{const card=document.createElement('article');card.className='card';card.innerHTML=`<div class="head"><div><h2></h2><div class="domain"></div></div><span class="badge"></span></div><p class="purpose"></p><div class="foot"><span class="category"></span><a class="visit" target="_blank" rel="noopener noreferrer">Visit ↗</a></div>`;card.querySelector('h2').textContent=r.Website;card.querySelector('.domain').textContent=domain(r.URL);card.querySelector('.badge').textContent=r.Access;card.querySelector('.purpose').textContent=r['Website is for'];card.querySelector('.category').textContent=r.Category;card.querySelector('.visit').href=r.URL;frag.appendChild(card)});el('cards').appendChild(frag)}
+async function loadCSV(){try{const res=await fetch(CSV_PATH);if(!res.ok)throw new Error(`HTTP ${res.status}`);state.all=parseCSV(await res.text());fill(el('category'),state.all.map(r=>r.Category));fill(el('access'),state.all.map(r=>r.Access));el('total').textContent=state.all.length;el('categories').textContent=new Set(state.all.map(r=>r.Category)).size;el('free').textContent=state.all.filter(r=>['Free','Open source'].includes(r.Access)).length;apply();}catch(err){el('cards').innerHTML=`<div class="error"><strong>Could not load CSV.</strong><br><br>${err.message}<br><br>Run this folder through a local server, for example:<br><code>python -m http.server 8000</code></div>`;}}
+async function showMarkdown(){el('libraryView').style.display='none';el('markdownView').style.display='block';el('libraryTab').classList.remove('active');el('markdownTab').classList.add('active');if(state.mdLoaded)return;try{const res=await fetch(MD_PATH);if(!res.ok)throw new Error(`HTTP ${res.status}`);el('markdownView').innerHTML=marked.parse(await res.text());state.mdLoaded=true;}catch(err){el('markdownView').innerHTML=`<div class="error">Could not load Markdown: ${err.message}</div>`}}
+function showLibrary(){el('libraryView').style.display='block';el('markdownView').style.display='none';el('libraryTab').classList.add('active');el('markdownTab').classList.remove('active')}
+['search','category','access','sort'].forEach(id=>el(id).addEventListener(id==='search'?'input':'change',apply));el('libraryTab').addEventListener('click',showLibrary);el('markdownTab').addEventListener('click',showMarkdown);loadCSV();
+</script>
+</body>
+</html>
