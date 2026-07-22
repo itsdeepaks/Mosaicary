@@ -76,6 +76,14 @@
 
 **Blocks:** Scaling to Tasks 1–5 and any Source Hub implementation.
 
+### 2d. Task 06 repeat measurement boundary
+
+**Decision:** The repeat uses fresh archive-isolated builder contexts from `task-06-start`, not new product worktrees. The controller alone runs the standardized browser verifier; builders receive at most two repair messages containing only recorded mechanical failures.
+
+**Reason:** This removes prior-pilot exposure, makes timing and repair effort comparable, and prevents subjective implementation coaching from contaminating either condition.
+
+**Blocks:** Any claim that `ui-plan` improves UI quality, efficiency, repository fit, or accessibility.
+
 ### 3. Skill autonomy
 
 **Options:** Always stop after UI Contract; plan-and-build when explicitly asked; fully autonomous plan/build/review.

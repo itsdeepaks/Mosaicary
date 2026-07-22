@@ -39,3 +39,22 @@ evaluation/
 Each condition directory eventually contains `prompt.md`, `transcript.md`, `ui-contract.yaml`, `source-request-plan.yaml`, `metrics.yaml`, `screenshots/`, `validation/`, and `review.yaml`. The initial dry run is explicitly marked non-evaluative and must not be used to claim a quality improvement.
 
 `templates/BLIND-REVIEW.md` and `templates/review.yaml` define the human-review handoff. `scripts/validate_pair.py` checks a paired baseline and `ui-plan` run; use `--allow-placeholders` only for dry-run setup, never for a scored result.
+
+## Repeat runtime
+
+The evaluation-only runtime pins Playwright and axe-core. Install it once with:
+
+```powershell
+npm --prefix evaluation install
+npm --prefix evaluation run install:browsers
+```
+
+For a Task 06 condition, start timing before the builder, finish it afterward, and use the browser verifier against that isolated copy's local server:
+
+```powershell
+python evaluation/scripts/record_run.py start <condition>/run-telemetry.json --condition baseline
+python evaluation/scripts/record_run.py finish <condition>/run-telemetry.json
+npm --prefix evaluation run verify:task06 -- --url <local-url> --out <absolute-validation-directory>
+```
+
+`verify:task06` captures fixed-viewport screenshots, overflow, console/page errors, target interactions, deterministic CSV request failure, and axe-core output. `repeat/REPEAT-PROTOCOL.md` defines the fresh-builder isolation, random-label, Contract-review, and reveal sequence.

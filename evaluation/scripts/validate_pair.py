@@ -19,6 +19,9 @@ FROZEN_FIELDS = (
     "run_allowance",
     "tools",
     "verification_process",
+    "network_policy",
+    "source_access",
+    "max_repair_turns",
 )
 
 
@@ -36,7 +39,9 @@ def sha256(path: Path) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("task_directory", type=Path)
+    parser.add_argument("task_directory", type=Path, nargs="?")
+    parser.add_argument("--baseline-dir", type=Path, help="Baseline condition directory for archive-isolated runs")
+    parser.add_argument("--ui-plan-dir", type=Path, help="Skill-assisted condition directory for archive-isolated runs")
     parser.add_argument(
         "--allow-placeholders",
         action="store_true",
@@ -44,9 +49,18 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    task_directory = args.task_directory.resolve()
-    baseline = task_directory / "baseline"
-    assisted = task_directory / "ui-plan"
+    if args.task_directory and (args.baseline_dir or args.ui_plan_dir):
+        parser.error("Use either task_directory or --baseline-dir/--ui-plan-dir")
+    if args.task_directory:
+        task_directory = args.task_directory.resolve()
+        baseline = task_directory / "baseline"
+        assisted = task_directory / "ui-plan"
+    elif args.baseline_dir and args.ui_plan_dir:
+        task_directory = Path("isolated-pair")
+        baseline = args.baseline_dir.resolve()
+        assisted = args.ui_plan_dir.resolve()
+    else:
+        parser.error("Provide task_directory or both --baseline-dir and --ui-plan-dir")
     errors: list[str] = []
 
     baseline_prompt = baseline / "prompt.md"
@@ -74,6 +88,15 @@ def main() -> int:
     for manifest, expected_condition in ((baseline_manifest, "baseline"), (assisted_manifest, "ui-plan")):
         if manifest.get("condition") != expected_condition:
             errors.append(f"{expected_condition} manifest has the wrong condition value")
+
+    if baseline_manifest.get("skill_available") is not False:
+        errors.append("Baseline manifest must record skill_available: false")
+    if assisted_manifest.get("skill_available") is not True:
+        errors.append("ui-plan manifest must record skill_available: true")
+    if baseline_manifest.get("skill_artifacts_read") is not False:
+        errors.append("Baseline manifest must record skill_artifacts_read: false")
+    if assisted_manifest.get("baseline_artifacts_read") is not False:
+        errors.append("ui-plan manifest must record baseline_artifacts_read: false")
 
     baseline_frozen = baseline_manifest.get("frozen_conditions", {})
     assisted_frozen = assisted_manifest.get("frozen_conditions", {})

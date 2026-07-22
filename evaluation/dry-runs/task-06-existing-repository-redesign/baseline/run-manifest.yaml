@@ -11,6 +11,12 @@ frozen_conditions:
   run_allowance: not-measured-dry-run
   tools: [filesystem-read, shell-read]
   verification_process: schema-validation-only; no implementation or browser review in planning dry run
+  network_policy: no-external-research
+  source_access: repository-local-only
+  max_repair_turns: 0
+skill_available: false
+skill_artifacts_read: false
+ui_plan_artifacts_read: false
 artifacts: [prompt.md, transcript.md, ui-contract.yaml, source-request-plan.yaml, metrics.yaml, validation/, screenshots/, review.yaml]
 notes:
   - Capture template only; no baseline plan or implementation was generated in this dry run.

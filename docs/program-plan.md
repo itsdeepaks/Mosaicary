@@ -192,6 +192,10 @@ Begin Tracks A and B together, bounded to six tasks and one `ui-plan` Skill. Bef
 
 One paired implementation pilot completed on isolated worktrees. Both conditions cleared the mechanical browser checks, while the Skill branch produced traceable context/contract artifacts and needed no repair turn. The result is not yet a proof of quality or efficiency because token/time telemetry and an independent blind review are missing, and the same operator/session ran both conditions. Repeat Task 06 with fresh builders and a blinded reviewer after the harness corrections documented in `evaluation/task-06-existing-repository-redesign/EVIDENCE-REPORT.md`; do not advance to Tasks 1–5 or Track C/D work yet.
 
+### Task 06 repeat status — 22 July 2026
+
+The repeat harness is now defined to use archive-isolated builder copies from the pinned start commit, exact elapsed-time telemetry, explicit unavailable-token records, automated Playwright screenshots/overflow checks, deterministic CSV-load failure, axe-core evidence, randomized anonymous labels, Contract usefulness/adherence scoring, and a repair-evidence log. The first pilot's delegated anonymous review remains historical evidence only; a fresh repeat must complete before this program advances.
+
 ## Decision log after each track
 
 Record:
