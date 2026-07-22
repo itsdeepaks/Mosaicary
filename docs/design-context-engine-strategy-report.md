@@ -1,5 +1,7 @@
 # Design Context Engine for Coding Agents
 
+> **Historical strategy — superseded on 22 July 2026.** This report established the design-intelligence premise, but its application/platform roadmap is no longer current. Use `ui-intelligence-research.md`, `product-definition.md`, `architecture-proposal.md`, and `program-plan.md` for the Codex-first Skill/plugin and Source Hub direction.
+
 **Project strategy report**  
 **Prepared:** 20 July 2026  
 **Recommended initial audience:** Personal use, then a small developer/design-agent community  

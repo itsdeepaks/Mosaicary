@@ -1,171 +1,357 @@
-# Architecture proposal
+# Agent-native architecture proposal
 
-## Recommendation
+## Architectural decision
 
-Build a single-user, local-first Next.js application backed by SQLite and validated structured records. Keep the existing CSV as an import seed. Prove project context, pattern selection, decision packs, and exports before adding AI providers, embeddings, MCP, or automated visual review.
+Build this as a **Skill-led Codex plugin with a focused Source Hub MCP and an independent evaluation harness**. Do not begin with a Next.js application or hosted platform. The optional workbench consumes the same schemas and services later.
 
-## Architecture by phase
-
-| Capability | Private MVP | Post-MVP |
-|---|---|---|
-| UI/runtime | Next.js App Router, TypeScript, server components where useful | Same; optimize only from measured needs |
-| Styling | Tailwind CSS and a small accessible component layer | Formalized project tokens/component registry |
-| Database | Local SQLite via Drizzle ORM and `better-sqlite3` | Optional Postgres/Supabase migration for hosted/team use |
-| Validation | Zod schemas shared by forms, persistence, import, and export | Versioned migration tooling for external integrations |
-| Files | Local `data/` directories for uploads, captures, and exports | Object storage abstraction if hosted |
-| Search | Exact filters plus SQLite text search | Hybrid semantic/image retrieval when the corpus justifies it |
-| AI | None required for the first workflow | Provider adapter for classification and synthesis |
-| Agent integration | Markdown/YAML files | Local stdio MCP server and CLI |
-| Verification | Manual browser acceptance criteria | Playwright, axe-core, screenshots, section-level review |
-
-## Application shape
-
-Recommended target structure after Slice 1:
+## System layers
 
 ```text
-app/
-├── page.tsx                    # project-oriented home
-├── projects/
-│   ├── page.tsx
-│   ├── new/page.tsx
-│   └── [projectId]/page.tsx
-└── resources/page.tsx         # introduced in the resource slice
-components/
-├── ui/
-└── projects/
-lib/
-├── db/
-│   ├── client.ts
-│   └── schema.ts
-├── schemas/
-├── services/
-└── exports/
-data/
-├── app.db
-├── uploads/
-├── captures/
-└── exports/
-lib_data/                      # immutable/manual seed inputs
-tests/
-├── unit/
-└── e2e/
+┌───────────────────────────────────────────────────────────────┐
+│ Codex / compatible coding agent                              │
+│  UI Planning Skill · UI Build Skill · UI Review Skill        │
+└───────────────────────┬───────────────────────────────────────┘
+                        │ routes by capability and source policy
+          ┌─────────────┼──────────────────────┐
+          │             │                      │
+          ▼             ▼                      ▼
+┌────────────────┐ ┌──────────────────┐ ┌─────────────────────┐
+│ Repository     │ │ Direct MCPs      │ │ UI Source Hub MCP   │
+│ code/tokens/   │ │ Figma, Storybook,│ │ patterns, open/user │
+│ assets/tests   │ │ shadcn, Mobbin…  │ │ evidence, contracts │
+└────────────────┘ └──────────────────┘ └──────────┬──────────┘
+                                                   │
+                                      ┌────────────▼───────────┐
+                                      │ Source adapters/index  │
+                                      │ open docs/registries/  │
+                                      │ curated local content  │
+                                      └────────────────────────┘
+
+                         approved UI Contract
+                                  │
+                                  ▼
+                  ┌────────────────────────────────┐
+                  │ Implementation + browser review│
+                  │ host browser MCP/CLI + axe     │
+                  └───────────────┬────────────────┘
+                                  ▼
+                         Evaluation artifacts
 ```
 
-Dynamic `data/` contents should be Git-ignored; schema, migrations, curated pattern definitions, and seed importers should be versioned.
+## Why the Skill leads
 
-## Local-first storage
+The workflow—not the database—is the first hypothesis to test. Codex Skills provide progressive disclosure and can coordinate repository inspection, source selection, contract creation, implementation, and verification without keeping all instructions in every prompt.
 
-### Database choice
+Start with repo-local Skills in `.agents/skills/`. After their triggers, steps, outputs, and verification behavior are stable, package them with MCP configuration as a plugin. This follows the documented Codex extension path: local Skill for a developing workflow, MCP for external context, plugin for distribution.
 
-Use SQLite for the private MVP because it is a single-user local application, requires no service or credentials, is easy to back up, and supports transactional structured data and full-text search. Use Drizzle for explicit schemas and migrations, and `better-sqlite3` in the Node runtime.
+## Proposed plugin structure
 
-Do not start with hosted Postgres/Supabase. Introduce a repository/service boundary so a future hosted version can migrate without changing domain behavior.
+```text
+plugins/ui-intelligence/
+├── .codex-plugin/plugin.json
+├── skills/
+│   ├── ui-plan/SKILL.md
+│   ├── ui-build/SKILL.md
+│   ├── ui-review/SKILL.md
+│   └── ui-curate/SKILL.md
+├── references/
+│   ├── source-policy.md
+│   ├── ui-contract-guide.md
+│   └── review-rubric.md
+├── scripts/
+│   ├── inspect-project-ui.*
+│   ├── validate-ui-contract.*
+│   └── summarize-review.*
+├── .mcp.json
+├── agents/openai.yaml
+└── assets/
+```
 
-### Canonical vs export formats
+Do not create all four Skills immediately. Prototype `ui-plan` first, then `ui-review`; add `ui-build` only after the UI Contract is stable. `ui-curate` is maintainer-facing.
 
-- Canonical: database rows validated by versioned Zod schemas.
-- Interchange: versioned JSON for backups/imports.
-- Agent-facing: generated Markdown and YAML.
-- Seed inputs: the existing CSV/Markdown remain source artifacts until imported.
+## Skill responsibilities
 
-### File storage
+### `ui-plan`
 
-Store user-owned screenshots and generated review captures under `data/` with opaque file IDs and database metadata. Never place external URLs directly into filesystem paths. Record MIME type, content hash, byte size, provenance, rights notes, and timestamps.
+- identify the target and intended user outcome;
+- inspect repository UI truth;
+- resolve available source capabilities;
+- retrieve at most a bounded evidence set;
+- compare patterns and surface conflicts;
+- produce a schema-valid UI Contract;
+- stop for approval when decisions materially change product direction.
 
-## Ingestion architecture
+### `ui-build`
 
-Use explicit, narrow importers:
+- require an approved contract or explicit authority to plan-and-build;
+- map decisions to existing components/tokens;
+- implement the target without unrelated redesign;
+- report conflicts with the contract;
+- hand off to `ui-review`.
 
-1. `ResourceCsvImporter` validates the current six-column CSV and reports row errors without partial silent failure.
-2. Manual Reference creation accepts a URL, notes, tags, and optional user-provided screenshot.
-3. Pattern definitions begin as 30–50 reviewed records authored from primary/public guidance and the user's own experience.
-4. Repository context initially comes from a guided form and optional pasted inventory; automated scanning is postponed.
+### `ui-review`
 
-Each import should create a provenance record containing source, imported time, schema version, checksum, and warnings. Do not implement broad crawling in the MVP.
+- open the actual target in a supported browser tool;
+- inspect required routes, states, and viewports;
+- collect deterministic evidence first;
+- compare visible output with the contract/visual target;
+- fix the largest actionable failure when authorized;
+- emit a compact Review record.
 
-## Retrieval architecture
+### `ui-curate`
 
-### MVP
+- classify sources and integration modes;
+- validate provenance, rights, and freshness;
+- author/review UI Patterns;
+- reject unsupported or duplicative evidence.
 
-Rank with understandable data first:
+## Direct MCP federation
 
-1. Hard filters: platform, screen type, product type, user state, density, accessibility, available components.
-2. Text matching: problem, use conditions, required content, tags, and notes.
-3. Compatibility rules: exclude conflicts with Project Rules and technical constraints.
-4. Diversity: return a safe pattern, a low-complexity option, and a distinct alternative when available.
+The host agent is the federation layer. The Skill should inspect available capabilities and apply source priority. It should call provider MCP tools directly when they are installed and authorized.
 
-Every result must include `whyRelevant`, `risks`, and `missingContext`. The UI should return at most five primary candidates.
+Advantages over proxying through our server:
 
-### Embeddings
+- provider OAuth and entitlements remain provider-owned;
+- native tool schemas and capabilities stay current;
+- paid/private results are not copied into our storage;
+- attribution and source identity remain visible;
+- failures can be isolated to one provider;
+- users choose which MCPs they trust.
 
-Postpone embeddings until the manually tagged corpus produces repeated retrieval misses that keyword/rule search cannot solve. If added, embeddings are a candidate generator—not the final ranker. Keep hard filters and rule checks deterministic. Store embedding model/version so vectors can be rebuilt.
+The Skill must degrade gracefully when a direct source is absent. It may use our open evidence, another authorized source, or clearly labeled model knowledge; it must not claim that a source was searched when it was unavailable.
 
-## Project-context generation
+## Source Hub MCP boundary
 
-Slice 1 should not require an LLM. A guided form creates a normalized `ProjectContext` using explicit fields, schema validation, editable assumptions, and open questions. This establishes the stable contract needed for later AI assistance.
+### Initial transport
 
-When AI is added, it may propose normalization and missing questions, but the user reviews the diff before a new context version becomes approved. Provider-specific code belongs behind a small service interface; raw model output never bypasses schema validation.
+Use a local TypeScript stdio server. Local stdio avoids hosting/auth complexity and works with Codex project configuration. Add Streamable HTTP only after multi-device or shared access is a demonstrated need.
 
-## Background jobs
+### Initial tool surface
 
-No job queue is required for the initial MVP. Resource import and export can run synchronously with visible progress/error reporting at this scale.
+Keep the first server to five tools:
 
-Introduce a persistent job table and worker only for slow, retryable work such as URL capture, image analysis, embeddings, repository indexing, and browser review. Jobs need input hashes, attempt counts, status, timestamps, structured errors, and idempotent handlers.
+1. `discover_ui_sources` — returns capable sources/integration modes for a task, with availability and access notes.
+2. `search_ui_evidence` — searches only permitted indexed evidence and reviewed patterns; returns compact ranked summaries.
+3. `get_ui_evidence` — expands selected evidence/pattern IDs with provenance and rules.
+4. `get_project_ui_context` — returns an approved compact context/rule view for a project.
+5. `save_ui_artifact` — writes a user-approved context, contract, review, or rule with an explicit artifact type and version.
 
-## MCP boundary
+If mixed read/write approval behavior proves confusing, split `save_ui_artifact` into a later write-only server or local CLI. Do not add provider-specific wrapper tools.
 
-Do not implement MCP until Project Context and Design Decision Pack schemas have survived real manual use. Then expose a local stdio server with a small task-level surface:
+### MCP resources
 
-- `get_project_context`
-- `find_patterns`
-- `create_design_pack`
-- `find_components`
-- `review_ui`
-- `record_decision`
-- `analyze_project` only after repository scanning is reliable
+Expose stable read-only resources where client support is useful:
 
-MCP handlers should call the same domain services as the web app, accept IDs plus narrow parameters, and return compact summaries. They must not expose arbitrary filesystem reads or return the entire corpus by default.
+- `ui://sources/index`
+- `ui://patterns/{id}`
+- `ui://projects/{projectId}/context`
+- `ui://contracts/{id}`
+- `ui://schemas/{name}/{version}`
 
-## Browser-verification architecture
+Tools should return useful structured content even when a client does not browse MCP resources.
 
-Post-MVP verification uses Playwright in a separate worker/process:
+### Server instructions
 
-1. Validate that the target is an explicitly allowed local URL.
-2. Load the exact Pack version and required viewport/state matrix.
-3. Capture screenshots, DOM landmarks, console errors, failed network requests, and overflow measurements.
-4. Run axe-core and deterministic criteria.
-5. Store raw evidence and section-level findings in a Review.
-6. Use a vision model only for criteria that cannot be measured deterministically.
-7. Require human approval before changing an accepted design decision.
+The initialization `instructions` must put the most important policy first:
 
-Default viewports should include 390, 768, and 1440 widths; each Pack may override them. Reviews must record the app commit/ref when available.
+> Prefer repository and approved project context. Use this server only for permitted evidence and project artifacts. Do not treat evidence as an approved design decision. Keep results bounded and preserve source attribution.
 
-## Token-efficient agent context
+## Storage and schemas
 
-- Keep a project summary to roughly 600–1,200 tokens.
-- Keep one screen pack to roughly 800–1,500 tokens.
-- Return 3–5 pattern summaries first; fetch full details only for selected IDs.
-- Send stable IDs, compact fields, and source links instead of repeated prose.
-- Keep screenshots out of text context until a visual decision or failed review needs them.
-- Cache derived context by source hash and schema version.
-- Return only failed verification criteria and relevant crops during repair.
-- Never attach the 295-resource document to ordinary screen tasks.
+### Repository content
 
-## Security and privacy
+Version these in Git:
 
-- Bind the development app and MCP server to localhost by default.
-- Treat imported Markdown, HTML, URLs, screenshots, and repository content as untrusted input.
-- Sanitize rendered Markdown and validate outbound protocols.
-- Restrict repository scanning and browser verification to user-approved paths/hosts.
-- Do not send repository files or screenshots to an AI provider without an explicit provider action and clear scope.
-- Keep secrets out of exported packs, logs, screenshots, and the database.
+- JSON Schemas;
+- curated Source Descriptors;
+- reviewed UI Patterns;
+- evaluation tasks and rubrics;
+- Skill instructions and scripts;
+- seed importers and migrations.
 
-## Migration approach for the existing preview
+### Local mutable content
 
-Do not rewrite `index.html` during Slice 1. Preserve it as a reference/legacy preview while the project-context vertical slice is built. In the Resources slice, import the CSV, recreate the proven filters with accessible controls and pagination/virtualization, fix mobile overflow, and then retire or archive the static preview.
+Store these outside versioned plugin code by default:
 
-## Required before implementation
+- user-authorized references and screenshots;
+- Project UI Context versions;
+- UI Contracts, Reviews, and Rules;
+- source credentials (in OS/client credential storage, never the database);
+- evaluation run artifacts.
 
-1. Approve the framework, SQLite, package manager, and canonical/export format decisions.
-2. Initialize Git or otherwise create a recoverable baseline.
-3. Confirm whether Slice 1 may scaffold the application in this directory while preserving the static preview.
+Use SQLite for local metadata and file paths, with plain JSON export for portability. SQLite is an implementation detail of the Source Hub, not the product center.
+
+### Standard formats
+
+- JSON Schema for validation and protocol contracts;
+- DTCG JSON for token interchange where possible;
+- Markdown/YAML for agent- and human-readable exports;
+- PNG/WebP plus metadata for visual evidence;
+- JSONL for evaluation results.
+
+## Source adapter contract
+
+An adapter that our system owns must implement:
+
+```ts
+interface SourceAdapter {
+  describe(): SourceDescriptor;
+  health(): Promise<SourceHealth>;
+  search(query: EvidenceQuery): Promise<EvidenceSummary[]>;
+  get(id: string): Promise<UiEvidence>;
+}
+```
+
+It must also declare:
+
+- authentication type;
+- read/write capability;
+- cost/access class;
+- cache allowance and TTL;
+- redistribution/thumbnail policy;
+- rate policy;
+- source version/freshness;
+- data sent outside the machine;
+- failure behavior.
+
+The first adapters should be low-risk and structured:
+
+1. curated local JSON pattern/evidence store;
+2. shadcn-compatible registry metadata;
+3. Open UI/WAI/DTCG documentation index with citations;
+4. user-owned local files/screenshots.
+
+Do not build unofficial adapters around paid websites.
+
+## Project inspection
+
+The Skill can inspect the repository directly, but a helper script should produce a compact deterministic inventory:
+
+- framework and routes;
+- theme/token sources;
+- global styles and fonts;
+- component directories and exports;
+- Storybook configuration/stories;
+- installed UI libraries;
+- icon and asset sources;
+- existing responsive breakpoints;
+- test/browser commands;
+- explicit repository guidance.
+
+The script should return paths and summaries, not file dumps. It must ignore secrets, dependencies, generated output, and unrelated backends.
+
+## Retrieval and ranking
+
+1. Resolve the design question and required evidence type.
+2. Filter Sources by availability, capability, rights, cost, platform, and user preference.
+3. Query no more than two or three sources initially.
+4. Apply project compatibility filters: framework, components, tokens, density, brand, accessibility, and content.
+5. Return three primary candidates plus at most one counterexample.
+6. Explain relevance, conflict, evidence strength, and source.
+7. Expand only selected evidence.
+
+Use tags, filters, and full-text search first. Add embeddings only after evaluation shows retrieval misses that structured search cannot resolve. Image embeddings belong behind the same ranking and rights policy.
+
+## UI Contract pipeline
+
+```text
+raw brief + repo inventory + project context
+                ↓
+missing questions and assumptions
+                ↓
+bounded evidence retrieval
+                ↓
+pattern comparison and compatibility checks
+                ↓
+draft UI Contract (schema-valid)
+                ↓
+human approval/revision
+                ↓
+versioned Markdown/YAML export
+```
+
+LLM output must pass schema validation. The system should preserve the raw source IDs and context version used to build each contract.
+
+## Verification architecture
+
+Do not duplicate mature browser MCPs. The `ui-review` Skill chooses an available host browser capability—Codex in-app browser, Playwright MCP, Chrome DevTools MCP, or a configured CLI—and follows a common evidence contract.
+
+Deterministic checks:
+
+- route/load success;
+- required visible landmarks and text;
+- required interaction/state transitions;
+- console and failed-network errors;
+- horizontal/vertical overflow anomalies;
+- focus order and keyboard reachability;
+- axe-core accessibility findings;
+- viewport and screenshot metadata;
+- component/test results when Storybook is available.
+
+Visual judgment checks:
+
+- hierarchy and scan order;
+- consistency with tokens and components;
+- content fit and density;
+- balance, rhythm, typography, and responsive adaptation;
+- fidelity to an approved visual target;
+- visible anti-patterns named in the contract.
+
+Visual judgment must cite screenshots/regions and must not be collapsed into one score.
+
+## Optional hooks
+
+Do not ship mandatory hooks initially. After the manual workflow is proven, test an opt-in `Stop` hook that detects changed frontend files and reminds the agent to run `ui-review` when no review artifact exists. Hooks should not launch browsers or modify code silently.
+
+## MCP Apps and workbench UI
+
+MCP Apps can later render evidence comparison, contract approval, or review findings inline where the host supports it. Because client support varies, treat this as progressive enhancement.
+
+The local workbench may eventually provide:
+
+- source capability administration;
+- evidence/pattern curation;
+- side-by-side reference comparison;
+- UI Contract editor and approval;
+- review screenshot/finding explorer;
+- evaluation dashboards.
+
+The current `index.html` can inform the source-catalog view. Do not invest in its visual redesign before the Skill + evaluation loop succeeds.
+
+## Security and trust
+
+- Default Source Hub tools to read-only annotations and least privilege.
+- Require explicit approval for writes, downloads, code installation, captures, or external model calls.
+- Keep vendor OAuth tokens in the vendor/client auth flow.
+- Never log secrets, authorization headers, or private file contents.
+- Pin or review executable adapters and registry packages; metadata retrieval does not imply code installation trust.
+- Sanitize Markdown/HTML and validate URLs/protocols.
+- Restrict repository paths and browser targets to explicit roots/hosts.
+- Record what source data was sent to which external provider.
+- Preserve attribution and respect cache/redistribution rules.
+
+## Token and tool budget
+
+- Skill discovery metadata: concise and highly specific.
+- Project UI Context: target 600–1,200 tokens.
+- UI Contract: target 800–1,500 tokens.
+- Evidence search: three summaries by default, under 250 tokens each.
+- Full evidence: fetched only by selected ID.
+- Review repair: failed criteria and relevant crops only.
+- Source Hub: five tools initially; no provider wrapper explosion.
+- Large outputs: write artifacts to files/resources and return a compact index.
+
+## Technology recommendations
+
+- TypeScript monorepo only when the MCP server and shared schema package begin; do not scaffold it for the Skill-only experiment.
+- MCP TypeScript SDK for the local server.
+- JSON Schema + TypeBox or Zod-to-JSON-Schema for runtime validation, choosing one canonical schema source.
+- SQLite with a straightforward migration layer for local metadata.
+- Vitest for schemas/ranking/services.
+- Playwright fixtures for the evaluation harness.
+- axe-core for deterministic accessibility checks.
+- No Next.js dependency unless the optional workbench is approved.
+
+## Architectural stop conditions
+
+Do not add a Source Hub service until the Skill-only experiment shows that repeated context/evidence needs justify it. Do not add embeddings until tagged retrieval misses are measured. Do not add remote hosting until local multi-project use is proven. Do not add MCP Apps until structured tool results are stable. Do not add public distribution until the benchmark and source rights policy are credible.

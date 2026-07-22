@@ -1,125 +1,177 @@
-# Open decisions
+# Open decisions — agent-native program
 
-## Blocking decisions for Slice 1
+## Decisions resolved by this research
 
-### 1. Application foundation
+### Primary product surface
 
-**Options:** Keep vanilla HTML; use Vite/React; use Next.js App Router.
+**Decision:** Codex Skill set and plugin, not a new SaaS dashboard.
 
-**Trade-offs:** Vanilla HTML minimizes setup but becomes brittle for validated forms, persistence, routing, exports, and MCP-adjacent services. Vite is simple but requires a separate local server/API design. Next.js provides one TypeScript application boundary for UI and local server behavior at the cost of more framework conventions.
+**Reason:** The value must appear inside the coding workflow. UI is optional control/approval infrastructure.
 
-**Recommendation:** Next.js App Router with TypeScript.
+### Federation boundary
 
-**Blocks Slice 1:** Yes.
+**Decision:** Direct vendor MCPs remain direct; our MCP does not proxy them by default.
 
-### 2. Local database
+**Reason:** Preserves authorization, entitlements, source capability, provenance, and provider responsibility.
 
-**Options:** JSON files; browser IndexedDB; SQLite; hosted Postgres/Supabase.
+### First proof
 
-**Trade-offs:** JSON is inspectable but weak for relationships/concurrency. IndexedDB is browser-local and awkward for CLI/MCP. Hosted Postgres adds credentials and operational dependency. SQLite is portable, transactional, queryable, and shared by the web app and future local MCP process.
+**Decision:** Evaluation harness plus repo-local `ui-plan` Skill before the Source Hub.
 
-**Recommendation:** SQLite with Drizzle ORM and `better-sqlite3`; export JSON/Markdown/YAML for portability.
+**Reason:** The workflow hypothesis can be tested without committing to service architecture.
 
-**Blocks Slice 1:** Yes.
+### Source corpus strategy
 
-### 3. Package manager
+**Decision:** Classify the highest-value 40 resources first and expand from measured retrieval gaps.
 
-**Options:** npm or pnpm.
+**Reason:** Capability and quality matter more than completing metadata for all 295 entries.
 
-**Trade-offs:** Both are available. npm is universal; pnpm is fast, space-efficient, and well suited if a small MCP package is added later. Consistency matters more than the choice.
+### Core UI behavior
 
-**Recommendation:** pnpm and a committed `pnpm-lock.yaml`.
+**Decision:** Structured tool/file results are mandatory; MCP App/workbench UI is progressive enhancement.
 
-**Blocks Slice 1:** Yes.
+**Reason:** Client support differs and the capability must remain portable.
 
-### 4. Canonical and export formats
+## Decisions to make during Track A/B
 
-**Options:** Markdown/YAML as primary records; JSON files; database records with generated exports.
+### 1. Evaluation task set
 
-**Trade-offs:** Human-editable primary files are attractive but harder to validate and relate. Database-only data is less portable. Structured canonical records plus versioned exports support validation, history, portability, and compact agent context.
+**Decision:** Six task types are fixed for the first benchmark: marketing page, SaaS dashboard, complex workflow, settings/account, mobile-first screen, and an existing-repository redesign.
 
-**Recommendation:** SQLite records validated by Zod; versioned JSON backup; Markdown/YAML exports.
+**Recommendation:** Use mixed fixtures and real repositories where available, but bind each task to a reproducible repository before any scored run.
 
-**Blocks Slice 1:** Yes.
+**Decision owner:** User and evaluator together.
 
-## Important but non-blocking decisions
+**Blocks:** The first scored run, not the harness or dry run.
 
-### 5. Git baseline
+### 2. Human evaluation method
 
-**Options:** Continue without Git; initialize Git before implementation; place the project in an existing parent repository.
+**Options:** User-only scoring; independent blinded reviewer; pairwise preference; combined.
 
-**Trade-offs:** Continuing without Git makes a framework scaffold and migrations unnecessarily risky. A new repository is straightforward, but the user may intend this folder to join a larger workspace.
+**Recommendation:** Pairwise blind comparison first, followed by rubric scoring and user acceptance notes. Avoid a single aggregate score.
 
-**Recommendation:** Confirm repository ownership, then initialize Git and make a baseline commit before Slice 1.
+**Blocks:** Claims of improvement.
 
-**Blocks Slice 1:** Operationally recommended, not a product architecture dependency.
+### 2a. Frozen comparison conditions
 
-### 6. Fate of the static preview
+**Decision:** Baseline and Skill-assisted runs must share the same clean repository commit, model, reasoning level, prompt, run allowance, tool set, and verification process. Only the `ui-plan` Skill may differ.
 
-**Options:** Delete during scaffold; embed unchanged; preserve temporarily and migrate in Slice 2.
+**Reason:** Without a frozen control, differences cannot be attributed to the planning workflow.
 
-**Trade-offs:** Deleting loses a working reference. Embedding creates early integration work. Temporary preservation keeps scope clean but means two surfaces briefly coexist.
+**Blocks:** Every scored comparison.
 
-**Recommendation:** Preserve unchanged during Slice 1; migrate the data/affordances to `/resources` in Slice 2, then archive the static file.
+### 2b. Planning/implementation boundary
 
-**Blocks Slice 1:** No.
+**Decision:** `ui-plan` is planning-only. It outputs context, a UI Contract, and an evidence/source request plan; it does not edit or implement the interface.
 
-### 7. Project-context input depth
+**Reason:** This separates planning quality from implementation quality and prevents hidden workflow differences.
 
-**Options:** One freeform brief; exhaustive wizard; concise structured form plus optional notes.
+**Blocks:** Skill wording and artifact capture, now resolved.
 
-**Trade-offs:** Freeform text is ambiguous. An exhaustive wizard delays value and creates fatigue. A concise form establishes reliable fields while retaining flexibility.
+### 3. Skill autonomy
 
-**Recommendation:** Structured fields for summary, users, jobs, brand traits, technical/content constraints, accessibility, assumptions, and questions; optional raw brief saved as a source input.
+**Options:** Always stop after UI Contract; plan-and-build when explicitly asked; fully autonomous plan/build/review.
 
-**Blocks Slice 1:** No; the roadmap proposes the concise form.
+**Recommendation:** Stop after planning for ambiguous or taste-changing tasks; allow plan-and-build when the user explicitly requests implementation and the contract contains no blocking decisions.
 
-### 8. AI provider
+**Blocks:** Skill workflow wording.
 
-**Options:** No AI; OpenAI-only; Vercel AI SDK/provider abstraction; local models.
+### 4. Contract persistence in ordinary repositories
 
-**Trade-offs:** Provider choice introduces privacy, cost, and environment concerns before the schema is proven. AI can later help normalize briefs and draft packs.
+**Options:** `.ui-intelligence/` committed to each repo; untracked local state; central user-state directory; hybrid.
 
-**Recommendation:** No AI dependency through Slice 4. Later add a small provider adapter after benchmarking the manual workflow.
+**Recommendation:** Hybrid: schema and stable project rules may be committed under `.ui-intelligence/`; private references, screenshots, run data, and personal preferences remain in user state.
 
-**Blocks Slice 1:** No.
+**Blocks:** Project UI Context storage design.
 
-### 9. Pattern taxonomy ownership
+### 5. Canonical schema implementation
 
-**Options:** Adopt one external taxonomy; derive automatically from the 295 resources; manually author a task-oriented taxonomy.
+**Options:** Hand-authored JSON Schema; Zod as source with generated JSON Schema; TypeBox as source.
 
-**Trade-offs:** External taxonomies may not fit agent decisions; resource categories describe sites, not UX problems; automated derivation can produce shallow labels.
+**Recommendation:** Hand-authored JSON Schema for portable protocol contracts, with generated TypeScript types and conformance tests. Revisit if authoring cost becomes excessive.
 
-**Recommendation:** Manually author the first 30–50 patterns around user problems, screen types, user states, and constraints, then revise from retrieval misses.
+**Blocks:** Shared artifacts and MCP implementation.
 
-**Blocks Slice 1:** No; blocks Slice 3 content work.
+## Decisions to make before Source Hub MCP
 
-### 10. Reference screenshot policy
+### 6. Local server language and packaging
 
-**Options:** Store every remote screenshot; store links/thumbnails; store only user-owned or clearly permitted images.
+**Options:** TypeScript/npm; Python/uv; single binary.
 
-**Trade-offs:** Broad copying creates copyright, license, privacy, and maintenance risk. Links can disappear. Private user-owned captures are useful but still need provenance.
+**Recommendation:** TypeScript/npm because the MCP SDK, plugin ecosystem, shadcn registries, and frontend evaluation tooling align well. Consider a bundled executable only after distribution friction is measured.
 
-**Recommendation:** For the private MVP, store source links and structured observations by default; accept user-provided/permitted screenshots with explicit provenance and rights notes. Never ingest paid-library content automatically.
+**Blocks:** Track D.
 
-**Blocks Slice 1:** No; blocks screenshot ingestion design.
+### 7. Read/write tool separation
 
-### 11. Repository scanning
+**Options:** One server with annotated read/write tools; read-only MCP plus local CLI writes; two servers.
 
-**Options:** Full automatic scanner; user-pasted inventory; guided approved-root scan.
+**Recommendation:** Start with one server and one explicit `save_ui_artifact` write tool with approval metadata. Split if tool approval or safety behavior is unclear in testing.
 
-**Trade-offs:** Full scanning risks secrets, token waste, and irrelevant files. Paste-only is safe but tedious. Approved-root scanning with explicit ignores and review balances utility and control.
+**Blocks:** MCP tool schema, not Tracks A–C.
 
-**Recommendation:** Use manual constraints in Slice 1; add an approved-root, metadata-first scanner in Slice 5.
+### 8. First open-doc sources
 
-**Blocks Slice 1:** No.
+**Options:** Broad crawl of many design systems; focused Open UI/WAI/DTCG index; manually authored patterns only.
 
-### 12. Product name
+**Recommendation:** Focused standards index plus manually reviewed patterns. Link to design systems as evidence rather than bulk crawling them.
 
-**Options:** Design Context Engine, DesignLens, PatternOS, UI Compass, or another name.
+**Blocks:** Open-doc adapter content.
 
-**Trade-offs:** A product-style name improves identity, but premature naming can distract from workflow validation.
+### 9. Search implementation
 
-**Recommendation:** Keep “Design Context Engine” as the working name through the private MVP.
+**Options:** Tags/filters + FTS; text embeddings; text+image embeddings.
 
-**Blocks Slice 1:** No.
+**Recommendation:** Tags, hard filters, and full-text search first. Add embeddings only from recorded retrieval misses.
+
+**Blocks:** Track D ranking implementation.
+
+### 10. Cache and thumbnail policy
+
+**Options:** Cache all source results; metadata only; per-source policy.
+
+**Recommendation:** Per-source policy, defaulting to metadata and source links. Store images only when user-owned, explicitly permitted, or licensed.
+
+**Blocks:** Any adapter returning remote visual assets.
+
+## Decisions to make before verification/plugin distribution
+
+### 11. Preferred browser verifier
+
+**Options:** Codex in-app browser; Playwright MCP; Chrome DevTools MCP; agent-browser CLI; adapter over available host capability.
+
+**Recommendation:** Define a common Review evidence contract and let the Skill select an available host capability. Use one fixed verifier for benchmark comparability.
+
+**Blocks:** Track F implementation.
+
+### 12. Accessibility depth
+
+**Options:** axe-core only; axe plus keyboard/semantic scripts; full manual accessibility rubric.
+
+**Recommendation:** axe plus deterministic keyboard/landmark checks and a manual rubric. Clearly state that automation does not prove full WCAG conformance.
+
+**Blocks:** Review rubric.
+
+### 13. Hook behavior
+
+**Options:** No hooks; reminder-only `Stop` hook; automatic review hook.
+
+**Recommendation:** No hook until manual review is reliable; later test an opt-in reminder-only hook.
+
+**Blocks:** Nothing before plugin hardening.
+
+### 14. Plugin scope
+
+**Options:** Personal plugin; repo marketplace plugin; public plugin.
+
+**Recommendation:** Personal/local plugin first, then repo-scoped sharing. Public distribution requires source-rights, security, install, and benchmark readiness.
+
+**Blocks:** Distribution, not workflow development.
+
+### 15. Product name
+
+**Options:** Codex UI Intelligence, UI Compass, PatternOS, Design Context Engine, or another name.
+
+**Recommendation:** Use `ui-intelligence` as the technical working name; defer brand naming.
+
+**Blocks:** Nothing.

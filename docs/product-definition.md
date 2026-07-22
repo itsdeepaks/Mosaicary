@@ -1,119 +1,174 @@
-# Product definition
+# Product definition — Codex UI Intelligence
 
-## Working definition
+## One-sentence definition
 
-The Design Context Engine is a private, local-first tool that converts a product brief, repository constraints, curated UI patterns, and user preferences into compact, traceable design decisions that coding agents can implement and later verify.
+A portable design-intelligence layer that helps coding agents understand a project's UI, retrieve appropriate evidence from direct and curated sources, make traceable decisions, implement with the real component system, and verify the rendered result.
 
-It is not primarily a gallery. The resource directory is an input surface for the engine.
+## What changed
 
-## Target user
+This is not being planned as a new SaaS dashboard. The primary product is an agent capability that runs inside Codex and other compatible coding environments. A web interface may exist later as a workbench for curation, comparison, approval, and evaluation, but it is secondary.
 
-The first user is a solo builder who uses Codex or another coding agent to design and implement web products and wants better decisions with fewer repeated prompts and correction cycles. The user may have product judgment and references but no complete Figma file or dedicated product designer.
+The existing 295-resource directory is a source catalog seed. It is not the final product and should not drive architecture or visual priorities.
 
-Later users may include small product teams and design engineers, but their needs must not shape the private MVP prematurely.
+## Primary user
 
-## Primary problem
+The first user is the repository owner using Codex to build or improve frontend UI. The system should also be portable to other MCP/Agent Skills-compatible coding agents after the Codex workflow is proven.
 
-Coding agents are often given a vague brief, an oversized list of inspiration links, and incomplete repository constraints. They can produce plausible UI, but they frequently guess at hierarchy, pattern choice, density, responsive behavior, states, and visual direction. The user then spends more tokens re-explaining intent and repairing inconsistencies.
+## User outcome
 
-## Product promise
+The user can ask for a new screen, redesign, UI repair, component choice, or visual review and receive work that:
 
-Given a project and target screen, produce a concise, justified, editable design plan that:
+- begins from repository and product truth;
+- uses suitable external evidence rather than generic model taste;
+- explains important choices;
+- reuses the right local or approved components;
+- defines behavior at relevant viewports and states;
+- is inspected in the actual browser;
+- records only approved preferences for later work.
 
-- fits the users, job, brand, content, and technical constraints;
-- cites a small set of relevant patterns and references;
-- maps decisions to existing tokens and components;
-- states responsive, interaction, accessibility, and state requirements;
-- exports cleanly for a coding agent;
-- can later be checked against the rendered result;
-- remembers what the user accepted or rejected.
+## Product surfaces
 
-## Primary workflow
+### 1. UI Intelligence Skills
 
-```text
-Create or select project
-→ enter product brief and repository constraints
-→ review normalized Project Context
-→ define a target Screen
-→ retrieve suitable Patterns and References
-→ choose or revise the recommendation
-→ generate a Design Decision Pack
-→ export Markdown/YAML for a coding agent
-→ later run a browser Review
-→ record accepted/rejected decisions as Project Rules
-```
+Repo-local first, plugin-distributed later. The Skills define repeatable workflows for:
 
-Human approval is a first-class step. The engine recommends and explains; it does not silently lock in taste or product decisions.
+- UI research and planning;
+- implementation from an approved UI Contract;
+- rendered UI review and repair;
+- source curation and pattern authoring.
 
-## Initial use cases
+This is the primary behavior layer.
 
-1. Turn rough product notes into a reusable project-context artifact.
-2. Plan a new page or product screen before asking an agent to write UI code.
-3. Find task-relevant patterns rather than browse generic inspiration endlessly.
-4. Export a screen pack that can be attached to Codex, Claude Code, or Cursor.
-5. Preserve constraints and preferences across multiple screens in one project.
-6. Later, compare a local implementation with its approved pack at desktop and mobile widths.
+### 2. UI Source Hub MCP
 
-## MVP boundary
+A compact, mostly read-oriented server that supplies:
 
-The private MVP is complete when one user can:
+- source capability discovery;
+- normalized permitted evidence;
+- reviewed UI Patterns;
+- Project UI Context and UI Rules;
+- UI Contracts and versions;
+- provenance and freshness.
 
-- create, edit, duplicate, and archive local projects;
-- create a normalized Project Context without requiring an AI API key;
-- browse a small, manually curated pattern library and the existing resources;
-- define a target Screen;
-- select patterns/references and write or generate traceable Design Decisions;
-- assemble and edit a Design Decision Pack;
-- export project context and packs as Markdown and YAML;
-- see source attribution and data freshness;
-- back up or move local data in an understandable format.
+This is the shared data and memory layer.
 
-MCP, automatic repository scanning, embeddings, AI-assisted synthesis, and visual review are valuable next phases, not prerequisites for proving the core decision workflow.
+### 3. Direct Source MCPs
 
-## Non-goals for the private MVP
+Provider-owned MCPs such as Figma, Storybook, shadcn, 21st.dev, Mobbin, Refero, or Nicelydone should remain direct connections when present. The Skill selects and combines them; our MCP does not impersonate or proxy them.
 
-- Accounts, subscriptions, payment processing, teams, or permissions.
-- Community submissions, social features, public profiles, or a marketplace.
-- Large-scale scraping or redistribution of paid screenshot libraries.
-- A Mobbin-sized corpus.
-- Custom model training.
-- Automatic website publishing.
-- A full design canvas or Figma replacement.
-- One-click “make it beautiful” generation.
-- A single opaque design-quality score.
-- Support for every frontend framework or MCP client.
+### 4. UI Evaluation Harness
+
+A repository of representative tasks, reference inputs, expected states, browser checks, screenshots, scoring rubrics, and run results. This proves whether the capability is useful and prevents architecture work from becoming the goal.
+
+### 5. Optional Workbench
+
+A local visual interface for source administration, side-by-side evidence, contract editing, review findings, and benchmark runs. The current dashboard may evolve into this only after the agent workflow works.
+
+## Core operating modes
+
+### Plan UI
+
+Inspect context, route to relevant sources, retrieve a small evidence set, and create an editable UI Contract. Do not write product code until the contract is approved or the task explicitly permits autonomous implementation.
+
+### Build UI
+
+Implement an approved contract using repository conventions and component truth. Resolve conflicts explicitly rather than silently discarding a decision.
+
+### Review UI
+
+Open the real application at required states and viewports; evaluate deterministic failures, visible quality, hierarchy, and contract conformance; repair the largest failure first.
+
+### Curate knowledge
+
+Add or update Source Descriptors, UI Evidence, and UI Patterns with provenance, rights notes, freshness, and review status.
+
+## Source policy
+
+The source order is:
+
+1. explicit user instruction and supplied visual targets;
+2. current repository truth;
+3. approved Project UI Context and UI Rules;
+4. direct user-authorized MCPs;
+5. our permitted Source Hub evidence;
+6. transient public web research;
+7. model prior knowledge as labeled fallback.
+
+When sources conflict, explicit user decisions and current repository constraints win unless the user asks to change them.
+
+## UI Contract
+
+The main cross-agent artifact is a small, versioned implementation contract for a target UI. It includes:
+
+- user and task goal;
+- content hierarchy;
+- selected patterns and rationale;
+- evidence citations;
+- component/token mappings;
+- layout and responsive behavior;
+- required states;
+- interaction and motion rules;
+- accessibility requirements;
+- avoid rules;
+- browser verification criteria;
+- unresolved questions and approval status.
+
+It must be useful without screenshots and small enough to attach to an ordinary coding task.
+
+## Non-goals
+
+- A public design-inspiration SaaS.
+- A Mobbin/Refero/Nicelydone clone.
+- A general-purpose MCP proxy for every provider.
+- A large screenshot scraping or redistribution system.
+- A Figma replacement or visual design canvas.
+- A new component framework.
+- Automatic installation of arbitrary registry code.
+- One-shot “make it beautiful” generation.
+- A hidden taste model trained from unapproved user work.
+- A single opaque UI-quality score.
+- Replacing existing browser, Storybook, Figma, or component MCPs.
 
 ## Product principles
 
-1. **Decision quality over corpus size.** A small set of structured patterns is more valuable than thousands of unclassified links.
-2. **Explain selection.** Every recommendation should state why it fits and when it does not.
-3. **Structured core, human-readable exports.** Store typed records; emit concise Markdown/YAML.
-4. **Local and inspectable.** Personal project data, screenshots, and decisions remain understandable and movable.
-5. **Human approval before build.** Recommendations remain editable and their status is explicit.
-6. **Verification is part of design.** A future review loop must inspect the real browser, not only source code.
-7. **Token efficiency by retrieval.** Agents receive one project summary and one screen pack, not the whole library.
-8. **Provenance over copying.** Store attribution, rights notes, and observations; do not mirror commercial collections.
+1. **Workflow before platform.** Prove the behavior as a Skill before building services.
+2. **Repository truth first.** External inspiration never overrides working project constraints silently.
+3. **Federate, do not copy.** Use native sources directly and preserve their authorization/provenance.
+4. **Evidence before aesthetics.** UI choices connect to a user goal, pattern, project rule, or explicit visual target.
+5. **Structured and compact.** Store typed records and disclose detail progressively.
+6. **Build and review are one loop.** Frontend work is unfinished until the rendered result is inspected.
+7. **Human approval creates memory.** Generated output is not automatically a project rule.
+8. **Deterministic checks first.** Use schemas, browser metrics, accessibility tools, and tests before model judgment.
+9. **Portable by design.** Skills, MCP, files, and standards should keep the system useful across agent hosts.
+10. **Measure accepted outcomes.** Tool count, corpus size, and dashboard polish are not success.
 
-## Differentiation
+## Definition of a complete UI upgrade
 
-| Product/category | What it primarily provides | This product's difference |
-|---|---|---|
-| DesignIndex and directories | Discovery of tools and inspiration sites | Converts selected knowledge into project-specific decisions and reusable context |
-| Mobbin | Large searchable corpus of shipped screens and flows | Focuses on fit, rationale, constraints, memory, and verification; does not compete on screenshot count |
-| Component libraries | Production-ready primitives and examples | Decides which patterns/components suit the task and how they compose into a screen |
-| Figma MCP | Structured context from an existing Figma design | Creates design context when the starting point is a brief and repository rather than an approved design |
-| AI UI builders | Generate a UI within their own workflow | Produces portable decision artifacts that can guide multiple coding agents and existing repositories |
+The system is “complete” for an individual frontend task when it can:
 
-## Success measures
+1. understand the product and target;
+2. inventory relevant local tokens/components/content;
+3. discover available evidence sources;
+4. retrieve and compare a bounded evidence set;
+5. produce an approved UI Contract;
+6. implement without unnecessary design-system divergence;
+7. verify required routes, states, and viewports in a browser;
+8. report evidence-backed findings and repair failures;
+9. save approved reusable rules;
+10. show provenance and token/tool cost for the run.
 
-For a repeated benchmark of real frontend tasks, compare agent-only work with engine-assisted work:
+## Measures of success
 
-- input/output tokens to accepted UI;
-- number of agent iterations and manual corrections;
-- time to approved design pack and accepted implementation;
-- responsive, accessibility, console, and missing-state failures;
-- reuse of existing components/tokens;
-- human ratings for hierarchy, content fit, coherence, and distinctiveness;
-- percentage of implemented choices traceable to a project rule, decision, or selected pattern.
+Use controlled tasks and compare baseline Codex against successive capability layers:
 
-The product is useful only if it improves accepted outcomes or reduces iteration cost, not merely if it creates more documents.
+- human first-render acceptance;
+- design/UX rubric scores;
+- responsive and accessibility failures;
+- missing required states;
+- existing component/token reuse;
+- repair turns and elapsed time;
+- total input/output/tool-result tokens;
+- evidence and decision traceability;
+- user overrides required before acceptance.
+
+The system should earn additional complexity only when a measured layer improves these outcomes.

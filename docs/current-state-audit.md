@@ -1,5 +1,7 @@
 # Current-state audit
 
+> **Repository facts remain current; product disposition was updated after this audit.** The catalog is now treated as source-map seed material and a possible future workbench view. The primary product is the Codex UI Intelligence Skill/plugin, Source Hub MCP, and evaluation harness described in `ui-intelligence-research.md`.
+
 **Audited:** 22 July 2026  
 **Scope:** Repository and runtime inspection only; no product implementation or dashboard redesign
 
@@ -7,7 +9,7 @@
 
 The repository is a valid static preview of a curated resource list, not yet an application platform. Its strongest reusable asset is the clean 295-row resource seed and a working browser-based directory. Its largest mismatch with the strategy is structural: it has no concept of projects, product context, patterns, screens, decisions, reviews, persistence, APIs, agent integration, or verification.
 
-The current dashboard should become the future **Resources** area. It should not be treated as the product home and should not be redesigned before the project-context workflow exists.
+The current dashboard may later become a source-catalog view inside an optional workbench. It should not be treated as the product home and should not be redesigned before the agent workflow and evaluation harness are proven.
 
 ## What exists
 
@@ -92,7 +94,7 @@ Accessibility observations from browser/source inspection:
 | Directory-only functionality | Markdown mirror, generic resource browsing, total/free counts | Keep available, but do not make it the product center |
 | Missing core functionality | Projects, context normalization, patterns, references, screens, decisions, packs, exports, reviews, rules | Build through ordered vertical slices |
 | Unnecessary or premature | None implemented | Continue excluding public accounts, billing, teams, community, scraping, and marketplace work |
-| Technical debt/risk | Single-file code, no tests/tooling, CDN dependency, mobile overflow, unlabeled controls, hand-written CSV parser | Address only when touched by an approved slice |
+| Technical debt/risk | Single-file code, no tests/tooling, CDN dependency, mobile overflow, unlabeled controls, hand-written CSV parser | Address only when touched by an approved task |
 
 ## Strong reusable parts
 
@@ -128,7 +130,7 @@ Accessibility observations from browser/source inspection:
 
 ## Dashboard disposition
 
-The dashboard should **become the resource-library section**, not remain the eventual home dashboard. Preserve the data and interaction concepts, postpone visual polish, and migrate the experience only when the resource slice is approved. The first implementation slice should touch the dashboard only as needed to preserve access to the legacy preview or introduce navigation; it should not redesign it.
+Preserve the dashboard as a working legacy source-catalog preview. If the optional workbench is later justified, its data and discovery affordances can become a source-catalog view. No current program track requires dashboard migration or redesign; the first implementation work is the evaluation harness and repo-local `ui-plan` Skill.
 
 ## Evidence collected
 

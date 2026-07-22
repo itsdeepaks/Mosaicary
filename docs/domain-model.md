@@ -1,222 +1,223 @@
-# Domain model
+# Agent-native domain model
 
 ## Modeling rules
 
-- Use stable opaque IDs, timestamps, and schema versions for persisted records.
-- Store canonical records as validated structured data. Markdown and YAML are exports.
-- Keep source provenance and user judgment separate from machine-generated observations.
-- Prefer archival/status fields to destructive deletion for decisions and project history.
-- Relationships below are conceptual until migrations are approved.
+- Use versioned JSON Schemas as the canonical contract shared by Skills, MCP, CLI, and optional UI.
+- Keep facts, observations, recommendations, decisions, and review evidence distinct.
+- Every external item carries source, rights, freshness, and trust metadata.
+- Every generated decision names its inputs and approval state.
+- Markdown/YAML are compact exports, not the only source of truth.
 
 ## Relationship map
 
 ```text
-Project ──1:1── Project Context
+Source ──1:n── Source Capability
    │
-   ├──1:n── Screen ──1:n── Design Decision ──n:1── Pattern
-   │                                  │
-   │                                  └──n:m── Reference
-   ├──1:n── Design Decision Pack ──1:n── Design Decision
-   │                  │
-   │                  └──1:n── Review
-   └──1:n── Project Rule
+   └──1:n── UI Evidence ──n:m── UI Pattern
+                 │                 │
+                 └──────┬──────────┘
+                        ↓
+Project UI Context ──1:n── UI Contract ──1:n── UI Review
+        │                     │
+        └──1:n── UI Rule ─────┘
 
-Resource ──1:n── Reference ──n:m── Pattern
+Evaluation Task ──1:n── Evaluation Run
 ```
 
-## Resource
+## Source
 
-**Purpose:** A directory-level source of design knowledge, assets, components, or inspiration, such as Mobbin, Material Design, or 21st.dev.
+**Purpose:** Describes where design knowledge or implementation capability lives.
 
-**Key fields:** `id`, `name`, `url`, `description`, `categories`, `accessModel`, `subscriptionRequirement`, `licenseNotes`, `sourceProvenance`, `verifiedAt`, `status`.
-
-**Relationships:** A Resource may provide many References. It does not itself represent a UI solution.
+**Key fields:** `id`, `name`, `homepage`, `sourceKind`, `integrationModes`, `accessModel`, `authType`, `trustTier`, `rightsPolicy`, `freshnessPolicy`, `status`, `lastVerifiedAt`.
 
 ```yaml
-id: res_21st_dev
-name: 21st.dev
-url: https://21st.dev
-categories: [ui-components]
-accessModel: freemium
-subscriptionRequirement: optional
-verifiedAt: 2026-07-19
+id: src_mobbin
+name: Mobbin
+sourceKind: reference-library
+integrationModes: [native_mcp, public_site]
+accessModel: paid
+authType: oauth
+trustTier: vendor-direct
+rightsPolicy: direct-user-entitlement-only
 status: active
 ```
 
-## Reference
+## Source Capability
 
-**Purpose:** A specific page, screen, section, flow, component, design-system rule, or user-owned screenshot that can support a decision.
+**Purpose:** Declares what a Source can actually do so the Skill can route before loading tools or results.
 
-**Key fields:** `id`, `resourceId`, `title`, `sourceUrl`, `referenceType`, `platform`, `productType`, `screenType`, `visualTags`, `contentTags`, `interactionTags`, `screenshotPath`, `attribution`, `usageRights`, `capturedAt`, `notes`.
-
-**Relationships:** Optionally belongs to a Resource; may illustrate many Patterns and be cited by many Design Decisions.
+**Key fields:** `id`, `sourceId`, `capability`, `inputTypes`, `outputTypes`, `platforms`, `costClass`, `mutability`, `requiresUserApproval`, `limits`, `schemaVersion`.
 
 ```yaml
-id: ref_upgrade_linear
-resourceId: res_public_web
-title: Contextual limit upgrade panel
-sourceUrl: https://example.com/source
-referenceType: screen
-platform: web
-screenType: billing-upgrade
-contentTags: [usage-limit, recommended-plan]
-usageRights: link-and-private-notes-only
+id: cap_mobbin_search
+sourceId: src_mobbin
+capability: search-ui-references
+inputTypes: [text-query, product-type, screen-type]
+outputTypes: [reference-summary, image]
+costClass: subscription
+mutability: read-only
 ```
 
-## Pattern
+## Source Adapter
 
-**Purpose:** A reusable design solution to a recurring product or interface problem. A Pattern describes reasoning and behavior; it is not a screenshot or component.
+**Purpose:** Implements a permitted integration mode for Sources that our system owns. Direct vendor MCPs are described, not wrapped, unless there is an explicit licensed integration.
 
-**Key fields:** `id`, `name`, `problem`, `whenToUse`, `whenNotToUse`, `requiredContent`, `recommendedComponents`, `interactionModel`, `responsiveBehavior`, `accessibilityNotes`, `commonFailures`, `tags`, `maturity`, `version`.
+**Key fields:** `id`, `adapterType`, `supportedSourceIds`, `transport`, `configSchema`, `outputSchema`, `ratePolicy`, `cachePolicy`, `rightsEnforcement`, `version`, `status`.
 
-**Relationships:** Supported by References; selected or rejected in Design Decisions.
+```yaml
+id: adapter_shadcn_registry_v1
+adapterType: structured-registry
+supportedSourceIds: [src_shadcn, src_approved_shadcn_registries]
+transport: https-json
+cachePolicy: metadata-and-user-requested-items
+rightsEnforcement: preserve-item-license-and-origin
+status: proposed
+```
+
+## UI Evidence
+
+**Purpose:** A bounded, citable observation or specific reference relevant to a design decision. Evidence is not automatically a recommendation.
+
+**Key fields:** `id`, `sourceId`, `sourceItemId`, `title`, `url`, `evidenceType`, `intentTags`, `screenTypes`, `platform`, `observations`, `visualAssetRef`, `attribution`, `rights`, `retrievedAt`, `expiresAt`, `confidence`.
+
+```yaml
+id: ev_contextual_upgrade_01
+sourceId: src_user_reference
+title: Upgrade panel shown at a usage limit
+evidenceType: product-screen
+intentTags: [upgrade, limit-reached, plan-selection]
+observations:
+  - Current usage appears before plan choices.
+  - The recommended plan is tied to the encountered limit.
+rights: private-user-reference
+confidence: observed
+```
+
+## UI Pattern
+
+**Purpose:** A reviewed, source-backed solution to a recurring UI/UX problem, including suitability conditions and failure modes.
+
+**Key fields:** `id`, `name`, `problem`, `userState`, `whenToUse`, `whenNotToUse`, `requiredContent`, `anatomy`, `interactionModel`, `responsiveRules`, `accessibilityRules`, `commonFailures`, `evidenceIds`, `reviewStatus`, `version`.
 
 ```yaml
 id: pat_contextual_upgrade
 name: Contextual upgrade
-problem: Explain a limit and help an active user choose the right paid path.
-whenToUse: [known current usage, user encountered a product limit]
-whenNotToUse: [anonymous marketing visitor, enterprise quote workflow]
-requiredContent: [current usage, exact limit, recommended plan, billing terms]
-responsiveBehavior: Stack plan choices and keep the primary action near context on narrow screens.
+problem: Help an active user understand a limit and choose the right paid path.
+userState: engaged-user-at-limit
+whenToUse: [current usage is known, one next plan is usually appropriate]
+whenNotToUse: [anonymous pricing research, enterprise quote negotiation]
+requiredContent: [current usage, exact limit, immediate benefit, billing terms]
+reviewStatus: reviewed
 ```
 
-## Project
+## Project UI Context
 
-**Purpose:** The durable workspace boundary for one product or codebase.
+**Purpose:** Compact, versioned project truth used by all UI tasks.
 
-**Key fields:** `id`, `name`, `slug`, `summary`, `repositoryPath`, `status`, `createdAt`, `updatedAt`, `archivedAt`.
-
-**Relationships:** Owns one current Project Context and many Screens, Packs, Reviews, Decisions, and Project Rules.
+**Key fields:** `id`, `projectId`, `productSummary`, `targetUsers`, `primaryJobs`, `brandTraits`, `designPrinciples`, `contentCharacteristics`, `technicalConstraints`, `accessibilityTarget`, `tokenSources`, `componentSources`, `routes`, `approvedReferences`, `rejectedDirections`, `openQuestions`, `sourceFiles`, `version`, `approvedAt`.
 
 ```yaml
-id: prj_scope_qr
-name: Scope QR
-slug: scope-qr
-summary: A focused utility for creating and managing branded QR codes.
-repositoryPath: E:/Boom-Bam/scope-qr
+id: ctx_design_library_v2
+projectId: design-library-preview
+productSummary: Agent-native UI intelligence plugin and source hub.
+targetUsers: [repo owner using Codex]
+designPrinciples: [evidence-first, repository-truth-first, compact-context]
+technicalConstraints: [portable skills, MCP-compatible, local-first]
+accessibilityTarget: WCAG 2.2 AA
+version: 2
+```
+
+## UI Rule
+
+**Purpose:** A human-approved, scoped constraint or preference that persists across tasks.
+
+**Key fields:** `id`, `projectId`, `scope`, `category`, `statement`, `strength`, `rationale`, `sourceDecisionId`, `status`, `version`.
+
+```yaml
+id: rule_no_generic_dashboard
+projectId: design-library-preview
+scope: product-wide
+category: product-direction
+statement: Do not optimize the resource dashboard as the primary product surface.
+strength: required
 status: active
 ```
 
-## Project Context
+## UI Contract
 
-**Purpose:** The normalized, reusable description of a project's users, jobs, brand, constraints, design system, and current assumptions.
+**Purpose:** The compact, approved plan a coding agent implements for one target route, component, state, or flow.
 
-**Key fields:** `id`, `projectId`, `schemaVersion`, `productSummary`, `targetUsers`, `primaryJobs`, `brandTraits`, `designPrinciples`, `technicalConstraints`, `contentConstraints`, `accessibilityTarget`, `tokens`, `componentInventory`, `assumptions`, `openQuestions`, `sourceInputs`, `version`, `approvedAt`.
-
-**Relationships:** Belongs to one Project; informs Screens, Decisions, Packs, retrieval, and Reviews. Version history should be retained.
+**Key fields:** `id`, `projectId`, `target`, `goal`, `userState`, `contextVersion`, `evidenceIds`, `selectedPatternIds`, `rationale`, `hierarchy`, `contentRequirements`, `layoutRules`, `componentMappings`, `tokenMappings`, `responsiveRules`, `requiredStates`, `interactionRules`, `motionRules`, `accessibilityRules`, `avoid`, `verificationCriteria`, `openQuestions`, `status`, `version`.
 
 ```yaml
-id: ctx_scope_qr_v1
-projectId: prj_scope_qr
-schemaVersion: 1
-targetUsers: [solo business owners, small marketing teams]
-primaryJobs: [create a branded QR code, verify destination, reuse saved styles]
-brandTraits: [direct, reliable, restrained]
-technicalConstraints: [responsive web, existing React components, no new UI library]
-accessibilityTarget: WCAG 2.2 AA
-openQuestions: [Should anonymous users be able to save drafts?]
-```
-
-## Screen
-
-**Purpose:** A bounded user-facing page, modal, or meaningful state that needs design decisions and verification.
-
-**Key fields:** `id`, `projectId`, `name`, `routeHint`, `goal`, `userState`, `primaryTask`, `requiredStates`, `platform`, `status`, `priority`.
-
-**Relationships:** Belongs to a Project; owns Decisions and Packs; is the target of Reviews.
-
-```yaml
-id: scr_qr_create
-projectId: prj_scope_qr
-name: Create QR code
-routeHint: /create
-goal: Let a first-time user create a trustworthy QR code without unnecessary setup.
-requiredStates: [empty, valid-preview, invalid-url, generating, saved]
-status: planned
-```
-
-## Design Decision
-
-**Purpose:** One explicit project-specific choice, its rationale, alternatives, constraints, and approval state.
-
-**Key fields:** `id`, `projectId`, `screenId`, `decisionType`, `title`, `selectedPatternId`, `rationale`, `alternatives`, `constraints`, `referenceIds`, `status`, `source`, `createdAt`, `supersedesId`.
-
-**Relationships:** Belongs to a Project and usually a Screen; may select a Pattern and cite References; may be included in one or more Packs.
-
-```yaml
-id: dec_qr_progressive_form
-screenId: scr_qr_create
-decisionType: interaction
-title: Reveal styling after a valid destination exists
-selectedPatternId: pat_progressive_disclosure
-rationale: The destination is required before visual customization creates value.
-alternatives: [show all controls immediately]
-status: approved
-```
-
-## Design Decision Pack
-
-**Purpose:** A versioned, compact implementation contract for one Screen, assembled from approved decisions and project context.
-
-**Key fields:** `id`, `projectId`, `screenId`, `schemaVersion`, `goal`, `contextVersion`, `hierarchy`, `layout`, `components`, `contentRequirements`, `responsiveRules`, `interactionRules`, `accessibilityRules`, `requiredStates`, `decisionIds`, `referenceIds`, `avoid`, `verificationCriteria`, `status`, `version`.
-
-**Relationships:** Belongs to a Screen and Project; contains or references Decisions; produces exports; is evaluated by Reviews.
-
-```yaml
-id: pack_qr_create_v1
-screenId: scr_qr_create
-schemaVersion: 1
-hierarchy: [destination input, live preview, styling controls, save or download action]
-responsiveRules:
-  desktop: Two columns with a persistent preview.
-  mobile: Input and controls precede the preview; no horizontal canvas overflow.
-requiredStates: [empty, valid-preview, invalid-url, generating, saved]
-status: approved
+id: contract_source_search_v1
+projectId: design-library-preview
+target: source-search-results
+goal: Let an agent retrieve a small relevant evidence set without loading the full catalog.
+hierarchy: [query interpretation, source provenance, evidence summary, relevance reason]
+requiredStates: [results, no-results, unavailable-source, authorization-required]
+avoid: [unbounded result dumps, hidden paid-source proxying]
+status: proposed
 version: 1
 ```
 
-## Review
+## UI Review
 
-**Purpose:** Evidence-based evaluation of a rendered Screen against a specific Pack and viewport/state matrix.
+**Purpose:** Evidence from comparing a rendered target with a specific UI Contract.
 
-**Key fields:** `id`, `projectId`, `screenId`, `packId`, `targetUrl`, `commitRef`, `viewports`, `statesChecked`, `screenshots`, `consoleErrors`, `networkErrors`, `accessibilityFindings`, `criteriaResults`, `findings`, `status`, `createdAt`.
-
-**Relationships:** Belongs to a Project, Screen, and exact Pack version. Findings may lead to new Decisions or Project Rules.
+**Key fields:** `id`, `contractId`, `targetUrl`, `repositoryRef`, `viewports`, `states`, `browserTool`, `screenshots`, `domEvidence`, `consoleFindings`, `networkFindings`, `accessibilityFindings`, `criteriaResults`, `visualFindings`, `status`, `createdAt`.
 
 ```yaml
-id: rev_qr_create_001
-packId: pack_qr_create_v1
-targetUrl: http://127.0.0.1:3000/create
+id: review_source_search_001
+contractId: contract_source_search_v1
 viewports: [390x844, 1440x1000]
 criteriaResults:
-  noHorizontalOverflow: pass
-  invalidUrlMessage: fail
+  sourceProvenanceVisible: pass
+  keyboardReachableFilters: pass
+  noHorizontalOverflow: fail
 status: changes-required
 ```
 
-## Project Rule
+## Evaluation Task
 
-**Purpose:** A persistent project-wide constraint or preference learned from approved decisions and explicit user input.
+**Purpose:** A repeatable frontend challenge used to measure whether one capability layer improves agent outcomes.
 
-**Key fields:** `id`, `projectId`, `category`, `statement`, `rationale`, `scope`, `priority`, `sourceDecisionId`, `status`, `createdAt`, `revisedAt`.
-
-**Relationships:** Belongs to a Project; constrains retrieval, pack creation, implementation guidance, and Reviews.
+**Key fields:** `id`, `category`, `repositoryFixture`, `brief`, `allowedSources`, `hiddenRequirements`, `requiredStates`, `viewports`, `rubric`, `baselinePolicy`, `version`.
 
 ```yaml
-id: rule_scope_motion
-projectId: prj_scope_qr
-category: motion
-statement: Use motion only for direct state feedback; avoid continuous decorative animation.
-scope: all-screens
-priority: required
-status: active
+id: eval_settings_empty_state
+category: existing-product-feature
+brief: Add an empty state for notification rules without changing the design system.
+requiredStates: [empty, first-rule-created, validation-error]
+viewports: [390x844, 1440x1000]
+version: 1
 ```
 
-## Important distinctions
+## Evaluation Run
 
-- A **Resource** is where knowledge can be found; a **Reference** is a specific item worth citing.
-- A **Reference** is evidence or inspiration; a **Pattern** is a generalized solution with conditions.
-- A **Project Context** describes enduring product constraints; a **Screen** bounds one design task.
-- A **Design Decision** records one choice; a **Pack** assembles the approved choices into an implementation contract.
-- A **Review** records observed implementation evidence; a **Project Rule** preserves durable learning for future work.
+**Purpose:** Records one agent/configuration attempt on an Evaluation Task.
+
+**Key fields:** `id`, `taskId`, `condition`, `model`, `agentVersion`, `enabledSkills`, `enabledSources`, `toolCalls`, `tokenUsage`, `elapsedTime`, `artifacts`, `automatedScores`, `humanScores`, `failures`, `createdAt`.
+
+```yaml
+id: run_settings_skill_sourcehub_01
+taskId: eval_settings_empty_state
+condition: skill-plus-source-hub
+enabledSkills: [ui-plan, ui-build, ui-review]
+enabledSources: [local-repo, storybook, source-hub]
+humanScores:
+  hierarchy: 4
+  projectFit: 5
+  visualCoherence: 4
+failures: []
+```
+
+## Provenance distinction
+
+- **Fact:** Directly read from repository, source metadata, or deterministic browser evidence.
+- **Observation:** Human/model description of visible evidence, carrying confidence and source.
+- **Recommendation:** Proposed pattern or design move based on facts and observations.
+- **Decision:** Approved/rejected project-specific choice.
+- **Rule:** Approved decision generalized to an explicit future scope.
+
+The system must not promote an observation or generated recommendation into a Rule automatically.
