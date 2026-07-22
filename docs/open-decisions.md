@@ -84,6 +84,14 @@
 
 **Blocks:** Any claim that `ui-plan` improves UI quality, efficiency, repository fit, or accessibility.
 
+### 2e. Post-repeat advancement
+
+**Decision:** Continue only after a small `ui-plan` revision for interactive-control semantics and all-required-breakpoint overflow checks; then bind one new task type.
+
+**Reason:** The repeat reproduced a task-specific mechanical and delegated-review advantage, but it did not provide human review, per-run tokens, or evidence across task types.
+
+**Blocks:** Broad claims, Tasks 1–5 as a batch, and all Source Hub/MCP work.
+
 ### 3. Skill autonomy
 
 **Options:** Always stop after UI Contract; plan-and-build when explicitly asked; fully autonomous plan/build/review.

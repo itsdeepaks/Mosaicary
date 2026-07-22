@@ -196,6 +196,10 @@ One paired implementation pilot completed on isolated worktrees. Both conditions
 
 The repeat harness is now defined to use archive-isolated builder copies from the pinned start commit, exact elapsed-time telemetry, explicit unavailable-token records, automated Playwright screenshots/overflow checks, deterministic CSV-load failure, axe-core evidence, randomized anonymous labels, Contract usefulness/adherence scoring, and a repair-evidence log. The first pilot's delegated anonymous review remains historical evidence only; a fresh repeat must complete before this program advances.
 
+### Task 06 repeat result — 22 July 2026
+
+The fresh repeat completed. The Skill-assisted condition passed all mechanical checks and won a sealed anonymous delegated review; the baseline exhausted two repair turns and retained a 768px overflow. This is promising task-specific evidence, not human-preference or token-efficiency proof. Revise the Skill's semantic-control and breakpoint-overflow checklist, then bind one new task type. Tracks C onward remain blocked.
+
 ## Decision log after each track
 
 Record:
