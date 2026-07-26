@@ -3,3 +3,5 @@ evaluation/test-results/
 evaluation/.cache/
 evaluation/evaluation/
 evaluation/scripts/__pycache__/
+
+.vercel
