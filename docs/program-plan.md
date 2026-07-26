@@ -200,6 +200,10 @@ The repeat harness is now defined to use archive-isolated builder copies from th
 
 The fresh repeat completed. The Skill-assisted condition passed all mechanical checks and won a sealed anonymous delegated review; the baseline exhausted two repair turns and retained a 768px overflow. This is promising task-specific evidence, not human-preference or token-efficiency proof. Revise the Skill's semantic-control and breakpoint-overflow checklist, then bind one new task type. Tracks C onward remain blocked.
 
+### Mosaicary manual-library release — 26 July 2026
+
+The static catalog is approved as a separate manual-use release named **Mosaicary**. It may be deployed publicly on Vercel with its local CSV, URL-state search, browser-local saves, and outbound links. Use observed discovery gaps to inform source-map research, but do not treat deployment as evidence for the agent workflow or as approval for a hosted workbench.
+
 ## Decision log after each track
 
 Record:

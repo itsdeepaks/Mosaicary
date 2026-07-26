@@ -92,6 +92,14 @@
 
 **Blocks:** Broad claims, Tasks 1–5 as a batch, and all Source Hub/MCP work.
 
+### 2f. Mosaicary static-library release
+
+**Decision:** Permit a narrow public static deployment of the curated resource index as **Mosaicary**.
+
+**Reason:** It creates an immediately useful manual research surface and can record qualitative discovery gaps without introducing accounts, remote persistence, scraping, or an agent-facing service.
+
+**Boundary:** This is not approval for the future UI Intelligence workbench, Source Hub MCP, shared platform, or any remote user data. Track C onward remains evidence-gated.
+
 ### 3. Skill autonomy
 
 **Options:** Always stop after UI Contract; plan-and-build when explicitly asked; fully autonomous plan/build/review.
