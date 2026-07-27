@@ -1,6 +1,6 @@
-# Mosaicary
+# Tessli
 
-Mosaicary is a static, searchable index of 295 curated resources for web and product-design work. It is a manual-use library, separate from the repository's longer-term `ui-intelligence` agent workflow research.
+Tessli is a static, searchable index of 295 curated resources for web and product-design work. It is a manual-use library, separate from the repository's longer-term `ui-intelligence` agent workflow research.
 
 ## What it does
 
@@ -8,8 +8,8 @@ Mosaicary is a static, searchable index of 295 curated resources for web and pro
 - Filter by category and access model; sort the results.
 - Keep a browser-local saved shortlist with no account or backend.
 - Preserve filters in the URL so a useful search can be shared or revisited.
-- Open every external resource in a new tab with `noopener noreferrer`.
-- Read the full Markdown reference list in the **Full reference** tab.
+- Open a resource by selecting anywhere on its card, with external links opening in a new tab.
+- Read the full Markdown reference in the **Full reference** tab.
 
 ## Local preview
 
@@ -21,7 +21,7 @@ Open `http://127.0.0.1:8000`.
 
 ## Data and limits
 
-`lib_data/design-resource-library-295.csv` is the release source of truth. It is manually curated metadata, not a guarantee that the destination site, pricing, access model, or license is still current. Mosaicary does not scrape, proxy, or redistribute content from destination sites.
+`lib_data/design-resource-library-295.csv` is the release source of truth. It is manually curated metadata, not a guarantee that the destination site, pricing, access model, or license is still current. Tessli does not scrape, proxy, or redistribute content from destination sites.
 
 ## Deployment
 
