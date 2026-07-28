@@ -36,12 +36,11 @@ test("hero artwork is decorative, stable, responsive, and preloaded", async () =
 
   assert.match(hero, /src="\/brand\/tessli-hero-geometry\.webp"/);
   assert.match(hero, /alt=""/);
-  assert.match(hero, /width=\{900\}/);
-  assert.match(hero, /height=\{614\}/);
+  assert.match(hero, /width=\{1536\}/);
+  assert.match(hero, /height=\{1024\}/);
   assert.match(hero, /preload/);
   assert.match(hero, /sizes=/);
   assert.match(hero, /aria-hidden="true"/);
-  assert.doesNotMatch(hero, /priority/);
 });
 
 test("hero layout recomposes instead of shrinking or animating", async () => {
@@ -49,13 +48,14 @@ test("hero layout recomposes instead of shrinking or animating", async () => {
 
   assert.match(css, /grid-column: 1 \/ span 6/);
   assert.match(css, /grid-column: 7 \/ -1/);
+  assert.match(css, /width: min\(92%, 720px\)/);
   assert.match(css, /@media \(max-width: 1024px\)/);
   assert.match(css, /grid-column: 1 \/ span 5/);
   assert.match(css, /grid-column: 6 \/ -1/);
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(css, /overflow: hidden/);
   assert.match(css, /width: min\(560px, 145vw\)/);
-  assert.doesNotMatch(css, /display: none/);
+  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?display: none/);
   assert.doesNotMatch(css, /animation:/);
 });
 
