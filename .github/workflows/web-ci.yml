@@ -18,7 +18,7 @@ on:
       - "build-slices.md"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -32,8 +32,10 @@ jobs:
       run:
         working-directory: web
     steps:
-      - name: Check out repository
+      - name: Check out pull request branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -41,37 +43,23 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        shell: bash
-        run: |
-          if [[ -f package-lock.json ]]; then
-            npm ci
-          else
-            npm install
-          fi
-
-      - name: Upload generated lockfile
-        if: ${{ hashFiles('web/package-lock.json') != '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-web-package-lock
-          path: web/package-lock.json
-          if-no-files-found: error
-          retention-days: 3
+        run: npm install
 
       - name: Format bootstrap workspace
         run: npm run format
 
-      - name: Create formatting patch
+      - name: Commit generated lockfile and formatting
         shell: bash
-        run: git diff -- . > prettier.patch
-
-      - name: Upload formatting patch
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-web-prettier-patch
-          path: web/prettier.patch
-          if-no-files-found: error
-          retention-days: 3
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json app/lab/page.tsx app/layout.tsx
+          if git diff --cached --quiet; then
+            echo "No bootstrap changes to commit."
+          else
+            git commit -m "chore(web): lock dependencies and format scaffold"
+            git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          fi
 
       - name: Check formatting
         run: npm run format:check
