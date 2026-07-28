@@ -122,8 +122,13 @@ async function closeTarget(targetId) {
 async function activateCardLink({ button, modifiers = 0 }) {
   const point = await evaluate(`(() => {
     const link = document.querySelector('[data-resource-slug="land-book"] a');
+    document.documentElement.style.scrollBehavior = 'auto';
+    link.scrollIntoView({ block: 'center' });
     const rect = link.getBoundingClientRect();
-    return { x: rect.left + rect.width / 2, y: rect.bottom - 34 };
+    return {
+      x: rect.left + Math.min(48, rect.width / 3),
+      y: rect.top + Math.min(rect.height - 48, rect.height * 0.75),
+    };
   })()`);
   const existingIds = new Set((await pageTargets()).map((target) => target.id));
 
