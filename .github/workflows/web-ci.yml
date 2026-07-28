@@ -99,7 +99,7 @@ jobs:
           test -n "$chrome_bin"
           mkdir -p artifacts/responsive-ui
 
-          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
+          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400" "320:1400"; do
             IFS=":" read -r width height <<< "$viewport"
 
             "$chrome_bin" \
