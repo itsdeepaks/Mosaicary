@@ -260,3 +260,151 @@ Convert all 295 CSV entries into typed, validated application data.
 - generated JSON or TypeScript data;
 - stable IDs and slugs;
 - 11 categories;
+- validation report for invalid URLs, missing descriptions, duplicate URLs/domains, and unknown access labels;
+- deterministic output test.
+
+### Acceptance criteria
+
+- exactly 295 source rows are accounted for;
+- no silent row loss;
+- schema validation passes;
+- generated output is deterministic;
+- source CSV remains traceable;
+- validation failures stop the build where appropriate.
+
+## 13. Slice 4.2 — Discovery controls and URL state
+
+### Scope
+
+- category rail;
+- access filters;
+- sorting;
+- All/Saved/Full Reference route navigation;
+- URL serialization and restoration;
+- mobile filter sheet.
+
+### Acceptance criteria
+
+- back/forward navigation works;
+- shared URLs restore state;
+- long category labels do not break layout;
+- controls are keyboard and touch complete.
+
+## 14. Slice 5.1 — Resource-card pilot
+
+### Pilot dataset
+
+Test at least 12 real entries covering:
+
+- good preview image;
+- favicon only;
+- no media;
+- transparent logo;
+- dark and light artwork;
+- long title;
+- long description;
+- free, freemium, paid, and open-source access;
+- failed external image;
+- duplicate-looking domains.
+
+### Acceptance criteria
+
+- whole card behaves as a native external link;
+- save button is independent and valid HTML;
+- modifier and middle click work;
+- no broken layout without images;
+- all fallback states are designed;
+- fixed media aspect prevents layout shift.
+
+## 15. Slice 5.2 — Explore composition
+
+### Scope
+
+- search/filter result integration;
+- responsive grid;
+- result count;
+- no-results and error states;
+- pagination or load-more decision;
+- footer integration.
+
+### Stop condition
+
+Do not proceed to Collections until the complete Explore page passes visual, accessibility, and responsive QA.
+
+## 16. Slices 6–9 — Phase 1 completion
+
+### Collections
+
+- repository-maintained collection data;
+- no fake curators or trends;
+- featured and compact card variants;
+- collection detail route.
+
+### Full Reference
+
+- dense desktop list/table;
+- filter sidebar;
+- tablet/mobile filter sheet;
+- compact mobile resource rows;
+- supporting curation information.
+
+### Saved
+
+- local storage with versioned key;
+- migration from Mosaicary/Tessli legacy keys;
+- empty state;
+- clear and undo;
+- privacy explanation.
+
+### Content and legal
+
+- About;
+- curation process;
+- privacy;
+- terms;
+- content, trademark, preview-image, and takedown policy.
+
+### Phase 1 release gate
+
+- all required routes complete;
+- all 295 resources validated;
+- no unfinished navigation;
+- full CI passes;
+- preview deployment reviewed;
+- visual QA at supported widths;
+- production cutover has rollback instructions.
+
+## 17. Slices 10–12 — Accounts and community
+
+These begin only after Phase 1 and required credentials are available.
+
+Requirements include:
+
+- Supabase SSR/cookie clients;
+- password, OTP, and Google auth;
+- Resend custom SMTP;
+- RLS-tested user schema;
+- cloud saves and collections;
+- local import;
+- submit/suggest/report workflows;
+- moderation state;
+- rate limiting, honeypot, URL normalization, and duplicate detection;
+- transactional confirmations.
+
+No service-role key may enter browser code or GitHub.
+
+## 18. Required evidence in every PR
+
+Each PR description or final comment includes:
+
+- exact acceptance criteria;
+- exclusions;
+- files changed;
+- focused test results;
+- full CI results;
+- browser viewports checked;
+- accessibility notes;
+- security notes when applicable;
+- complete-diff self-review findings and fixes;
+- intentional deviations;
+- confirmation that the branch started from current `main`.
