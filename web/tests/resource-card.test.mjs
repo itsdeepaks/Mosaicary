@@ -55,6 +55,8 @@ test("resource card geometry survives long copy and missing media", async () => 
 
   assert.match(css, /aspect-ratio: 16 \/ 10/);
   assert.match(css, /border-radius: 0/);
+  assert.match(css, /\.mediaImage\s*\{[\s\S]*?opacity: 1/);
+  assert.doesNotMatch(css, /\.mediaImage\s*\{[\s\S]*?opacity: 0/);
   assert.match(css, /-webkit-line-clamp: 2/);
   assert.match(css, /-webkit-line-clamp: 3/);
   assert.match(css, /min-width: 44px/);
