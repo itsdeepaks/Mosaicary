@@ -13,7 +13,7 @@ export default function ContentPolicyPage() {
       details={[
         "Remote SVG markup is never injected into the interface.",
         "Incorrect information, broken links, trademark concerns, and takedown requests require a reviewed correction path.",
-        "The complete content, trademark, and takedown policy is owned by Slice 9.1.",
+        "A complete content, trademark, correction, and takedown process will be published before launch.",
       ]}
     />
   );
