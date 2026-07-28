@@ -4,31 +4,44 @@ on:
   pull_request:
     paths:
       - "web/**"
+      - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
       - "schemas/catalogue.schema.json"
       - "docs/data-and-media-contract.md"
-      - "README.md"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
       - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "schemas/catalogue.schema.json"
+      - "docs/data-and-media-contract.md"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  bootstrap-catalogue:
-    if: github.head_ref == 'feat/catalogue-migration'
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
     defaults:
       run:
         working-directory: web
     steps:
-      - name: Check out catalogue branch
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: feat/catalogue-migration
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -40,106 +53,185 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Reconcile the researched after-trial source value
+      - name: Verify approved hero asset
         shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
+          test -s public/brand/tessli-hero-geometry.webp
+          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
 
-          replacements = {
-              Path("scripts/catalogue-lib.mjs"): [
-                  (
-                      '  ["Yes", "yes"],\n]);',
-                      '  ["Yes", "yes"],\n  ["After trial", "after-trial"],\n]);',
-                  ),
-                  (
-                      '  const subscriptionCounts = { no: 0, optional: 0, yes: 0 };',
-                      '  const subscriptionCounts = {\n    no: 0,\n    optional: 0,\n    yes: 0,\n    "after-trial": 0,\n  };',
-                  ),
-              ],
-              Path("../schemas/catalogue.schema.json"): [
-                  (
-                      '"enum": ["no", "optional", "yes"]',
-                      '"enum": ["no", "optional", "yes", "after-trial"]',
-                  ),
-              ],
-              Path("../docs/data-and-media-contract.md"): [
-                  (
-                      "subscriptionRequired: 'no' | 'optional' | 'yes'",
-                      "subscriptionRequired: 'no' | 'optional' | 'yes' | 'after-trial'",
-                  ),
-              ],
-              Path("tests/catalogue-migration.test.mjs"): [
-                  (
-                      '  assert.equal(report.summary.access["free-trial"], 1);',
-                      '  assert.equal(report.summary.access["free-trial"], 1);\n  assert.equal(report.summary.subscriptionRequired["after-trial"], 1);',
-                  ),
-              ],
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Check types
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Check catalogue drift
+        run: npm run catalogue:check
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test routes and capture responsive UI
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
+          server_pid=$!
+          search_chrome_pid=""
+
+          cleanup() {
+            if [ -n "$search_chrome_pid" ]; then
+              kill "$search_chrome_pid" 2>/dev/null || true
+            fi
+            kill "$server_pid" 2>/dev/null || true
           }
+          trap cleanup EXIT
 
-          for path, pairs in replacements.items():
-              text = path.read_text(encoding="utf-8")
-              for old, new in pairs:
-                  if new in text:
-                      continue
-                  count = text.count(old)
-                  if count != 1:
-                      raise SystemExit(
-                          f"Expected one source-contract occurrence in {path}: {old!r}; found {count}"
-                      )
-                  text = text.replace(old, new)
-              path.write_text(text, encoding="utf-8")
-          PY
+          curl --fail --silent --show-error \
+            --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/ > /tmp/tessli-home.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
 
-      - name: Generate deterministic catalogue
-        run: npm run catalogue:generate
+          grep -q "Find better design resources, faster" /tmp/tessli-home.html
+          grep -q "Search Tessli resources" /tmp/tessli-home.html
+          grep -q "Browser-local saves" /tmp/tessli-home.html
+          grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
+          grep -q "A warm, editorial system" /tmp/tessli-lab.html
+          grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
+          grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
 
-      - name: Upload validation diagnostics
+          shell_routes=(collections resources submit suggest about curation privacy terms content-policy)
+          for route in "${shell_routes[@]}"; do
+            curl --fail --silent --show-error \
+              "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
+            grep -q "What this route does today" "/tmp/tessli-$route.html"
+            grep -q "Return to Explore" "/tmp/tessli-$route.html"
+          done
+
+          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$chrome_bin"
+          mkdir -p artifacts/responsive-ui artifacts/search-browser
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-allow-origins=* \
+            --remote-debugging-port=9222 \
+            --user-data-dir=/tmp/tessli-search-cdp \
+            about:blank > artifacts/search-browser/chrome.log 2>&1 &
+          search_chrome_pid=$!
+          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
+          kill "$search_chrome_pid" 2>/dev/null || true
+          wait "$search_chrome_pid" 2>/dev/null || true
+          search_chrome_pid=""
+
+          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
+            IFS=":" read -r width height <<< "$viewport"
+            echo "Checking lab and Explore at ${width}px"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1800 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/lab \
+              > "artifacts/responsive-ui/lab-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/lab-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1800 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/ \
+              > "artifacts/responsive-ui/explore-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/explore-$width.html"
+            grep -q "Find better design resources, faster" \
+              "artifacts/responsive-ui/explore-$width.html"
+            grep -q 'data-search-state="empty"' \
+              "artifacts/responsive-ui/explore-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1800 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/explore-$width.png" \
+              http://127.0.0.1:3000/
+            test -s "artifacts/responsive-ui/explore-$width.png"
+          done
+
+          width=320
+          height=1400
+          echo "Checking Explore at ${width}px"
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=1800 \
+            --window-size="$width,$height" \
+            --dump-dom \
+            http://127.0.0.1:3000/ \
+            > "artifacts/responsive-ui/explore-$width.html"
+          grep -q 'data-horizontal-overflow="false"' \
+            "artifacts/responsive-ui/explore-$width.html"
+          grep -q "Find better design resources, faster" \
+            "artifacts/responsive-ui/explore-$width.html"
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=1800 \
+            --window-size="$width,$height" \
+            --screenshot="artifacts/responsive-ui/explore-$width.png" \
+            http://127.0.0.1:3000/
+          test -s "artifacts/responsive-ui/explore-$width.png"
+
+      - name: Upload search browser diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: tessli-catalogue-validation-diagnostic
-          path: web/data/catalogue-validation.json
+          name: tessli-search-browser-diagnostics
+          path: web/artifacts/search-browser/*
           if-no-files-found: warn
           retention-days: 2
 
-      - name: Apply repository formatter to migration files
-        run: >-
-          npx prettier --write
-          scripts/catalogue-lib.mjs
-          scripts/generate-catalogue.mjs
-          scripts/check-catalogue.mjs
-          tests/catalogue-migration.test.mjs
-          package.json
-          ../schemas/catalogue.schema.json
-          ../docs/data-and-media-contract.md
-          ../README.md
-
-      - name: Run focused catalogue tests
-        run: npm test
-
-      - name: Verify deterministic output
-        run: npm run catalogue:check
-
-      - name: Commit only approved migration output
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            data/catalogue.json \
-            data/catalogue-validation.json \
-            scripts/catalogue-lib.mjs \
-            scripts/generate-catalogue.mjs \
-            scripts/check-catalogue.mjs \
-            tests/catalogue-migration.test.mjs \
-            package.json \
-            ../schemas/catalogue.schema.json \
-            ../docs/data-and-media-contract.md \
-            ../README.md
-          if git diff --cached --quiet; then
-            echo "Catalogue and migration files are already current."
-          else
-            git commit -m "data: generate validated Tessli catalogue"
-            git push origin HEAD:feat/catalogue-migration
-          fi
+      - name: Upload responsive screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-responsive-ui-screenshots
+          path: web/artifacts/responsive-ui/*.png
+          if-no-files-found: warn
+          retention-days: 7
