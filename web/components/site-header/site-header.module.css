@@ -3,7 +3,8 @@
   top: 0;
   z-index: 50;
   min-height: 64px;
-  border-bottom: 1px solid color-mix(in srgb, var(--line-subtle) 84%, transparent);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--line-subtle) 84%, transparent);
   background: var(--canvas);
   transition:
     background var(--motion-fast) var(--ease-standard),
@@ -13,9 +14,8 @@
 
 .scrolled {
   border-bottom-color: var(--line);
-  background: color-mix(in srgb, var(--canvas) 94%, transparent);
+  background: color-mix(in srgb, var(--canvas) 98%, transparent);
   box-shadow: var(--shadow-xs);
-  backdrop-filter: blur(10px);
 }
 
 .inner {
@@ -109,8 +109,8 @@
 
 .sheetLayer {
   position: fixed;
-  inset: 64px 0 0;
-  z-index: 49;
+  inset: 0;
+  z-index: 60;
   display: none;
 }
 
@@ -160,6 +160,7 @@
 
 .mobileNavigation {
   display: grid;
+  overflow-y: auto;
   padding: var(--space-5);
 }
 
@@ -199,16 +200,16 @@
   .menuTrigger {
     display: inline-flex;
   }
-
-  .sheetLayer {
-    inset-block-start: 58px;
-  }
 }
 
 @media (max-width: 480px) {
   .sheet {
     width: 100%;
     border-left: 0;
+  }
+
+  .sheetHeader {
+    min-height: 58px;
   }
 }
 
