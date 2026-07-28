@@ -197,13 +197,16 @@ await waitFor(
 
 assert.equal(
   await evaluate(`(() => {
-    const paragraph = document.querySelector('[data-resource-slug="toools-design"] p');
+    const card = document.querySelector('[data-resource-slug="toools-design"]');
+    const paragraph = Array.from(card.querySelectorAll('p')).find(
+      (candidate) => candidate.textContent.trim().length > 80,
+    );
     const selection = window.getSelection();
     const range = document.createRange();
     range.selectNodeContents(paragraph);
     selection.removeAllRanges();
     selection.addRange(range);
-    return selection.toString().length > 30;
+    return selection.toString().length > 80;
   })()`),
   true,
   "Card text should remain selectable.",
