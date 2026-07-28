@@ -11,7 +11,9 @@ import {
   EXPECTED_ACCESS_COUNTS,
   parseCsv,
   REPORT_PATH,
+  SCHEMA_PATH,
   slugify,
+  validateCatalogueAgainstSchema,
 } from "../scripts/catalogue-lib.mjs";
 
 const currentFile = fileURLToPath(import.meta.url);
@@ -118,6 +120,34 @@ test("catalogue and validation output are deterministic", async () => {
   assert.equal(first.catalogueText, second.catalogueText);
   assert.equal(first.reportText, second.reportText);
   assert.match(first.catalogue.source.sha256, /^[a-f0-9]{64}$/);
+});
+
+test("schema shape accepts defined optional properties and rejects unknown keys", async () => {
+  const { catalogue } = await catalogueBuild();
+  const schema = JSON.parse(
+    await readFile(path.join(repoRoot, SCHEMA_PATH), "utf8"),
+  );
+  const withOptionalFields = structuredClone(catalogue);
+  withOptionalFields.generatedAt = "2026-07-28T00:00:00.000Z";
+  withOptionalFields.resources[0].faviconUrl =
+    "https://designindex.xyz/favicon.ico";
+  withOptionalFields.resources[0].previewImageUrl =
+    "https://designindex.xyz/preview.webp";
+  withOptionalFields.resources[0].previewSource = "manual";
+  withOptionalFields.resources[0].lastVerifiedAt = "2026-07-28";
+
+  assert.deepEqual(
+    validateCatalogueAgainstSchema(withOptionalFields, schema),
+    [],
+  );
+
+  withOptionalFields.resources[0].unsupportedField = true;
+  assert.equal(
+    validateCatalogueAgainstSchema(withOptionalFields, schema).some((message) =>
+      message.includes("unexpected keys: unsupportedField"),
+    ),
+    true,
+  );
 });
 
 test("committed catalogue data matches deterministic migration output", async () => {

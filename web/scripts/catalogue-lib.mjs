@@ -255,13 +255,23 @@ function compareHeaders(actual) {
   );
 }
 
-function exactKeys(value, allowedKeys) {
-  const keys = Object.keys(value).sort();
-  const expected = [...allowedKeys].sort();
-  return (
-    keys.length === expected.length &&
-    keys.every((key, index) => key === expected[index])
+function objectShapeErrors(value, requiredKeys, allowedKeys, label) {
+  const missingKeys = requiredKeys.filter((key) => !Object.hasOwn(value, key));
+  const unexpectedKeys = Object.keys(value).filter(
+    (key) => !allowedKeys.includes(key),
   );
+  const errors = [];
+
+  if (missingKeys.length > 0) {
+    errors.push(
+      `${label} is missing required keys: ${missingKeys.join(", ")}.`,
+    );
+  }
+  if (unexpectedKeys.length > 0) {
+    errors.push(`${label} has unexpected keys: ${unexpectedKeys.join(", ")}.`);
+  }
+
+  return errors;
 }
 
 export function validateCatalogueAgainstSchema(catalogue, schema) {
@@ -279,11 +289,14 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
     errors.push("Catalogue version does not match the schema constant.");
   }
 
-  if (!exactKeys(catalogue, schema.required)) {
-    errors.push(
-      "Catalogue top-level keys do not match the deterministic schema contract.",
-    );
-  }
+  errors.push(
+    ...objectShapeErrors(
+      catalogue,
+      schema.required,
+      Object.keys(schema.properties),
+      "Catalogue",
+    ),
+  );
 
   if (catalogue.source.path !== SOURCE_PATH) {
     errors.push("Catalogue source path is not the approved CSV path.");
@@ -309,11 +322,14 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
 
   const categoryIds = new Set();
   for (const category of catalogue.categories) {
-    if (!exactKeys(category, categorySchema.required)) {
-      errors.push(
-        `Category ${category.id ?? "<unknown>"} has unexpected keys.`,
-      );
-    }
+    errors.push(
+      ...objectShapeErrors(
+        category,
+        categorySchema.required,
+        Object.keys(categorySchema.properties),
+        `Category ${category.id ?? "<unknown>"}`,
+      ),
+    );
     if (!identifierPattern.test(category.id)) {
       errors.push(`Category identifier is invalid: ${category.id}`);
     }
@@ -337,11 +353,14 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
   const ids = new Set();
   const slugs = new Set();
   for (const resource of catalogue.resources) {
-    if (!exactKeys(resource, resourceSchema.required)) {
-      errors.push(
-        `Resource ${resource.id ?? "<unknown>"} has unexpected keys.`,
-      );
-    }
+    errors.push(
+      ...objectShapeErrors(
+        resource,
+        resourceSchema.required,
+        Object.keys(resourceSchema.properties),
+        `Resource ${resource.id ?? "<unknown>"}`,
+      ),
+    );
     if (!identifierPattern.test(resource.id)) {
       errors.push(`Resource identifier is invalid: ${resource.id}`);
     }
