@@ -184,9 +184,7 @@ assert.equal(
   "Search shortcuts must not move focus behind an open modal.",
 );
 
-await evaluate(
-  'document.querySelector("[data-access-filter=paid]")?.click()',
-);
+await evaluate('document.querySelector("[data-access-filter=paid]")?.click()');
 await waitFor(
   `${urlParameter("access")} === "free,paid,open-source"`,
   "stable multi-access ordering",
@@ -260,10 +258,7 @@ const routeHrefs = await evaluate(`Object.fromEntries(
 )`);
 assert.equal(routeHrefs.all, "/?q=type&sort=name-desc");
 assert.equal(routeHrefs.saved, "/saved?q=type&sort=name-desc");
-assert.equal(
-  routeHrefs["full-reference"],
-  "/resources?q=type&sort=name-desc",
-);
+assert.equal(routeHrefs["full-reference"], "/resources?q=type&sort=name-desc");
 
 await navigate("/?category=not-real&access=free,bogus&sort=not-real");
 assert.equal(
@@ -294,7 +289,7 @@ assert.deepEqual(
   ).map((input) => input.getAttribute('data-access-filter'))`),
   ["free"],
 );
-await evaluate('document.querySelector("[aria-label=\"Close filters\"]")?.click()');
+await evaluate(`document.querySelector('[aria-label="Close filters"]')?.click()`);
 await waitFor(
   'document.querySelector("[data-filter-dialog]")?.open === false',
   "fallback dialog close",
