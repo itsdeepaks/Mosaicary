@@ -24,7 +24,9 @@ export default function DesignFoundationLabPage() {
       <header className={styles.topbar}>
         <div className={`tessli-container ${styles.topbarInner}`}>
           <span className={styles.wordmark}>Tessli</span>
-          <span className={styles.topbarMeta}>Design foundation · Slice 1.2</span>
+          <span className={styles.topbarMeta}>
+            Design foundation · Slice 1.2
+          </span>
           <GrainToggle />
         </div>
       </header>
@@ -86,7 +88,9 @@ export default function DesignFoundationLabPage() {
                 </p>
                 <p className={styles.typeNumerals}>295 · 11 · 2026 · 01—09</p>
               </article>
-              <article className={`${styles.typePanel} ${styles.interfacePanel}`}>
+              <article
+                className={`${styles.typePanel} ${styles.interfacePanel}`}
+              >
                 <p className={styles.panelLabel}>Instrument Sans Variable</p>
                 <h3 className={styles.interfaceTitle}>
                   Clear interface typography should disappear into the task.
@@ -95,7 +99,10 @@ export default function DesignFoundationLabPage() {
                   Search, filters, card metadata, forms, tables, and account
                   surfaces use a neutral but recognisable sans-serif rhythm.
                 </p>
-                <div className={styles.typeScale} aria-label="Interface type scale">
+                <div
+                  className={styles.typeScale}
+                  aria-label="Interface type scale"
+                >
                   <span>20px · Strong interface heading</span>
                   <span>16px · Standard body and form text</span>
                   <span>14px · Metadata, buttons, and navigation</span>
@@ -141,9 +148,9 @@ export default function DesignFoundationLabPage() {
                 A grid that recomposes instead of shrinking.
               </h2>
               <p>
-                Tessli uses twelve columns on desktop, eight on tablet, and
-                four on mobile. Content owns space intentionally and never
-                relies on oversized rounded wrappers.
+                Tessli uses twelve columns on desktop, eight on tablet, and four
+                on mobile. Content owns space intentionally and never relies on
+                oversized rounded wrappers.
               </p>
             </div>
             <div className={`tessli-grid ${styles.layoutGrid}`}>
@@ -195,13 +202,22 @@ export default function DesignFoundationLabPage() {
               <article className={`tessli-panel ${styles.componentPanel}`}>
                 <p className={styles.panelLabel}>Buttons</p>
                 <div className={styles.buttonRow}>
-                  <button className={`${styles.button} ${styles.buttonPrimary}`} type="button">
+                  <button
+                    className={`${styles.button} ${styles.buttonPrimary}`}
+                    type="button"
+                  >
                     Primary action
                   </button>
-                  <button className={`${styles.button} ${styles.buttonSecondary}`} type="button">
+                  <button
+                    className={`${styles.button} ${styles.buttonSecondary}`}
+                    type="button"
+                  >
                     Secondary
                   </button>
-                  <button className={`${styles.button} ${styles.buttonQuiet}`} type="button">
+                  <button
+                    className={`${styles.button} ${styles.buttonQuiet}`}
+                    type="button"
+                  >
                     Quiet action
                   </button>
                 </div>
@@ -210,13 +226,18 @@ export default function DesignFoundationLabPage() {
                 <p className={styles.panelLabel}>Search field</p>
                 <label className={`tessli-control ${styles.field}`}>
                   <span aria-hidden="true">⌕</span>
-                  <input aria-label="Example resource search" placeholder="Search resources" />
+                  <input
+                    aria-label="Example resource search"
+                    placeholder="Search resources"
+                  />
                 </label>
               </article>
               <article className={`tessli-panel ${styles.componentPanel}`}>
                 <p className={styles.panelLabel}>Tags and selection</p>
                 <div className={styles.tagRow}>
-                  <span className={`${styles.tag} ${styles.tagActive}`}>All resources</span>
+                  <span className={`${styles.tag} ${styles.tagActive}`}>
+                    All resources
+                  </span>
                   <span className={styles.tag}>Typography</span>
                   <span className={styles.tag}>Motion</span>
                   <span className={styles.tag}>Open source</span>
@@ -231,7 +252,9 @@ export default function DesignFoundationLabPage() {
               </div>
               <div className={styles.rule}>
                 <span>Buttons and inputs</span>
-                <strong>4–7px radius · visible focus · 42px minimum height</strong>
+                <strong>
+                  4–7px radius · visible focus · 42px minimum height
+                </strong>
               </div>
               <div className={styles.rule}>
                 <span>Menus and sheets</span>
@@ -239,7 +262,9 @@ export default function DesignFoundationLabPage() {
               </div>
               <div className={styles.rule}>
                 <span>Avatars and true pills</span>
-                <strong>Circular only when the shape has semantic meaning</strong>
+                <strong>
+                  Circular only when the shape has semantic meaning
+                </strong>
               </div>
             </div>
           </div>
@@ -248,7 +273,8 @@ export default function DesignFoundationLabPage() {
 
       <footer className={styles.footer}>
         <div className="tessli-container">
-          Tessli design foundation · Product pages begin only after this lab is approved.
+          Tessli design foundation · Product pages begin only after this lab is
+          approved.
         </div>
       </footer>
     </div>
