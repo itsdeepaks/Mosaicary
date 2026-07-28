@@ -52,6 +52,8 @@ test("Explore state preserves Next history and restores popstate", async () => {
   assert.match(experience, /parseDiscoveryState\(/);
   assert.match(experience, /writeHistory\(nextState, "replaceState"\)/);
   assert.match(experience, /discoveryAccessValues\.filter/);
+  assert.match(experience, /setVisibleCount\(explorePageSize\)/);
+  assert.match(experience, /deriveExploreResults\(/);
   assert.doesNotMatch(experience, /fetch\(|localStorage|sessionStorage/);
 });
 
@@ -100,27 +102,31 @@ test("discovery controls remain sharp, scroll-safe, and touch complete", async (
   assert.doesNotMatch(css, /border-radius: 1[2-9]px|backdrop-filter/);
 });
 
-test("Explore page derives option counts from validated catalogue data only", async () => {
+test("Explore page passes the validated catalogue into the integrated experience", async () => {
   const page = await read("app/page.tsx");
 
   assert.match(page, /import catalogue from "@\/data\/catalogue\.json"/);
-  assert.match(page, /catalogue\.resources/);
+  assert.match(page, /catalogue\.resources\.map/);
   assert.match(page, /catalogue\.categories\.map/);
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<ExploreExperience/);
-  assert.doesNotMatch(page, /ResourceCard|resource-grid|fetch\(/i);
+  assert.match(page, /resources=\{resources\}/);
+  assert.doesNotMatch(page, /fetch\(|previewImageUrl|faviconUrl/);
 });
 
-test("search supports controlled URL state without losing standalone mode", async () => {
-  const search = await read("components/explore-search/explore-search.tsx");
+test("search supports controlled URL state and live result counts", async () => {
+  const [search, hero] = await Promise.all([
+    read("components/explore-search/explore-search.tsx"),
+    read("components/explore-hero/explore-hero.tsx"),
+  ]);
 
   assert.match(search, /value\?: string/);
   assert.match(search, /onValueChange\?: \(query: string\) => void/);
+  assert.match(search, /resultCount\?: number/);
   assert.match(search, /const query = value \?\? uncontrolledQuery/);
-  assert.match(search, /if \(value === undefined\)/);
   assert.match(search, /onValueChange\?\.\(nextQuery\)/);
   assert.match(search, /element instanceof HTMLDialogElement/);
-  assert.match(search, /return element\.open/);
+  assert.match(hero, /resultCount=\{resultCount\}/);
 });
 
 test("Saved and Full Reference links land on honest route shells", async () => {
