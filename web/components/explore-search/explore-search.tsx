@@ -21,6 +21,16 @@ function isEditableTarget(target: EventTarget | null) {
   );
 }
 
+function isOpenModal(element: HTMLElement | null) {
+  if (!element) {
+    return false;
+  }
+  if (element instanceof HTMLDialogElement) {
+    return element.open;
+  }
+  return !element.closest("[hidden]");
+}
+
 function SearchIcon() {
   return (
     <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
@@ -63,7 +73,7 @@ export function ExploreSearch({
   useEffect(() => {
     const handleGlobalShortcut = (event: KeyboardEvent) => {
       const modal = document.querySelector<HTMLElement>('[aria-modal="true"]');
-      const modalIsOpen = Boolean(modal && !modal.closest("[hidden]"));
+      const modalIsOpen = isOpenModal(modal);
       const targetIsEditable = isEditableTarget(event.target);
       const commandShortcut =
         (event.metaKey || event.ctrlKey) &&
