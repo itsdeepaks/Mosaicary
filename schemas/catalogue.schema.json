@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tessli:schema:catalogue:v1",
+  "title": "Tessli Catalogue",
+  "description": "Phase 1 repository-managed catalogue, category, and curated collection contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "source", "resources", "categories", "collections"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "rowCount"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "rowCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional build metadata. Omit from deterministic committed catalogue output."
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/resource"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {
+        "$ref": "#/$defs/category"
+      }
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/collection"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "absoluteHttpUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "url",
+        "domain",
+        "description",
+        "category",
+        "access",
+        "subscriptionRequired",
+        "usefulFor",
+        "tags",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "slug": {
+          "$ref": "#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "url": {
+          "$ref": "#/$defs/absoluteHttpUrl"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 253,
+          "pattern": "^[A-Za-z0-9.-]+$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "category": {
+          "$ref": "#/$defs/identifier"
+        },
+        "access": {
+          "type": "string",
+          "enum": ["free", "freemium", "paid", "open-source"]
+        },
+        "subscriptionRequired": {
+          "type": "string",
+          "enum": ["no", "optional", "yes"]
+        },
+        "usefulFor": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "uniqueItems": true
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "uniqueItems": true
+        },
+        "faviconUrl": {
+          "$ref": "#/$defs/absoluteHttpUrl"
+        },
+        "previewImageUrl": {
+          "$ref": "#/$defs/absoluteHttpUrl"
+        },
+        "previewSource": {
+          "type": "string",
+          "enum": ["manual", "open-graph", "favicon", "generated"]
+        },
+        "lastVerifiedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "needs-review", "unavailable"]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["previewImageUrl"]
+          },
+          "then": {
+            "required": ["previewSource"]
+          }
+        }
+      ]
+    },
+    "category": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "shortLabel", "description", "icon", "order"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "shortLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "icon": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "slug",
+        "title",
+        "description",
+        "resourceIds",
+        "coverStyle",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "slug": {
+          "$ref": "#/$defs/identifier"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "resourceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "uniqueItems": true
+        },
+        "coverStyle": {
+          "type": "string",
+          "enum": ["editorial", "typography", "motion", "systems"]
+        },
+        "curator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "profileUrl": {
+              "$ref": "#/$defs/absoluteHttpUrl"
+            }
+          }
+        },
+        "lastReviewedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published", "archived"]
+        }
+      }
+    }
+  }
+}

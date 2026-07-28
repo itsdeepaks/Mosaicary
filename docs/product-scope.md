@@ -1,7 +1,7 @@
 # Tessli Product Scope and Decisions
 
 Status: pre-development  
-Repository currently: `itsdeepaks/Mosaicary`  
+Repository: `itsdeepaks/tessli`  
 Product name: **Tessli**
 
 ## 1. Product promise
