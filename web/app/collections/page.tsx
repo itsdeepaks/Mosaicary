@@ -12,8 +12,8 @@ export default function CollectionsPage() {
       summary="Tessli collections will group useful resources around practical design and frontend tasks without inventing trends, curators, or popularity signals."
       details={[
         "Launch collection data will remain version-controlled in the repository.",
-        "Collection schemas and reviewed launch data are owned by Slice 6.1.",
-        "The complete collection browsing experience is owned by Slice 6.2.",
+        "Initial collections will focus on practical workflows and reviewed source data.",
+        "The complete browsing experience will replace this preview before public launch.",
       ]}
     />
   );
