@@ -7,9 +7,9 @@ export type NavigationItem = Readonly<{
 
 export const navigationItems: readonly NavigationItem[] = [
   { label: "Explore", href: "/", available: true, exact: true },
-  { label: "Collections", href: "/collections", available: false },
-  { label: "Resources", href: "/resources", available: false },
-  { label: "About", href: "/about", available: false },
+  { label: "Collections", href: "/collections", available: true },
+  { label: "Resources", href: "/resources", available: true },
+  { label: "About", href: "/about", available: true },
   { label: "Saved", href: "/saved", available: false },
 ] as const;
 
