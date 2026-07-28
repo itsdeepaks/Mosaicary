@@ -31,7 +31,9 @@ export function ResourceCardLab({ cases }: ResourceCardLabProps) {
   const [announcement, setAnnouncement] = useState("");
 
   const updateSaved = (resourceId: string, saved: boolean) => {
-    const resource = cases.find((item) => item.resource.id === resourceId)?.resource;
+    const resource = cases.find(
+      (item) => item.resource.id === resourceId,
+    )?.resource;
 
     setSavedIds((current) => {
       const next = new Set(current);
@@ -54,7 +56,11 @@ export function ResourceCardLab({ cases }: ResourceCardLabProps) {
 
   return (
     <>
-      <p aria-atomic="true" aria-live="polite" className={styles.visuallyHidden}>
+      <p
+        aria-atomic="true"
+        aria-live="polite"
+        className={styles.visuallyHidden}
+      >
         {announcement}
       </p>
       <ul className={styles.grid} data-resource-card-pilot>
