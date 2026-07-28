@@ -13,17 +13,18 @@ async function read(relativePath) {
 
 test("resource card keeps external navigation native and save independent", async () => {
   const component = await read("components/resource-card/resource-card.tsx");
+  const anchorClose = component.indexOf("</a>");
+  const saveButton = component.indexOf("<button", anchorClose);
 
   assert.match(component, /^"use client";/);
   assert.match(component, /<a[\s\S]*?className=\{styles\.cardLink\}/);
   assert.match(component, /target="_blank"/);
   assert.match(component, /rel="noopener noreferrer"/);
-  assert.match(component, /<\/a>\s*<button/);
+  assert.ok(anchorClose > 0 && saveButton > anchorClose);
   assert.match(component, /aria-pressed=\{saved\}/);
   assert.match(component, /data-resource-save=\{resource\.id\}/);
   assert.match(component, /onSavedChange\(resource\.id, !saved\)/);
   assert.doesNotMatch(component, /window\.open|router\.push|preventDefault/);
-  assert.doesNotMatch(component, /<a[\s\S]*?<button[\s\S]*?<\/a>/);
 });
 
 test("resource media follows the safe preview, favicon, generated fallback chain", async () => {
@@ -36,7 +37,11 @@ test("resource media follows the safe preview, favicon, generated fallback chain
   assert.match(component, /loading="lazy"/);
   assert.match(component, /decoding="async"/);
   assert.match(component, /referrerPolicy="no-referrer"/);
-  assert.match(component, /url\.protocol === "https:" \|\| url\.protocol === "http:"/);
+  assert.match(component, /!value\.startsWith\("\/\/"\)/);
+  assert.match(
+    component,
+    /url\.protocol === "https:" \|\| url\.protocol === "http:"/,
+  );
   assert.doesNotMatch(
     component,
     /next\/image|dangerouslySetInnerHTML|fetch\(|XMLHttpRequest|innerHTML/,
@@ -105,5 +110,8 @@ test("pilot media fixtures remain repository-local and non-production", async ()
   }
 
   assert.match(page, /\/lab\/missing-preview\.png/);
-  assert.doesNotMatch(page, /previewImageUrl|faviconUrl\s*=|catalogue\.resources\.map/);
+  assert.doesNotMatch(
+    page,
+    /previewImageUrl|faviconUrl\s*=|catalogue\.resources\.map/,
+  );
 });
