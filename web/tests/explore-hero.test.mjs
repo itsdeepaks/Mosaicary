@@ -36,9 +36,10 @@ test("hero artwork is decorative, stable, responsive, and preloaded", async () =
 
   assert.match(hero, /src="\/brand\/tessli-hero-geometry\.webp"/);
   assert.match(hero, /alt=""/);
-  assert.match(hero, /width=\{1536\}/);
-  assert.match(hero, /height=\{1024\}/);
+  assert.match(hero, /width=\{900\}/);
+  assert.match(hero, /height=\{614\}/);
   assert.match(hero, /preload/);
+  assert.match(hero, /unoptimized/);
   assert.match(hero, /sizes=/);
   assert.match(hero, /aria-hidden="true"/);
 });
