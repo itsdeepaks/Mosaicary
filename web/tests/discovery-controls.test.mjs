@@ -12,9 +12,7 @@ async function read(relativePath) {
 }
 
 test("discovery URL state has one stable, allowlisted contract", async () => {
-  const state = await read(
-    "components/explore-discovery/discovery-state.ts",
-  );
+  const state = await read("components/explore-discovery/discovery-state.ts");
 
   for (const parameter of ["q", "category", "access", "sort"]) {
     assert.match(state, new RegExp(`"${parameter}"`));
@@ -65,7 +63,9 @@ test("controls use route links, category buttons, validated access, and native d
   assert.match(controls, /aria-label="Browse resources by category"/);
   assert.match(controls, /aria-pressed=\{state\.category === null\}/);
   assert.match(controls, /data-category=\{category\.id\}/);
-  assert.match(controls, /scrollIntoView/);
+  assert.match(controls, /categoryScrollerRef/);
+  assert.match(controls, /scroller\.scrollTo/);
+  assert.doesNotMatch(controls, /scrollIntoView/);
   assert.match(controls, /data-resource-view="all"/);
   assert.match(controls, /data-resource-view="saved"/);
   assert.match(controls, /data-resource-view="full-reference"/);
