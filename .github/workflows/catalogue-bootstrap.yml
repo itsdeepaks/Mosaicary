@@ -1,0 +1,64 @@
+name: Catalogue Bootstrap
+
+on:
+  push:
+    branches: [feat/catalogue-migration]
+    paths:
+      - "web/scripts/**"
+      - "web/tests/catalogue-migration.test.mjs"
+      - "web/package.json"
+      - "schemas/catalogue.schema.json"
+      - "lib_data/design-resource-library-295.csv"
+      - ".github/workflows/catalogue-bootstrap.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalogue-bootstrap-feat-catalogue-migration
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out catalogue branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/catalogue-migration
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Generate deterministic catalogue
+        run: npm run catalogue:generate
+
+      - name: Run catalogue and repository tests
+        run: npm test
+
+      - name: Verify committed catalogue output
+        run: npm run catalogue:check
+
+      - name: Commit generated catalogue only
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/catalogue.json data/catalogue-validation.json
+          if git diff --cached --quiet; then
+            echo "Generated catalogue is already current."
+          else
+            git commit -m "data: generate validated Tessli catalogue"
+            git push origin HEAD:feat/catalogue-migration
+          fi
