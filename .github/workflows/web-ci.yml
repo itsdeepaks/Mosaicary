@@ -59,24 +59,6 @@ jobs:
           test -s public/brand/tessli-hero-geometry.webp
           echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
 
-      - name: Format changed workspace for review
-        run: npm run format
-
-      - name: Save formatter patch
-        shell: bash
-        run: |
-          mkdir -p artifacts/formatter
-          git diff -- . > artifacts/formatter/prettier.patch
-          test -s artifacts/formatter/prettier.patch
-
-      - name: Upload formatter patch
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-prettier-patch
-          path: web/artifacts/formatter/prettier.patch
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Check formatting
         run: npm run format:check
 
