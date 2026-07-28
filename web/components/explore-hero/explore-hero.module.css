@@ -125,7 +125,12 @@
   }
 
   .artwork {
-    display: none;
+    height: 220px;
+    margin-top: var(--space-6);
+  }
+
+  .image {
+    width: 520px;
   }
 }
 
