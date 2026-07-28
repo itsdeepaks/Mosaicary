@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+import { ExploreFacts } from "@/components/explore-facts/explore-facts";
+import { ExploreSearch } from "@/components/explore-search/explore-search";
+
 import styles from "./explore-hero.module.css";
 
 export function ExploreHero() {
@@ -14,6 +17,8 @@ export function ExploreHero() {
             resources, organised to help designers and developers find stronger
             references without another noisy feed.
           </p>
+          <ExploreSearch />
+          <ExploreFacts />
         </div>
 
         <div className={styles.artwork} aria-hidden="true">
