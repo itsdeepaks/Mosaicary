@@ -35,8 +35,9 @@ test("package scripts and runtime constraints are present", async () => {
 test("App Router root layout owns html and body", async () => {
   const layout = await read("app/layout.tsx");
 
-  assert.match(layout, /<html lang="en">/);
-  assert.match(layout, /<body>\{children\}<\/body>/);
+  assert.match(layout, /<html lang="en"/);
+  assert.match(layout, /<body className=/);
+  assert.match(layout, /\{children\}/);
   assert.match(layout, /import "\.\/globals\.css"/);
 });
 
