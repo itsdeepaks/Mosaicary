@@ -132,8 +132,7 @@ function buildPilotCase(spec: FixtureSpec): ResourceCardPilotCase {
     usefulFor: source.usefulFor,
     tags: source.tags,
     status:
-      spec.statusOverride ??
-      (source.status as ResourceCardData["status"]),
+      spec.statusOverride ?? (source.status as ResourceCardData["status"]),
   };
 
   return {
