@@ -22,7 +22,7 @@ export function ExploreHero() {
             className={styles.image}
             height={614}
             preload
-            sizes="(max-width: 389px) 0px, (max-width: 720px) 145vw, (max-width: 1024px) 44vw, 46vw"
+            sizes="(max-width: 720px) 145vw, (max-width: 1024px) 44vw, 46vw"
             src="/brand/tessli-hero-geometry.webp"
             unoptimized
             width={900}
