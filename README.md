@@ -32,7 +32,7 @@ The replacement application lives in `web/`. Slice 1.1 establishes only the fram
 
 ```powershell
 cd web
-npm install
+npm ci
 npm run dev
 ```
 
@@ -47,8 +47,6 @@ npm run lint
 npm test
 npm run build
 ```
-
-The committed lockfile is generated and verified through the first Web CI run. After it is committed, use `npm ci` for clean installs.
 
 ## Data source
 
