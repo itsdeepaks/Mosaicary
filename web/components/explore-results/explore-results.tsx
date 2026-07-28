@@ -45,7 +45,9 @@ export function ExploreResults({
       >
         <div className={`tessli-container ${styles.statePanel}`}>
           <p className={styles.eyebrow}>Catalogue unavailable</p>
-          <h2 id="explore-results-title">The resource list could not be prepared.</h2>
+          <h2 id="explore-results-title">
+            The resource list could not be prepared.
+          </h2>
           <p>
             Tessli has not changed your filters. Reload Explore to retry the
             validated local catalogue.
@@ -73,7 +75,9 @@ export function ExploreResults({
       >
         <div className={`tessli-container ${styles.statePanel}`}>
           <p className={styles.eyebrow}>No matches</p>
-          <h2 id="explore-results-title">Try a broader route through the catalogue.</h2>
+          <h2 id="explore-results-title">
+            Try a broader route through the catalogue.
+          </h2>
           <p>
             Remove the search query or selected category and access filters to
             bring more resources back into view.
