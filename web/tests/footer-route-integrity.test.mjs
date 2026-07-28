@@ -48,9 +48,10 @@ test("footer contains only truthful launch groups and safe external links", asyn
 
   assert.match(footer, /target="_blank"/);
   assert.match(footer, /rel="noopener noreferrer"/);
+  assert.match(footer, /public repository does not itself grant reuse rights/i);
   assert.doesNotMatch(
     `${navigation}\n${footer}`,
-    /newsletter|instagram|twitter|cookie settings|changelog/i,
+    /newsletter|instagram|twitter|cookie settings|changelog|open[- ]source/i,
   );
 });
 
