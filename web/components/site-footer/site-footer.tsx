@@ -59,8 +59,9 @@ export function SiteFooter() {
             respective owners.
           </p>
           <p>
-            Verify the original source and its licence before using a resource
-            in production.
+            A public repository does not itself grant reuse rights. Verify the
+            original source and its licence before using a resource in
+            production.
           </p>
         </div>
       </div>
