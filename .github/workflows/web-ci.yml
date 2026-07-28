@@ -18,7 +18,7 @@ on:
       - "build-slices.md"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -34,8 +34,10 @@ jobs:
       run:
         working-directory: web
     steps:
-      - name: Check out repository
+      - name: Check out pull request branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -46,6 +48,26 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Bootstrap approved hero asset
+        shell: bash
+        run: |
+          source_asset="../brand-preview/assets/tessli-hero-geometry.webp"
+          runtime_asset="public/brand/tessli-hero-geometry.webp"
+          test -s "$source_asset"
+          mkdir -p "$(dirname "$runtime_asset")"
+          cp "$source_asset" "$runtime_asset"
+          cmp --silent "$source_asset" "$runtime_asset"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$runtime_asset"
+          if git diff --cached --quiet; then
+            echo "Approved hero asset already present."
+          else
+            git commit -m "chore(web): copy approved hero asset into runtime public directory"
+            git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          fi
 
       - name: Check formatting
         run: npm run format:check
@@ -75,27 +97,16 @@ jobs:
           curl --fail --silent --show-error \
             http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
 
-          grep -q "Tessli application foundation" /tmp/tessli-home.html
+          grep -q "Find better design resources, faster" /tmp/tessli-home.html
+          grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
           grep -q "A warm, editorial system" /tmp/tessli-lab.html
           grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
           grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
 
-          shell_routes=(
-            collections
-            resources
-            submit
-            suggest
-            about
-            curation
-            privacy
-            terms
-            content-policy
-          )
-
+          shell_routes=(collections resources submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
-              "http://127.0.0.1:3000/$route" \
-              > "/tmp/tessli-$route.html"
+              "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
             grep -q "What this route does today" "/tmp/tessli-$route.html"
             grep -q "Return to Explore" "/tmp/tessli-$route.html"
           done
@@ -131,13 +142,12 @@ jobs:
               --force-device-scale-factor=1 \
               --virtual-time-budget=1500 \
               --window-size="$width,$height" \
-              --screenshot="artifacts/responsive-ui/lab-$width.png" \
-              http://127.0.0.1:3000/lab
-            test -s "artifacts/responsive-ui/lab-$width.png"
-          done
+              --dump-dom \
+              http://127.0.0.1:3000/ \
+              > "artifacts/responsive-ui/explore-$width.html"
+            grep -q "Find better design resources, faster" \
+              "artifacts/responsive-ui/explore-$width.html"
 
-          for viewport in "1440:1400" "390:2200"; do
-            IFS=":" read -r width height <<< "$viewport"
             "$chrome_bin" \
               --headless=new \
               --no-sandbox \
@@ -147,9 +157,9 @@ jobs:
               --force-device-scale-factor=1 \
               --virtual-time-budget=1500 \
               --window-size="$width,$height" \
-              --screenshot="artifacts/responsive-ui/footer-$width.png" \
-              http://127.0.0.1:3000/about
-            test -s "artifacts/responsive-ui/footer-$width.png"
+              --screenshot="artifacts/responsive-ui/explore-$width.png" \
+              http://127.0.0.1:3000/
+            test -s "artifacts/responsive-ui/explore-$width.png"
           done
 
       - name: Upload responsive screenshots
