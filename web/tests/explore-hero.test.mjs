@@ -44,7 +44,7 @@ test("hero artwork is decorative, stable, responsive, and preloaded", async () =
   assert.match(hero, /aria-hidden="true"/);
 });
 
-test("hero layout recomposes instead of shrinking or animating", async () => {
+test("hero layout recomposes instead of shrinking, hiding, or animating", async () => {
   const css = await read("components/explore-hero/explore-hero.module.css");
 
   assert.match(css, /grid-column: 1 \/ span 6/);
@@ -56,7 +56,8 @@ test("hero layout recomposes instead of shrinking or animating", async () => {
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(css, /overflow: hidden/);
   assert.match(css, /width: min\(560px, 145vw\)/);
-  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?display: none/);
+  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?height: 220px/);
+  assert.doesNotMatch(css, /\.artwork\s*\{[\s\S]*?display: none/);
   assert.doesNotMatch(css, /animation:/);
 });
 
