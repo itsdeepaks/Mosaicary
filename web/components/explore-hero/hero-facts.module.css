@@ -1,0 +1,82 @@
+.facts {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  margin: var(--space-12) 0 0;
+  border-block: 1px solid var(--line-subtle);
+  padding: 0;
+}
+
+.fact {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+  border-left: 1px solid var(--line-subtle);
+  padding: var(--space-5) var(--space-6);
+}
+
+.fact:first-child {
+  border-left: 0;
+}
+
+.fact dd,
+.fact dt {
+  margin: 0;
+}
+
+.fact dd {
+  color: var(--text-strong);
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.fact dt {
+  color: var(--text-muted);
+  font-size: var(--text-body-sm);
+  line-height: 1.35;
+}
+
+@media (max-width: 1024px) {
+  .facts {
+    margin-top: var(--space-10);
+  }
+
+  .fact {
+    padding-inline: var(--space-4);
+  }
+}
+
+@media (max-width: 720px) {
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--space-6);
+  }
+
+  .fact {
+    min-height: 84px;
+    justify-content: start;
+    padding: var(--space-4);
+  }
+
+  .fact:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .fact:nth-child(n + 3) {
+    border-top: 1px solid var(--line-subtle);
+  }
+}
+
+@media (max-width: 389px) {
+  .fact {
+    padding-inline: var(--space-3);
+  }
+
+  .fact dd {
+    font-size: 1.15rem;
+  }
+}
