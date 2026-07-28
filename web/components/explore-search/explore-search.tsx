@@ -61,7 +61,7 @@ export function ExploreSearch({
   useEffect(() => {
     const handleGlobalShortcut = (event: KeyboardEvent) => {
       const modal = document.querySelector<HTMLElement>('[aria-modal="true"]');
-      const modalIsOpen = modal && !modal.closest("[hidden]");
+      const modalIsOpen = Boolean(modal && !modal.closest("[hidden]"));
       const targetIsEditable = isEditableTarget(event.target);
       const commandShortcut =
         (event.metaKey || event.ctrlKey) &&
@@ -107,7 +107,7 @@ export function ExploreSearch({
   if (normalizedQuery && hasResultCount) {
     announcement = `${resultCount} ${resultCount === 1 ? "resource matches" : "resources match"} “${normalizedQuery}”.`;
   } else if (normalizedQuery) {
-    announcement = `Search query “${normalizedQuery}” is ready.`;
+    announcement = "Search query entered.";
   } else if (hasResultCount) {
     announcement = `${resultCount} resources available.`;
   }
@@ -128,6 +128,7 @@ export function ExploreSearch({
           Search resources
         </label>
         <input
+          aria-describedby={statusId}
           autoComplete="off"
           className={styles.input}
           data-explore-search-input
