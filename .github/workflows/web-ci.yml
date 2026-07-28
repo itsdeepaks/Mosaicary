@@ -18,7 +18,7 @@ on:
       - "build-slices.md"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -34,10 +34,8 @@ jobs:
       run:
         working-directory: web
     steps:
-      - name: Check out pull request branch
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -49,72 +47,11 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Bootstrap approved hero asset
+      - name: Verify approved hero asset
         shell: bash
         run: |
-          source_asset="../brand-preview/assets/tessli-hero-geometry.webp"
-          runtime_asset="public/brand/tessli-hero-geometry.webp"
-          test -s "$source_asset"
-          mkdir -p "$(dirname "$runtime_asset")"
-          cp "$source_asset" "$runtime_asset"
-          cmp --silent "$source_asset" "$runtime_asset"
-
-          source_hash="$(sha256sum "$source_asset" | cut -d ' ' -f 1)"
-          runtime_hash="$(sha256sum "$runtime_asset" | cut -d ' ' -f 1)"
-          test "$source_hash" = "$runtime_hash"
-          echo "Approved hero SHA-256: $runtime_hash"
-
-      - name: Reconcile delivery status
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path("../build-slices.md")
-          text = path.read_text(encoding="utf-8")
-          replacements = {
-              "| 3.1 | Explore hero composition | NEXT | 2.2 |":
-                  "| 3.1 | Explore hero composition | DONE | 2.2 |",
-              "| 3.2 | Search interaction and truthful facts | PLANNED | 3.1 |":
-                  "| 3.2 | Search interaction and truthful facts | NEXT | 3.1 |",
-          }
-
-          for old, new in replacements.items():
-              count = text.count(old)
-              if count == 1:
-                  text = text.replace(old, new)
-              elif count == 0 and new in text:
-                  continue
-              else:
-                  raise SystemExit(f"Expected exactly one status row: {old!r}; found {count}")
-
-          path.write_text(text, encoding="utf-8")
-          PY
-
-      - name: Format Explore hero workspace
-        run: npm run format
-
-      - name: Commit deterministic bootstrap changes
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            ../build-slices.md \
-            public/brand/tessli-hero-geometry.webp \
-            app/page.tsx \
-            app/layout.tsx \
-            app/lab/grain-toggle.tsx \
-            components/explore-hero \
-            components/viewport-overflow-probe \
-            tests/explore-hero.test.mjs \
-            ../.github/workflows/web-ci.yml
-          if git diff --cached --quiet; then
-            echo "No bootstrap changes to commit."
-          else
-            git commit -m "chore(web): finalize Explore hero asset and verification"
-            git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          fi
+          test -s public/brand/tessli-hero-geometry.webp
+          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
 
       - name: Check formatting
         run: npm run format:check
