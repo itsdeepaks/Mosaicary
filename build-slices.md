@@ -55,12 +55,12 @@ Stop and fix before merge when any of these occur:
 | ID | Slice | Status | Depends on |
 |---|---|---|---|
 | 0.1 | Research, design contract, assets, brand preview | DONE | — |
-| 0.2 | Repository operating contract | NEXT | 0.1 |
-| 1.1 | Next.js application scaffold and CI baseline | PLANNED | 0.2 |
-| 1.2 | Fonts, tokens, grain, responsive layout lab | PLANNED | 1.1 |
-| 2.1 | Global header and navigation shell | PLANNED | 1.2 |
-| 2.2 | Footer and launch route integrity | PLANNED | 2.1 |
-| 3.1 | Explore hero composition | PLANNED | 2.2 |
+| 0.2 | Repository operating contract | DONE | 0.1 |
+| 1.1 | Next.js application scaffold and CI baseline | DONE | 0.2 |
+| 1.2 | Fonts, tokens, grain, responsive layout lab | DONE | 1.1 |
+| 2.1 | Global header and navigation shell | DONE | 1.2 |
+| 2.2 | Footer and launch route integrity | DONE | 2.1 |
+| 3.1 | Explore hero composition | NEXT | 2.2 |
 | 3.2 | Search interaction and truthful facts | PLANNED | 3.1 |
 | 4.1 | Catalogue CSV-to-JSON migration and validation | PLANNED | 1.1 |
 | 4.2 | Discovery URL state, category, access, and sort controls | PLANNED | 3.2, 4.1 |

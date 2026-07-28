@@ -1,0 +1,138 @@
+.page {
+  padding-block: clamp(72px, 10vw, 144px);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-8) var(--space-6);
+}
+
+.copy {
+  grid-column: 1 / span 8;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-4);
+  color: var(--accent-text);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.copy h1 {
+  max-width: 10ch;
+  margin: 0;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: var(--text-title);
+  font-optical-sizing: auto;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 0.96;
+}
+
+.summary {
+  max-width: 62ch;
+  margin: var(--space-6) 0 0;
+  color: var(--text-body);
+  font-size: var(--text-body-lg);
+}
+
+.status {
+  grid-column: 9 / -1;
+  align-self: end;
+  border-top: 1px solid var(--line-strong);
+  padding-top: var(--space-5);
+}
+
+.status h2 {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: 700;
+}
+
+.status ul {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 0;
+  padding-left: var(--space-5);
+  color: var(--text-body);
+  font-size: var(--text-body-sm);
+}
+
+.actions {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-6);
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control-md);
+  padding: 0 var(--space-5);
+  font-size: var(--text-body-sm);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.primaryAction {
+  border-color: var(--text-strong);
+  background: var(--text-strong);
+  color: var(--surface);
+}
+
+.secondaryAction {
+  background: var(--surface);
+  color: var(--text-strong);
+}
+
+.primaryAction:hover,
+.primaryAction:focus-visible,
+.secondaryAction:hover,
+.secondaryAction:focus-visible {
+  border-color: var(--accent);
+}
+
+.secondaryAction span {
+  color: var(--accent-text);
+}
+
+@media (max-width: 1024px) {
+  .inner {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .copy {
+    grid-column: 1 / span 5;
+  }
+
+  .status {
+    grid-column: 6 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .inner {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .copy,
+  .status,
+  .actions {
+    grid-column: 1 / -1;
+  }
+
+  .status {
+    margin-top: var(--space-4);
+  }
+}

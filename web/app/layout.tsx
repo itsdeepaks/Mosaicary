@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { SiteFooter } from "@/components/site-footer/site-footer";
 import "@/components/site-header/site-header-global.css";
 import { SiteHeader } from "@/components/site-header/site-header";
 
@@ -26,7 +27,10 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader />
-        <div data-site-content>{children}</div>
+        <div data-site-content>
+          {children}
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );

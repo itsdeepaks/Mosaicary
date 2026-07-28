@@ -62,7 +62,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Smoke test and capture responsive UI
+      - name: Smoke test routes and capture responsive UI
         shell: bash
         run: |
           npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
@@ -79,6 +79,26 @@ jobs:
           grep -q "A warm, editorial system" /tmp/tessli-lab.html
           grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
           grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
+
+          shell_routes=(
+            collections
+            resources
+            submit
+            suggest
+            about
+            curation
+            privacy
+            terms
+            content-policy
+          )
+
+          for route in "${shell_routes[@]}"; do
+            curl --fail --silent --show-error \
+              "http://127.0.0.1:3000/$route" \
+              > "/tmp/tessli-$route.html"
+            grep -q "What this route does today" "/tmp/tessli-$route.html"
+            grep -q "Return to Explore" "/tmp/tessli-$route.html"
+          done
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
@@ -114,6 +134,22 @@ jobs:
               --screenshot="artifacts/responsive-ui/lab-$width.png" \
               http://127.0.0.1:3000/lab
             test -s "artifacts/responsive-ui/lab-$width.png"
+          done
+
+          for viewport in "1440:1400" "390:2200"; do
+            IFS=":" read -r width height <<< "$viewport"
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1500 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/footer-$width.png" \
+              http://127.0.0.1:3000/about
+            test -s "artifacts/responsive-ui/footer-$width.png"
           done
 
       - name: Upload responsive screenshots

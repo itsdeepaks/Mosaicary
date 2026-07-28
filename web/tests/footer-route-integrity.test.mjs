@@ -1,0 +1,102 @@
+import assert from "node:assert/strict";
+import { access, readFile } from "node:fs/promises";
+import { test } from "node:test";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const currentFile = fileURLToPath(import.meta.url);
+const webRoot = path.resolve(path.dirname(currentFile), "..");
+
+async function read(relativePath) {
+  return readFile(path.join(webRoot, relativePath), "utf8");
+}
+
+const footerRoutes = [
+  "/",
+  "/collections",
+  "/resources",
+  "/submit",
+  "/suggest",
+  "/about",
+  "/curation",
+  "/privacy",
+  "/terms",
+  "/content-policy",
+];
+
+test("every internal footer destination has an App Router page", async () => {
+  for (const route of footerRoutes) {
+    const pagePath = route === "/" ? "app/page.tsx" : `app${route}/page.tsx`;
+    await access(path.join(webRoot, pagePath));
+  }
+});
+
+test("footer contains only truthful launch groups and safe external links", async () => {
+  const [navigation, footer, styles] = await Promise.all([
+    read("components/site-footer/footer-navigation.ts"),
+    read("components/site-footer/site-footer.tsx"),
+    read("components/site-footer/site-footer.module.css"),
+  ]);
+
+  for (const group of ["Explore", "Contribute", "About", "Legal"]) {
+    assert.match(navigation, new RegExp(`label: "${group}"`));
+  }
+
+  for (const route of footerRoutes.slice(1)) {
+    assert.match(navigation, new RegExp(`href: "${route}"`));
+  }
+
+  assert.match(footer, /target="_blank"/);
+  assert.match(footer, /rel="noopener noreferrer"/);
+  assert.match(footer, /public repository does not itself grant reuse rights/i);
+  assert.match(
+    styles,
+    /@media \(max-width: 560px\)[\s\S]*?\.footnote[\s\S]*?font-size: var\(--text-body-sm\)/,
+  );
+  assert.doesNotMatch(
+    `${navigation}\n${footer}`,
+    /newsletter|instagram|twitter|cookie settings|changelog|open[- ]source/i,
+  );
+});
+
+test("route shells are honest, visitor-facing, and never collect data", async () => {
+  const routes = footerRoutes.filter((route) => route !== "/");
+
+  for (const route of routes) {
+    const page = await read(`app${route}/page.tsx`);
+    assert.match(page, /<RoutePlaceholder/);
+    assert.doesNotMatch(page, /<form|fetch\(|action=/);
+    assert.doesNotMatch(page, /\bSlices?\s+\d/i);
+  }
+
+  const placeholder = await read(
+    "components/route-placeholder/route-placeholder.tsx",
+  );
+  assert.match(placeholder, /id="main-content"/);
+  assert.match(placeholder, /<h1>/);
+  assert.match(placeholder, /Return to Explore/);
+  assert.match(placeholder, /View the repository/);
+  assert.match(placeholder, /rel="noopener noreferrer"/);
+});
+
+test("header exposes only routes implemented by this slice", async () => {
+  const navigation = await read("components/site-header/navigation.ts");
+
+  for (const label of ["Explore", "Collections", "Resources", "About"]) {
+    assert.match(
+      navigation,
+      new RegExp(`label: "${label}"[\\s\\S]*?available: true`),
+    );
+  }
+
+  assert.match(navigation, /label: "Saved"[\s\S]*?available: false/);
+});
+
+test("global footer stays inside the modal-inert site content wrapper", async () => {
+  const layout = await read("app/layout.tsx");
+
+  assert.match(
+    layout,
+    /<div data-site-content>[\s\S]*?<SiteFooter \/>[\s\S]*?<\/div>/,
+  );
+});
