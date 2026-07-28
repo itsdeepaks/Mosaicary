@@ -18,6 +18,8 @@ test("resource card keeps external navigation native and save independent", asyn
 
   assert.match(component, /^"use client";/);
   assert.match(component, /<a[\s\S]*?className=\{styles\.cardLink\}/);
+  assert.match(component, /aria-labelledby=\{titleId\}/);
+  assert.match(component, /aria-describedby=\{descriptionId\}/);
   assert.match(component, /target="_blank"/);
   assert.match(component, /rel="noopener noreferrer"/);
   assert.ok(anchorClose > 0 && saveButton > anchorClose);
@@ -86,7 +88,7 @@ test("pilot lab uses twelve real resources and labels every fixture boundary", a
   }
 
   assert.match(page, /Fixture boundary/);
-  assert.match(page, /QA fixtures—not published catalogue metadata/);
+  assert.match(page, /QA fixtures—not published catalogue\s+metadata/);
   assert.match(page, /Broken preview → favicon/);
   assert.match(page, /Broken preview → generated mark/);
   assert.match(page, /Long title · paid/);
