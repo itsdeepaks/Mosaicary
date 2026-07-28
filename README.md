@@ -1,34 +1,45 @@
 # Tessli
 
-Tessli is a static, searchable index of 295 curated resources for web and product-design work. It is a manual-use library, separate from the repository's longer-term `ui-intelligence` agent workflow research.
+Tessli is a fast, searchable index of **295 curated resources** for web design, product design, frontend development, motion, typography, accessibility, and visual inspiration.
 
-## What it does
+It is intentionally a manual-use reference library. It does not scrape, proxy, or redistribute content from the listed websites, and it remains separate from the repository’s longer-term UI-intelligence and agent-workflow research.
 
-- Search resource names, destinations, categories, access models, and descriptions.
-- Filter by category and access model; sort the results.
-- Keep a browser-local saved shortlist with no account or backend.
-- Preserve filters in the URL so a useful search can be shared or revisited.
-- Open a resource by selecting anywhere on its card, with external links opening in a new tab.
-- Read the full Markdown reference in the **Full reference** tab.
+## Features
+
+- Search across resource names, destinations, categories, access models, and descriptions.
+- Filter by category and access model, then sort the results.
+- Save a browser-local shortlist without creating an account.
+- Preserve filters in the URL for shareable and repeatable research sessions.
+- Open resources directly from their cards in a new tab.
+- Read the complete Markdown reference from the **Full reference** view.
+- Run entirely as a static site with no backend or environment variables.
 
 ## Local preview
+
+From the repository root:
 
 ```powershell
 python -m http.server 8000 --bind 127.0.0.1
 ```
 
-Open `http://127.0.0.1:8000`.
+Then open `http://127.0.0.1:8000`.
 
-## Data and limits
+## Data source
 
-`lib_data/design-resource-library-295.csv` is the release source of truth. It is manually curated metadata, not a guarantee that the destination site, pricing, access model, or license is still current. Tessli does not scrape, proxy, or redistribute content from destination sites.
+`lib_data/design-resource-library-295.csv` is the release source of truth.
+
+The metadata is manually curated and may become outdated as destination websites change their pricing, access model, availability, or licensing. Always verify those details with the original source before using a resource in production.
 
 ## Deployment
 
-This is a static Vercel project: no build step or environment variables are required. The included [`vercel.json`](vercel.json) adds conservative browser-security headers.
-
-Deploy from the repository root once authenticated with Vercel:
+Tessli is configured as a static Vercel project. It requires no build command and no environment variables.
 
 ```powershell
 npx vercel --prod
 ```
+
+The included `vercel.json` adds conservative browser-security headers.
+
+## Scope
+
+Tessli is an index for discovery and research—not a license to copy another product’s design or redistribute third-party assets. Use references to understand patterns, then create original work.
