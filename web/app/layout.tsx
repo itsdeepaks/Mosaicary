@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import "@/components/site-header/site-header-global.css";
 import { SiteHeader } from "@/components/site-header/site-header";
 
 import { displayFont, interfaceFont } from "./fonts";
