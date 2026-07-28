@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 import styles from "./resource-card.module.css";
 
 export type ResourceCardAccess =
-  | "free"
-  | "freemium"
-  | "paid"
-  | "open-source"
-  | "free-trial";
+  "free" | "freemium" | "paid" | "open-source" | "free-trial";
 
 export type ResourceCardData = Readonly<{
   id: string;
@@ -134,6 +130,8 @@ export function ResourceCard({
   const candidates = createMediaCandidates(resource, media);
   const [mediaIndex, setMediaIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const titleId = useId();
+  const descriptionId = useId();
   const activeMedia = candidates[mediaIndex] ?? null;
   const visibleTags = Array.from(
     new Set([categoryLabel, ...resource.usefulFor, ...resource.tags]),
@@ -149,7 +147,8 @@ export function ResourceCard({
       data-resource-status={resource.status}
     >
       <a
-        aria-label={`Open ${resource.name} on ${resource.domain}`}
+        aria-describedby={descriptionId}
+        aria-labelledby={titleId}
         className={styles.cardLink}
         href={resource.url}
         rel="noopener noreferrer"
@@ -186,12 +185,12 @@ export function ResourceCard({
           <div className={styles.headingRow}>
             <div className={styles.headingCopy}>
               <p className={styles.domain}>{resource.domain}</p>
-              <h3>{resource.name}</h3>
+              <h3 id={titleId}>{resource.name}</h3>
             </div>
             <ExternalArrowIcon />
           </div>
 
-          <p className={styles.description}>
+          <p className={styles.description} id={descriptionId}>
             {resource.description.trim() || "Description not yet available."}
           </p>
 
@@ -202,7 +201,9 @@ export function ResourceCard({
           </div>
 
           <footer className={styles.footer}>
-            <span className={styles.access}>{accessLabels[resource.access]}</span>
+            <span className={styles.access}>
+              {accessLabels[resource.access]}
+            </span>
             <span className={styles.status}>
               {unavailable ? "Unavailable" : "Open resource"}
             </span>
