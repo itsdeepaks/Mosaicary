@@ -1,70 +1,75 @@
 # Tessli Visual Asset Manifest
 
-Status: staged for visual approval; binaries are intentionally not committed in this planning-only branch.
+Status: **committed to the static brand preview for visual approval**
 
-The assets below were prepared during the pre-development brainstorm. Copy them into the target repository paths during Slice 1 after the browser typography/token specimen and mobile hero composition are approved.
+The browser-review assets live under:
+
+```text
+brand-preview/assets/
+```
+
+They are optimized review variants, not necessarily the final production exports. Higher-resolution source files remain available in the separate asset handoff pack.
 
 ## Hero artwork
 
-Target paths:
+Committed preview path:
 
 ```text
-design/assets/tessli-hero-geometry-source.webp
+brand-preview/assets/tessli-hero-geometry.webp
+```
+
+- dimensions: `900 × 614`
+- format: transparent WebP
+- size: `61,732 bytes`
+- SHA-256: `0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583`
+- purpose: browser-rendered desktop/tablet hero specimen
+- accessibility: decorative; render with empty alt text
+
+Production target after approval:
+
+```text
 public/brand/tessli-hero-geometry.webp
 ```
 
-Prepared file:
-
-- filename: `tessli-hero-geometry.webp`
-- dimensions: `1200 × 800`
-- format: transparent WebP
-- size: `107,546 bytes`
-- SHA-256: `6512760bc1d14ad84a7a81d573abe756cdde44b42b1c80fa4182a8c3b0f1e6b3`
-- purpose: Explore desktop/tablet hero artwork
-- accessibility: decorative; render with empty alt text
-
-A separate mobile crop must be approved after the real Newsreader headline wrapping is visible in-browser. Do not simply shrink the desktop asset below 390px.
+A separate mobile crop must be approved after the real Newsreader headline wrapping is reviewed in-browser. Do not simply shrink the desktop asset below 390px.
 
 ## Canonical desktop references
 
-Target directory:
-
-```text
-design/reference/
-```
+These are compressed reference thumbnails for the static preview. They preserve the art direction but are not production UI assets.
 
 ### Explore
 
-- filename: `explore-desktop.webp`
-- dimensions: `1200 × 849`
-- size: `48,744 bytes`
-- SHA-256: `c59333f47a69cde89cf3971cd5b99ef358701f346d248712360c59aa9640ea14`
+- path: `brand-preview/assets/explore-desktop.webp`
+- dimensions: `900 × 637`
+- size: `29,786 bytes`
+- SHA-256: `3548303697609855d003f3b1c3e0e00866138b6945a2cffee695d98b2a25e4ea`
 
 ### Collections
 
-- filename: `collections-desktop.webp`
-- dimensions: `1200 × 849`
-- size: `51,658 bytes`
-- SHA-256: `5e02b4c2775e854bf78e364d5d0d8d0f6b04a2c74bfb418fd0030b22edd468ae`
+- path: `brand-preview/assets/collections-desktop.webp`
+- dimensions: `360 × 255`
+- size: `6,330 bytes`
+- SHA-256: `4bcf703b6365ddac075a21352ba7abe421ef19b71957b5d2113627445e5038ec`
 
 ### Saved
 
-- filename: `saved-desktop.webp`
-- dimensions: `1200 × 849`
-- size: `42,034 bytes`
-- SHA-256: `d00e2e30ba64c95455af405f130e3e9457f60b7659b37085bf23f8175a76e5c1`
+- path: `brand-preview/assets/saved-desktop.webp`
+- dimensions: `360 × 255`
+- size: `5,156 bytes`
+- SHA-256: `9e5ecdb2c81531c2930db9083666a932d1890012786fa282285eb74c717ad953`
 
 ### Full Reference
 
-- filename: `full-reference-desktop.webp`
-- dimensions: `1200 × 849`
-- size: `42,952 bytes`
-- SHA-256: `f98bc42b544fb40dcf1a260ac055707eb533edd5883d9c62150e128ee1901cea`
+- path: `brand-preview/assets/full-reference-desktop.webp`
+- dimensions: `360 × 255`
+- size: `4,938 bytes`
+- SHA-256: `6fc1c0820ca038f1745ca19f923d5c0534643716a9f0af751eb1402abcfb656b`
 
 ## Asset rules
 
-- References are art direction and layout targets, not sources of fictional data.
-- Do not crop or recolour the canonical references.
+- References are art-direction and layout targets, not sources of fictional data.
+- Do not use the reference screenshots inside the production Tessli application.
 - Production hero may be re-exported after crop approval, but preserve transparency and the warm stone/charcoal/orange palette.
 - Do not apply a second heavy grain layer over the hero.
-- Resource thumbnails are not included in this pack; they follow `docs/data-and-media-contract.md`.
+- Resource thumbnails are not included as production assets; they follow `docs/data-and-media-contract.md`.
+- External site logos and images must use the documented manual preview → Open Graph → favicon → generated mark fallback chain.
