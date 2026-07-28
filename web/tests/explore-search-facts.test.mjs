@@ -20,6 +20,7 @@ test("Explore search exposes semantic and accessible controls", async () => {
   assert.match(search, /<label[\s\S]*?Search resources/);
   assert.match(search, /type="search"/);
   assert.match(search, /data-explore-search-input/);
+  assert.match(search, /aria-describedby=\{statusId\}/);
   assert.match(search, /aria-label="Clear search query"/);
   assert.match(search, /aria-live="polite"/);
   assert.match(search, /aria-atomic="true"/);
@@ -44,7 +45,7 @@ test("query state is debounced and ready for validated catalogue integration", a
   assert.match(search, /resultCount\?: number/);
   assert.match(search, /window\.setTimeout\([\s\S]*?100/);
   assert.match(search, /onQueryChange\(normalizedQuery\)/);
-  assert.match(search, /Search query “\$\{normalizedQuery\}” is ready\./);
+  assert.match(search, /Search query entered\./);
   assert.match(search, /resources match/);
   assert.doesNotMatch(
     search,
