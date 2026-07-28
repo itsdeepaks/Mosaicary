@@ -59,3 +59,19 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Smoke test built routes
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+
+          curl --fail --silent --show-error \
+            --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/ > /tmp/tessli-home.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
+
+          grep -q "Tessli application foundation" /tmp/tessli-home.html
+          grep -q "Tessli scaffold lab" /tmp/tessli-lab.html
