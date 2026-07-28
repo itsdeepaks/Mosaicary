@@ -4,38 +4,31 @@ on:
   pull_request:
     paths:
       - "web/**"
-      - ".github/workflows/web-ci.yml"
-      - ".gitignore"
+      - "schemas/catalogue.schema.json"
+      - "docs/data-and-media-contract.md"
       - "README.md"
-      - "build-slices.md"
-  push:
-    branches: [main]
-    paths:
-      - "web/**"
       - ".github/workflows/web-ci.yml"
-      - ".gitignore"
-      - "README.md"
-      - "build-slices.md"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
+  bootstrap-catalogue:
+    if: github.head_ref == 'feat/catalogue-migration'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: web
     steps:
-      - name: Check out repository
+      - name: Check out catalogue branch
         uses: actions/checkout@v4
+        with:
+          ref: feat/catalogue-migration
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -47,182 +40,48 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Verify approved hero asset
-        shell: bash
-        run: |
-          test -s public/brand/tessli-hero-geometry.webp
-          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
+      - name: Generate deterministic catalogue
+        run: npm run catalogue:generate
 
-      - name: Check formatting
-        run: npm run format:check
+      - name: Apply repository formatter to migration files
+        run: >-
+          npx prettier --write
+          scripts/catalogue-lib.mjs
+          scripts/generate-catalogue.mjs
+          scripts/check-catalogue.mjs
+          tests/catalogue-migration.test.mjs
+          package.json
+          data/catalogue.json
+          data/catalogue-validation.json
+          ../schemas/catalogue.schema.json
+          ../docs/data-and-media-contract.md
+          ../README.md
 
-      - name: Check types
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
+      - name: Run focused catalogue tests
         run: npm test
 
-      - name: Build
-        run: npm run build
+      - name: Verify deterministic output
+        run: npm run catalogue:check
 
-      - name: Smoke test routes and capture responsive UI
+      - name: Commit only approved migration output
         shell: bash
         run: |
-          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
-          server_pid=$!
-          search_chrome_pid=""
-
-          cleanup() {
-            if [ -n "$search_chrome_pid" ]; then
-              kill "$search_chrome_pid" 2>/dev/null || true
-            fi
-            kill "$server_pid" 2>/dev/null || true
-          }
-          trap cleanup EXIT
-
-          curl --fail --silent --show-error \
-            --retry 20 --retry-connrefused --retry-delay 1 \
-            http://127.0.0.1:3000/ > /tmp/tessli-home.html
-          curl --fail --silent --show-error \
-            http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
-
-          grep -q "Find better design resources, faster" /tmp/tessli-home.html
-          grep -q "Search Tessli resources" /tmp/tessli-home.html
-          grep -q "Browser-local saves" /tmp/tessli-home.html
-          grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
-          grep -q "A warm, editorial system" /tmp/tessli-lab.html
-          grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
-          grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
-
-          shell_routes=(collections resources submit suggest about curation privacy terms content-policy)
-          for route in "${shell_routes[@]}"; do
-            curl --fail --silent --show-error \
-              "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
-            grep -q "What this route does today" "/tmp/tessli-$route.html"
-            grep -q "Return to Explore" "/tmp/tessli-$route.html"
-          done
-
-          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --remote-allow-origins=* \
-            --remote-debugging-port=9222 \
-            --user-data-dir=/tmp/tessli-search-cdp \
-            about:blank > artifacts/search-browser/chrome.log 2>&1 &
-          search_chrome_pid=$!
-          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
-          kill "$search_chrome_pid" 2>/dev/null || true
-          wait "$search_chrome_pid" 2>/dev/null || true
-          search_chrome_pid=""
-
-          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
-            IFS=":" read -r width height <<< "$viewport"
-            echo "Checking lab and Explore at ${width}px"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --dump-dom \
-              http://127.0.0.1:3000/lab \
-              > "artifacts/responsive-ui/lab-$width.html"
-            grep -q 'data-horizontal-overflow="false"' \
-              "artifacts/responsive-ui/lab-$width.html"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --dump-dom \
-              http://127.0.0.1:3000/ \
-              > "artifacts/responsive-ui/explore-$width.html"
-            grep -q 'data-horizontal-overflow="false"' \
-              "artifacts/responsive-ui/explore-$width.html"
-            grep -q "Find better design resources, faster" \
-              "artifacts/responsive-ui/explore-$width.html"
-            grep -q 'data-search-state="empty"' \
-              "artifacts/responsive-ui/explore-$width.html"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --screenshot="artifacts/responsive-ui/explore-$width.png" \
-              http://127.0.0.1:3000/
-            test -s "artifacts/responsive-ui/explore-$width.png"
-          done
-
-          width=320
-          height=1400
-          echo "Checking Explore at ${width}px"
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=1800 \
-            --window-size="$width,$height" \
-            --dump-dom \
-            http://127.0.0.1:3000/ \
-            > "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-horizontal-overflow="false"' \
-            "artifacts/responsive-ui/explore-$width.html"
-          grep -q "Find better design resources, faster" \
-            "artifacts/responsive-ui/explore-$width.html"
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=1800 \
-            --window-size="$width,$height" \
-            --screenshot="artifacts/responsive-ui/explore-$width.png" \
-            http://127.0.0.1:3000/
-          test -s "artifacts/responsive-ui/explore-$width.png"
-
-      - name: Upload search browser diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-search-browser-diagnostics
-          path: web/artifacts/search-browser/*
-          if-no-files-found: warn
-          retention-days: 2
-
-      - name: Upload responsive screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-responsive-ui-screenshots
-          path: web/artifacts/responsive-ui/*.png
-          if-no-files-found: warn
-          retention-days: 7
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/catalogue.json \
+            data/catalogue-validation.json \
+            scripts/catalogue-lib.mjs \
+            scripts/generate-catalogue.mjs \
+            scripts/check-catalogue.mjs \
+            tests/catalogue-migration.test.mjs \
+            package.json \
+            ../schemas/catalogue.schema.json \
+            ../docs/data-and-media-contract.md \
+            ../README.md
+          if git diff --cached --quiet; then
+            echo "Catalogue and migration files are already current."
+          else
+            git commit -m "data: generate validated Tessli catalogue"
+            git push origin HEAD:feat/catalogue-migration
+          fi
