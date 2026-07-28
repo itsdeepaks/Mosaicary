@@ -43,116 +43,151 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          from textwrap import dedent
+
+          def block(value: str) -> str:
+              return dedent(value).strip()
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              old = block(old)
+              new = block(new)
+              if new in text:
+                  return text
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one {label} block; found {count}")
+              return text.replace(old, new)
 
           library = Path("scripts/catalogue-lib.mjs")
           text = library.read_text(encoding="utf-8")
-          replacements = [
-              (
-                  '''function exactKeys(value, allowedKeys) {
-            const keys = Object.keys(value).sort();
-            const expected = [...allowedKeys].sort();
-            return (
-              keys.length === expected.length &&
-              keys.every((key, index) => key === expected[index])
-            );
-          }''',
-                  '''function objectShapeErrors(value, requiredKeys, allowedKeys, label) {
-            const missingKeys = requiredKeys.filter((key) => !Object.hasOwn(value, key));
-            const unexpectedKeys = Object.keys(value).filter(
-              (key) => !allowedKeys.includes(key),
-            );
-            const errors = [];
+          text = replace_once(
+              text,
+              '''
+              function exactKeys(value, allowedKeys) {
+                const keys = Object.keys(value).sort();
+                const expected = [...allowedKeys].sort();
+                return (
+                  keys.length === expected.length &&
+                  keys.every((key, index) => key === expected[index])
+                );
+              }
+              ''',
+              '''
+              function objectShapeErrors(value, requiredKeys, allowedKeys, label) {
+                const missingKeys = requiredKeys.filter(
+                  (key) => !Object.hasOwn(value, key),
+                );
+                const unexpectedKeys = Object.keys(value).filter(
+                  (key) => !allowedKeys.includes(key),
+                );
+                const errors = [];
 
-            if (missingKeys.length > 0) {
-              errors.push(`${label} is missing required keys: ${missingKeys.join(", ")}.`);
-            }
-            if (unexpectedKeys.length > 0) {
-              errors.push(`${label} has unexpected keys: ${unexpectedKeys.join(", ")}.`);
-            }
+                if (missingKeys.length > 0) {
+                  errors.push(
+                    `${label} is missing required keys: ${missingKeys.join(", ")}.`,
+                  );
+                }
+                if (unexpectedKeys.length > 0) {
+                  errors.push(
+                    `${label} has unexpected keys: ${unexpectedKeys.join(", ")}.`,
+                  );
+                }
 
-            return errors;
-          }''',
-              ),
-              (
-                  '''  if (!exactKeys(catalogue, schema.required)) {
-            errors.push(
-              "Catalogue top-level keys do not match the deterministic schema contract.",
-            );
-          }''',
-                  '''  errors.push(
-            ...objectShapeErrors(
-              catalogue,
-              schema.required,
-              Object.keys(schema.properties),
-              "Catalogue",
-            ),
-          );''',
-              ),
-              (
-                  '''    if (!exactKeys(category, categorySchema.required)) {
-              errors.push(
-                `Category ${category.id ?? "<unknown>"} has unexpected keys.`,
-              );
-            }''',
-                  '''    errors.push(
-              ...objectShapeErrors(
-                category,
-                categorySchema.required,
-                Object.keys(categorySchema.properties),
-                `Category ${category.id ?? "<unknown>"}`,
-              ),
-            );''',
-              ),
-              (
-                  '''    if (!exactKeys(resource, resourceSchema.required)) {
-              errors.push(
-                `Resource ${resource.id ?? "<unknown>"} has unexpected keys.`,
-              );
-            }''',
-                  '''    errors.push(
-              ...objectShapeErrors(
-                resource,
-                resourceSchema.required,
-                Object.keys(resourceSchema.properties),
-                `Resource ${resource.id ?? "<unknown>"}`,
-              ),
-            );''',
-              ),
-          ]
-
-          for old, new in replacements:
-              if new in text:
-                  continue
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f"Expected one validator occurrence; found {count}: {old[:70]!r}")
-              text = text.replace(old, new)
+                return errors;
+              }
+              ''',
+              "exactKeys helper",
+          )
+          text = replace_once(
+              text,
+              '''
+                if (!exactKeys(catalogue, schema.required)) {
+                  errors.push(
+                    "Catalogue top-level keys do not match the deterministic schema contract.",
+                  );
+                }
+              ''',
+              '''
+                errors.push(
+                  ...objectShapeErrors(
+                    catalogue,
+                    schema.required,
+                    Object.keys(schema.properties),
+                    "Catalogue",
+                  ),
+                );
+              ''',
+              "catalogue shape",
+          )
+          text = replace_once(
+              text,
+              '''
+                  if (!exactKeys(category, categorySchema.required)) {
+                    errors.push(
+                      `Category ${category.id ?? "<unknown>"} has unexpected keys.`,
+                    );
+                  }
+              ''',
+              '''
+                  errors.push(
+                    ...objectShapeErrors(
+                      category,
+                      categorySchema.required,
+                      Object.keys(categorySchema.properties),
+                      `Category ${category.id ?? "<unknown>"}`,
+                    ),
+                  );
+              ''',
+              "category shape",
+          )
+          text = replace_once(
+              text,
+              '''
+                  if (!exactKeys(resource, resourceSchema.required)) {
+                    errors.push(
+                      `Resource ${resource.id ?? "<unknown>"} has unexpected keys.`,
+                    );
+                  }
+              ''',
+              '''
+                  errors.push(
+                    ...objectShapeErrors(
+                      resource,
+                      resourceSchema.required,
+                      Object.keys(resourceSchema.properties),
+                      `Resource ${resource.id ?? "<unknown>"}`,
+                    ),
+                  );
+              ''',
+              "resource shape",
+          )
           library.write_text(text, encoding="utf-8")
 
           tests = Path("tests/catalogue-migration.test.mjs")
           test_text = tests.read_text(encoding="utf-8")
-          import_old = '''  REPORT_PATH,
-            slugify,
-          } from "../scripts/catalogue-lib.mjs";'''
-          import_new = '''  REPORT_PATH,
-            SCHEMA_PATH,
-            slugify,
-            validateCatalogueAgainstSchema,
-          } from "../scripts/catalogue-lib.mjs";'''
+          import_old = "  REPORT_PATH,\n  slugify,\n"
+          import_new = (
+              "  REPORT_PATH,\n"
+              "  SCHEMA_PATH,\n"
+              "  slugify,\n"
+              "  validateCatalogueAgainstSchema,\n"
+          )
           if import_new not in test_text:
               if test_text.count(import_old) != 1:
                   raise SystemExit("Could not locate catalogue test import block.")
               test_text = test_text.replace(import_old, import_new)
 
-          marker = '''test("committed catalogue data matches deterministic migration output", async () => {'''
-          regression = '''test("schema shape accepts defined optional properties and rejects unknown keys", async () => {
+          marker = 'test("committed catalogue data matches deterministic migration output", async () => {'
+          regression = block('''
+          test("schema shape accepts defined optional properties and rejects unknown keys", async () => {
             const { catalogue } = await catalogueBuild();
             const schema = JSON.parse(
               await readFile(path.join(repoRoot, SCHEMA_PATH), "utf8"),
             );
             const withOptionalFields = structuredClone(catalogue);
             withOptionalFields.generatedAt = "2026-07-28T00:00:00.000Z";
-            withOptionalFields.resources[0].faviconUrl = "https://designindex.xyz/favicon.ico";
+            withOptionalFields.resources[0].faviconUrl =
+              "https://designindex.xyz/favicon.ico";
             withOptionalFields.resources[0].previewImageUrl =
               "https://designindex.xyz/preview.webp";
             withOptionalFields.resources[0].previewSource = "manual";
@@ -165,14 +200,13 @@ jobs:
 
             withOptionalFields.resources[0].unsupportedField = true;
             assert.equal(
-              validateCatalogueAgainstSchema(withOptionalFields, schema).some((message) =>
-                message.includes("unexpected keys: unsupportedField"),
+              validateCatalogueAgainstSchema(withOptionalFields, schema).some(
+                (message) => message.includes("unexpected keys: unsupportedField"),
               ),
               true,
             );
           });
-
-          '''
+          ''') + "\n\n"
           if regression not in test_text:
               if test_text.count(marker) != 1:
                   raise SystemExit("Could not locate committed-output test marker.")
