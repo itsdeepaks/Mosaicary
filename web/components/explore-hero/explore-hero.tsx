@@ -7,12 +7,12 @@ export function ExploreHero() {
     <section aria-labelledby="explore-hero-title" className={styles.hero}>
       <div className={`tessli-container tessli-grid ${styles.inner}`}>
         <div className={styles.copy}>
-          <p className={styles.eyebrow}>Curated design-resource index</p>
+          <p className={styles.eyebrow}>Curated design resources</p>
           <h1 id="explore-hero-title">Find better design resources, faster.</h1>
           <p className={styles.lede}>
-            Tessli brings together 295 carefully selected resources across 11
-            practical categories, helping designers and frontend developers
-            find useful references without another noisy feed.
+            Tessli is a manually curated index of useful web and product design
+            resources, organised to help designers and developers find stronger
+            references without another noisy feed.
           </p>
         </div>
 
