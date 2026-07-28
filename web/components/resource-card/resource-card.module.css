@@ -46,7 +46,12 @@
   place-items: center;
   border-bottom: 1px solid var(--line-subtle);
   background:
-    linear-gradient(135deg, transparent 0 48%, rgb(21 20 18 / 0.035) 48% 52%, transparent 52%),
+    linear-gradient(
+      135deg,
+      transparent 0 48%,
+      rgb(21 20 18 / 0.035) 48% 52%,
+      transparent 52%
+    ),
     var(--surface-muted);
 }
 
