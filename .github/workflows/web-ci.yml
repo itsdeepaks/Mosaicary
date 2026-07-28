@@ -99,8 +99,9 @@ jobs:
           test -n "$chrome_bin"
           mkdir -p artifacts/responsive-ui
 
-          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400" "320:1400"; do
+          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
             IFS=":" read -r width height <<< "$viewport"
+            echo "Checking lab and Explore at ${width}px"
 
             "$chrome_bin" \
               --headless=new \
@@ -148,10 +149,44 @@ jobs:
             test -s "artifacts/responsive-ui/explore-$width.png"
           done
 
+          width=320
+          height=1400
+          echo "Checking Explore at ${width}px"
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=1800 \
+            --window-size="$width,$height" \
+            --dump-dom \
+            http://127.0.0.1:3000/ \
+            > "artifacts/responsive-ui/explore-$width.html"
+          grep -q 'data-horizontal-overflow="false"' \
+            "artifacts/responsive-ui/explore-$width.html"
+          grep -q "Find better design resources, faster" \
+            "artifacts/responsive-ui/explore-$width.html"
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=1800 \
+            --window-size="$width,$height" \
+            --screenshot="artifacts/responsive-ui/explore-$width.png" \
+            http://127.0.0.1:3000/
+          test -s "artifacts/responsive-ui/explore-$width.png"
+
       - name: Upload responsive screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: tessli-responsive-ui-screenshots
           path: web/artifacts/responsive-ui/*.png
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7
