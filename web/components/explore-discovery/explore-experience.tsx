@@ -160,7 +160,9 @@ export function ExploreExperience({
 
   const handleLoadMore = useCallback(() => {
     const maximum =
-      resultSet.status === "ready" ? resultSet.resources.length : explorePageSize;
+      resultSet.status === "ready"
+        ? resultSet.resources.length
+        : explorePageSize;
     setVisibleCount((current) => Math.min(maximum, current + explorePageSize));
   }, [resultSet]);
 
