@@ -29,7 +29,7 @@ Desktop direction:
 
 Approved hero artwork:
 
-- source: `design/assets/tessli-hero-geometry-source.png`
+- source: `design/assets/tessli-hero-geometry-source.webp`
 - production candidate: `public/brand/tessli-hero-geometry.webp`
 
 The references define the **composition, atmosphere, hierarchy, and component language**. They are not literal specifications for fictional data, tiny generated text, or impossible measurements.
