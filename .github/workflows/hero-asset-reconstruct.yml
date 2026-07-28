@@ -42,15 +42,24 @@ jobs:
           for index in "${!parts[@]}"; do
             test -s "${parts[$index]}"
             actual="$(tr -d '\r\n' < "${parts[$index]}" | wc -c)"
+            echo "${parts[$index]}: actual=$actual expected=${expected_lengths[$index]}"
             test "$actual" -eq "${expected_lengths[$index]}"
           done
 
           cat "${parts[@]}" | tr -d '\r\n' > /tmp/tessli-hero.b64
-          test "$(wc -c < /tmp/tessli-hero.b64)" -eq 82312
+          combined_length="$(wc -c < /tmp/tessli-hero.b64)"
+          echo "Combined base64 length: $combined_length"
+          test "$combined_length" -eq 82312
 
           base64 --decode /tmp/tessli-hero.b64 > /tmp/tessli-hero.webp
-          test "$(stat -c '%s' /tmp/tessli-hero.webp)" -eq 61732
-          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  /tmp/tessli-hero.webp" | sha256sum -c -
+          decoded_size="$(stat -c '%s' /tmp/tessli-hero.webp)"
+          decoded_hash="$(sha256sum /tmp/tessli-hero.webp | cut -d ' ' -f 1)"
+          echo "Decoded byte count: $decoded_size"
+          echo "Decoded SHA-256: $decoded_hash"
+          file /tmp/tessli-hero.webp
+
+          test "$decoded_size" -eq 61732
+          test "$decoded_hash" = "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583"
           file /tmp/tessli-hero.webp | grep -q "Web/P image"
 
           mkdir -p brand-preview/assets web/public/brand
