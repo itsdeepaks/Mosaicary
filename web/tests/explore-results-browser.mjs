@@ -198,7 +198,9 @@ assert.equal(
   ),
   true,
 );
-await evaluate('document.querySelector("[data-filter-dialog] button[aria-label=\"Close filters\"]")?.click()');
+await evaluate(
+  `document.querySelector('[data-filter-dialog] button[aria-label="Close filters"]')?.click()`,
+);
 await waitFor(
   'document.querySelector("[data-filter-dialog]")?.open === false',
   "filter dialog close",
