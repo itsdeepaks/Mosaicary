@@ -104,8 +104,8 @@
 
 .loadMoreButton:hover,
 .primaryAction:hover {
-  background: var(--accent);
-  color: var(--text-on-accent);
+  background: var(--accent-hover);
+  color: var(--surface);
   transform: translateY(-1px);
 }
 
