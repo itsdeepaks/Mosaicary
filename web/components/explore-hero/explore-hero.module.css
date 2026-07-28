@@ -55,7 +55,8 @@
 }
 
 .image {
-  width: min(92%, 720px);
+  width: min(108%, 780px);
+  max-width: none;
   height: auto;
 }
 
@@ -71,6 +72,10 @@
 
   .artwork {
     grid-column: 6 / -1;
+  }
+
+  .image {
+    width: min(132%, 650px);
   }
 
   .copy h1 {
