@@ -19,15 +19,26 @@ export function SiteFooter() {
 
         <div className={styles.groups}>
           {footerGroups.map((group) => (
-            <nav aria-labelledby={group.id} className={styles.group} key={group.id}>
+            <nav
+              aria-labelledby={group.id}
+              className={styles.group}
+              key={group.id}
+            >
               <h2 id={group.id}>{group.label}</h2>
               <ul>
                 {group.links.map((link) => (
                   <li key={link.href}>
                     {link.external ? (
-                      <a href={link.href} rel="noreferrer" target="_blank">
+                      <a
+                        href={link.href}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
                         {link.label}
-                        <span className={styles.externalMark} aria-hidden="true">
+                        <span
+                          className={styles.externalMark}
+                          aria-hidden="true"
+                        >
                           ↗
                         </span>
                       </a>
