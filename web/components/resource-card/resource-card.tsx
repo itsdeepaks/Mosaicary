@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 
 import styles from "./resource-card.module.css";
 
@@ -63,7 +63,11 @@ function ExternalArrowIcon() {
 
 function SaveIcon({ saved }: { saved: boolean }) {
   return (
-    <svg aria-hidden="true" fill={saved ? "currentColor" : "none"} viewBox="0 0 24 24">
+    <svg
+      aria-hidden="true"
+      fill={saved ? "currentColor" : "none"}
+      viewBox="0 0 24 24"
+    >
       <path d="M7 4.75h10a1.25 1.25 0 0 1 1.25 1.25v14l-6.25-4-6.25 4V6A1.25 1.25 0 0 1 7 4.75Z" />
     </svg>
   );
@@ -74,7 +78,7 @@ function safeImageSource(value: string | undefined) {
     return null;
   }
 
-  if (value.startsWith("/")) {
+  if (value.startsWith("/") && !value.startsWith("//")) {
     return value;
   }
 
@@ -114,7 +118,9 @@ function createMediaCandidates(
 }
 
 function generatedMark(name: string) {
-  const meaningful = Array.from(name.trim()).find((character) => /[a-z0-9]/i.test(character));
+  const meaningful = Array.from(name.trim()).find((character) =>
+    /[a-z0-9]/i.test(character),
+  );
   return meaningful?.toUpperCase() ?? "T";
 }
 
@@ -125,10 +131,7 @@ export function ResourceCard({
   saved,
   onSavedChange,
 }: ResourceCardProps) {
-  const candidates = useMemo(
-    () => createMediaCandidates(resource, media),
-    [media, resource],
-  );
+  const candidates = createMediaCandidates(resource, media);
   const [mediaIndex, setMediaIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const activeMedia = candidates[mediaIndex] ?? null;
@@ -136,11 +139,6 @@ export function ResourceCard({
     new Set([categoryLabel, ...resource.usefulFor, ...resource.tags]),
   ).slice(0, 3);
   const unavailable = resource.status === "unavailable";
-
-  useEffect(() => {
-    setMediaIndex(0);
-    setImageLoaded(false);
-  }, [candidates]);
 
   return (
     <article
@@ -159,6 +157,8 @@ export function ResourceCard({
       >
         <div className={styles.media} data-media-loaded={imageLoaded}>
           {activeMedia ? (
+            // Native img is intentional for arbitrary approved third-party domains.
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               alt={activeMedia.alt}
               className={`${styles.mediaImage} ${activeMedia.kind === "favicon" ? styles.faviconImage : ""} ${imageLoaded ? styles.mediaImageLoaded : ""}`}
@@ -178,11 +178,7 @@ export function ResourceCard({
             </span>
           )}
           <span className={styles.mediaLabel}>
-            {activeMedia?.kind === "preview"
-              ? "Preview"
-              : activeMedia?.kind === "favicon"
-                ? resource.domain
-                : resource.domain}
+            {activeMedia?.kind === "preview" ? "Preview" : resource.domain}
           </span>
         </div>
 
