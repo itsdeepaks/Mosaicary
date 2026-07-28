@@ -13,7 +13,7 @@ export default function AboutPage() {
       details={[
         "The public catalogue begins with 295 repository-managed resources across 11 categories.",
         "Tessli links to original destinations instead of mirroring or redistributing their content.",
-        "The complete About and policy narrative is owned by Slice 9.1.",
+        "A fuller About and policy narrative will replace this preview before public launch.",
       ]}
     />
   );
