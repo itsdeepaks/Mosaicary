@@ -11,42 +11,63 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("Explore hero uses approved truthful content", async () => {
+test("Explore page delegates to the scoped hero component", async () => {
   const page = await read("app/page.tsx");
 
-  assert.match(page, /Find better design resources, faster\./);
-  assert.match(page, /295 carefully selected resources/);
-  assert.match(page, /11\s+practical categories/);
-  assert.match(page, /href="\/resources"/);
-  assert.match(page, /href="\/collections"/);
-  assert.doesNotMatch(page, /testimonial|trusted by|users love/i);
+  assert.match(page, /<ExploreHero \/>/);
+  assert.match(page, /id="main-content"/);
+  assert.doesNotMatch(page, /application foundation/i);
 });
 
-test("hero artwork is decorative and dimensionally stable", async () => {
-  const page = await read("app/page.tsx");
+test("Explore hero uses approved factual content without later-slice UI", async () => {
+  const hero = await read("components/explore-hero/explore-hero.tsx");
 
-  assert.match(page, /src="\/brand\/tessli-hero-geometry\.webp"/);
-  assert.match(page, /alt=""/);
-  assert.match(page, /width=\{1536\}/);
-  assert.match(page, /height=\{1024\}/);
-  assert.match(page, /priority/);
-  assert.match(page, /aria-hidden="true"/);
+  assert.match(hero, /Find better design resources, faster\./);
+  assert.match(hero, /manually curated index/);
+  assert.match(hero, /web and product design/);
+  assert.doesNotMatch(hero, /<input|role="search"|aria-live/);
+  assert.doesNotMatch(hero, /295|11|Browser-local saves|Community-built/);
+  assert.doesNotMatch(hero, /href=|<button/);
+  assert.doesNotMatch(hero, /testimonial|trusted by|users love/i);
 });
 
-test("hero responsive contract avoids animation and hides artwork below 390px", async () => {
-  const css = await read("app/page.module.css");
+test("hero artwork is decorative, stable, responsive, and preloaded", async () => {
+  const hero = await read("components/explore-hero/explore-hero.tsx");
 
-  assert.match(css, /grid-column: 1 \/ span 7/);
-  assert.match(css, /grid-column: 8 \/ -1/);
-  assert.match(css, /@media \(max-width: 767px\)/);
-  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?\.artwork \{[\s\S]*?display: none/);
+  assert.match(hero, /src="\/brand\/tessli-hero-geometry\.webp"/);
+  assert.match(hero, /alt=""/);
+  assert.match(hero, /width=\{900\}/);
+  assert.match(hero, /height=\{614\}/);
+  assert.match(hero, /preload/);
+  assert.match(hero, /sizes=/);
+  assert.match(hero, /aria-hidden="true"/);
+  assert.doesNotMatch(hero, /priority/);
+});
+
+test("hero layout recomposes instead of shrinking or animating", async () => {
+  const css = await read("components/explore-hero/explore-hero.module.css");
+
+  assert.match(css, /grid-column: 1 \/ span 6/);
+  assert.match(css, /grid-column: 7 \/ -1/);
+  assert.match(css, /@media \(max-width: 1024px\)/);
+  assert.match(css, /grid-column: 1 \/ span 5/);
+  assert.match(css, /grid-column: 6 \/ -1/);
+  assert.match(css, /@media \(max-width: 720px\)/);
+  assert.match(css, /overflow: hidden/);
+  assert.match(css, /width: min\(560px, 145vw\)/);
+  assert.doesNotMatch(css, /display: none/);
   assert.doesNotMatch(css, /animation:/);
-  assert.doesNotMatch(css, /cursor-follow|scroll-jack/i);
 });
 
-test("search and statistics remain outside Slice 3.1", async () => {
-  const page = await read("app/page.tsx");
+test("global overflow QA is independent from the grain control", async () => {
+  const [layout, probe, grainToggle] = await Promise.all([
+    read("app/layout.tsx"),
+    read("components/viewport-overflow-probe/viewport-overflow-probe.tsx"),
+    read("app/lab/grain-toggle.tsx"),
+  ]);
 
-  assert.doesNotMatch(page, /<input|role="search"|aria-live/);
-  assert.doesNotMatch(page, /Curated resources|Practical categories|Browser-local saves/);
+  assert.match(layout, /<ViewportOverflowProbe \/>/);
+  assert.match(probe, /data.*horizontalOverflow|horizontalOverflow/);
+  assert.match(probe, /ResizeObserver/);
+  assert.doesNotMatch(grainToggle, /horizontalOverflow|ResizeObserver/);
 });
