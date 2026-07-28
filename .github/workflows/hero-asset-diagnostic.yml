@@ -1,0 +1,42 @@
+name: Hero Asset Diagnostic
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/hero-asset-diagnostic.yml"
+      - "brand-preview/assets/tessli-hero-geometry.webp"
+      - "web/public/brand/tessli-hero-geometry.webp"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Record asset identity
+        shell: bash
+        run: |
+          sha256sum \
+            brand-preview/assets/tessli-hero-geometry.webp \
+            web/public/brand/tessli-hero-geometry.webp
+          file \
+            brand-preview/assets/tessli-hero-geometry.webp \
+            web/public/brand/tessli-hero-geometry.webp
+          cmp --silent \
+            brand-preview/assets/tessli-hero-geometry.webp \
+            web/public/brand/tessli-hero-geometry.webp
+
+      - name: Upload exact hero assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-hero-asset-diagnostic
+          path: |
+            brand-preview/assets/tessli-hero-geometry.webp
+            web/public/brand/tessli-hero-geometry.webp
+          if-no-files-found: error
+          retention-days: 1
