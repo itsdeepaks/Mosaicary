@@ -8,12 +8,12 @@ export default function ResourcesPage() {
   return (
     <RoutePlaceholder
       eyebrow="Complete catalogue"
-      title="The full reference will be built from the validated 295-entry source."
-      summary="This route is reserved for Tessli's dense, searchable reference view. It will not display partial or manually duplicated catalogue data."
+      title="The validated 295-entry catalogue is ready for its dense reference view."
+      summary="The deterministic catalogue now accounts for every source row. This route remains intentionally simple until the desktop table, compact mobile rows, and filter layouts are implemented together."
       details={[
-        "The repository CSV remains the Phase 1 release source of truth.",
-        "The migration will account for every source row and report invalid or duplicated data.",
-        "The complete desktop and mobile reference views are still being prepared.",
+        "All 295 curated resources and 11 category counts are validated in repository-managed data.",
+        "Access and subscription states preserve the researched source values without silent conversion.",
+        "The final reference interface will not ship as a partial table or force desktop columns onto mobile.",
       ]}
     />
   );
