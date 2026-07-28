@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 
 import { GrainToggle } from "./grain-toggle";
 import styles from "./lab.module.css";
+import toolbarStyles from "./lab-toolbar.module.css";
 
 const swatches = [
   ["Canvas", "#fcf8f3", "var(--canvas)"],
@@ -21,17 +22,16 @@ export const metadata = {
 export default function DesignFoundationLabPage() {
   return (
     <div className={styles.page}>
-      <header className={styles.topbar}>
-        <div className={`tessli-container ${styles.topbarInner}`}>
-          <span className={styles.wordmark}>Tessli</span>
-          <span className={styles.topbarMeta}>
+      <div className={toolbarStyles.toolbar}>
+        <div className={`tessli-container ${toolbarStyles.inner}`}>
+          <span className={toolbarStyles.label}>
             Design foundation · Slice 1.2
           </span>
           <GrainToggle />
         </div>
-      </header>
+      </div>
 
-      <main>
+      <main id="main-content">
         <section className={`tessli-container ${styles.intro}`}>
           <div className={`tessli-grid ${styles.introGrid}`}>
             <div className={styles.introCopy}>

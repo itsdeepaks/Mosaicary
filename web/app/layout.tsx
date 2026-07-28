@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import "@/components/site-header/site-header-global.css";
+import { SiteHeader } from "@/components/site-header/site-header";
+
 import { displayFont, interfaceFont } from "./fonts";
 import "./globals.css";
 
@@ -19,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" data-grain="on">
       <body className={`${interfaceFont.variable} ${displayFont.variable}`}>
-        {children}
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
+        <SiteHeader />
+        <div data-site-content>{children}</div>
       </body>
     </html>
   );
