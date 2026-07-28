@@ -12,7 +12,12 @@ function SearchIcon() {
   return (
     <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
-      <path d="m16 16 4 4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+      <path
+        d="m16 16 4 4"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.8"
+      />
     </svg>
   );
 }
@@ -20,7 +25,12 @@ function SearchIcon() {
 function ClearIcon() {
   return (
     <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
-      <path d="m7 7 10 10M17 7 7 17" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+      <path
+        d="m7 7 10 10M17 7 7 17"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.8"
+      />
     </svg>
   );
 }
@@ -96,7 +106,7 @@ export function HeroSearch({ totalResources }: HeroSearchProps) {
             event.currentTarget.blur();
           }
         }}
-        placeholder='Search resources, e.g. “UI kits”, “inter font”, “loading animation”'
+        placeholder="Search resources, e.g. “UI kits”, “inter font”, “loading animation”"
         ref={inputRef}
         type="search"
         value={query}
@@ -117,7 +127,11 @@ export function HeroSearch({ totalResources }: HeroSearchProps) {
         </kbd>
       )}
 
-      <p aria-atomic="true" aria-live="polite" className={styles.visuallyHidden}>
+      <p
+        aria-atomic="true"
+        aria-live="polite"
+        className={styles.visuallyHidden}
+      >
         {announcement}
       </p>
     </form>

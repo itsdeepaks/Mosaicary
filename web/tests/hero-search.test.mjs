@@ -49,7 +49,10 @@ test("hero search exposes semantic input and shortcut guidance", async () => {
   assert.match(css, /min-height: 54px/);
   assert.match(css, /\.search:focus-within/);
   assert.match(css, /\.clearButton[\s\S]*?width: 42px[\s\S]*?height: 42px/);
-  assert.match(css, /@media \(max-width: 480px\)[\s\S]*?\.shortcut[\s\S]*?display: none/);
+  assert.match(
+    css,
+    /@media \(max-width: 480px\)[\s\S]*?\.shortcut[\s\S]*?display: none/,
+  );
 });
 
 test("truthful facts use four desktop slots and a two-by-two mobile grid", async () => {
