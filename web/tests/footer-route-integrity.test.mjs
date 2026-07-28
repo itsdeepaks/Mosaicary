@@ -47,7 +47,7 @@ test("footer contains only truthful launch groups and safe external links", asyn
   }
 
   assert.match(footer, /target="_blank"/);
-  assert.match(footer, /rel="noreferrer"/);
+  assert.match(footer, /rel="noopener noreferrer"/);
   assert.doesNotMatch(
     `${navigation}\n${footer}`,
     /newsletter|instagram|twitter|cookie settings|changelog/i,
@@ -70,6 +70,7 @@ test("route shells are honest and never collect data", async () => {
   assert.match(placeholder, /<h1>/);
   assert.match(placeholder, /Return to Explore/);
   assert.match(placeholder, /View the repository/);
+  assert.match(placeholder, /rel="noopener noreferrer"/);
 });
 
 test("header exposes only routes implemented by this slice", async () => {
@@ -91,5 +92,8 @@ test("header exposes only routes implemented by this slice", async () => {
 test("global footer stays inside the modal-inert site content wrapper", async () => {
   const layout = await read("app/layout.tsx");
 
-  assert.match(layout, /<div data-site-content>[\s\S]*?<SiteFooter \/>[\s\S]*?<\/div>/);
+  assert.match(
+    layout,
+    /<div data-site-content>[\s\S]*?<SiteFooter \/>[\s\S]*?<\/div>/,
+  );
 });
