@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import styles from "./explore-hero.module.css";
+import factStyles from "./hero-facts.module.css";
 import { HeroSearch } from "./hero-search";
 
 const heroFacts = [
@@ -37,16 +38,16 @@ export function ExploreHero() {
             width={900}
           />
         </div>
-      </div>
 
-      <dl aria-label="Tessli at a glance" className={`tessli-container ${styles.facts}`}>
-        {heroFacts.map((fact) => (
-          <div className={styles.fact} key={fact.label}>
-            <dd>{fact.value}</dd>
-            <dt>{fact.label}</dt>
-          </div>
-        ))}
-      </dl>
+        <dl aria-label="Tessli at a glance" className={factStyles.facts}>
+          {heroFacts.map((fact) => (
+            <div className={factStyles.fact} key={fact.label}>
+              <dd>{fact.value}</dd>
+              <dt>{fact.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </div>
     </section>
   );
 }
