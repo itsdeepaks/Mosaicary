@@ -2,16 +2,16 @@ import Link from "next/link";
 
 export default function FoundationPage() {
   return (
-    <main className="foundation-page">
+    <main className="foundation-page" id="main-content">
       <section aria-labelledby="foundation-title" className="foundation-panel">
-        <p className="foundation-label">Slice 1.1</p>
+        <p className="foundation-label">Application preview</p>
         <h1 id="foundation-title">Tessli application foundation</h1>
         <p>
-          This isolated Next.js workspace establishes TypeScript, Tailwind CSS,
-          linting, tests, builds, and continuous integration. The current public
-          Tessli experience is still served from the repository root.
+          This isolated Next.js workspace establishes the verified product
+          foundation while the current public Tessli experience remains served
+          from the repository root.
         </p>
-        <Link href="/lab">Open the scaffold lab</Link>
+        <Link href="/lab">Open the design foundation lab</Link>
       </section>
     </main>
   );
