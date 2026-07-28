@@ -97,6 +97,8 @@ jobs:
             http://127.0.0.1:3000/ > /tmp/tessli-home.html
           curl --fail --silent --show-error \
             http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/lab/resource-cards > /tmp/tessli-resource-cards.html
 
           grep -q "Find better design resources, faster" /tmp/tessli-home.html
           grep -q "Search Tessli resources" /tmp/tessli-home.html
@@ -107,6 +109,9 @@ jobs:
           grep -q "A warm, editorial system" /tmp/tessli-lab.html
           grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
           grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
+          grep -q "Twelve resilience cases" /tmp/tessli-resource-cards.html
+          grep -q "Fixture boundary" /tmp/tessli-resource-cards.html
+          grep -q "data-resource-card-pilot" /tmp/tessli-resource-cards.html
 
           shell_routes=(collections resources saved submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
@@ -132,13 +137,14 @@ jobs:
           search_chrome_pid=$!
           node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
           node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           kill "$search_chrome_pid" 2>/dev/null || true
           wait "$search_chrome_pid" 2>/dev/null || true
           search_chrome_pid=""
 
-          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
+          for viewport in "1440:1800" "1024:1800" "768:1800" "390:1800"; do
             IFS=":" read -r width height <<< "$viewport"
-            echo "Checking lab and Explore at ${width}px"
+            echo "Checking lab, Explore, and resource cards at ${width}px"
 
             "$chrome_bin" \
               --headless=new \
@@ -188,11 +194,43 @@ jobs:
               --screenshot="artifacts/responsive-ui/explore-$width.png" \
               http://127.0.0.1:3000/
             test -s "artifacts/responsive-ui/explore-$width.png"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/lab/resource-cards \
+              > "artifacts/responsive-ui/resource-cards-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/resource-cards-$width.html"
+            grep -q 'data-resource-card-pilot' \
+              "artifacts/responsive-ui/resource-cards-$width.html"
+            grep -q 'data-media-state="generated"' \
+              "artifacts/responsive-ui/resource-cards-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/resource-cards-$width.png" \
+              http://127.0.0.1:3000/lab/resource-cards
+            test -s "artifacts/responsive-ui/resource-cards-$width.png"
           done
 
           width=320
-          height=1400
-          echo "Checking Explore at ${width}px"
+          height=1800
+          echo "Checking Explore and resource cards at ${width}px"
           "$chrome_bin" \
             --headless=new \
             --no-sandbox \
@@ -224,6 +262,36 @@ jobs:
             --screenshot="artifacts/responsive-ui/explore-$width.png" \
             http://127.0.0.1:3000/
           test -s "artifacts/responsive-ui/explore-$width.png"
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=2200 \
+            --window-size="$width,$height" \
+            --dump-dom \
+            http://127.0.0.1:3000/lab/resource-cards \
+            > "artifacts/responsive-ui/resource-cards-$width.html"
+          grep -q 'data-horizontal-overflow="false"' \
+            "artifacts/responsive-ui/resource-cards-$width.html"
+          grep -q 'data-resource-card-pilot' \
+            "artifacts/responsive-ui/resource-cards-$width.html"
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --hide-scrollbars \
+            --force-device-scale-factor=1 \
+            --virtual-time-budget=2200 \
+            --window-size="$width,$height" \
+            --screenshot="artifacts/responsive-ui/resource-cards-$width.png" \
+            http://127.0.0.1:3000/lab/resource-cards
+          test -s "artifacts/responsive-ui/resource-cards-$width.png"
 
       - name: Upload search browser diagnostics
         if: always()
