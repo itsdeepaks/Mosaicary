@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 
 import styles from "./hero-search.module.css";
 
@@ -36,6 +36,7 @@ function ClearIcon() {
 }
 
 export function HeroSearch({ totalResources }: HeroSearchProps) {
+  const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [announcedQuery, setAnnouncedQuery] = useState("");
@@ -85,13 +86,13 @@ export function HeroSearch({ totalResources }: HeroSearchProps) {
       role="search"
     >
       <SearchIcon />
-      <label className={styles.visuallyHidden} htmlFor="tessli-hero-search">
+      <label className={styles.visuallyHidden} htmlFor={inputId}>
         Search Tessli resources
       </label>
       <input
         aria-keyshortcuts="Control+K Meta+K"
         autoComplete="off"
-        id="tessli-hero-search"
+        id={inputId}
         name="q"
         onChange={(event) => setQuery(event.target.value)}
         onKeyDown={(event) => {
