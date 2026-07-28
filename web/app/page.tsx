@@ -10,6 +10,10 @@ import {
   type DiscoveryAccess,
   type DiscoverySearchParams,
 } from "@/components/explore-discovery/discovery-state";
+import type {
+  ResourceCardAccess,
+  ResourceCardData,
+} from "@/components/resource-card/resource-card";
 
 export const metadata = {
   title: "Explore design resources",
@@ -52,6 +56,22 @@ const accessOptions: readonly DiscoveryAccessOption[] =
     count: accessCounts.get(value) ?? 0,
   }));
 
+const resources: readonly ResourceCardData[] = catalogue.resources.map(
+  (resource) => ({
+    id: resource.id,
+    slug: resource.slug,
+    name: resource.name,
+    url: resource.url,
+    domain: resource.domain,
+    description: resource.description,
+    category: resource.category,
+    access: resource.access as ResourceCardAccess,
+    usefulFor: resource.usefulFor,
+    tags: resource.tags,
+    status: resource.status as ResourceCardData["status"],
+  }),
+);
+
 const categoryIds = new Set(categoryOptions.map((category) => category.id));
 
 type ExplorePageProps = {
@@ -67,6 +87,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         accessOptions={accessOptions}
         categories={categoryOptions}
         initialState={initialState}
+        resources={resources}
       />
     </main>
   );
