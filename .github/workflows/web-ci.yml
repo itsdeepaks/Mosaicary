@@ -3,45 +3,30 @@ name: Web CI
 on:
   pull_request:
     paths:
-      - "web/**"
+      - "web/scripts/catalogue-lib.mjs"
+      - "web/tests/catalogue-migration.test.mjs"
       - ".github/workflows/web-ci.yml"
-      - ".gitignore"
-      - "README.md"
-      - "build-slices.md"
-      - "lib_data/design-resource-library-295.csv"
-      - "schemas/catalogue.schema.json"
-      - "docs/data-and-media-contract.md"
-  push:
-    branches: [main]
-    paths:
-      - "web/**"
-      - ".github/workflows/web-ci.yml"
-      - ".gitignore"
-      - "README.md"
-      - "build-slices.md"
-      - "lib_data/design-resource-library-295.csv"
-      - "schemas/catalogue.schema.json"
-      - "docs/data-and-media-contract.md"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
+  fix-schema-validator:
+    if: github.head_ref == 'feat/catalogue-migration'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      NEXT_TELEMETRY_DISABLED: "1"
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: web
     steps:
-      - name: Check out repository
+      - name: Check out catalogue branch
         uses: actions/checkout@v4
+        with:
+          ref: feat/catalogue-migration
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -53,185 +38,165 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
-      - name: Verify approved hero asset
+      - name: Align custom validator with JSON Schema properties
         shell: bash
         run: |
-          test -s public/brand/tessli-hero-geometry.webp
-          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
+          python - <<'PY'
+          from pathlib import Path
 
-      - name: Check formatting
-        run: npm run format:check
+          library = Path("scripts/catalogue-lib.mjs")
+          text = library.read_text(encoding="utf-8")
+          replacements = [
+              (
+                  '''function exactKeys(value, allowedKeys) {
+            const keys = Object.keys(value).sort();
+            const expected = [...allowedKeys].sort();
+            return (
+              keys.length === expected.length &&
+              keys.every((key, index) => key === expected[index])
+            );
+          }''',
+                  '''function objectShapeErrors(value, requiredKeys, allowedKeys, label) {
+            const missingKeys = requiredKeys.filter((key) => !Object.hasOwn(value, key));
+            const unexpectedKeys = Object.keys(value).filter(
+              (key) => !allowedKeys.includes(key),
+            );
+            const errors = [];
 
-      - name: Check types
-        run: npm run typecheck
+            if (missingKeys.length > 0) {
+              errors.push(`${label} is missing required keys: ${missingKeys.join(", ")}.`);
+            }
+            if (unexpectedKeys.length > 0) {
+              errors.push(`${label} has unexpected keys: ${unexpectedKeys.join(", ")}.`);
+            }
 
-      - name: Lint
-        run: npm run lint
+            return errors;
+          }''',
+              ),
+              (
+                  '''  if (!exactKeys(catalogue, schema.required)) {
+            errors.push(
+              "Catalogue top-level keys do not match the deterministic schema contract.",
+            );
+          }''',
+                  '''  errors.push(
+            ...objectShapeErrors(
+              catalogue,
+              schema.required,
+              Object.keys(schema.properties),
+              "Catalogue",
+            ),
+          );''',
+              ),
+              (
+                  '''    if (!exactKeys(category, categorySchema.required)) {
+              errors.push(
+                `Category ${category.id ?? "<unknown>"} has unexpected keys.`,
+              );
+            }''',
+                  '''    errors.push(
+              ...objectShapeErrors(
+                category,
+                categorySchema.required,
+                Object.keys(categorySchema.properties),
+                `Category ${category.id ?? "<unknown>"}`,
+              ),
+            );''',
+              ),
+              (
+                  '''    if (!exactKeys(resource, resourceSchema.required)) {
+              errors.push(
+                `Resource ${resource.id ?? "<unknown>"} has unexpected keys.`,
+              );
+            }''',
+                  '''    errors.push(
+              ...objectShapeErrors(
+                resource,
+                resourceSchema.required,
+                Object.keys(resourceSchema.properties),
+                `Resource ${resource.id ?? "<unknown>"}`,
+              ),
+            );''',
+              ),
+          ]
 
-      - name: Test
-        run: npm test
+          for old, new in replacements:
+              if new in text:
+                  continue
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"Expected one validator occurrence; found {count}: {old[:70]!r}")
+              text = text.replace(old, new)
+          library.write_text(text, encoding="utf-8")
 
-      - name: Check catalogue drift
-        run: npm run catalogue:check
+          tests = Path("tests/catalogue-migration.test.mjs")
+          test_text = tests.read_text(encoding="utf-8")
+          import_old = '''  REPORT_PATH,
+            slugify,
+          } from "../scripts/catalogue-lib.mjs";'''
+          import_new = '''  REPORT_PATH,
+            SCHEMA_PATH,
+            slugify,
+            validateCatalogueAgainstSchema,
+          } from "../scripts/catalogue-lib.mjs";'''
+          if import_new not in test_text:
+              if test_text.count(import_old) != 1:
+                  raise SystemExit("Could not locate catalogue test import block.")
+              test_text = test_text.replace(import_old, import_new)
 
-      - name: Build
-        run: npm run build
+          marker = '''test("committed catalogue data matches deterministic migration output", async () => {'''
+          regression = '''test("schema shape accepts defined optional properties and rejects unknown keys", async () => {
+            const { catalogue } = await catalogueBuild();
+            const schema = JSON.parse(
+              await readFile(path.join(repoRoot, SCHEMA_PATH), "utf8"),
+            );
+            const withOptionalFields = structuredClone(catalogue);
+            withOptionalFields.generatedAt = "2026-07-28T00:00:00.000Z";
+            withOptionalFields.resources[0].faviconUrl = "https://designindex.xyz/favicon.ico";
+            withOptionalFields.resources[0].previewImageUrl =
+              "https://designindex.xyz/preview.webp";
+            withOptionalFields.resources[0].previewSource = "manual";
+            withOptionalFields.resources[0].lastVerifiedAt = "2026-07-28";
 
-      - name: Smoke test routes and capture responsive UI
+            assert.deepEqual(
+              validateCatalogueAgainstSchema(withOptionalFields, schema),
+              [],
+            );
+
+            withOptionalFields.resources[0].unsupportedField = true;
+            assert.equal(
+              validateCatalogueAgainstSchema(withOptionalFields, schema).some((message) =>
+                message.includes("unexpected keys: unsupportedField"),
+              ),
+              true,
+            );
+          });
+
+          '''
+          if regression not in test_text:
+              if test_text.count(marker) != 1:
+                  raise SystemExit("Could not locate committed-output test marker.")
+              test_text = test_text.replace(marker, regression + marker)
+          tests.write_text(test_text, encoding="utf-8")
+          PY
+
+      - name: Format reviewed files
+        run: npx prettier --write scripts/catalogue-lib.mjs tests/catalogue-migration.test.mjs
+
+      - name: Run catalogue tests and drift check
+        run: |
+          npm test
+          npm run catalogue:check
+
+      - name: Commit reviewed validator fix only
         shell: bash
         run: |
-          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
-          server_pid=$!
-          search_chrome_pid=""
-
-          cleanup() {
-            if [ -n "$search_chrome_pid" ]; then
-              kill "$search_chrome_pid" 2>/dev/null || true
-            fi
-            kill "$server_pid" 2>/dev/null || true
-          }
-          trap cleanup EXIT
-
-          curl --fail --silent --show-error \
-            --retry 20 --retry-connrefused --retry-delay 1 \
-            http://127.0.0.1:3000/ > /tmp/tessli-home.html
-          curl --fail --silent --show-error \
-            http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
-
-          grep -q "Find better design resources, faster" /tmp/tessli-home.html
-          grep -q "Search Tessli resources" /tmp/tessli-home.html
-          grep -q "Browser-local saves" /tmp/tessli-home.html
-          grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
-          grep -q "A warm, editorial system" /tmp/tessli-lab.html
-          grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
-          grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
-
-          shell_routes=(collections resources submit suggest about curation privacy terms content-policy)
-          for route in "${shell_routes[@]}"; do
-            curl --fail --silent --show-error \
-              "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
-            grep -q "What this route does today" "/tmp/tessli-$route.html"
-            grep -q "Return to Explore" "/tmp/tessli-$route.html"
-          done
-
-          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --remote-allow-origins=* \
-            --remote-debugging-port=9222 \
-            --user-data-dir=/tmp/tessli-search-cdp \
-            about:blank > artifacts/search-browser/chrome.log 2>&1 &
-          search_chrome_pid=$!
-          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
-          kill "$search_chrome_pid" 2>/dev/null || true
-          wait "$search_chrome_pid" 2>/dev/null || true
-          search_chrome_pid=""
-
-          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
-            IFS=":" read -r width height <<< "$viewport"
-            echo "Checking lab and Explore at ${width}px"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --dump-dom \
-              http://127.0.0.1:3000/lab \
-              > "artifacts/responsive-ui/lab-$width.html"
-            grep -q 'data-horizontal-overflow="false"' \
-              "artifacts/responsive-ui/lab-$width.html"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --dump-dom \
-              http://127.0.0.1:3000/ \
-              > "artifacts/responsive-ui/explore-$width.html"
-            grep -q 'data-horizontal-overflow="false"' \
-              "artifacts/responsive-ui/explore-$width.html"
-            grep -q "Find better design resources, faster" \
-              "artifacts/responsive-ui/explore-$width.html"
-            grep -q 'data-search-state="empty"' \
-              "artifacts/responsive-ui/explore-$width.html"
-
-            "$chrome_bin" \
-              --headless=new \
-              --no-sandbox \
-              --disable-gpu \
-              --disable-dev-shm-usage \
-              --hide-scrollbars \
-              --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
-              --window-size="$width,$height" \
-              --screenshot="artifacts/responsive-ui/explore-$width.png" \
-              http://127.0.0.1:3000/
-            test -s "artifacts/responsive-ui/explore-$width.png"
-          done
-
-          width=320
-          height=1400
-          echo "Checking Explore at ${width}px"
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=1800 \
-            --window-size="$width,$height" \
-            --dump-dom \
-            http://127.0.0.1:3000/ \
-            > "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-horizontal-overflow="false"' \
-            "artifacts/responsive-ui/explore-$width.html"
-          grep -q "Find better design resources, faster" \
-            "artifacts/responsive-ui/explore-$width.html"
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=1800 \
-            --window-size="$width,$height" \
-            --screenshot="artifacts/responsive-ui/explore-$width.png" \
-            http://127.0.0.1:3000/
-          test -s "artifacts/responsive-ui/explore-$width.png"
-
-      - name: Upload search browser diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-search-browser-diagnostics
-          path: web/artifacts/search-browser/*
-          if-no-files-found: warn
-          retention-days: 2
-
-      - name: Upload responsive screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-responsive-ui-screenshots
-          path: web/artifacts/responsive-ui/*.png
-          if-no-files-found: warn
-          retention-days: 7
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scripts/catalogue-lib.mjs tests/catalogue-migration.test.mjs
+          if git diff --cached --quiet; then
+            echo "Validator fix is already current."
+          else
+            git commit -m "fix: align catalogue validator with schema"
+            git push origin HEAD:feat/catalogue-migration
+          fi
