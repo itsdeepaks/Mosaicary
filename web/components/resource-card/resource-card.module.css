@@ -1,0 +1,325 @@
+.card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  transition:
+    border-color var(--motion-fast) var(--ease-standard),
+    background var(--motion-fast) var(--ease-standard),
+    transform var(--motion-fast) var(--ease-standard);
+}
+
+.card:hover,
+.card:focus-within {
+  border-color: var(--line-strong);
+  background: var(--surface);
+  transform: translateY(-2px);
+}
+
+.card[data-resource-status="unavailable"] {
+  background: color-mix(in srgb, var(--surface-muted) 86%, transparent);
+}
+
+.cardLink {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto 1fr;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardLink:focus-visible {
+  outline: 0;
+}
+
+.card:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 76%, transparent);
+}
+
+.media {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  place-items: center;
+  border-bottom: 1px solid var(--line-subtle);
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 48%,
+      rgb(21 20 18 / 0.035) 48% 52%,
+      transparent 52%
+    ),
+    var(--surface-muted);
+}
+
+.media::after {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(255 255 255 / 0.32);
+  content: "";
+  pointer-events: none;
+}
+
+.mediaImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+}
+
+.faviconImage {
+  width: 72px;
+  height: 72px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  object-fit: contain;
+  box-shadow: var(--shadow-xs);
+}
+
+.generatedMark {
+  display: grid;
+  width: clamp(76px, 28%, 108px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--surface) 74%, transparent);
+  color: var(--text-strong);
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: clamp(2.5rem, 7vw, 4.25rem);
+  font-weight: 650;
+  line-height: 1;
+}
+
+.mediaLabel {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+  border-radius: var(--radius-control-sm);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text-strong);
+  padding: 4px 6px;
+  box-shadow: var(--shadow-xs);
+  font-size: var(--text-micro);
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: var(--space-5);
+}
+
+.headingRow {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) 20px;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.headingRow > svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 20px;
+  color: var(--text-muted);
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+  transition:
+    color var(--motion-fast) var(--ease-standard),
+    transform var(--motion-fast) var(--ease-standard);
+}
+
+.card:hover .headingRow > svg,
+.card:focus-within .headingRow > svg {
+  color: var(--accent-text);
+  transform: translate(2px, -2px);
+}
+
+.headingCopy {
+  min-width: 0;
+}
+
+.domain {
+  overflow: hidden;
+  margin: 0 0 5px;
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.headingCopy h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 2.5em;
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--text-h3);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  min-height: 4.35em;
+  margin: var(--space-3) 0 0;
+  color: var(--text-body);
+  font-size: var(--text-body-sm);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--space-4);
+}
+
+.tags span {
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-control-sm);
+  background: var(--surface-muted);
+  color: var(--text-body);
+  padding: 4px 7px;
+  font-size: var(--text-micro);
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: auto;
+  border-top: 1px solid var(--line-subtle);
+  padding-top: var(--space-4);
+}
+
+.access,
+.status {
+  font-size: var(--text-label);
+  font-weight: 650;
+}
+
+.access {
+  color: var(--accent-text);
+}
+
+.status {
+  color: var(--text-muted);
+}
+
+.card[data-resource-status="unavailable"] .status {
+  color: var(--danger);
+}
+
+.saveButton {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid color-mix(in srgb, var(--line-strong) 76%, transparent);
+  border-radius: var(--radius-control-md);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text-strong);
+  cursor: pointer;
+  padding: 0 11px;
+  box-shadow: var(--shadow-xs);
+  font-size: var(--text-label);
+  font-weight: 650;
+  transition:
+    border-color var(--motion-fast) var(--ease-standard),
+    background var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+}
+
+.saveButton:hover {
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+
+.saveButton[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.saveButton svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+@media (max-width: 480px) {
+  .body {
+    padding: var(--space-4);
+  }
+
+  .saveButton span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .headingRow > svg {
+    margin-top: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:focus-within {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .card:focus-within {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  .saveButton[aria-pressed="true"] {
+    border: 2px solid Highlight;
+  }
+}
