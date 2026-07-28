@@ -21,7 +21,8 @@ export default function ScaffoldLabPage() {
         <h1 id="lab-title">Tessli scaffold lab</h1>
         <p>
           Visual foundations, fonts, tokens, and component specimens begin in
-          Slice 1.2. This page intentionally proves structure rather than design.
+          Slice 1.2. This page intentionally proves structure rather than
+          design.
         </p>
         <ul>
           {checks.map((check) => (
