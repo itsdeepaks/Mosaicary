@@ -31,8 +31,8 @@ type ResourceCardProps = Readonly<{
   resource: ResourceCardData;
   categoryLabel: string;
   media?: ResourceCardMedia;
-  saved: boolean;
-  onSavedChange: (resourceId: string, saved: boolean) => void;
+  saved?: boolean;
+  onSavedChange?: (resourceId: string, saved: boolean) => void;
 }>;
 
 type MediaCandidate = Readonly<{
@@ -124,7 +124,7 @@ export function ResourceCard({
   resource,
   categoryLabel,
   media,
-  saved,
+  saved = false,
   onSavedChange,
 }: ResourceCardProps) {
   const candidates = createMediaCandidates(resource, media);
@@ -171,7 +171,10 @@ export function ResourceCard({
     <article
       className={styles.card}
       data-media-state={activeMedia?.kind ?? "generated"}
+      data-resource-access={resource.access}
       data-resource-card
+      data-resource-category={resource.category}
+      data-resource-name={resource.name}
       data-resource-slug={resource.slug}
       data-resource-status={resource.status}
     >
@@ -236,21 +239,23 @@ export function ResourceCard({
         </div>
       </a>
 
-      <button
-        aria-label={
-          saved
-            ? `Remove ${resource.name} from saved resources`
-            : `Save ${resource.name}`
-        }
-        aria-pressed={saved}
-        className={styles.saveButton}
-        data-resource-save={resource.id}
-        onClick={() => onSavedChange(resource.id, !saved)}
-        type="button"
-      >
-        <SaveIcon saved={saved} />
-        <span>{saved ? "Saved" : "Save"}</span>
-      </button>
+      {onSavedChange ? (
+        <button
+          aria-label={
+            saved
+              ? `Remove ${resource.name} from saved resources`
+              : `Save ${resource.name}`
+          }
+          aria-pressed={saved}
+          className={styles.saveButton}
+          data-resource-save={resource.id}
+          onClick={() => onSavedChange(resource.id, !saved)}
+          type="button"
+        >
+          <SaveIcon saved={saved} />
+          <span>{saved ? "Saved" : "Save"}</span>
+        </button>
+      ) : null}
     </article>
   );
 }
