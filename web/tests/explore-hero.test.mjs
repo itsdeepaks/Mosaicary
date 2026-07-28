@@ -19,16 +19,31 @@ test("Explore page delegates to the scoped hero component", async () => {
   assert.doesNotMatch(page, /application foundation/i);
 });
 
-test("Explore hero uses approved factual content without later-slice UI", async () => {
+test("Explore hero uses approved copy, search, and repository-backed facts", async () => {
   const hero = await read("components/explore-hero/explore-hero.tsx");
 
   assert.match(hero, /Find better design resources, faster\./);
   assert.match(hero, /manually curated index/);
   assert.match(hero, /web and product design/);
-  assert.doesNotMatch(hero, /<input|role="search"|aria-live/);
-  assert.doesNotMatch(hero, /295|11|Browser-local saves|Community-built/);
-  assert.doesNotMatch(hero, /href=|<button/);
-  assert.doesNotMatch(hero, /testimonial|trusted by|users love/i);
+  assert.match(hero, /<HeroSearch totalResources=\{295\} \/>/);
+
+  for (const truth of [
+    "295",
+    "Curated resources",
+    "11",
+    "Practical categories",
+    "Local",
+    "Browser-only saves",
+    "Public",
+    "GitHub repository",
+  ]) {
+    assert.match(hero, new RegExp(truth));
+  }
+
+  assert.doesNotMatch(
+    hero,
+    /92K|users love|trusted by|added weekly|community-built|open source/i,
+  );
 });
 
 test("hero artwork is decorative, stable, responsive, and preloaded", async () => {
