@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import styles from "./resource-card.module.css";
 
@@ -129,7 +129,8 @@ export function ResourceCard({
 }: ResourceCardProps) {
   const candidates = createMediaCandidates(resource, media);
   const [mediaIndex, setMediaIndex] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const failedSourceRef = useRef<string | null>(null);
   const titleId = useId();
   const descriptionId = useId();
   const activeMedia = candidates[mediaIndex] ?? null;
@@ -137,6 +138,34 @@ export function ResourceCard({
     new Set([categoryLabel, ...resource.usefulFor, ...resource.tags]),
   ).slice(0, 3);
   const unavailable = resource.status === "unavailable";
+
+  useEffect(() => {
+    const image = imageRef.current;
+    const source = activeMedia?.src;
+    if (!image || !source) {
+      return;
+    }
+
+    let listening = true;
+    const advanceFallback = () => {
+      if (!listening || failedSourceRef.current === source) {
+        return;
+      }
+
+      failedSourceRef.current = source;
+      setMediaIndex((current) => current + 1);
+    };
+
+    image.addEventListener("error", advanceFallback);
+    if (image.complete && image.naturalWidth === 0) {
+      queueMicrotask(advanceFallback);
+    }
+
+    return () => {
+      listening = false;
+      image.removeEventListener("error", advanceFallback);
+    };
+  }, [activeMedia?.src]);
 
   return (
     <article
@@ -154,20 +183,16 @@ export function ResourceCard({
         rel="noopener noreferrer"
         target="_blank"
       >
-        <div className={styles.media} data-media-loaded={imageLoaded}>
+        <div className={styles.media}>
           {activeMedia ? (
             // Native img is intentional for arbitrary approved third-party domains.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               alt={activeMedia.alt}
-              className={`${styles.mediaImage} ${activeMedia.kind === "favicon" ? styles.faviconImage : ""} ${imageLoaded ? styles.mediaImageLoaded : ""}`}
+              className={`${styles.mediaImage} ${activeMedia.kind === "favicon" ? styles.faviconImage : ""}`}
               decoding="async"
               loading="lazy"
-              onError={() => {
-                setImageLoaded(false);
-                setMediaIndex((current) => current + 1);
-              }}
-              onLoad={() => setImageLoaded(true)}
+              ref={imageRef}
               referrerPolicy="no-referrer"
               src={activeMedia.src}
             />
