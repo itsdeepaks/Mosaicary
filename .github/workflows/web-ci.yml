@@ -1,0 +1,77 @@
+name: Web CI
+
+on:
+  pull_request:
+    paths:
+      - "web/**"
+      - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Check types
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test built routes
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+
+          curl --fail --silent --show-error \
+            --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/ > /tmp/tessli-home.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
+
+          grep -q "Tessli application foundation" /tmp/tessli-home.html
+          grep -q "Tessli scaffold lab" /tmp/tessli-lab.html
