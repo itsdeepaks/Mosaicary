@@ -9,20 +9,6 @@ export function GrainToggle() {
     document.documentElement.dataset.grain = enabled ? "on" : "off";
   }, [enabled]);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const updateOverflowState = () => {
-      root.dataset.horizontalOverflow = String(
-        root.scrollWidth > root.clientWidth + 1,
-      );
-    };
-
-    updateOverflowState();
-    window.addEventListener("resize", updateOverflowState);
-
-    return () => window.removeEventListener("resize", updateOverflowState);
-  }, []);
-
   return (
     <button
       aria-pressed={enabled}
