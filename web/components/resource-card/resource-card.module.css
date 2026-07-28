@@ -70,10 +70,6 @@
   opacity: 1;
 }
 
-.mediaImageLoaded {
-  opacity: 1;
-}
-
 .faviconImage {
   width: 72px;
   height: 72px;
@@ -100,14 +96,20 @@
 
 .mediaLabel {
   position: absolute;
-  right: 12px;
   bottom: 10px;
   left: 12px;
+  max-width: calc(100% - 24px);
   overflow: hidden;
-  color: color-mix(in srgb, var(--text-strong) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+  border-radius: var(--radius-control-sm);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text-strong);
+  padding: 4px 6px;
+  box-shadow: var(--shadow-xs);
   font-size: var(--text-micro);
   font-weight: 650;
   letter-spacing: 0.02em;
+  line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
