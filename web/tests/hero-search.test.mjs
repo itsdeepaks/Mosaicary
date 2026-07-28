@@ -37,10 +37,14 @@ test("hero search clear and announcement states are truthful", async () => {
   assert.doesNotMatch(search, /results found|matching resources/i);
 });
 
-test("hero search exposes semantic input and shortcut guidance", async () => {
+test("hero search exposes semantic, reusable input and shortcut guidance", async () => {
   const search = await read("components/explore-hero/hero-search.tsx");
   const css = await read("components/explore-hero/hero-search.module.css");
 
+  assert.match(search, /useId/);
+  assert.match(search, /const inputId = useId\(\)/);
+  assert.match(search, /htmlFor=\{inputId\}/);
+  assert.match(search, /id=\{inputId\}/);
   assert.match(search, /role="search"/);
   assert.match(search, /type="search"/);
   assert.match(search, /aria-keyshortcuts="Control\+K Meta\+K"/);
@@ -48,7 +52,7 @@ test("hero search exposes semantic input and shortcut guidance", async () => {
   assert.match(search, /Ctrl K/);
   assert.match(css, /min-height: 54px/);
   assert.match(css, /\.search:focus-within/);
-  assert.match(css, /\.clearButton[\s\S]*?width: 42px[\s\S]*?height: 42px/);
+  assert.match(css, /\.clearButton[\s\S]*?width: 44px[\s\S]*?height: 44px/);
   assert.match(
     css,
     /@media \(max-width: 480px\)[\s\S]*?\.shortcut[\s\S]*?display: none/,
