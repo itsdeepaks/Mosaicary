@@ -116,7 +116,7 @@
         },
         "access": {
           "type": "string",
-          "enum": ["free", "freemium", "paid", "open-source"]
+          "enum": ["free", "freemium", "paid", "open-source", "free-trial"]
         },
         "subscriptionRequired": {
           "type": "string",
