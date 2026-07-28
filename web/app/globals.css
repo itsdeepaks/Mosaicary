@@ -232,7 +232,7 @@ svg {
 
 @media (max-width: 1024px) {
   .tessli-container {
-    width: min(100% - 48px, 1280px);
+    width: min(1280px, calc(100% - 48px));
   }
 
   .tessli-grid {
@@ -243,7 +243,7 @@ svg {
 
 @media (max-width: 720px) {
   .tessli-container {
-    width: min(100% - 40px, 1280px);
+    width: min(1280px, calc(100% - 40px));
   }
 
   .tessli-grid {
