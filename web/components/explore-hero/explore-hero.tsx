@@ -7,12 +7,14 @@ import styles from "./explore-hero.module.css";
 
 type ExploreHeroProps = {
   searchValue?: string;
+  resultCount?: number;
   onSearchValueChange?: (query: string) => void;
   onSearchQueryChange?: (query: string) => void;
 };
 
 export function ExploreHero({
   searchValue,
+  resultCount,
   onSearchValueChange,
   onSearchQueryChange,
 }: ExploreHeroProps) {
@@ -30,6 +32,7 @@ export function ExploreHero({
           <ExploreSearch
             onQueryChange={onSearchQueryChange}
             onValueChange={onSearchValueChange}
+            resultCount={resultCount}
             value={searchValue}
           />
           <ExploreFacts />
