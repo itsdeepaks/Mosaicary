@@ -289,7 +289,9 @@ assert.deepEqual(
   ).map((input) => input.getAttribute('data-access-filter'))`),
   ["free"],
 );
-await evaluate(`document.querySelector('[aria-label="Close filters"]')?.click()`);
+await evaluate(
+  `document.querySelector('[aria-label="Close filters"]')?.click()`,
+);
 await waitFor(
   'document.querySelector("[data-filter-dialog]")?.open === false',
   "fallback dialog close",
