@@ -12,8 +12,8 @@ export default function ResourcesPage() {
       summary="This route is reserved for Tessli's dense, searchable reference view. It will not display partial or manually duplicated catalogue data."
       details={[
         "The repository CSV remains the Phase 1 release source of truth.",
-        "Typed migration and validation are owned by Slice 4.1.",
-        "Desktop and responsive reference views are owned by Slices 7.1 and 7.2.",
+        "The migration will account for every source row and report invalid or duplicated data.",
+        "The complete desktop and mobile reference views are still being prepared.",
       ]}
     />
   );
