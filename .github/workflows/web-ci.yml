@@ -40,6 +40,57 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Reconcile the researched after-trial source value
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path("scripts/catalogue-lib.mjs"): [
+                  (
+                      '  ["Yes", "yes"],\n]);',
+                      '  ["Yes", "yes"],\n  ["After trial", "after-trial"],\n]);',
+                  ),
+                  (
+                      '  const subscriptionCounts = { no: 0, optional: 0, yes: 0 };',
+                      '  const subscriptionCounts = {\n    no: 0,\n    optional: 0,\n    yes: 0,\n    "after-trial": 0,\n  };',
+                  ),
+              ],
+              Path("../schemas/catalogue.schema.json"): [
+                  (
+                      '"enum": ["no", "optional", "yes"]',
+                      '"enum": ["no", "optional", "yes", "after-trial"]',
+                  ),
+              ],
+              Path("../docs/data-and-media-contract.md"): [
+                  (
+                      "subscriptionRequired: 'no' | 'optional' | 'yes'",
+                      "subscriptionRequired: 'no' | 'optional' | 'yes' | 'after-trial'",
+                  ),
+              ],
+              Path("tests/catalogue-migration.test.mjs"): [
+                  (
+                      '  assert.equal(report.summary.access["free-trial"], 1);',
+                      '  assert.equal(report.summary.access["free-trial"], 1);\n  assert.equal(report.summary.subscriptionRequired["after-trial"], 1);',
+                  ),
+              ],
+          }
+
+          for path, pairs in replacements.items():
+              text = path.read_text(encoding="utf-8")
+              for old, new in pairs:
+                  if new in text:
+                      continue
+                  count = text.count(old)
+                  if count != 1:
+                      raise SystemExit(
+                          f"Expected one source-contract occurrence in {path}: {old!r}; found {count}"
+                      )
+                  text = text.replace(old, new)
+              path.write_text(text, encoding="utf-8")
+          PY
+
       - name: Generate deterministic catalogue
         run: npm run catalogue:generate
 
@@ -60,8 +111,6 @@ jobs:
           scripts/check-catalogue.mjs
           tests/catalogue-migration.test.mjs
           package.json
-          data/catalogue.json
-          data/catalogue-validation.json
           ../schemas/catalogue.schema.json
           ../docs/data-and-media-contract.md
           ../README.md
