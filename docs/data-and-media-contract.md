@@ -13,7 +13,7 @@ type Resource = {
   domain: string
   description: string
   category: CategoryId
-  access: 'free' | 'freemium' | 'paid' | 'open-source'
+  access: 'free' | 'freemium' | 'paid' | 'open-source' | 'free-trial'
   subscriptionRequired: 'no' | 'optional' | 'yes'
   usefulFor: string[]
   tags: string[]
@@ -25,7 +25,9 @@ type Resource = {
 }
 ```
 
-The current CSV is migrated into typed JSON during the Next.js scaffold. The migration must preserve all 295 entries and report invalid URLs, missing descriptions, or duplicate domains.
+The current CSV is migrated into deterministic typed JSON under `web/data/`. The migration preserves all 295 entries, records source SHA-256 provenance, and reports invalid URLs, missing descriptions, exact duplicate URLs, duplicate domains, slug collisions, or unknown source labels.
+
+`free-trial` is preserved as its own access value because the source contains one explicitly researched free-trial resource. It must not be silently converted to freemium or paid.
 
 ## 2. Category model
 
