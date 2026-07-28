@@ -1,6 +1,7 @@
 @import url("./styles-foundation.css");
 @import url("./styles-components.css");
 @import url("./styles-responsive.css");
+@import url("./styles-fixes.css");
 
 /* Approved typography refinements — 2026-07-28 */
 h1,
