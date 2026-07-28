@@ -13,7 +13,7 @@ export default function SuggestPage() {
       details={[
         "The current preview does not send or store suggestion form data.",
         "Repository history will preserve accepted catalogue corrections.",
-        "Validated forms and moderation state are owned by Slices 12.1 and 12.2.",
+        "The suggestion workflow will open only after validation and moderation are working.",
       ]}
     />
   );
