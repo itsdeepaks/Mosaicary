@@ -18,7 +18,7 @@ on:
       - "build-slices.md"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -32,34 +32,18 @@ jobs:
       run:
         working-directory: web
     steps:
-      - name: Check out pull request branch
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Format bootstrap workspace
-        run: npm run format
-
-      - name: Commit generated lockfile and formatting
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package-lock.json app/lab/page.tsx app/layout.tsx
-          if git diff --cached --quiet; then
-            echo "No bootstrap changes to commit."
-          else
-            git commit -m "chore(web): lock dependencies and format scaffold"
-            git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          fi
+      - name: Install locked dependencies
+        run: npm ci
 
       - name: Check formatting
         run: npm run format:check
