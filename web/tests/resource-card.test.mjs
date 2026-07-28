@@ -35,6 +35,9 @@ test("resource media follows the safe preview, favicon, generated fallback chain
   assert.match(component, /kind: "preview"/);
   assert.match(component, /kind: "favicon"/);
   assert.match(component, /generatedMark\(resource\.name\)/);
+  assert.match(component, /image\.addEventListener\("error", advanceFallback\)/);
+  assert.match(component, /image\.complete && image\.naturalWidth === 0/);
+  assert.match(component, /queueMicrotask\(advanceFallback\)/);
   assert.match(component, /setMediaIndex\(\(current\) => current \+ 1\)/);
   assert.match(component, /loading="lazy"/);
   assert.match(component, /decoding="async"/);
@@ -44,6 +47,7 @@ test("resource media follows the safe preview, favicon, generated fallback chain
     component,
     /url\.protocol === "https:" \|\| url\.protocol === "http:"/,
   );
+  assert.doesNotMatch(component, /onLoad=|data-media-loaded/);
   assert.doesNotMatch(
     component,
     /next\/image|dangerouslySetInnerHTML|fetch\(|XMLHttpRequest|innerHTML/,
@@ -57,6 +61,7 @@ test("resource card geometry survives long copy and missing media", async () => 
   assert.match(css, /border-radius: 0/);
   assert.match(css, /\.mediaImage\s*\{[\s\S]*?opacity: 1/);
   assert.doesNotMatch(css, /\.mediaImage\s*\{[\s\S]*?opacity: 0/);
+  assert.match(css, /\.mediaLabel\s*\{[\s\S]*?background:/);
   assert.match(css, /-webkit-line-clamp: 2/);
   assert.match(css, /-webkit-line-clamp: 3/);
   assert.match(css, /min-width: 44px/);
