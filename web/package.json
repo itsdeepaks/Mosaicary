@@ -9,6 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "catalogue:generate": "node scripts/generate-catalogue.mjs",
+    "catalogue:check": "node scripts/check-catalogue.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "node --test tests/*.test.mjs",
