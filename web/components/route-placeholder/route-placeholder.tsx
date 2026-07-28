@@ -42,7 +42,7 @@ export function RoutePlaceholder({
           <a
             className={styles.secondaryAction}
             href={repositoryUrl}
-            rel="noreferrer"
+            rel="noopener noreferrer"
             target="_blank"
           >
             View the repository
