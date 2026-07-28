@@ -20,11 +20,12 @@ export function ExploreHero() {
           <Image
             alt=""
             className={styles.image}
-            height={1024}
+            height={614}
             preload
             sizes="(max-width: 389px) 0px, (max-width: 720px) 145vw, (max-width: 1024px) 44vw, 46vw"
             src="/brand/tessli-hero-geometry.webp"
-            width={1536}
+            unoptimized
+            width={900}
           />
         </div>
       </div>
