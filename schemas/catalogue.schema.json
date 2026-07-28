@@ -116,11 +116,11 @@
         },
         "access": {
           "type": "string",
-          "enum": ["free", "freemium", "paid", "open-source"]
+          "enum": ["free", "freemium", "paid", "open-source", "free-trial"]
         },
         "subscriptionRequired": {
           "type": "string",
-          "enum": ["no", "optional", "yes"]
+          "enum": ["no", "optional", "yes", "after-trial"]
         },
         "usefulFor": {
           "type": "array",

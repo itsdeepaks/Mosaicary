@@ -52,6 +52,22 @@ npm run build
 
 `lib_data/design-resource-library-295.csv` is the release source of truth.
 
+The Next.js workspace consumes deterministic generated data:
+
+```text
+web/data/catalogue.json
+web/data/catalogue-validation.json
+```
+
+Regenerate and verify it from `web/`:
+
+```powershell
+npm run catalogue:generate
+npm run catalogue:check
+```
+
+The generated catalogue records the exact source path, SHA-256, and row count. Normal tests fail if committed output drifts from the CSV or migration contract.
+
 The metadata is manually curated and may become outdated as destination websites change their pricing, access model, availability, or licensing. Always verify those details with the original source before using a resource in production.
 
 ## Deployment
