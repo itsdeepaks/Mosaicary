@@ -56,11 +56,14 @@ export function SiteHeader() {
 
     const sheet = sheetRef.current;
     const trigger = triggerRef.current;
-    const siteContent = document.querySelector<HTMLElement>("[data-site-content]");
+    const siteContent = document.querySelector<HTMLElement>(
+      "[data-site-content]",
+    );
     const previousOverflow = document.body.style.overflow;
     const previousPaddingRight = document.body.style.paddingRight;
     const previousContentInert = siteContent?.inert ?? false;
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
     document.body.style.overflow = "hidden";
     if (scrollbarWidth > 0) {
@@ -74,7 +77,9 @@ export function SiteHeader() {
       'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
     const focusable = () =>
       Array.from(sheet?.querySelectorAll<HTMLElement>(focusableSelector) ?? []);
-    const focusFrame = window.requestAnimationFrame(() => focusable()[0]?.focus());
+    const focusFrame = window.requestAnimationFrame(() =>
+      focusable()[0]?.focus(),
+    );
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -155,7 +160,9 @@ export function SiteHeader() {
             aria-controls="mobile-navigation-sheet"
             aria-expanded={isMenuOpen}
             aria-haspopup="dialog"
-            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             className={styles.menuTrigger}
             data-mobile-menu-trigger
             onClick={() => setIsMenuOpen(true)}
