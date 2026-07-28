@@ -32,9 +32,10 @@ test("every internal footer destination has an App Router page", async () => {
 });
 
 test("footer contains only truthful launch groups and safe external links", async () => {
-  const [navigation, footer] = await Promise.all([
+  const [navigation, footer, styles] = await Promise.all([
     read("components/site-footer/footer-navigation.ts"),
     read("components/site-footer/site-footer.tsx"),
+    read("components/site-footer/site-footer.module.css"),
   ]);
 
   for (const group of ["Explore", "Contribute", "About", "Legal"]) {
@@ -48,19 +49,24 @@ test("footer contains only truthful launch groups and safe external links", asyn
   assert.match(footer, /target="_blank"/);
   assert.match(footer, /rel="noopener noreferrer"/);
   assert.match(footer, /public repository does not itself grant reuse rights/i);
+  assert.match(
+    styles,
+    /@media \(max-width: 560px\)[\s\S]*?\.footnote[\s\S]*?font-size: var\(--text-body-sm\)/,
+  );
   assert.doesNotMatch(
     `${navigation}\n${footer}`,
     /newsletter|instagram|twitter|cookie settings|changelog|open[- ]source/i,
   );
 });
 
-test("route shells are honest and never collect data", async () => {
+test("route shells are honest, visitor-facing, and never collect data", async () => {
   const routes = footerRoutes.filter((route) => route !== "/");
 
   for (const route of routes) {
     const page = await read(`app${route}/page.tsx`);
     assert.match(page, /<RoutePlaceholder/);
     assert.doesNotMatch(page, /<form|fetch\(|action=/);
+    assert.doesNotMatch(page, /\bSlices?\s+\d/i);
   }
 
   const placeholder = await read(
