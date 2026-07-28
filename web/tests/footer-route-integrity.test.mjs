@@ -24,6 +24,8 @@ const footerRoutes = [
   "/content-policy",
 ];
 
+const routeShells = [...footerRoutes.slice(1), "/saved"];
+
 test("every internal footer destination has an App Router page", async () => {
   for (const route of footerRoutes) {
     const pagePath = route === "/" ? "app/page.tsx" : `app${route}/page.tsx`;
@@ -60,9 +62,7 @@ test("footer contains only truthful launch groups and safe external links", asyn
 });
 
 test("route shells are honest, visitor-facing, and never collect data", async () => {
-  const routes = footerRoutes.filter((route) => route !== "/");
-
-  for (const route of routes) {
+  for (const route of routeShells) {
     const page = await read(`app${route}/page.tsx`);
     assert.match(page, /<RoutePlaceholder/);
     assert.doesNotMatch(page, /<form|fetch\(|action=/);

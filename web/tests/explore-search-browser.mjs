@@ -107,6 +107,20 @@ async function pressKey({ code, key, modifiers = 0, virtualKeyCode }) {
   await send("Input.dispatchKeyEvent", { ...params, type: "keyUp" });
 }
 
+async function pressKeyUntil(keyOptions, expression, label) {
+  const deadline = Date.now() + 5_000;
+
+  while (Date.now() < deadline) {
+    await pressKey(keyOptions);
+    if (await evaluate(expression)) {
+      return;
+    }
+    await delay(100);
+  }
+
+  throw new Error(`Timed out waiting for ${label}.`);
+}
+
 await send("Page.enable");
 await send("Runtime.enable");
 await send("Page.navigate", { url: pageUrl });
@@ -115,13 +129,13 @@ await waitFor(
   "the Explore search input",
 );
 
-await pressKey({
-  code: "KeyK",
-  key: "k",
-  modifiers: 2,
-  virtualKeyCode: 75,
-});
-await waitFor(
+await pressKeyUntil(
+  {
+    code: "KeyK",
+    key: "k",
+    modifiers: 2,
+    virtualKeyCode: 75,
+  },
   'document.activeElement?.hasAttribute("data-explore-search-input") === true',
   "Ctrl/Cmd + K focus",
 );

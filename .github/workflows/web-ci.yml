@@ -101,12 +101,14 @@ jobs:
           grep -q "Find better design resources, faster" /tmp/tessli-home.html
           grep -q "Search Tessli resources" /tmp/tessli-home.html
           grep -q "Browser-local saves" /tmp/tessli-home.html
+          grep -q "Browse resources by category" /tmp/tessli-home.html
+          grep -q "All resources" /tmp/tessli-home.html
           grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
           grep -q "A warm, editorial system" /tmp/tessli-lab.html
           grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
           grep -q 'id="mobile-navigation-sheet"' /tmp/tessli-lab.html
 
-          shell_routes=(collections resources submit suggest about curation privacy terms content-policy)
+          shell_routes=(collections resources saved submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
               "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
@@ -129,6 +131,7 @@ jobs:
             about:blank > artifacts/search-browser/chrome.log 2>&1 &
           search_chrome_pid=$!
           node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
+          node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           kill "$search_chrome_pid" 2>/dev/null || true
           wait "$search_chrome_pid" 2>/dev/null || true
           search_chrome_pid=""
@@ -170,6 +173,8 @@ jobs:
               "artifacts/responsive-ui/explore-$width.html"
             grep -q 'data-search-state="empty"' \
               "artifacts/responsive-ui/explore-$width.html"
+            grep -q 'data-discovery-category="all"' \
+              "artifacts/responsive-ui/explore-$width.html"
 
             "$chrome_bin" \
               --headless=new \
@@ -203,6 +208,8 @@ jobs:
           grep -q 'data-horizontal-overflow="false"' \
             "artifacts/responsive-ui/explore-$width.html"
           grep -q "Find better design resources, faster" \
+            "artifacts/responsive-ui/explore-$width.html"
+          grep -q 'data-discovery-category="all"' \
             "artifacts/responsive-ui/explore-$width.html"
 
           "$chrome_bin" \

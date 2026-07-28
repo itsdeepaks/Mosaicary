@@ -5,7 +5,17 @@ import { ExploreSearch } from "@/components/explore-search/explore-search";
 
 import styles from "./explore-hero.module.css";
 
-export function ExploreHero() {
+type ExploreHeroProps = {
+  searchValue?: string;
+  onSearchValueChange?: (query: string) => void;
+  onSearchQueryChange?: (query: string) => void;
+};
+
+export function ExploreHero({
+  searchValue,
+  onSearchValueChange,
+  onSearchQueryChange,
+}: ExploreHeroProps) {
   return (
     <section aria-labelledby="explore-hero-title" className={styles.hero}>
       <div className={`tessli-container tessli-grid ${styles.inner}`}>
@@ -17,7 +27,11 @@ export function ExploreHero() {
             resources, organised to help designers and developers find stronger
             references without another noisy feed.
           </p>
-          <ExploreSearch />
+          <ExploreSearch
+            onQueryChange={onSearchQueryChange}
+            onValueChange={onSearchValueChange}
+            value={searchValue}
+          />
           <ExploreFacts />
         </div>
 
