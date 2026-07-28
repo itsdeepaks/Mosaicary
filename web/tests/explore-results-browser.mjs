@@ -104,6 +104,21 @@ function resultCountExpression(expected) {
   return `Number(document.querySelector('[data-explore-results]')?.getAttribute('data-result-count')) === ${expected}`;
 }
 
+async function loadEveryResult() {
+  while (await evaluate('Boolean(document.querySelector("[data-load-more-resources]"))')) {
+    const before = await evaluate(
+      'Number(document.querySelector("[data-explore-results]")?.getAttribute("data-visible-result-count"))',
+    );
+    await evaluate(
+      'document.querySelector("[data-load-more-resources]")?.click()',
+    );
+    await waitFor(
+      `Number(document.querySelector('[data-explore-results]')?.getAttribute('data-visible-result-count')) > ${before}`,
+      `a result batch after ${before}`,
+    );
+  }
+}
+
 await send("Page.enable");
 await send("Runtime.enable");
 await navigate("/");
@@ -116,7 +131,9 @@ assert.equal(
   48,
 );
 assert.equal(
-  await evaluate('document.querySelectorAll("[data-resource-grid] > li").length'),
+  await evaluate(
+    'document.querySelectorAll("[data-resource-grid] > li").length',
+  ),
   48,
 );
 assert.equal(
@@ -134,8 +151,10 @@ assert.equal(
   "Public cards should use truthful generated media until metadata exists.",
 );
 assert.match(
-  await evaluate('document.querySelector("[aria-live=polite]")?.textContent ?? ""'),
-  /295 resources available/,
+  await evaluate(
+    'Array.from(document.querySelectorAll("[aria-live=polite]")).map((node) => node.textContent).join(" ")',
+  ),
+  /Showing 48 of 295/,
 );
 
 await evaluate('document.querySelector("[data-load-more-resources]")?.click()');
@@ -148,6 +167,27 @@ assert.equal(
     'Number(document.querySelector("[data-explore-results]")?.getAttribute("data-visible-result-count"))',
   ),
   96,
+);
+
+await loadEveryResult();
+assert.equal(
+  await evaluate(
+    'Number(document.querySelector("[data-explore-results]")?.getAttribute("data-visible-result-count"))',
+  ),
+  295,
+  "Every matching resource should be reachable through Load more.",
+);
+assert.equal(
+  await evaluate('document.querySelectorAll("[data-resource-grid] > li").length'),
+  295,
+);
+assert.equal(
+  await evaluate('Boolean(document.querySelector("[data-load-more-resources]"))'),
+  false,
+);
+assert.match(
+  await evaluate('document.querySelector("[data-explore-results]")?.textContent ?? ""'),
+  /All matching resources are visible/,
 );
 
 await evaluate('document.querySelector("[data-category=icons]")?.click()');
@@ -244,7 +284,10 @@ assert.match(
 
 await evaluate('document.querySelector("[data-reset-discovery]")?.click()');
 await waitFor(resultCountExpression(295), "reset complete catalogue");
-assert.equal(await evaluate("window.location.pathname + window.location.search"), "/");
+assert.equal(
+  await evaluate("window.location.pathname + window.location.search"),
+  "/",
+);
 
 await evaluate("window.history.back()");
 await waitFor(
