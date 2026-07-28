@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
   buildCatalogue,
+  CATALOGUE_PATH,
   CATEGORY_DEFINITIONS,
   EXPECTED_ACCESS_COUNTS,
   parseCsv,
+  REPORT_PATH,
   slugify,
 } from "../scripts/catalogue-lib.mjs";
 
@@ -110,4 +113,15 @@ test("catalogue and validation output are deterministic", async () => {
   assert.equal(first.catalogueText, second.catalogueText);
   assert.equal(first.reportText, second.reportText);
   assert.match(first.catalogue.source.sha256, /^[a-f0-9]{64}$/);
+});
+
+test("committed catalogue data matches deterministic migration output", async () => {
+  const result = await catalogueBuild();
+  const [committedCatalogue, committedReport] = await Promise.all([
+    readFile(path.join(repoRoot, CATALOGUE_PATH), "utf8"),
+    readFile(path.join(repoRoot, REPORT_PATH), "utf8"),
+  ]);
+
+  assert.equal(committedCatalogue, result.catalogueText);
+  assert.equal(committedReport, result.reportText);
 });
