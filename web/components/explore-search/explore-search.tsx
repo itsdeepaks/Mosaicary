@@ -21,12 +21,7 @@ function isEditableTarget(target: EventTarget | null) {
 
 function SearchIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      viewBox="0 0 24 24"
-    >
+    <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="6.5" />
       <path d="m16 16 4 4" />
     </svg>
@@ -35,12 +30,7 @@ function SearchIcon() {
 
 function ClearIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      focusable="false"
-      viewBox="0 0 24 24"
-    >
+    <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
       <path d="m7 7 10 10M17 7 7 17" />
     </svg>
   );
@@ -68,10 +58,7 @@ export function ExploreSearch({
         !event.altKey &&
         event.key.toLowerCase() === "k";
       const slashShortcut =
-        event.key === "/" &&
-        !event.metaKey &&
-        !event.ctrlKey &&
-        !event.altKey;
+        event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey;
 
       if (
         modalIsOpen ||
@@ -94,10 +81,7 @@ export function ExploreSearch({
       return;
     }
 
-    const timer = window.setTimeout(
-      () => onQueryChange(normalizedQuery),
-      100,
-    );
+    const timer = window.setTimeout(() => onQueryChange(normalizedQuery), 100);
 
     return () => window.clearTimeout(timer);
   }, [normalizedQuery, onQueryChange]);
@@ -147,7 +131,7 @@ export function ExploreSearch({
               inputRef.current?.blur();
             }
           }}
-          placeholder='Search resources, e.g. “UI kits”, “type”, “motion”'
+          placeholder="Search resources, e.g. “UI kits”, “type”, “motion”"
           ref={inputRef}
           spellCheck={false}
           type="search"
