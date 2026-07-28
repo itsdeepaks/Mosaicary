@@ -132,6 +132,7 @@ export const SUBSCRIPTION_MAP = new Map([
   ["No", "no"],
   ["Optional", "optional"],
   ["Yes", "yes"],
+  ["After trial", "after-trial"],
 ]);
 
 export const EXPECTED_ACCESS_COUNTS = {
@@ -257,7 +258,10 @@ function compareHeaders(actual) {
 function exactKeys(value, allowedKeys) {
   const keys = Object.keys(value).sort();
   const expected = [...allowedKeys].sort();
-  return keys.length === expected.length && keys.every((key, index) => key === expected[index]);
+  return (
+    keys.length === expected.length &&
+    keys.every((key, index) => key === expected[index])
+  );
 }
 
 export function validateCatalogueAgainstSchema(catalogue, schema) {
@@ -276,7 +280,9 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
   }
 
   if (!exactKeys(catalogue, schema.required)) {
-    errors.push("Catalogue top-level keys do not match the deterministic schema contract.");
+    errors.push(
+      "Catalogue top-level keys do not match the deterministic schema contract.",
+    );
   }
 
   if (catalogue.source.path !== SOURCE_PATH) {
@@ -286,7 +292,9 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
     errors.push("Catalogue source SHA-256 is invalid.");
   }
   if (catalogue.source.rowCount !== catalogue.resources.length) {
-    errors.push("Catalogue source row count does not equal the resource count.");
+    errors.push(
+      "Catalogue source row count does not equal the resource count.",
+    );
   }
 
   const expectedCategoryCount = schema.properties.categories.minItems;
@@ -294,13 +302,17 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
     catalogue.categories.length !== expectedCategoryCount ||
     catalogue.categories.length !== schema.properties.categories.maxItems
   ) {
-    errors.push(`Catalogue must contain exactly ${expectedCategoryCount} categories.`);
+    errors.push(
+      `Catalogue must contain exactly ${expectedCategoryCount} categories.`,
+    );
   }
 
   const categoryIds = new Set();
   for (const category of catalogue.categories) {
     if (!exactKeys(category, categorySchema.required)) {
-      errors.push(`Category ${category.id ?? "<unknown>"} has unexpected keys.`);
+      errors.push(
+        `Category ${category.id ?? "<unknown>"} has unexpected keys.`,
+      );
     }
     if (!identifierPattern.test(category.id)) {
       errors.push(`Category identifier is invalid: ${category.id}`);
@@ -310,7 +322,10 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
     }
     categoryIds.add(category.id);
     for (const field of ["label", "shortLabel", "description", "icon"]) {
-      if (typeof category[field] !== "string" || category[field].trim() === "") {
+      if (
+        typeof category[field] !== "string" ||
+        category[field].trim() === ""
+      ) {
         errors.push(`Category ${category.id} has an invalid ${field}.`);
       }
     }
@@ -323,7 +338,9 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
   const slugs = new Set();
   for (const resource of catalogue.resources) {
     if (!exactKeys(resource, resourceSchema.required)) {
-      errors.push(`Resource ${resource.id ?? "<unknown>"} has unexpected keys.`);
+      errors.push(
+        `Resource ${resource.id ?? "<unknown>"} has unexpected keys.`,
+      );
     }
     if (!identifierPattern.test(resource.id)) {
       errors.push(`Resource identifier is invalid: ${resource.id}`);
@@ -379,7 +396,10 @@ export function validateCatalogueAgainstSchema(catalogue, schema) {
     }
   }
 
-  if (!Array.isArray(catalogue.collections) || catalogue.collections.length !== 0) {
+  if (
+    !Array.isArray(catalogue.collections) ||
+    catalogue.collections.length !== 0
+  ) {
     errors.push("Slice 4.1 catalogue collections must be an empty array.");
   }
 
@@ -406,10 +426,14 @@ export async function buildCatalogue(options = {}) {
 
   if (!compareHeaders(headers)) {
     errors.push(
-      issue("invalid-headers", "CSV headers do not match the approved source contract.", {
-        actual: headers,
-        expected: SOURCE_HEADERS,
-      }),
+      issue(
+        "invalid-headers",
+        "CSV headers do not match the approved source contract.",
+        {
+          actual: headers,
+          expected: SOURCE_HEADERS,
+        },
+      ),
     );
   }
 
@@ -425,7 +449,12 @@ export async function buildCatalogue(options = {}) {
   const accessCounts = Object.fromEntries(
     Object.keys(EXPECTED_ACCESS_COUNTS).map((access) => [access, 0]),
   );
-  const subscriptionCounts = { no: 0, optional: 0, yes: 0 };
+  const subscriptionCounts = {
+    no: 0,
+    optional: 0,
+    yes: 0,
+    "after-trial": 0,
+  };
   const resources = [];
   const slugCollisions = [];
 
@@ -433,34 +462,52 @@ export async function buildCatalogue(options = {}) {
     const sourceRow = rowIndex + 2;
     if (columns.length !== SOURCE_HEADERS.length) {
       errors.push(
-        issue("invalid-column-count", `Row ${sourceRow} has ${columns.length} columns.`, {
-          row: sourceRow,
-          expected: SOURCE_HEADERS.length,
-        }),
+        issue(
+          "invalid-column-count",
+          `Row ${sourceRow} has ${columns.length} columns.`,
+          {
+            row: sourceRow,
+            expected: SOURCE_HEADERS.length,
+          },
+        ),
       );
       return;
     }
 
-    const [categoryLabel, name, rawUrl, accessLabel, subscriptionLabel, description] =
-      columns.map((value) => value.trim());
+    const [
+      categoryLabel,
+      name,
+      rawUrl,
+      accessLabel,
+      subscriptionLabel,
+      description,
+    ] = columns.map((value) => value.trim());
     const category = categoryBySourceLabel.get(categoryLabel);
     const access = ACCESS_MAP.get(accessLabel);
     const subscriptionRequired = SUBSCRIPTION_MAP.get(subscriptionLabel);
 
     if (!category) {
       errors.push(
-        issue("unknown-category", `Row ${sourceRow} uses an unknown category.`, {
-          row: sourceRow,
-          value: categoryLabel,
-        }),
+        issue(
+          "unknown-category",
+          `Row ${sourceRow} uses an unknown category.`,
+          {
+            row: sourceRow,
+            value: categoryLabel,
+          },
+        ),
       );
     }
     if (!access) {
       errors.push(
-        issue("unknown-access", `Row ${sourceRow} uses an unknown access label.`, {
-          row: sourceRow,
-          value: accessLabel,
-        }),
+        issue(
+          "unknown-access",
+          `Row ${sourceRow} uses an unknown access label.`,
+          {
+            row: sourceRow,
+            value: accessLabel,
+          },
+        ),
       );
     }
     if (!subscriptionRequired) {
@@ -473,7 +520,11 @@ export async function buildCatalogue(options = {}) {
       );
     }
     if (!name) {
-      errors.push(issue("missing-name", `Row ${sourceRow} has no website name.`, { row: sourceRow }));
+      errors.push(
+        issue("missing-name", `Row ${sourceRow} has no website name.`, {
+          row: sourceRow,
+        }),
+      );
     }
     if (!description) {
       errors.push(
@@ -504,7 +555,14 @@ export async function buildCatalogue(options = {}) {
       );
     }
 
-    if (!category || !access || !subscriptionRequired || !name || !description || !domain) {
+    if (
+      !category ||
+      !access ||
+      !subscriptionRequired ||
+      !name ||
+      !description ||
+      !domain
+    ) {
       return;
     }
 
@@ -514,7 +572,12 @@ export async function buildCatalogue(options = {}) {
     usedSlugs.set(baseSlug, slugCount);
     const slug = slugCount === 1 ? baseSlug : `${baseSlug}-${slugCount}`;
     if (slugCount > 1) {
-      slugCollisions.push({ baseSlug, resolvedSlug: slug, row: sourceRow, name });
+      slugCollisions.push({
+        baseSlug,
+        resolvedSlug: slug,
+        row: sourceRow,
+        name,
+      });
     }
 
     const resource = {
@@ -547,18 +610,26 @@ export async function buildCatalogue(options = {}) {
 
   if (rows.length !== 295) {
     errors.push(
-      issue("source-row-count", `Expected 295 source rows but found ${rows.length}.`, {
-        expected: 295,
-        actual: rows.length,
-      }),
+      issue(
+        "source-row-count",
+        `Expected 295 source rows but found ${rows.length}.`,
+        {
+          expected: 295,
+          actual: rows.length,
+        },
+      ),
     );
   }
   if (resources.length !== rows.length) {
     errors.push(
-      issue("generated-row-count", "Not every source row produced a resource.", {
-        sourceRows: rows.length,
-        resources: resources.length,
-      }),
+      issue(
+        "generated-row-count",
+        "Not every source row produced a resource.",
+        {
+          sourceRows: rows.length,
+          resources: resources.length,
+        },
+      ),
     );
   }
 
@@ -566,11 +637,15 @@ export async function buildCatalogue(options = {}) {
     const actual = categoryCounts.get(category.id) ?? 0;
     if (actual !== category.expectedCount) {
       errors.push(
-        issue("category-count", `Category ${category.id} has an unexpected row count.`, {
-          category: category.id,
-          expected: category.expectedCount,
-          actual,
-        }),
+        issue(
+          "category-count",
+          `Category ${category.id} has an unexpected row count.`,
+          {
+            category: category.id,
+            expected: category.expectedCount,
+            actual,
+          },
+        ),
       );
     }
   }
@@ -579,11 +654,15 @@ export async function buildCatalogue(options = {}) {
     const actual = accessCounts[access] ?? 0;
     if (actual !== expected) {
       errors.push(
-        issue("access-count", `Access model ${access} has an unexpected row count.`, {
-          access,
-          expected,
-          actual,
-        }),
+        issue(
+          "access-count",
+          `Access model ${access} has an unexpected row count.`,
+          {
+            access,
+            expected,
+            actual,
+          },
+        ),
       );
     }
   }
@@ -593,7 +672,11 @@ export async function buildCatalogue(options = {}) {
     .map(([url, entries]) => ({ url, entries }));
   for (const duplicate of duplicateUrls) {
     errors.push(
-      issue("duplicate-url", "Multiple rows resolve to the same normalized URL.", duplicate),
+      issue(
+        "duplicate-url",
+        "Multiple rows resolve to the same normalized URL.",
+        duplicate,
+      ),
     );
   }
 
@@ -611,7 +694,11 @@ export async function buildCatalogue(options = {}) {
   }
   for (const collision of slugCollisions) {
     warnings.push(
-      issue("slug-collision", "A duplicate base slug received a deterministic suffix.", collision),
+      issue(
+        "slug-collision",
+        "A duplicate base slug received a deterministic suffix.",
+        collision,
+      ),
     );
   }
 

@@ -6,23 +6,23 @@ Version one catalogue record:
 
 ```ts
 type Resource = {
-  id: string
-  slug: string
-  name: string
-  url: string
-  domain: string
-  description: string
-  category: CategoryId
-  access: 'free' | 'freemium' | 'paid' | 'open-source' | 'free-trial'
-  subscriptionRequired: 'no' | 'optional' | 'yes'
-  usefulFor: string[]
-  tags: string[]
-  faviconUrl?: string
-  previewImageUrl?: string
-  previewSource?: 'manual' | 'open-graph' | 'favicon' | 'generated'
-  lastVerifiedAt?: string
-  status: 'active' | 'needs-review' | 'unavailable'
-}
+  id: string;
+  slug: string;
+  name: string;
+  url: string;
+  domain: string;
+  description: string;
+  category: CategoryId;
+  access: "free" | "freemium" | "paid" | "open-source" | "free-trial";
+  subscriptionRequired: "no" | "optional" | "yes" | "after-trial";
+  usefulFor: string[];
+  tags: string[];
+  faviconUrl?: string;
+  previewImageUrl?: string;
+  previewSource?: "manual" | "open-graph" | "favicon" | "generated";
+  lastVerifiedAt?: string;
+  status: "active" | "needs-review" | "unavailable";
+};
 ```
 
 The current CSV is migrated into deterministic typed JSON under `web/data/`. The migration preserves all 295 entries, records source SHA-256 provenance, and reports invalid URLs, missing descriptions, exact duplicate URLs, duplicate domains, slug collisions, or unknown source labels.
@@ -33,13 +33,13 @@ The current CSV is migrated into deterministic typed JSON under `web/data/`. The
 
 ```ts
 type Category = {
-  id: string
-  label: string
-  shortLabel: string
-  description: string
-  icon: string
-  order: number
-}
+  id: string;
+  label: string;
+  shortLabel: string;
+  description: string;
+  icon: string;
+  order: number;
+};
 ```
 
 The current eleven broad categories remain the release taxonomy. Short labels are used in compact UI while full labels remain available in filters and detail views.
@@ -48,19 +48,19 @@ The current eleven broad categories remain the release taxonomy. Short labels ar
 
 ```ts
 type Collection = {
-  id: string
-  slug: string
-  title: string
-  description: string
-  resourceIds: string[]
-  coverStyle: 'editorial' | 'typography' | 'motion' | 'systems'
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  resourceIds: string[];
+  coverStyle: "editorial" | "typography" | "motion" | "systems";
   curator?: {
-    name: string
-    profileUrl?: string
-  }
-  lastReviewedAt?: string
-  status: 'draft' | 'published' | 'archived'
-}
+    name: string;
+    profileUrl?: string;
+  };
+  lastReviewedAt?: string;
+  status: "draft" | "published" | "archived";
+};
 ```
 
 Do not invent curators. Repository-maintained collections may use “Curated by Tessli”.

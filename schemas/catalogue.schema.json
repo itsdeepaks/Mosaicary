@@ -120,7 +120,7 @@
         },
         "subscriptionRequired": {
           "type": "string",
-          "enum": ["no", "optional", "yes"]
+          "enum": ["no", "optional", "yes", "after-trial"]
         },
         "usefulFor": {
           "type": "array",

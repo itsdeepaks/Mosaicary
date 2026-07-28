@@ -53,6 +53,7 @@ test("migration accounts for all source rows and approved categories", async () 
   assert.equal(report.summary.categories, 11);
   assert.deepEqual(report.summary.access, EXPECTED_ACCESS_COUNTS);
   assert.equal(report.summary.access["free-trial"], 1);
+  assert.equal(report.summary.subscriptionRequired["after-trial"], 1);
   assert.equal(catalogue.resources[0].name, "DesignIndex");
 });
 
@@ -85,7 +86,11 @@ test("generated identifiers, slugs, URLs, and domains are unique and valid", asy
     assert.match(resource.domain, /^[A-Za-z0-9.-]+$/);
     assert.doesNotThrow(() => new URL(resource.url));
     assert.equal(ids.has(resource.id), false, `Duplicate ID: ${resource.id}`);
-    assert.equal(slugs.has(resource.slug), false, `Duplicate slug: ${resource.slug}`);
+    assert.equal(
+      slugs.has(resource.slug),
+      false,
+      `Duplicate slug: ${resource.slug}`,
+    );
     ids.add(resource.id);
     slugs.add(resource.slug);
   }
