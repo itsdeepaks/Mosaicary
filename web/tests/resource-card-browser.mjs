@@ -78,7 +78,9 @@ async function evaluate(expression) {
 
   if (response.exceptionDetails) {
     throw new Error(
-      response.exceptionDetails.text ?? "Browser evaluation failed.",
+      response.exceptionDetails.exception?.description ??
+        response.exceptionDetails.text ??
+        "Browser evaluation failed.",
     );
   }
 
@@ -163,7 +165,7 @@ await waitFor(
 
 assert.equal(
   await evaluate(
-    'document.querySelectorAll("[data-resource-card] > a[target=_blank][rel=\"noopener noreferrer\"]").length',
+    `document.querySelectorAll('[data-resource-card] > a[target="_blank"][rel="noopener noreferrer"]').length`,
   ),
   12,
   "Every card should expose one protected native external link.",
