@@ -121,6 +121,16 @@ async function closeTarget(targetId) {
   await fetch(`${endpoint}/json/close/${targetId}`);
 }
 
+async function revealCard(slug) {
+  await evaluate(`(() => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.querySelector('[data-resource-slug="${slug}"]')?.scrollIntoView({
+      block: 'center',
+    });
+  })()`);
+  await delay(100);
+}
+
 async function activateCardLink({ button, modifiers = 0 }) {
   const point = await evaluate(`(() => {
     const link = document.querySelector('[data-resource-slug="land-book"] a');
@@ -171,14 +181,17 @@ assert.equal(
   "Every card should expose one protected native external link.",
 );
 
+await revealCard("land-book");
 await waitFor(
   'document.querySelector("[data-resource-slug=land-book]")?.getAttribute("data-media-state") === "preview" && document.querySelector("[data-resource-slug=land-book] [data-media-loaded]")?.getAttribute("data-media-loaded") === "true"',
   "the valid preview image",
 );
+await revealCard("lapa-ninja");
 await waitFor(
   'document.querySelector("[data-resource-slug=lapa-ninja]")?.getAttribute("data-media-state") === "favicon"',
   "broken preview to fall back to favicon",
 );
+await revealCard("godly");
 await waitFor(
   'document.querySelector("[data-resource-slug=godly]")?.getAttribute("data-media-state") === "generated"',
   "broken preview to fall back to generated mark",
