@@ -32,7 +32,10 @@ test("keyboard interaction supports focus, clear-first Escape, and blur", async 
 
   assert.match(search, /event\.key\.toLowerCase\(\) === "k"/);
   assert.match(search, /event\.key === "\/"/);
-  assert.match(search, /event\.preventDefault\(\);\s*inputRef\.current\?\.focus\(\)/);
+  assert.match(
+    search,
+    /event\.preventDefault\(\);\s*inputRef\.current\?\.focus\(\)/,
+  );
   assert.match(search, /if \(query\) \{\s*setQuery\(""\)/);
   assert.match(search, /inputRef\.current\?\.blur\(\)/);
   assert.match(search, /modalIsOpen \|\|\s*targetIsEditable/);
