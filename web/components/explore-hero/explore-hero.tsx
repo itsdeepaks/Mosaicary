@@ -1,6 +1,14 @@
 import Image from "next/image";
 
 import styles from "./explore-hero.module.css";
+import { HeroSearch } from "./hero-search";
+
+const heroFacts = [
+  { value: "295", label: "Curated resources" },
+  { value: "11", label: "Practical categories" },
+  { value: "Local", label: "Browser-only saves" },
+  { value: "Public", label: "GitHub repository" },
+] as const;
 
 export function ExploreHero() {
   return (
@@ -14,6 +22,7 @@ export function ExploreHero() {
             resources, organised to help designers and developers find stronger
             references without another noisy feed.
           </p>
+          <HeroSearch totalResources={295} />
         </div>
 
         <div className={styles.artwork} aria-hidden="true">
@@ -29,6 +38,15 @@ export function ExploreHero() {
           />
         </div>
       </div>
+
+      <dl aria-label="Tessli at a glance" className={`tessli-container ${styles.facts}`}>
+        {heroFacts.map((fact) => (
+          <div className={styles.fact} key={fact.label}>
+            <dd>{fact.value}</dd>
+            <dt>{fact.label}</dt>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }
