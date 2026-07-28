@@ -183,7 +183,7 @@ assert.equal(
 
 await revealCard("land-book");
 await waitFor(
-  'document.querySelector("[data-resource-slug=land-book]")?.getAttribute("data-media-state") === "preview" && document.querySelector("[data-resource-slug=land-book] [data-media-loaded]")?.getAttribute("data-media-loaded") === "true"',
+  '(() => { const card = document.querySelector("[data-resource-slug=land-book]"); const image = card?.querySelector("img"); return card?.getAttribute("data-media-state") === "preview" && image?.complete === true && image.naturalWidth > 0; })()',
   "the valid preview image",
 );
 await revealCard("lapa-ninja");
