@@ -26,8 +26,7 @@ const footerRoutes = [
 
 test("every internal footer destination has an App Router page", async () => {
   for (const route of footerRoutes) {
-    const pagePath =
-      route === "/" ? "app/page.tsx" : `app${route}/page.tsx`;
+    const pagePath = route === "/" ? "app/page.tsx" : `app${route}/page.tsx`;
     await access(path.join(webRoot, pagePath));
   }
 });
@@ -84,10 +83,7 @@ test("header exposes only routes implemented by this slice", async () => {
     );
   }
 
-  assert.match(
-    navigation,
-    /label: "Saved"[\s\S]*?available: false/,
-  );
+  assert.match(navigation, /label: "Saved"[\s\S]*?available: false/);
 });
 
 test("global footer stays inside the modal-inert site content wrapper", async () => {
