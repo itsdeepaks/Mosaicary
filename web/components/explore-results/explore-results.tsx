@@ -3,7 +3,10 @@
 import { ResourceCard } from "@/components/resource-card/resource-card";
 import type { DiscoveryState } from "@/components/explore-discovery/discovery-state";
 
-import type { ExploreResultSet } from "./explore-results-state";
+import {
+  explorePageSize,
+  type ExploreResultSet,
+} from "./explore-results-state";
 import styles from "./explore-results.module.css";
 
 type ExploreResultsProps = Readonly<{
@@ -58,7 +61,7 @@ export function ExploreResults({
   const resultCount = resultSet.resources.length;
   const visibleResources = resultSet.resources.slice(0, visibleCount);
   const remaining = Math.max(0, resultCount - visibleResources.length);
-  const nextBatch = Math.min(48, remaining);
+  const nextBatch = Math.min(explorePageSize, remaining);
 
   if (resultCount === 0) {
     return (
