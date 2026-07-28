@@ -13,7 +13,7 @@ export default function CurationPage() {
       details={[
         "Descriptions should explain what a resource is useful for before a visitor opens it.",
         "Access, licensing, pricing, and availability must be verified at the original source.",
-        "The complete curation and correction policy is owned by Slice 9.1.",
+        "A complete correction, review, and takedown process will be published before launch.",
       ]}
     />
   );
