@@ -28,6 +28,8 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
     defaults:
       run:
         working-directory: web
@@ -60,7 +62,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Smoke test built routes
+      - name: Smoke test and capture design foundation
         shell: bash
         run: |
           npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
@@ -74,4 +76,48 @@ jobs:
             http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
 
           grep -q "Tessli application foundation" /tmp/tessli-home.html
-          grep -q "Tessli scaffold lab" /tmp/tessli-lab.html
+          grep -q "A warm, editorial system" /tmp/tessli-lab.html
+
+          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$chrome_bin"
+          mkdir -p artifacts/design-foundation
+
+          for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
+            IFS=":" read -r width height <<< "$viewport"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1500 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/lab \
+              > "artifacts/design-foundation/lab-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/design-foundation/lab-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=1500 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/design-foundation/lab-$width.png" \
+              http://127.0.0.1:3000/lab
+            test -s "artifacts/design-foundation/lab-$width.png"
+          done
+
+      - name: Upload design foundation screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-design-foundation-screenshots
+          path: web/artifacts/design-foundation/*.png
+          if-no-files-found: error
+          retention-days: 7
