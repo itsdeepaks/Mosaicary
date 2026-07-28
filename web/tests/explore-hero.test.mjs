@@ -11,21 +11,24 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("Explore page delegates to the scoped hero component", async () => {
+test("Explore page delegates to the scoped discovery experience", async () => {
   const page = await read("app/page.tsx");
 
-  assert.match(page, /<ExploreHero \/>/);
+  assert.match(page, /<ExploreExperience/);
   assert.match(page, /id="main-content"/);
   assert.doesNotMatch(page, /application foundation/i);
 });
 
-test("Explore hero composes approved copy, search, facts, and artwork", async () => {
+test("Explore hero composes approved copy, controlled search, facts, and artwork", async () => {
   const hero = await read("components/explore-hero/explore-hero.tsx");
 
   assert.match(hero, /Find better design resources, faster\./);
   assert.match(hero, /manually curated index/);
   assert.match(hero, /web and product design/);
-  assert.match(hero, /<ExploreSearch \/>/);
+  assert.match(hero, /<ExploreSearch/);
+  assert.match(hero, /value=\{searchValue\}/);
+  assert.match(hero, /onValueChange=\{onSearchValueChange\}/);
+  assert.match(hero, /onQueryChange=\{onSearchQueryChange\}/);
   assert.match(hero, /<ExploreFacts \/>/);
   assert.doesNotMatch(hero, /testimonial|trusted by|users love|weekly/i);
   assert.doesNotMatch(hero, /category navigation|filter|resource card/i);
