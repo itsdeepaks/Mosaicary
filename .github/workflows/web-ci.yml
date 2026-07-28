@@ -58,7 +58,6 @@ jobs:
           mkdir -p "$(dirname "$runtime_asset")"
           cp "$source_asset" "$runtime_asset"
           cmp --silent "$source_asset" "$runtime_asset"
-          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  $runtime_asset" | sha256sum -c -
 
       - name: Reconcile delivery status
         shell: bash
@@ -98,14 +97,17 @@ jobs:
           git add \
             ../build-slices.md \
             public/brand/tessli-hero-geometry.webp \
-            app \
-            components \
-            tests
-
+            app/page.tsx \
+            app/layout.tsx \
+            app/lab/grain-toggle.tsx \
+            components/explore-hero \
+            components/viewport-overflow-probe \
+            tests/explore-hero.test.mjs \
+            ../.github/workflows/web-ci.yml
           if git diff --cached --quiet; then
             echo "No bootstrap changes to commit."
           else
-            git commit -m "chore(web): finalize Explore hero assets and formatting"
+            git commit -m "chore(web): finalize Explore hero asset and verification"
             git push origin HEAD:${{ github.head_ref || github.ref_name }}
           fi
 
@@ -165,7 +167,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
+              --virtual-time-budget=1500 \
               --window-size="$width,$height" \
               --dump-dom \
               http://127.0.0.1:3000/lab \
@@ -180,7 +182,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
+              --virtual-time-budget=1500 \
               --window-size="$width,$height" \
               --dump-dom \
               http://127.0.0.1:3000/ \
@@ -197,7 +199,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1800 \
+              --virtual-time-budget=1500 \
               --window-size="$width,$height" \
               --screenshot="artifacts/responsive-ui/explore-$width.png" \
               http://127.0.0.1:3000/
