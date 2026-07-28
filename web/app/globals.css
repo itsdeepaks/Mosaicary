@@ -88,7 +88,8 @@ body {
   margin: 0;
   background-color: var(--canvas);
   color: var(--text-strong);
-  font-family: var(--font-instrument-sans), "Avenir Next", system-ui, sans-serif;
+  font-family:
+    var(--font-instrument-sans), "Avenir Next", system-ui, sans-serif;
   font-size: var(--text-body);
   font-variation-settings: "wdth" 98;
   line-height: 1.55;
