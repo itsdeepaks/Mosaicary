@@ -13,7 +13,7 @@ export default function TermsPage() {
       details={[
         "Visitors remain responsible for checking destination terms, licences, pricing, and availability.",
         "Third-party services are operated independently from Tessli.",
-        "The complete production terms are owned by Slice 9.1 and will be reviewed before launch.",
+        "Complete production terms will be reviewed and published before the public cutover.",
       ]}
     />
   );
