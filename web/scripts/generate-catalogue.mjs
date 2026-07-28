@@ -13,6 +13,11 @@ const repoRoot = path.resolve(path.dirname(currentFile), "../..");
 const { catalogueText, report, reportText } = await buildCatalogue({
   root: repoRoot,
 });
+const cataloguePath = path.join(repoRoot, CATALOGUE_PATH);
+const reportPath = path.join(repoRoot, REPORT_PATH);
+
+await mkdir(path.dirname(reportPath), { recursive: true });
+await writeFile(reportPath, reportText, "utf8");
 
 if (report.issues.errors.length > 0) {
   console.error(
@@ -23,16 +28,8 @@ if (report.issues.errors.length > 0) {
   }
   process.exitCode = 1;
 } else {
-  const cataloguePath = path.join(repoRoot, CATALOGUE_PATH);
-  const reportPath = path.join(repoRoot, REPORT_PATH);
-  await Promise.all([
-    mkdir(path.dirname(cataloguePath), { recursive: true }),
-    mkdir(path.dirname(reportPath), { recursive: true }),
-  ]);
-  await Promise.all([
-    writeFile(cataloguePath, catalogueText, "utf8"),
-    writeFile(reportPath, reportText, "utf8"),
-  ]);
+  await mkdir(path.dirname(cataloguePath), { recursive: true });
+  await writeFile(cataloguePath, catalogueText, "utf8");
 
   console.log(
     `Generated ${report.summary.resources} resources across ${report.summary.categories} categories.`,
