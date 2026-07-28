@@ -26,7 +26,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteHeader />
-        {children}
+        <div data-site-content>{children}</div>
       </body>
     </html>
   );
