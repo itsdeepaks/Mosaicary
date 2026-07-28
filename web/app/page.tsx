@@ -32,9 +32,6 @@ export default function ExplorePage() {
                 Explore collections
               </Link>
             </div>
-            <p className={styles.note}>
-              Search and catalogue filtering arrive in the next verified slice.
-            </p>
           </div>
 
           <div className={styles.artwork} aria-hidden="true">
