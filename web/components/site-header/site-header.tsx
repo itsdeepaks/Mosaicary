@@ -23,15 +23,31 @@ export function SiteHeader() {
 
   useEffect(() => {
     const updateScrollState = () => setIsScrolled(window.scrollY > 8);
-    updateScrollState();
+    const frame = window.requestAnimationFrame(updateScrollState);
     window.addEventListener("scroll", updateScrollState, { passive: true });
 
-    return () => window.removeEventListener("scroll", updateScrollState);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateScrollState);
+    };
   }, []);
 
   useEffect(() => {
-    closeMenu();
-  }, [closeMenu, pathname]);
+    const desktopQuery = window.matchMedia("(min-width: 768px)");
+    const closeAtDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        closeMenu();
+      }
+    };
+
+    desktopQuery.addEventListener("change", closeAtDesktop);
+    window.addEventListener("popstate", closeMenu);
+
+    return () => {
+      desktopQuery.removeEventListener("change", closeAtDesktop);
+      window.removeEventListener("popstate", closeMenu);
+    };
+  }, [closeMenu]);
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -39,17 +55,26 @@ export function SiteHeader() {
     }
 
     const sheet = sheetRef.current;
+    const trigger = triggerRef.current;
+    const siteContent = document.querySelector<HTMLElement>("[data-site-content]");
     const previousOverflow = document.body.style.overflow;
+    const previousPaddingRight = document.body.style.paddingRight;
+    const previousContentInert = siteContent?.inert ?? false;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
     document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+    if (siteContent) {
+      siteContent.inert = true;
+    }
 
     const focusableSelector =
-      'a[href], button:not([disabled]):not([tabindex="-1"])';
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
     const focusable = () =>
-      Array.from(
-        sheet?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
-      );
-
-    requestAnimationFrame(() => focusable()[0]?.focus());
+      Array.from(sheet?.querySelectorAll<HTMLElement>(focusableSelector) ?? []);
+    const focusFrame = window.requestAnimationFrame(() => focusable()[0]?.focus());
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -71,7 +96,10 @@ export function SiteHeader() {
         return;
       }
 
-      if (event.shiftKey && document.activeElement === first) {
+      if (!sheet?.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && document.activeElement === first) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && document.activeElement === last) {
@@ -83,9 +111,16 @@ export function SiteHeader() {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
-      triggerRef.current?.focus();
+      document.body.style.paddingRight = previousPaddingRight;
+      if (siteContent) {
+        siteContent.inert = previousContentInert;
+      }
+      if (trigger?.isConnected && trigger.offsetParent !== null) {
+        trigger.focus();
+      }
     };
   }, [closeMenu, isMenuOpen]);
 
@@ -96,7 +131,10 @@ export function SiteHeader() {
           Tessli
         </Link>
 
-        <nav className={styles.desktopNavigation} aria-label="Primary navigation">
+        <nav
+          className={styles.desktopNavigation}
+          aria-label="Primary navigation"
+        >
           {availableNavigationItems.map((item) => {
             const active = isItemActive(item, pathname);
             return (
@@ -116,7 +154,8 @@ export function SiteHeader() {
           <button
             aria-controls="mobile-navigation-sheet"
             aria-expanded={isMenuOpen}
-            aria-label="Open navigation menu"
+            aria-haspopup="dialog"
+            aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             className={styles.menuTrigger}
             data-mobile-menu-trigger
             onClick={() => setIsMenuOpen(true)}
@@ -140,7 +179,7 @@ export function SiteHeader() {
           type="button"
         />
         <div
-          aria-label="Mobile navigation"
+          aria-labelledby="mobile-navigation-title"
           aria-modal="true"
           className={styles.sheet}
           id="mobile-navigation-sheet"
@@ -148,7 +187,9 @@ export function SiteHeader() {
           role="dialog"
         >
           <div className={styles.sheetHeader}>
-            <span className={styles.sheetTitle}>Navigate</span>
+            <span className={styles.sheetTitle} id="mobile-navigation-title">
+              Navigate
+            </span>
             <button
               aria-label="Close navigation menu"
               className={styles.closeButton}
@@ -158,7 +199,10 @@ export function SiteHeader() {
               <CloseIcon />
             </button>
           </div>
-          <nav className={styles.mobileNavigation} aria-label="Mobile primary navigation">
+          <nav
+            className={styles.mobileNavigation}
+            aria-label="Mobile primary navigation"
+          >
             {availableNavigationItems.map((item) => {
               const active = isItemActive(item, pathname);
               return (
