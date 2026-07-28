@@ -1,18 +1,15 @@
-import Link from "next/link";
+import { ExploreHero } from "@/components/explore-hero/explore-hero";
 
-export default function FoundationPage() {
+export const metadata = {
+  title: "Explore design resources",
+  description:
+    "Discover a manually curated index of useful web and product design resources.",
+};
+
+export default function ExplorePage() {
   return (
-    <main className="foundation-page" id="main-content">
-      <section aria-labelledby="foundation-title" className="foundation-panel">
-        <p className="foundation-label">Application preview</p>
-        <h1 id="foundation-title">Tessli application foundation</h1>
-        <p>
-          This isolated Next.js workspace establishes the verified product
-          foundation while the current public Tessli experience remains served
-          from the repository root.
-        </p>
-        <Link href="/lab">Open the design foundation lab</Link>
-      </section>
+    <main id="main-content">
+      <ExploreHero />
     </main>
   );
 }

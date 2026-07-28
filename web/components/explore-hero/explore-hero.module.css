@@ -1,0 +1,146 @@
+.hero {
+  display: grid;
+  min-height: min(720px, calc(100svh - 64px));
+  align-items: center;
+  overflow: clip;
+  border-bottom: 1px solid var(--line-subtle);
+  padding-block: clamp(52px, 7vw, 96px);
+}
+
+.inner {
+  align-items: center;
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / span 6;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-4);
+  color: var(--accent-text);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.copy h1 {
+  max-width: 10.5ch;
+  margin: 0;
+  font-family: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  font-size: var(--text-display-xl);
+  font-optical-sizing: auto;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 55ch;
+  margin: var(--space-6) 0 0;
+  color: var(--text-body);
+  font-size: var(--text-body-lg);
+  line-height: 1.55;
+}
+
+.artwork {
+  display: grid;
+  grid-column: 7 / -1;
+  min-width: 0;
+  place-items: center;
+  pointer-events: none;
+}
+
+.image {
+  width: min(108%, 780px);
+  max-width: none;
+  height: auto;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    min-height: min(680px, calc(100svh - 64px));
+    padding-block: clamp(48px, 7vw, 72px);
+  }
+
+  .copy {
+    grid-column: 1 / span 5;
+  }
+
+  .artwork {
+    grid-column: 6 / -1;
+  }
+
+  .image {
+    width: min(132%, 650px);
+  }
+
+  .copy h1 {
+    max-width: 10ch;
+  }
+
+  .lede {
+    max-width: 48ch;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: auto;
+    padding-block: 52px 32px;
+  }
+
+  .copy,
+  .artwork {
+    grid-column: 1 / -1;
+  }
+
+  .copy h1 {
+    max-width: 9.5ch;
+  }
+
+  .lede {
+    max-width: 42ch;
+    margin-top: var(--space-5);
+  }
+
+  .artwork {
+    position: relative;
+    height: clamp(230px, 70vw, 310px);
+    margin-top: var(--space-8);
+    overflow: hidden;
+  }
+
+  .image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(560px, 145vw);
+    max-width: none;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 389px) {
+  .hero {
+    padding-top: 44px;
+  }
+
+  .artwork {
+    height: 220px;
+    margin-top: var(--space-6);
+  }
+
+  .image {
+    width: 520px;
+  }
+}
+
+@media (forced-colors: active) {
+  .artwork {
+    opacity: 0.72;
+  }
+}
