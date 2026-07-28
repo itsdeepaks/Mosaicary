@@ -61,8 +61,8 @@ Stop and fix before merge when any of these occur:
 | 2.1 | Global header and navigation shell | DONE | 1.2 |
 | 2.2 | Footer and launch route integrity | DONE | 2.1 |
 | 3.1 | Explore hero composition | DONE | 2.2 |
-| 3.2 | Search interaction and truthful facts | NEXT | 3.1 |
-| 4.1 | Catalogue CSV-to-JSON migration and validation | PLANNED | 1.1 |
+| 3.2 | Search interaction and truthful facts | DONE | 3.1 |
+| 4.1 | Catalogue CSV-to-JSON migration and validation | NEXT | 1.1 |
 | 4.2 | Discovery URL state, category, access, and sort controls | PLANNED | 3.2, 4.1 |
 | 5.1 | Resource-card pilot with media fallbacks | PLANNED | 4.1 |
 | 5.2 | Responsive resource grid and complete Explore composition | PLANNED | 4.2, 5.1 |

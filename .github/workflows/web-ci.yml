@@ -73,7 +73,15 @@ jobs:
         run: |
           npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
           server_pid=$!
-          trap 'kill "$server_pid"' EXIT
+          search_chrome_pid=""
+
+          cleanup() {
+            if [ -n "$search_chrome_pid" ]; then
+              kill "$search_chrome_pid" 2>/dev/null || true
+            fi
+            kill "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
 
           curl --fail --silent --show-error \
             --retry 20 --retry-connrefused --retry-delay 1 \
@@ -82,6 +90,8 @@ jobs:
             http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
 
           grep -q "Find better design resources, faster" /tmp/tessli-home.html
+          grep -q "Search Tessli resources" /tmp/tessli-home.html
+          grep -q "Browser-local saves" /tmp/tessli-home.html
           grep -q "tessli-hero-geometry.webp" /tmp/tessli-home.html
           grep -q "A warm, editorial system" /tmp/tessli-lab.html
           grep -q 'aria-label="Tessli home"' /tmp/tessli-lab.html
@@ -97,7 +107,22 @@ jobs:
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui
+          mkdir -p artifacts/responsive-ui artifacts/search-browser
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-allow-origins=* \
+            --remote-debugging-port=9222 \
+            --user-data-dir=/tmp/tessli-search-cdp \
+            about:blank > artifacts/search-browser/chrome.log 2>&1 &
+          search_chrome_pid=$!
+          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
+          kill "$search_chrome_pid" 2>/dev/null || true
+          wait "$search_chrome_pid" 2>/dev/null || true
+          search_chrome_pid=""
 
           for viewport in "1440:1400" "1024:1400" "768:1400" "390:1400"; do
             IFS=":" read -r width height <<< "$viewport"
@@ -133,6 +158,8 @@ jobs:
             grep -q 'data-horizontal-overflow="false"' \
               "artifacts/responsive-ui/explore-$width.html"
             grep -q "Find better design resources, faster" \
+              "artifacts/responsive-ui/explore-$width.html"
+            grep -q 'data-search-state="empty"' \
               "artifacts/responsive-ui/explore-$width.html"
 
             "$chrome_bin" \
@@ -181,6 +208,15 @@ jobs:
             --screenshot="artifacts/responsive-ui/explore-$width.png" \
             http://127.0.0.1:3000/
           test -s "artifacts/responsive-ui/explore-$width.png"
+
+      - name: Upload search browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-search-browser-diagnostics
+          path: web/artifacts/search-browser/*
+          if-no-files-found: warn
+          retention-days: 2
 
       - name: Upload responsive screenshots
         if: always()
