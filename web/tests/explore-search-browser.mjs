@@ -72,7 +72,9 @@ async function evaluate(expression) {
   });
 
   if (response.exceptionDetails) {
-    throw new Error(response.exceptionDetails.text ?? "Browser evaluation failed.");
+    throw new Error(
+      response.exceptionDetails.text ?? "Browser evaluation failed.",
+    );
   }
 
   return response.result.value;
