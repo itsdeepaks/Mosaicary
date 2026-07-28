@@ -12,8 +12,8 @@ export default function SubmitPage() {
       summary="Tessli will accept useful additions only after server validation, duplicate detection, rate limits, moderation ownership, and contribution status are implemented."
       details={[
         "No public form is collecting personal data in this preview.",
-        "Accepted catalogue changes remain reviewable and attributable.",
-        "The complete submission workflow is owned by Slices 12.1 and 12.2.",
+        "Accepted catalogue changes will remain reviewable and attributable.",
+        "Submissions will open only after validation, abuse protection, and moderation are working.",
       ]}
     />
   );
