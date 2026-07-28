@@ -5,6 +5,8 @@ import { useEffect, useId, useRef, useState } from "react";
 import styles from "./explore-search.module.css";
 
 type ExploreSearchProps = {
+  value?: string;
+  onValueChange?: (query: string) => void;
   onQueryChange?: (query: string) => void;
   resultCount?: number;
 };
@@ -37,16 +39,26 @@ function ClearIcon() {
 }
 
 export function ExploreSearch({
+  value,
+  onValueChange,
   onQueryChange,
   resultCount,
 }: ExploreSearchProps) {
-  const [query, setQuery] = useState("");
+  const [uncontrolledQuery, setUncontrolledQuery] = useState("");
   const inputId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
   const statusId = useId();
+  const query = value ?? uncontrolledQuery;
   const normalizedQuery = query.trim();
   const hasResultCount =
     Number.isInteger(resultCount) && (resultCount ?? -1) >= 0;
+
+  const updateQuery = (nextQuery: string) => {
+    if (value === undefined) {
+      setUncontrolledQuery(nextQuery);
+    }
+    onValueChange?.(nextQuery);
+  };
 
   useEffect(() => {
     const handleGlobalShortcut = (event: KeyboardEvent) => {
@@ -118,7 +130,7 @@ export function ExploreSearch({
           data-explore-search-input
           enterKeyHint="search"
           id={inputId}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => updateQuery(event.target.value)}
           onKeyDown={(event) => {
             if (event.key !== "Escape") {
               return;
@@ -126,7 +138,7 @@ export function ExploreSearch({
 
             event.preventDefault();
             if (query) {
-              setQuery("");
+              updateQuery("");
             } else {
               inputRef.current?.blur();
             }
@@ -143,7 +155,7 @@ export function ExploreSearch({
             className={styles.clearButton}
             data-search-clear
             onClick={() => {
-              setQuery("");
+              updateQuery("");
               inputRef.current?.focus();
             }}
             type="button"
