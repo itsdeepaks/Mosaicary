@@ -130,7 +130,7 @@ await waitFor(
   "search text entry",
 );
 await waitFor(
-  'document.querySelector("[aria-live=polite]")?.textContent.includes("motion") === true',
+  'document.querySelector("[aria-live=polite]")?.textContent.trim() === "Search query entered."',
   "the polite search announcement",
 );
 assert.equal(
