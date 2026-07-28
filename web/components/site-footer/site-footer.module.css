@@ -117,6 +117,7 @@
   .footnote {
     flex-direction: column;
     gap: var(--space-3);
+    font-size: var(--text-body-sm);
   }
 }
 
