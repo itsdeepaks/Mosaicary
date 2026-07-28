@@ -49,10 +49,11 @@ test("hero layout recomposes instead of shrinking, hiding, or animating", async 
 
   assert.match(css, /grid-column: 1 \/ span 6/);
   assert.match(css, /grid-column: 7 \/ -1/);
-  assert.match(css, /width: min\(92%, 720px\)/);
+  assert.match(css, /width: min\(108%, 780px\)/);
   assert.match(css, /@media \(max-width: 1024px\)/);
   assert.match(css, /grid-column: 1 \/ span 5/);
   assert.match(css, /grid-column: 6 \/ -1/);
+  assert.match(css, /width: min\(132%, 650px\)/);
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(css, /overflow: hidden/);
   assert.match(css, /width: min\(560px, 145vw\)/);
