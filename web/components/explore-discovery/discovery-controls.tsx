@@ -8,7 +8,6 @@ import type {
   DiscoveryCategoryOption,
 } from "./discovery-options";
 import {
-  defaultDiscoveryState,
   discoveryHref,
   type DiscoveryAccess,
   type DiscoverySort,
@@ -59,6 +58,7 @@ export function DiscoveryControls({
 }: DiscoveryControlsProps) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const activeCategoryRef = useRef<HTMLButtonElement>(null);
+  const categoryScrollerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const filterTriggerRef = useRef<HTMLButtonElement>(null);
@@ -70,25 +70,52 @@ export function DiscoveryControls({
   const activeFilterCount = state.access.length + (state.category ? 1 : 0);
 
   useEffect(() => {
-    activeCategoryRef.current?.scrollIntoView({
-      behavior: "auto",
-      block: "nearest",
-      inline: "center",
-    });
+    const activeCategory = activeCategoryRef.current;
+    const scroller = categoryScrollerRef.current;
+    if (!activeCategory || !scroller) {
+      return;
+    }
+
+    const activeRect = activeCategory.getBoundingClientRect();
+    const scrollerRect = scroller.getBoundingClientRect();
+    const activeCenter =
+      activeRect.left -
+      scrollerRect.left +
+      scroller.scrollLeft +
+      activeRect.width / 2;
+    const maximumScroll = Math.max(
+      0,
+      scroller.scrollWidth - scroller.clientWidth,
+    );
+    const targetScroll = Math.min(
+      maximumScroll,
+      Math.max(0, activeCenter - scroller.clientWidth / 2),
+    );
+
+    scroller.scrollTo({ behavior: "auto", left: targetScroll });
   }, [state.category]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
+    let focusFrame: number | undefined;
     if (!dialog) {
       return;
     }
 
     if (filtersOpen && !dialog.open) {
       dialog.showModal();
-      window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+      focusFrame = window.requestAnimationFrame(() =>
+        closeButtonRef.current?.focus(),
+      );
     } else if (!filtersOpen && dialog.open) {
       dialog.close();
     }
+
+    return () => {
+      if (focusFrame !== undefined) {
+        window.cancelAnimationFrame(focusFrame);
+      }
+    };
   }, [filtersOpen]);
 
   const closeFilters = () => {
@@ -116,6 +143,7 @@ export function DiscoveryControls({
         <div
           aria-label="Browse resources by category"
           className={styles.categoryScroller}
+          ref={categoryScrollerRef}
           role="group"
         >
           <button
@@ -226,7 +254,7 @@ export function DiscoveryControls({
             <span>
               {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}
             </span>
-            <button onClick={onClearFilters} type="button">
+            <button data-clear-filters onClick={onClearFilters} type="button">
               Clear filters
             </button>
           </div>
@@ -291,6 +319,7 @@ export function DiscoveryControls({
           <div className={styles.dialogFooter}>
             <button
               className={styles.clearButton}
+              data-clear-filters
               disabled={activeFilterCount === 0}
               onClick={onClearFilters}
               type="button"
