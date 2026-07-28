@@ -252,7 +252,8 @@ export function DiscoveryControls({
         {activeFilterCount > 0 ? (
           <div aria-live="polite" className={styles.activeSummary}>
             <span>
-              {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}
+              {activeFilterCount} active{" "}
+              {activeFilterCount === 1 ? "filter" : "filters"}
             </span>
             <button data-clear-filters onClick={onClearFilters} type="button">
               Clear filters
