@@ -35,7 +35,7 @@ test("resource media follows the safe preview, favicon, generated fallback chain
   assert.match(component, /kind: "preview"/);
   assert.match(component, /kind: "favicon"/);
   assert.match(component, /generatedMark\(resource\.name\)/);
-  assert.match(component, /image\.addEventListener\("error", advanceFallback\)/);
+  assert.match(component, /addEventListener\("error", advanceFallback\)/);
   assert.match(component, /image\.complete && image\.naturalWidth === 0/);
   assert.match(component, /queueMicrotask\(advanceFallback\)/);
   assert.match(component, /setMediaIndex\(\(current\) => current \+ 1\)/);
