@@ -18,7 +18,7 @@ on:
       - "build-slices.md"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -34,10 +34,8 @@ jobs:
       run:
         working-directory: web
     steps:
-      - name: Check out pull request branch
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -48,57 +46,6 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
-
-      - name: Reconcile delivery status
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path("../build-slices.md")
-          text = path.read_text(encoding="utf-8")
-          replacements = {
-              "| 0.2 | Repository operating contract | NEXT | 0.1 |":
-                  "| 0.2 | Repository operating contract | DONE | 0.1 |",
-              "| 1.1 | Next.js application scaffold and CI baseline | PLANNED | 0.2 |":
-                  "| 1.1 | Next.js application scaffold and CI baseline | DONE | 0.2 |",
-              "| 1.2 | Fonts, tokens, grain, responsive layout lab | PLANNED | 1.1 |":
-                  "| 1.2 | Fonts, tokens, grain, responsive layout lab | DONE | 1.1 |",
-              "| 2.1 | Global header and navigation shell | PLANNED | 1.2 |":
-                  "| 2.1 | Global header and navigation shell | DONE | 1.2 |",
-              "| 2.2 | Footer and launch route integrity | PLANNED | 2.1 |":
-                  "| 2.2 | Footer and launch route integrity | DONE | 2.1 |",
-              "| 3.1 | Explore hero composition | PLANNED | 2.2 |":
-                  "| 3.1 | Explore hero composition | NEXT | 2.2 |",
-          }
-
-          for old, new in replacements.items():
-              count = text.count(old)
-              if count == 1:
-                  text = text.replace(old, new)
-              elif count == 0 and new in text:
-                  continue
-              else:
-                  raise SystemExit(f"Expected exactly one status row: {old!r}; found {count}")
-
-          path.write_text(text, encoding="utf-8")
-          PY
-
-      - name: Format footer workspace
-        run: npm run format
-
-      - name: Commit deterministic bootstrap changes
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ../build-slices.md .
-          if git diff --cached --quiet; then
-            echo "No bootstrap changes to commit."
-          else
-            git commit -m "chore: reconcile slice status and format footer"
-            git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          fi
 
       - name: Check formatting
         run: npm run format:check
