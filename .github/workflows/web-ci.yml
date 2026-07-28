@@ -59,6 +59,11 @@ jobs:
           cp "$source_asset" "$runtime_asset"
           cmp --silent "$source_asset" "$runtime_asset"
 
+          source_hash="$(sha256sum "$source_asset" | cut -d ' ' -f 1)"
+          runtime_hash="$(sha256sum "$runtime_asset" | cut -d ' ' -f 1)"
+          test "$source_hash" = "$runtime_hash"
+          echo "Approved hero SHA-256: $runtime_hash"
+
       - name: Reconcile delivery status
         shell: bash
         run: |
@@ -167,7 +172,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1500 \
+              --virtual-time-budget=1800 \
               --window-size="$width,$height" \
               --dump-dom \
               http://127.0.0.1:3000/lab \
@@ -182,7 +187,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1500 \
+              --virtual-time-budget=1800 \
               --window-size="$width,$height" \
               --dump-dom \
               http://127.0.0.1:3000/ \
@@ -199,7 +204,7 @@ jobs:
               --disable-dev-shm-usage \
               --hide-scrollbars \
               --force-device-scale-factor=1 \
-              --virtual-time-budget=1500 \
+              --virtual-time-budget=1800 \
               --window-size="$width,$height" \
               --screenshot="artifacts/responsive-ui/explore-$width.png" \
               http://127.0.0.1:3000/
