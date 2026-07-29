@@ -25,9 +25,7 @@ const footerRoutes = [
 ];
 
 const routeShells = [
-  ...footerRoutes.filter(
-    (route) => route !== "/" && route !== "/collections",
-  ),
+  ...footerRoutes.filter((route) => route !== "/" && route !== "/collections"),
   "/saved",
 ];
 
