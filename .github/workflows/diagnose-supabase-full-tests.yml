@@ -1,0 +1,47 @@
+name: Diagnose Supabase full Node tests
+
+on:
+  push:
+    branches: [feat/local-supabase-clients]
+    paths:
+      - ".github/workflows/diagnose-supabase-full-tests.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/local-supabase-clients
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Capture complete Node test output
+        shell: bash
+        run: |
+          set +e
+          cd web
+          npm test > "$GITHUB_WORKSPACE/docs/slices/10.1a-full-test.log" 2>&1
+          status=$?
+          cd ..
+          echo "exit_status=$status" >> docs/slices/10.1a-full-test.log
+          rm .github/workflows/diagnose-supabase-full-tests.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/slices/10.1a-full-test.log .github/workflows/diagnose-supabase-full-tests.yml
+          git commit -m "test: capture Supabase full-suite failure"
+          git push origin HEAD:feat/local-supabase-clients
