@@ -73,7 +73,9 @@ async function evaluate(expression) {
 
   if (response.exceptionDetails) {
     throw new Error(
-      response.exceptionDetails.text ?? "Browser evaluation failed.",
+      response.exceptionDetails.exception?.description ??
+        response.exceptionDetails.text ??
+        "Browser evaluation failed.",
     );
   }
 
@@ -146,8 +148,17 @@ await waitFor(
   "search text entry",
 );
 await waitFor(
-  'document.querySelector("[aria-live=polite]")?.textContent.trim() === "Search query entered."',
-  "the polite search announcement",
+  `(() => {
+    const input = document.querySelector('[data-explore-search-input]');
+    const status = document.getElementById(input?.getAttribute('aria-describedby'));
+    const count = Number(
+      document.querySelector('[data-explore-results]')?.getAttribute('data-result-count'),
+    );
+    const noun = count === 1 ? 'resource matches' : 'resources match';
+    return Number.isInteger(count) &&
+      status?.textContent.trim() === count + ' ' + noun + ' “motion”.';
+  })()`,
+  "the live catalogue search announcement",
 );
 assert.equal(
   await evaluate('Boolean(document.querySelector("[data-search-clear]"))'),
