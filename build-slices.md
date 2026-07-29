@@ -65,8 +65,8 @@ Stop and fix before merge when any of these occur:
 | 4.1 | Catalogue CSV-to-JSON migration and validation | DONE | 1.1 |
 | 4.2 | Discovery URL state, category, access, and sort controls | DONE | 3.2, 4.1 |
 | 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
-| 5.2 | Responsive resource grid and complete Explore composition | NEXT | 4.2, 5.1 |
-| 6.1 | Repository-maintained collection schema and launch data | PLANNED | 4.1 |
+| 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
+| 6.1 | Repository-maintained collection schema and launch data | NEXT | 4.1 |
 | 6.2 | Collections page and collection detail | PLANNED | 6.1 |
 | 7.1 | Full Reference desktop table/list | PLANNED | 4.1 |
 | 7.2 | Full Reference tablet/mobile filters and compact rows | PLANNED | 7.1 |
