@@ -64,7 +64,8 @@ export function ExploreExperience({
     [categories],
   );
   const categoryLabels = useMemo(
-    () => new Map(categories.map((category) => [category.id, category.fullLabel])),
+    () =>
+      new Map(categories.map((category) => [category.id, category.fullLabel])),
     [categories],
   );
   const resultSet = useMemo(
