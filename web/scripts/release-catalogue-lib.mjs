@@ -279,6 +279,28 @@ export function validateCollectionSource(source, schema, resources) {
   return errors;
 }
 
+export function prepareCollectionComposition(
+  source,
+  schema,
+  resources,
+  initialErrors = [],
+) {
+  const errors = [...initialErrors];
+  if (source) {
+    errors.push(...validateCollectionSource(source, schema, resources));
+  }
+
+  const sourceCollections = Array.isArray(source?.collections)
+    ? source.collections
+    : [];
+
+  return {
+    errors,
+    sourceCollections,
+    collections: errors.length === 0 ? sourceCollections : [],
+  };
+}
+
 export async function buildReleaseCatalogue(options = {}) {
   const root = options.root ?? repoRootFromModule();
   const base = await buildCatalogue({ root });
@@ -292,38 +314,30 @@ export async function buildReleaseCatalogue(options = {}) {
     .update(collectionSourceBuffer)
     .digest("hex");
   const collectionSchema = JSON.parse(collectionSchemaText);
-  const collectionErrors = [];
+  const parseErrors = [];
   let collectionSource = null;
 
   try {
     collectionSource = JSON.parse(collectionSourceBuffer.toString("utf8"));
   } catch (error) {
-    collectionErrors.push(
+    parseErrors.push(
       issue("collection-json", "Collection source is not valid JSON.", {
         reason: error instanceof Error ? error.message : "Unknown JSON error",
       }),
     );
   }
 
-  if (collectionSource) {
-    collectionErrors.push(
-      ...validateCollectionSource(
-        collectionSource,
-        collectionSchema,
-        base.catalogue.resources,
-      ),
-    );
-  }
-
-  const sourceCollections = Array.isArray(collectionSource?.collections)
-    ? collectionSource.collections
-    : [];
-  const collections = collectionErrors.length === 0 ? sourceCollections : [];
+  const composition = prepareCollectionComposition(
+    collectionSource,
+    collectionSchema,
+    base.catalogue.resources,
+    parseErrors,
+  );
   const catalogue = {
     ...base.catalogue,
-    collections,
+    collections: composition.collections,
   };
-  const collectionItems = collections.reduce(
+  const collectionItems = composition.collections.reduce(
     (sum, collection) => sum + collection.resourceIds.length,
     0,
   );
@@ -332,14 +346,14 @@ export async function buildReleaseCatalogue(options = {}) {
     collectionSource: {
       path: COLLECTION_SOURCE_PATH,
       sha256: collectionSourceSha256,
-      collectionCount: sourceCollections.length,
+      collectionCount: composition.sourceCollections.length,
     },
     summary: {
       ...base.report.summary,
-      collections: collections.length,
+      collections: composition.collections.length,
       collectionItems,
     },
-    collections: collections.map((collection) => ({
+    collections: composition.collections.map((collection) => ({
       id: collection.id,
       slug: collection.slug,
       resourceCount: collection.resourceIds.length,
@@ -347,7 +361,7 @@ export async function buildReleaseCatalogue(options = {}) {
       lastReviewedAt: collection.lastReviewedAt,
     })),
     issues: {
-      errors: [...base.report.issues.errors, ...collectionErrors],
+      errors: [...base.report.issues.errors, ...composition.errors],
       warnings: base.report.issues.warnings,
     },
   };
