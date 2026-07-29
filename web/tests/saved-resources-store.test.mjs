@@ -22,6 +22,8 @@ test("browser-local save store uses stable IDs and migrates both legacy URL keys
   assert.match(store, /legacySaveKeys\.flatMap/);
   assert.match(store, /writeSavedResourceIds\(migrated\)/);
   assert.match(store, /storage\.setItem\(\s*savedResourceStoreKey/);
+  assert.match(store, /exists: stored !== null && Array\.isArray\(parsed\)/);
+  assert.match(store, /if \(current\.exists\)/);
   assert.doesNotMatch(store, /removeItem|fetch\(|sessionStorage/);
 });
 

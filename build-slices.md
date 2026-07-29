@@ -74,8 +74,8 @@ Stop and fix before merge when any of these occur:
 | 7.1c | Explore category rail containment and overflow affordance | DONE | 7.1b |
 | 7.1d | Explore resource-card grid density and shared-border layout | DONE | 7.1c |
 | 7.2 | Full Reference tablet/mobile filters and compact rows | DONE | 7.1, 7.1d |
-| 8.1 | Browser-local save store and legacy-key migration | NEXT | 5.1 |
-| 8.2 | Saved page, empty state, clear and undo | PLANNED | 8.1 |
+| 8.1 | Browser-local save store and legacy-key migration | DONE | 5.1 |
+| 8.2 | Saved page, empty state, clear and undo | NEXT | 8.1 |
 | 9.1 | About, curation, content policy, privacy, and terms | PLANNED | 2.2 |
 | 9.2 | Phase 1 preview hardening and production replacement | PLANNED | 5.2, 6.2, 7.2, 8.2, 9.1 |
 | 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |

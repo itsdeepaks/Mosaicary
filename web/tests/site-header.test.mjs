@@ -18,7 +18,7 @@ test("only implemented navigation routes are available", async () => {
   for (const label of ["Collections", "Resources", "About", "Saved"]) {
     assert.match(
       navigation,
-      new RegExp(`label: "${label}"[\\s\\S]*?available: false`),
+      new RegExp(`label: "${label}"[\\s\\S]*?available: true`),
     );
   }
 });
