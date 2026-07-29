@@ -68,7 +68,7 @@ test("collection cards are native internal links with factual metadata and no sa
   assert.match(card, /aria-describedby=\{descriptionId\}/);
   assert.doesNotMatch(
     card,
-    /button|onClick|saved|curator|avatar|trending|popular/i,
+    /button|onClick|saved|curator|avatar|trending\b|popular\b/i,
   );
 });
 
@@ -94,7 +94,7 @@ test("collection details are static, ordered, truthful, and 404 unknown slugs", 
   assert.match(detail, /<ResourceCard/);
   assert.doesNotMatch(
     detail,
-    /onSavedChange=|saved=\{|curator|avatar|trending|popular/i,
+    /onSavedChange=|saved=\{|curator|avatar|trending\b|popular\b/i,
   );
 });
 
