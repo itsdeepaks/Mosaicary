@@ -2,7 +2,7 @@
   position: relative;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 0;
   background: color-mix(in srgb, var(--surface) 90%, transparent);
   transition:
@@ -13,9 +13,7 @@
 
 .card:hover,
 .card:focus-within {
-  border-color: var(--line-strong);
   background: var(--surface);
-  transform: translateY(-2px);
 }
 
 .card[data-resource-status="unavailable"] {
@@ -308,7 +306,7 @@
 @media (prefers-reduced-motion: reduce) {
   .card:hover,
   .card:focus-within {
-    transform: none;
+    transition: none;
   }
 }
 
