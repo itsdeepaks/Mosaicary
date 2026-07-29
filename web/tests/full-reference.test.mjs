@@ -37,7 +37,6 @@ test("desktop reference state reuses canonical discovery derivation and browser 
     /deriveExploreResults\(resources, categoryLabels, state\)/,
   );
   assert.match(experience, /discoveryHref\("\/resources", state\)/);
-  assert.match(experience, /discoveryHref\("\/", state\)/);
   assert.match(experience, /window\.history\.state \?\? \{\}/);
   assert.match(experience, /window\.history\[mode\]/);
   assert.match(experience, /writeHistory\(nextState, "replaceState"\)/);
@@ -48,7 +47,7 @@ test("desktop reference state reuses canonical discovery derivation and browser 
   assert.doesNotMatch(experience, /localStorage|sessionStorage|fetch\(/);
 });
 
-test("Full Reference uses native controls and one semantic all-row table", async () => {
+test("Full Reference uses native controls, a semantic desktop table, and compact external rows", async () => {
   const experience = await read(
     "components/full-reference/full-reference-experience.tsx",
   );
@@ -70,9 +69,12 @@ test("Full Reference uses native controls and one semantic all-row table", async
   assert.match(experience, /aria-live="polite"/);
   assert.match(experience, /data-reference-state="empty"/);
   assert.match(experience, /data-reference-state="error"/);
+  assert.match(experience, /data-mobile-reference-rows/);
+  assert.match(experience, /data-mobile-reference-row/);
+  assert.match(experience, /<dialog/);
   assert.doesNotMatch(
     experience,
-    /data-resource-save|onSavedChange|saved=\{|<dialog|showModal|load more|virtual/i,
+    /data-resource-save|onSavedChange|saved=\{|load more|virtual/i,
   );
 });
 
@@ -96,7 +98,7 @@ test("supporting panel is factual and omits unsupported ranking signals", async 
   );
 });
 
-test("responsive contract withholds desktop table below 1100px and shows Explore handoff", async () => {
+test("responsive contract replaces the desktop table with compact rows and a native filter sheet", async () => {
   const css = await read("components/full-reference/full-reference.module.css");
   const experience = await read(
     "components/full-reference/full-reference-experience.tsx",
@@ -114,13 +116,23 @@ test("responsive contract withholds desktop table below 1100px and shows Explore
   );
   assert.match(
     css,
-    /@media \(max-width: 1099px\)[\s\S]*?\.mobileHandoff\s*\{[\s\S]*?display: block/,
+    /@media \(max-width: 1099px\)[\s\S]*?\.mobileReference\s*\{[\s\S]*?display: block/,
   );
   assert.match(css, /@media \(forced-colors: active\)/);
-  assert.match(experience, /data-full-reference-handoff/);
-  assert.match(experience, /Continue in Explore/);
+  assert.match(experience, /data-full-reference-mobile/);
+  assert.match(experience, /data-mobile-reference-search/);
+  assert.match(experience, /data-mobile-reference-rows/);
+  assert.match(experience, /data-mobile-reference-row/);
+  assert.match(experience, /<dialog/);
+  assert.match(experience, /data-reference-filter-dialog/);
+  assert.match(experience, /showModal\(\)/);
+  assert.match(experience, /onCancel=\{\(event\) => \{/);
+  assert.match(experience, /onClose=\{restoreFilterFocus\}/);
+  assert.match(experience, /<details className=\{styles\.mobileSupport\}>/);
+  assert.match(experience, /data-mobile-reference-category/);
+  assert.match(experience, /data-mobile-reference-access/);
   assert.doesNotMatch(
-    `${css}\n${experience}`,
-    /compact resource row|filterDialog|filter sheet|bottom sheet/i,
+    experience,
+    /localStorage|sessionStorage|data-resource-save/,
   );
 });

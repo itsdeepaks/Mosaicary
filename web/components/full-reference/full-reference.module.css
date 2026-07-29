@@ -471,13 +471,273 @@
   color: var(--accent-text);
 }
 
-.mobileHandoff {
+.mobileReference {
   display: none;
   padding: var(--space-9) 0 clamp(80px, 12vw, 128px);
 }
 
-.handoffPanel {
-  max-width: 760px;
+.mobileSearchRow {
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  background: var(--surface);
+  padding: var(--space-4);
+}
+
+.mobileSearchControl {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.mobileSearchControl > span,
+.mobileSortControl > span {
+  color: var(--text-strong);
+  font-size: var(--text-label);
+  font-weight: 700;
+}
+
+.mobileSearchControl input,
+.mobileSortControl select,
+.filterTrigger {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control-md);
+  background: var(--surface);
+  color: var(--text-strong);
+  padding: 0 var(--space-3);
+  font: inherit;
+  font-size: var(--text-body-sm);
+}
+
+.mobileTools {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-3);
+  border: 1px solid var(--line);
+  background: var(--surface-muted);
+  padding: var(--space-3) var(--space-4);
+}
+
+.filterTrigger {
+  cursor: pointer;
+  font-weight: 700;
+  text-align: left;
+}
+
+.filterTrigger:hover {
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.mobileResultsHeader {
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--surface);
+  padding: var(--space-5) var(--space-4);
+}
+
+.mobileResultsHeader h2 {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: var(--text-h2);
+  font-weight: 610;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.mobileResultsHeader > div > p:last-child {
+  margin: var(--space-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+}
+
+.mobileRows {
+  display: grid;
+  margin: var(--space-5) 0 0;
+  border: 1px solid var(--line);
+  background: var(--line);
+  gap: 1px;
+  list-style: none;
+  padding: 0;
+}
+
+.mobileRows li {
+  min-width: 0;
+  background: var(--surface);
+}
+
+.mobileRows a {
+  display: grid;
+  gap: var(--space-1);
+  color: inherit;
+  padding: var(--space-4);
+  text-decoration: none;
+}
+
+.mobileRows a:hover {
+  background: color-mix(in srgb, var(--accent-soft) 48%, transparent);
+}
+
+.mobileRows a:focus-visible,
+.mobileSearchControl input:focus-visible,
+.mobileSortControl select:focus-visible,
+.filterTrigger:focus-visible,
+.closeButton:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.mobileRowTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.mobileRowTopline strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: var(--text-body-sm);
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobileRowTopline svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.mobileRowDomain,
+.mobileRowMeta {
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+
+.mobileRowDescription {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: var(--space-1);
+  color: var(--text-body);
+  font-size: var(--text-label);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mobileRowMeta {
+  margin-top: var(--space-2);
+}
+
+.mobileSupport {
+  margin-top: var(--space-5);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: var(--space-4);
+}
+
+.mobileSupport summary {
+  color: var(--text-strong);
+  cursor: pointer;
+  font-size: var(--text-label);
+  font-weight: 700;
+}
+
+.mobileSupport p {
+  margin: var(--space-4) 0 0;
+  color: var(--text-body);
+  font-size: var(--text-label);
+  line-height: 1.5;
+}
+
+.mobileSupport nav {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.mobileSupport a {
+  color: var(--text-body);
+  font-size: var(--text-label);
+  font-weight: 680;
+  text-underline-offset: 4px;
+}
+
+.filterDialog {
+  width: min(100% - (var(--space-4) * 2), 680px);
+  max-height: min(82dvh, 760px);
+  margin: auto auto var(--space-4);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  padding: 0;
+}
+
+.filterDialog::backdrop {
+  background: color-mix(in srgb, var(--text-strong) 36%, transparent);
+}
+
+.filterDialogHeader,
+.filterDialogActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.filterDialogHeader {
+  border-bottom: 1px solid var(--line);
+}
+
+.filterDialogHeader h2 {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: var(--text-h2);
+  font-weight: 610;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.closeButton {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control-md);
+  background: var(--surface);
+  color: var(--text-strong);
+  cursor: pointer;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.filterDialogBody {
+  max-height: min(52dvh, 520px);
+  overflow-y: auto;
+}
+
+.filterDialogActions {
+  border-top: 1px solid var(--line);
+}
+
+.filterDialogActions .resetButton,
+.filterDialogActions .primaryAction {
+  width: auto;
+  margin: 0;
+}
+
+.filterDialogActions .primaryAction {
+  flex: 1;
 }
 
 .visuallyHidden {
@@ -530,7 +790,7 @@
     display: none;
   }
 
-  .mobileHandoff {
+  .mobileReference {
     display: block;
   }
 }
@@ -548,7 +808,17 @@
     grid-template-columns: 1fr;
   }
 
-  .primaryAction {
+  .mobileTools {
+    grid-template-columns: 1fr;
+  }
+
+  .filterDialogActions {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .filterDialogActions .resetButton,
+  .filterDialogActions .primaryAction {
     width: 100%;
   }
 }
@@ -559,7 +829,9 @@
   .tableFrame,
   .introFacts,
   .statePanel,
-  .handoffPanel {
+  .mobileRows,
+  .mobileSupport,
+  .filterDialog {
     border-color: CanvasText;
   }
 

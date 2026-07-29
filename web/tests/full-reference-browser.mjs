@@ -132,7 +132,7 @@ assert.equal(
 );
 assert.equal(
   await evaluate(
-    `getComputedStyle(document.querySelector('[data-full-reference-handoff]')).display === 'none'`,
+    `getComputedStyle(document.querySelector('[data-full-reference-mobile]')).display === 'none'`,
   ),
   true,
 );
@@ -351,7 +351,7 @@ for (const width of [1024, 768, 390, 320]) {
   await setViewport(width, 1200);
   await navigate(
     "/resources?q=type&category=typography&access=free&sort=name-asc",
-    `document.querySelector('[data-full-reference-handoff]') !== null`,
+    `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
   );
   assert.equal(await evaluate("window.innerWidth"), width);
   assert.equal(
@@ -362,15 +362,15 @@ for (const width of [1024, 768, 390, 320]) {
   );
   assert.equal(
     await evaluate(
-      `getComputedStyle(document.querySelector('[data-full-reference-handoff]')).display !== 'none'`,
+      `getComputedStyle(document.querySelector('[data-full-reference-mobile]')).display !== 'none'`,
     ),
     true,
   );
   assert.equal(
     await evaluate(
-      `document.querySelector('[data-full-reference-handoff] a')?.getAttribute('href')`,
+      `document.querySelector('[data-mobile-reference-search]')?.value`,
     ),
-    "/?q=type&category=typography&access=free&sort=name-asc",
+    "type",
   );
   assert.equal(
     await evaluate(
@@ -381,12 +381,65 @@ for (const width of [1024, 768, 390, 320]) {
   );
   assert.equal(
     await evaluate(
-      `document.querySelectorAll('dialog, [data-filter-dialog], [data-mobile-reference-row]').length`,
+      `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
     ),
-    0,
-    "Slice 7.1 must not include the responsive filter sheet or compact rows.",
+    true,
+    "The compact view must retain matching resource rows.",
   );
 }
+
+await setViewport(390, 844);
+await navigate(
+  "/resources?q=motion",
+  `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
+);
+await evaluate(
+  `document.querySelector('[data-reference-filter-trigger]')?.click()`,
+);
+await waitFor(
+  `document.querySelector('[data-reference-filter-dialog]')?.open === true`,
+  "mobile filter sheet",
+);
+await evaluate(
+  `document.querySelector('input[data-mobile-reference-category="motion-3d"]')?.click()`,
+);
+await waitFor(
+  `new URLSearchParams(window.location.search).get('category') === 'motion-3d'`,
+  "mobile category URL state",
+);
+assert.equal(
+  await evaluate(
+    `Array.from(document.querySelectorAll('[data-mobile-reference-row]')).every((row) => row.getAttribute('data-mobile-row-category') === 'motion-3d')`,
+  ),
+  true,
+);
+await send("Input.dispatchKeyEvent", {
+  type: "keyDown",
+  key: "Escape",
+  code: "Escape",
+  windowsVirtualKeyCode: 27,
+});
+await send("Input.dispatchKeyEvent", {
+  type: "keyUp",
+  key: "Escape",
+  code: "Escape",
+  windowsVirtualKeyCode: 27,
+});
+await waitFor(
+  `document.querySelector('[data-reference-filter-dialog]')?.open === false`,
+  "Escape closes mobile filter sheet",
+);
+await waitFor(
+  `document.activeElement === document.querySelector('[data-reference-filter-trigger]')`,
+  "mobile filter focus return",
+);
+assert.equal(
+  await evaluate(
+    `document.activeElement === document.querySelector('[data-reference-filter-trigger]')`,
+  ),
+  true,
+  "Closing the filter sheet should restore focus to its trigger.",
+);
 
 socket.close();
 console.log(
