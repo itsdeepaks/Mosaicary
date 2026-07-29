@@ -3,8 +3,14 @@ export type SupabasePublicConfig = Readonly<{
   publishableKey: string;
 }>;
 
+type SupabasePublicEnvironment = Readonly<{
+  NEXT_PUBLIC_SUPABASE_URL?: string;
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
+}>;
+
 const URL_ENVIRONMENT_KEY = "NEXT_PUBLIC_SUPABASE_URL";
-const PUBLISHABLE_KEY_ENVIRONMENT_KEY = "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY";
+const PUBLISHABLE_KEY_ENVIRONMENT_KEY =
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY";
 
 export class SupabaseConfigurationError extends Error {
   constructor(message: string) {
@@ -13,19 +19,16 @@ export class SupabaseConfigurationError extends Error {
   }
 }
 
-function readRequiredValue(
-  environment: NodeJS.ProcessEnv,
-  key: string,
-): string {
-  const value = environment[key]?.trim();
+function readRequiredValue(value: string | undefined, key: string): string {
+  const normalizedValue = value?.trim();
 
-  if (!value) {
+  if (!normalizedValue) {
     throw new SupabaseConfigurationError(
       `Missing required public Supabase environment variable: ${key}.`,
     );
   }
 
-  return value;
+  return normalizedValue;
 }
 
 function parseSupabaseUrl(value: string): string {
@@ -83,14 +86,28 @@ function validatePublishableKey(value: string): string {
   return normalizedValue;
 }
 
+function readRuntimeEnvironment(): SupabasePublicEnvironment {
+  return {
+    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  };
+}
+
 export function readSupabasePublicConfig(
-  environment: NodeJS.ProcessEnv = process.env,
+  environment: SupabasePublicEnvironment = readRuntimeEnvironment(),
 ): SupabasePublicConfig {
   const url = parseSupabaseUrl(
-    readRequiredValue(environment, URL_ENVIRONMENT_KEY),
+    readRequiredValue(
+      environment.NEXT_PUBLIC_SUPABASE_URL,
+      URL_ENVIRONMENT_KEY,
+    ),
   );
   const publishableKey = validatePublishableKey(
-    readRequiredValue(environment, PUBLISHABLE_KEY_ENVIRONMENT_KEY),
+    readRequiredValue(
+      environment.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+      PUBLISHABLE_KEY_ENVIRONMENT_KEY,
+    ),
   );
 
   return { publishableKey, url };
