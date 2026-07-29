@@ -41,6 +41,14 @@ test("keyboard interaction supports focus, clear-first Escape, and blur", async 
   assert.match(search, /modalIsOpen \|\|\s*targetIsEditable/);
 });
 
+test("visible shortcut is platform-neutral while keyboard support remains cross-platform", async () => {
+  const search = await read("components/explore-search/explore-search.tsx");
+
+  assert.match(search, /event\.metaKey \|\| event\.ctrlKey/);
+  assert.match(search, /<kbd>Ctrl \/ ⌘ K<\/kbd>/);
+  assert.doesNotMatch(search, /<kbd>⌘<\/kbd>/);
+});
+
 test("query state is debounced and ready for validated catalogue integration", async () => {
   const search = await read("components/explore-search/explore-search.tsx");
 

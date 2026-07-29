@@ -1,6 +1,6 @@
 .hero {
   display: grid;
-  min-height: min(720px, calc(100svh - 64px));
+  min-height: min(760px, calc(100svh - 64px));
   align-items: center;
   overflow: clip;
   border-bottom: 1px solid var(--line-subtle);
@@ -52,17 +52,18 @@
   min-width: 0;
   place-items: center;
   pointer-events: none;
+  transform: translateX(-2%);
 }
 
 .image {
-  width: min(108%, 780px);
+  width: min(132%, 920px);
   max-width: none;
   height: auto;
 }
 
 @media (max-width: 1024px) {
   .hero {
-    min-height: min(680px, calc(100svh - 64px));
+    min-height: min(700px, calc(100svh - 64px));
     padding-block: clamp(48px, 7vw, 72px);
   }
 
@@ -75,7 +76,7 @@
   }
 
   .image {
-    width: min(132%, 650px);
+    width: min(142%, 680px);
   }
 
   .copy h1 {
@@ -109,7 +110,7 @@
 
   .artwork {
     position: relative;
-    height: clamp(230px, 70vw, 310px);
+    height: clamp(250px, 75vw, 340px);
     margin-top: var(--space-8);
     overflow: hidden;
   }
@@ -118,7 +119,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(560px, 145vw);
+    width: min(600px, 155vw);
     max-width: none;
     transform: translate(-50%, -50%);
   }
@@ -130,12 +131,12 @@
   }
 
   .artwork {
-    height: 220px;
+    height: 230px;
     margin-top: var(--space-6);
   }
 
   .image {
-    width: 520px;
+    width: 550px;
   }
 }
 

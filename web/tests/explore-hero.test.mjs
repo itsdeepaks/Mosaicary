@@ -52,15 +52,15 @@ test("hero layout recomposes instead of shrinking, hiding, or animating", async 
 
   assert.match(css, /grid-column: 1 \/ span 6/);
   assert.match(css, /grid-column: 7 \/ -1/);
-  assert.match(css, /width: min\(108%, 780px\)/);
+  assert.match(css, /width: min\(132%, 920px\)/);
   assert.match(css, /@media \(max-width: 1024px\)/);
   assert.match(css, /grid-column: 1 \/ span 5/);
   assert.match(css, /grid-column: 6 \/ -1/);
-  assert.match(css, /width: min\(132%, 650px\)/);
+  assert.match(css, /width: min\(142%, 680px\)/);
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(css, /overflow: hidden/);
-  assert.match(css, /width: min\(560px, 145vw\)/);
-  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?height: 220px/);
+  assert.match(css, /width: min\(600px, 155vw\)/);
+  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?height: 230px/);
   assert.doesNotMatch(css, /\.artwork\s*\{[\s\S]*?display: none/);
   assert.doesNotMatch(css, /animation:/);
 });
