@@ -3,6 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { ExploreHero } from "@/components/explore-hero/explore-hero";
+import { ExploreResults } from "@/components/explore-results/explore-results";
+import {
+  deriveExploreResults,
+  explorePageSize,
+} from "@/components/explore-results/explore-results-state";
+import type { ResourceCardData } from "@/components/resource-card/resource-card";
 
 import { DiscoveryControls } from "./discovery-controls";
 import type {
@@ -21,6 +27,7 @@ import {
 type ExploreExperienceProps = {
   categories: readonly DiscoveryCategoryOption[];
   accessOptions: readonly DiscoveryAccessOption[];
+  resources: readonly ResourceCardData[];
   initialState: DiscoveryState;
 };
 
@@ -46,19 +53,33 @@ function writeHistory(state: DiscoveryState, mode: HistoryMode) {
 export function ExploreExperience({
   categories,
   accessOptions,
+  resources,
   initialState,
 }: ExploreExperienceProps) {
   const [state, setState] = useState(initialState);
+  const [visibleCount, setVisibleCount] = useState(explorePageSize);
   const stateRef = useRef(initialState);
   const categoryIds = useMemo(
     () => new Set(categories.map((category) => category.id)),
     [categories],
   );
+  const categoryLabels = useMemo(
+    () =>
+      new Map(categories.map((category) => [category.id, category.fullLabel])),
+    [categories],
+  );
+  const resultSet = useMemo(
+    () => deriveExploreResults(resources, categoryLabels, state),
+    [categoryLabels, resources, state],
+  );
+  const resultCount =
+    resultSet.status === "ready" ? resultSet.resources.length : undefined;
 
   const applyState = useCallback(
     (nextState: DiscoveryState, mode: HistoryMode = "pushState") => {
       stateRef.current = nextState;
       setState(nextState);
+      setVisibleCount(explorePageSize);
       writeHistory(nextState, mode);
     },
     [],
@@ -72,6 +93,7 @@ export function ExploreExperience({
       );
       stateRef.current = restored;
       setState(restored);
+      setVisibleCount(explorePageSize);
     };
 
     window.addEventListener("popstate", restoreFromHistory);
@@ -84,6 +106,7 @@ export function ExploreExperience({
       stateRef.current = nextState;
       return nextState;
     });
+    setVisibleCount(explorePageSize);
   }, []);
 
   const handleQueryCommit = useCallback((query: string) => {
@@ -127,11 +150,29 @@ export function ExploreExperience({
     applyState({ ...stateRef.current, category: null, access: [] });
   }, [applyState]);
 
+  const handleResetDiscovery = useCallback(() => {
+    applyState({
+      ...stateRef.current,
+      query: "",
+      category: null,
+      access: [],
+    });
+  }, [applyState]);
+
+  const handleLoadMore = useCallback(() => {
+    const maximum =
+      resultSet.status === "ready"
+        ? resultSet.resources.length
+        : explorePageSize;
+    setVisibleCount((current) => Math.min(maximum, current + explorePageSize));
+  }, [resultSet]);
+
   return (
     <>
       <ExploreHero
         onSearchQueryChange={handleQueryCommit}
         onSearchValueChange={handleQueryValueChange}
+        resultCount={resultCount}
         searchValue={state.query}
       />
       <DiscoveryControls
@@ -142,6 +183,14 @@ export function ExploreExperience({
         onClearFilters={handleClearFilters}
         onSortChange={handleSortChange}
         state={state}
+      />
+      <ExploreResults
+        onLoadMore={handleLoadMore}
+        onResetDiscovery={handleResetDiscovery}
+        resultSet={resultSet}
+        state={state}
+        totalResourceCount={resources.length}
+        visibleCount={visibleCount}
       />
     </>
   );

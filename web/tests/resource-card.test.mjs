@@ -23,6 +23,9 @@ test("resource card keeps external navigation native and save independent", asyn
   assert.match(component, /target="_blank"/);
   assert.match(component, /rel="noopener noreferrer"/);
   assert.ok(anchorClose > 0 && saveButton > anchorClose);
+  assert.match(component, /saved\?: boolean/);
+  assert.match(component, /onSavedChange\?:/);
+  assert.match(component, /\{onSavedChange \? \(/);
   assert.match(component, /aria-pressed=\{saved\}/);
   assert.match(component, /data-resource-save=\{resource\.id\}/);
   assert.match(component, /onSavedChange\(resource\.id, !saved\)/);
