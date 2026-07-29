@@ -126,6 +126,14 @@ async function loadEveryResult() {
 await send("Page.enable");
 await send("Runtime.enable");
 await navigate("/");
+await evaluate(
+  `(() => {
+    const legacyUrl = document.querySelector('[data-resource-slug="designindex"] a')?.getAttribute('href');
+    localStorage.clear();
+    localStorage.setItem('mosaicary-saved-resources-v1', JSON.stringify([legacyUrl]));
+  })()`,
+);
+await navigate("/");
 
 await waitFor(resultCountExpression(295), "the complete catalogue count");
 assert.equal(
@@ -144,8 +152,43 @@ assert.equal(
   await evaluate(
     'document.querySelectorAll("[data-resource-grid] [data-resource-save]").length',
   ),
-  0,
-  "Explore must not expose non-persistent save controls.",
+  48,
+  "Explore must expose browser-persistent save controls.",
+);
+await waitFor(
+  'document.querySelector("[data-resource-slug=designindex] [data-resource-save]")?.getAttribute("aria-pressed") === "true"',
+  "legacy save migration",
+);
+const designIndexId = await evaluate(
+  'document.querySelector("[data-resource-slug=designindex] [data-resource-save]")?.getAttribute("data-resource-save")',
+);
+assert.equal(
+  await evaluate(
+    `JSON.parse(localStorage.getItem('tessli-saved-resource-ids-v2') ?? '[]').includes(${JSON.stringify(designIndexId)})`,
+  ),
+  true,
+  "Legacy URL saves should migrate to stable resource IDs.",
+);
+assert.equal(
+  await evaluate(
+    "localStorage.getItem('mosaicary-saved-resources-v1') !== null",
+  ),
+  true,
+  "Migration must leave the legacy key intact.",
+);
+await evaluate(
+  'document.querySelector("[data-resource-slug=designindex] [data-resource-save]")?.click()',
+);
+await waitFor(
+  'document.querySelector("[data-resource-slug=designindex] [data-resource-save]")?.getAttribute("aria-pressed") === "false"',
+  "independent save removal",
+);
+assert.equal(
+  await evaluate(
+    `JSON.parse(localStorage.getItem('tessli-saved-resource-ids-v2') ?? '[]').includes(${JSON.stringify(designIndexId)})`,
+  ),
+  false,
+  "Removing a save should update the stable-ID store.",
 );
 assert.equal(
   await evaluate(

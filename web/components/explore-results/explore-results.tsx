@@ -18,6 +18,9 @@ type ExploreResultsProps = Readonly<{
   visibleCount: number;
   onLoadMore: () => void;
   onResetDiscovery: () => void;
+  savedResourceIds: ReadonlySet<string>;
+  onSavedChange: (resourceId: string, saved: boolean) => void;
+  saveAnnouncement: string;
 }>;
 
 function resultSummary(count: number, state: DiscoveryState) {
@@ -37,6 +40,9 @@ export function ExploreResults({
   visibleCount,
   onLoadMore,
   onResetDiscovery,
+  savedResourceIds,
+  onSavedChange,
+  saveAnnouncement,
 }: ExploreResultsProps) {
   if (resultSet.status === "error") {
     return (
@@ -125,10 +131,19 @@ export function ExploreResults({
         <ul className={styles.grid} data-resource-grid>
           {visibleResources.map(({ resource, categoryLabel }) => (
             <li key={resource.id}>
-              <ResourceCard categoryLabel={categoryLabel} resource={resource} />
+              <ResourceCard
+                categoryLabel={categoryLabel}
+                onSavedChange={onSavedChange}
+                resource={resource}
+                saved={savedResourceIds.has(resource.id)}
+              />
             </li>
           ))}
         </ul>
+
+        <p aria-live="polite" className={styles.visuallyHidden}>
+          {saveAnnouncement}
+        </p>
 
         {remaining > 0 ? (
           <div className={styles.loadMoreFrame}>
