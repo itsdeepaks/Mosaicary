@@ -11,8 +11,7 @@ import {
 
 export { CATALOGUE_PATH, REPORT_PATH };
 
-export const COLLECTION_SOURCE_PATH =
-  "lib_data/tessli-launch-collections.json";
+export const COLLECTION_SOURCE_PATH = "lib_data/tessli-launch-collections.json";
 export const COLLECTION_SCHEMA_PATH = "schemas/collections.schema.json";
 
 function repoRootFromModule() {
@@ -102,7 +101,10 @@ export function validateCollectionSource(source, schema, resources) {
 
   if (!Array.isArray(source.collections)) {
     errors.push(
-      issue("collection-array", "Collection source collections must be an array."),
+      issue(
+        "collection-array",
+        "Collection source collections must be an array.",
+      ),
     );
     return errors;
   }
@@ -129,7 +131,9 @@ export function validateCollectionSource(source, schema, resources) {
   const resourceIdSchema = collectionSchema.properties.resourceIds;
   const coverStyles = new Set(collectionSchema.properties.coverStyle.enum);
   const publishedStatus = collectionSchema.properties.status.const;
-  const availableResourceIds = new Set(resources.map((resource) => resource.id));
+  const availableResourceIds = new Set(
+    resources.map((resource) => resource.id),
+  );
   const collectionIds = new Set();
   const collectionSlugs = new Set();
 
@@ -144,7 +148,11 @@ export function validateCollectionSource(source, schema, resources) {
       ),
     );
 
-    if (!collection || typeof collection !== "object" || Array.isArray(collection)) {
+    if (
+      !collection ||
+      typeof collection !== "object" ||
+      Array.isArray(collection)
+    ) {
       continue;
     }
 
@@ -156,7 +164,10 @@ export function validateCollectionSource(source, schema, resources) {
       );
     } else if (collectionIds.has(collection.id)) {
       errors.push(
-        issue("duplicate-collection-id", `Duplicate collection ID: ${collection.id}.`),
+        issue(
+          "duplicate-collection-id",
+          `Duplicate collection ID: ${collection.id}.`,
+        ),
       );
     }
     collectionIds.add(collection.id);
@@ -185,10 +196,7 @@ export function validateCollectionSource(source, schema, resources) {
         )
       ) {
         errors.push(
-          issue(
-            `collection-${field}`,
-            `${label} has an invalid ${field}.`,
-          ),
+          issue(`collection-${field}`, `${label} has an invalid ${field}.`),
         );
       }
     }
