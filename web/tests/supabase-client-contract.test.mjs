@@ -82,14 +82,21 @@ test("public Supabase configuration rejects missing, unsafe, and secret values",
 });
 
 test("client factories use the public key and preserve request cookie boundaries", async () => {
-  const [browser, server, environmentExample] = await Promise.all([
+  const [browser, config, server, environmentExample] = await Promise.all([
     readWebFile("lib/supabase/browser.ts"),
+    readWebFile("lib/supabase/config.ts"),
     readWebFile("lib/supabase/server.ts"),
     readWebFile(".env.example"),
   ]);
 
   assert.match(browser, /createBrowserClient<Database>/);
   assert.match(browser, /readSupabasePublicConfig\(\)/);
+  assert.match(config, /process\.env\.NEXT_PUBLIC_SUPABASE_URL/);
+  assert.match(
+    config,
+    /process\.env\.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/,
+  );
+  assert.doesNotMatch(config, /process\.env\[[^\]]+\]/);
   assert.match(server, /await cookies\(\)/);
   assert.match(server, /createServerClient<Database>/);
   assert.match(server, /getAll\(\)/);
