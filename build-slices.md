@@ -67,8 +67,8 @@ Stop and fix before merge when any of these occur:
 | 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
 | 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
-| 6.2 | Collections page and collection detail | NEXT | 6.1 |
-| 7.1 | Full Reference desktop table/list | PLANNED | 4.1 |
+| 6.2 | Collections page and collection detail | DONE | 6.1 |
+| 7.1 | Full Reference desktop table/list | NEXT | 4.1 |
 | 7.2 | Full Reference tablet/mobile filters and compact rows | PLANNED | 7.1 |
 | 8.1 | Browser-local save store and legacy-key migration | PLANNED | 5.1 |
 | 8.2 | Saved page, empty state, clear and undo | PLANNED | 8.1 |
