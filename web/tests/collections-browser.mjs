@@ -148,7 +148,7 @@ assert.equal(
 );
 assert.equal(
   await evaluate(
-    'document.querySelector("nav[aria-label=\"Primary navigation\"] a[aria-current=page]")?.textContent?.trim()',
+    `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
   ),
   "Collections",
 );
@@ -178,19 +178,19 @@ for (const slug of collectionSlugs) {
   );
   assert.equal(
     await evaluate(
-      'document.querySelectorAll("[data-collection-resource-grid] [data-resource-card] > a[target=_blank][rel=\"noopener noreferrer\"]").length',
+      `document.querySelectorAll('[data-collection-resource-grid] [data-resource-card] > a[target="_blank"][rel="noopener noreferrer"]').length`,
     ),
     10,
   );
   assert.equal(
     await evaluate(
-      'document.querySelector("nav[aria-label=\"Primary navigation\"] a[aria-current=page]")?.textContent?.trim()',
+      `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
     ),
     "Collections",
   );
   assert.equal(
     await evaluate(
-      'document.querySelector("a[href=\"/suggest\"]")?.textContent?.trim()',
+      `document.querySelector('a[href="/suggest"]')?.textContent?.trim()`,
     ),
     "Suggest an improvement",
   );
