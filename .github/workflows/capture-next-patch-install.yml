@@ -1,0 +1,45 @@
+name: Capture Next patch install
+
+on:
+  push:
+    branches: [feat/local-supabase-clients]
+    paths:
+      - ".github/workflows/capture-next-patch-install.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/local-supabase-clients
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Capture install output
+        shell: bash
+        run: |
+          set +e
+          report="$GITHUB_WORKSPACE/docs/slices/10.1a-next-patch-install.log"
+          cd web
+          npm install --save-exact next@16.2.12 > "$report" 2>&1
+          first=$?
+          npm install --save-dev --save-exact eslint-config-next@16.2.12 >> "$report" 2>&1
+          second=$?
+          cd ..
+          printf '\nnext_status=%s\neslint_config_status=%s\n' "$first" "$second" >> "$report"
+          rm -f .github/workflows/remediate-and-validate-supabase-runtime.yml
+          rm -f .github/workflows/capture-next-patch-install.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/slices/10.1a-next-patch-install.log .github/workflows/remediate-and-validate-supabase-runtime.yml .github/workflows/capture-next-patch-install.yml
+          git commit -m "test: capture Next patch installation"
+          git push origin HEAD:feat/local-supabase-clients
