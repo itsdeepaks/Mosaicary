@@ -5,6 +5,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ExploreHero } from "@/components/explore-hero/explore-hero";
 import { ExploreResults } from "@/components/explore-results/explore-results";
 import {
+  readSavedResourceIds,
+  savedResourceStoreKey,
+  writeSavedResourceIds,
+} from "@/components/saved-resources/save-store";
+import {
   deriveExploreResults,
   explorePageSize,
 } from "@/components/explore-results/explore-results-state";
@@ -58,6 +63,10 @@ export function ExploreExperience({
 }: ExploreExperienceProps) {
   const [state, setState] = useState(initialState);
   const [visibleCount, setVisibleCount] = useState(explorePageSize);
+  const [savedResourceIds, setSavedResourceIds] = useState<readonly string[]>(
+    [],
+  );
+  const [saveAnnouncement, setSaveAnnouncement] = useState("");
   const stateRef = useRef(initialState);
   const categoryIds = useMemo(
     () => new Set(categories.map((category) => category.id)),
@@ -74,6 +83,26 @@ export function ExploreExperience({
   );
   const resultCount =
     resultSet.status === "ready" ? resultSet.resources.length : undefined;
+  const savedResourceIdSet = useMemo(
+    () => new Set(savedResourceIds),
+    [savedResourceIds],
+  );
+
+  useEffect(() => {
+    const synchronizeSavedResources = () => {
+      setSavedResourceIds(readSavedResourceIds(resources));
+    };
+
+    synchronizeSavedResources();
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === savedResourceStoreKey) {
+        synchronizeSavedResources();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [resources]);
 
   const applyState = useCallback(
     (nextState: DiscoveryState, mode: HistoryMode = "pushState") => {
@@ -167,6 +196,25 @@ export function ExploreExperience({
     setVisibleCount((current) => Math.min(maximum, current + explorePageSize));
   }, [resultSet]);
 
+  const handleSavedChange = useCallback(
+    (resourceId: string, saved: boolean) => {
+      setSavedResourceIds((current) => {
+        const next = saved
+          ? Array.from(new Set([...current, resourceId]))
+          : current.filter((id) => id !== resourceId);
+        writeSavedResourceIds(next);
+        return next;
+      });
+
+      const resource = resources.find((entry) => entry.id === resourceId);
+      const name = resource?.name ?? "Resource";
+      setSaveAnnouncement(
+        `${name} ${saved ? "saved" : "removed from saved resources"}.`,
+      );
+    },
+    [resources],
+  );
+
   return (
     <>
       <ExploreHero
@@ -187,7 +235,10 @@ export function ExploreExperience({
       <ExploreResults
         onLoadMore={handleLoadMore}
         onResetDiscovery={handleResetDiscovery}
+        onSavedChange={handleSavedChange}
         resultSet={resultSet}
+        saveAnnouncement={saveAnnouncement}
+        savedResourceIds={savedResourceIdSet}
         state={state}
         totalResourceCount={resources.length}
         visibleCount={visibleCount}
