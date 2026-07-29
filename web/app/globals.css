@@ -79,12 +79,12 @@
 }
 
 html {
-  min-width: 320px;
+  min-width: 0;
   scroll-behavior: smooth;
 }
 
 body {
-  min-width: 320px;
+  min-width: 0;
   margin: 0;
   background-color: var(--canvas);
   color: var(--text-strong);

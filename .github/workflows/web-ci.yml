@@ -110,6 +110,8 @@ jobs:
           curl --fail --silent --show-error \
             http://127.0.0.1:3000/collections/saas-landing-pages \
             > /tmp/tessli-collection-detail.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/resources > /tmp/tessli-resources.html
 
           grep -q "Find better design resources, faster" /tmp/tessli-home.html
           grep -q "Search Tessli resources" /tmp/tessli-home.html
@@ -136,6 +138,9 @@ jobs:
           grep -q 'data-collection-resource-count="10"' \
             /tmp/tessli-collection-detail.html
           grep -q "Suggest an improvement" /tmp/tessli-collection-detail.html
+          grep -q 'data-full-reference-page="true"' /tmp/tessli-resources.html
+          grep -q 'data-reference-table="true"' /tmp/tessli-resources.html
+          grep -q "Source-backed, not ranked" /tmp/tessli-resources.html
 
           unknown_collection_status="$(curl --silent \
             --output /tmp/tessli-collection-missing.html \
@@ -143,7 +148,7 @@ jobs:
             http://127.0.0.1:3000/collections/not-a-real-collection)"
           test "$unknown_collection_status" = "404"
 
-          shell_routes=(resources saved submit suggest about curation privacy terms content-policy)
+          shell_routes=(saved submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
               "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
@@ -170,13 +175,14 @@ jobs:
           node tests/explore-results-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           kill "$search_chrome_pid" 2>/dev/null || true
           wait "$search_chrome_pid" 2>/dev/null || true
           search_chrome_pid=""
 
           for viewport in "1440:1800" "1024:1800" "768:1800" "390:1800"; do
             IFS=":" read -r width height <<< "$viewport"
-            echo "Checking lab, Explore, resource cards, and Collections at ${width}px"
+            echo "Checking lab, Explore, resource cards, Collections, and Full Reference at ${width}px"
 
             "$chrome_bin" \
               --headless=new \
@@ -334,17 +340,48 @@ jobs:
               --screenshot="artifacts/responsive-ui/collection-detail-$width.png" \
               http://127.0.0.1:3000/collections/saas-landing-pages
             test -s "artifacts/responsive-ui/collection-detail-$width.png"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/resources \
+              > "artifacts/responsive-ui/full-reference-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/full-reference-$width.html"
+            grep -q 'data-full-reference-page="true"' \
+              "artifacts/responsive-ui/full-reference-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/full-reference-$width.png" \
+              http://127.0.0.1:3000/resources
+            test -s "artifacts/responsive-ui/full-reference-$width.png"
           done
 
           width=320
           height=1800
-          echo "Checking Explore, resource cards, and Collections at ${width}px"
-          for route in "" "collections" "collections/saas-landing-pages" "lab/resource-cards"; do
+          echo "Checking Explore, resource cards, Collections, and Full Reference at ${width}px"
+          for route in "" "collections" "collections/saas-landing-pages" "lab/resource-cards" "resources"; do
             case "$route" in
               "") artifact="explore" ;;
               "collections") artifact="collections" ;;
               "collections/saas-landing-pages") artifact="collection-detail" ;;
-              *) artifact="resource-cards" ;;
+              "lab/resource-cards") artifact="resource-cards" ;;
+              *) artifact="full-reference" ;;
             esac
 
             "$chrome_bin" \
@@ -386,6 +423,8 @@ jobs:
             "artifacts/responsive-ui/collection-detail-$width.html"
           grep -q 'data-resource-card-pilot' \
             "artifacts/responsive-ui/resource-cards-$width.html"
+          grep -q 'data-full-reference-page="true"' \
+            "artifacts/responsive-ui/full-reference-$width.html"
 
       - name: Upload search browser diagnostics
         if: always()
