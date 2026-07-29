@@ -105,6 +105,11 @@ jobs:
             http://127.0.0.1:3000/lab > /tmp/tessli-lab.html
           curl --fail --silent --show-error \
             http://127.0.0.1:3000/lab/resource-cards > /tmp/tessli-resource-cards.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/collections > /tmp/tessli-collections.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/collections/saas-landing-pages \
+            > /tmp/tessli-collection-detail.html
 
           grep -q "Find better design resources, faster" /tmp/tessli-home.html
           grep -q "Search Tessli resources" /tmp/tessli-home.html
@@ -122,8 +127,23 @@ jobs:
           grep -q "Twelve resilience cases" /tmp/tessli-resource-cards.html
           grep -q "Fixture boundary" /tmp/tessli-resource-cards.html
           grep -q "data-resource-card-pilot" /tmp/tessli-resource-cards.html
+          grep -q "Six reviewed collections" /tmp/tessli-collections.html
+          grep -q "data-collections-grid" /tmp/tessli-collections.html
+          grep -q 'data-collection-slug="saas-landing-pages"' \
+            /tmp/tessli-collections.html
+          grep -q 'data-collection-detail="saas-landing-pages"' \
+            /tmp/tessli-collection-detail.html
+          grep -q 'data-collection-resource-count="10"' \
+            /tmp/tessli-collection-detail.html
+          grep -q "Suggest an improvement" /tmp/tessli-collection-detail.html
 
-          shell_routes=(collections resources saved submit suggest about curation privacy terms content-policy)
+          unknown_collection_status="$(curl --silent \
+            --output /tmp/tessli-collection-missing.html \
+            --write-out '%{http_code}' \
+            http://127.0.0.1:3000/collections/not-a-real-collection)"
+          test "$unknown_collection_status" = "404"
+
+          shell_routes=(resources saved submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
               "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
@@ -149,13 +169,14 @@ jobs:
           node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/explore-results-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           kill "$search_chrome_pid" 2>/dev/null || true
           wait "$search_chrome_pid" 2>/dev/null || true
           search_chrome_pid=""
 
           for viewport in "1440:1800" "1024:1800" "768:1800" "390:1800"; do
             IFS=":" read -r width height <<< "$viewport"
-            echo "Checking lab, Explore, and resource cards at ${width}px"
+            echo "Checking lab, Explore, resource cards, and Collections at ${width}px"
 
             "$chrome_bin" \
               --headless=new \
@@ -245,78 +266,126 @@ jobs:
               --screenshot="artifacts/responsive-ui/resource-cards-$width.png" \
               http://127.0.0.1:3000/lab/resource-cards
             test -s "artifacts/responsive-ui/resource-cards-$width.png"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/collections \
+              > "artifacts/responsive-ui/collections-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/collections-$width.html"
+            grep -q 'data-collections-grid' \
+              "artifacts/responsive-ui/collections-$width.html"
+            grep -q 'data-collection-variant="featured"' \
+              "artifacts/responsive-ui/collections-$width.html"
+            grep -q 'data-collection-variant="compact"' \
+              "artifacts/responsive-ui/collections-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/collections-$width.png" \
+              http://127.0.0.1:3000/collections
+            test -s "artifacts/responsive-ui/collections-$width.png"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              http://127.0.0.1:3000/collections/saas-landing-pages \
+              > "artifacts/responsive-ui/collection-detail-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/collection-detail-$width.html"
+            grep -q 'data-collection-detail="saas-landing-pages"' \
+              "artifacts/responsive-ui/collection-detail-$width.html"
+            grep -q 'data-collection-resource-count="10"' \
+              "artifacts/responsive-ui/collection-detail-$width.html"
+            grep -q 'data-collection-resource-grid' \
+              "artifacts/responsive-ui/collection-detail-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/collection-detail-$width.png" \
+              http://127.0.0.1:3000/collections/saas-landing-pages
+            test -s "artifacts/responsive-ui/collection-detail-$width.png"
           done
 
           width=320
           height=1800
-          echo "Checking Explore and resource cards at ${width}px"
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=2200 \
-            --window-size="$width,$height" \
-            --dump-dom \
-            http://127.0.0.1:3000/ \
-            > "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-horizontal-overflow="false"' \
-            "artifacts/responsive-ui/explore-$width.html"
+          echo "Checking Explore, resource cards, and Collections at ${width}px"
+          for route in "" "collections" "collections/saas-landing-pages" "lab/resource-cards"; do
+            case "$route" in
+              "") artifact="explore" ;;
+              "collections") artifact="collections" ;;
+              "collections/saas-landing-pages") artifact="collection-detail" ;;
+              *) artifact="resource-cards" ;;
+            esac
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --dump-dom \
+              "http://127.0.0.1:3000/$route" \
+              > "artifacts/responsive-ui/$artifact-$width.html"
+            grep -q 'data-horizontal-overflow="false"' \
+              "artifacts/responsive-ui/$artifact-$width.html"
+
+            "$chrome_bin" \
+              --headless=new \
+              --no-sandbox \
+              --disable-gpu \
+              --disable-dev-shm-usage \
+              --hide-scrollbars \
+              --force-device-scale-factor=1 \
+              --virtual-time-budget=2200 \
+              --window-size="$width,$height" \
+              --screenshot="artifacts/responsive-ui/$artifact-$width.png" \
+              "http://127.0.0.1:3000/$route"
+            test -s "artifacts/responsive-ui/$artifact-$width.png"
+          done
+
           grep -q "Find better design resources, faster" \
-            "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-discovery-category="all"' \
-            "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-explore-results="ready"' \
             "artifacts/responsive-ui/explore-$width.html"
           grep -q 'data-result-count="295"' \
             "artifacts/responsive-ui/explore-$width.html"
-          grep -q 'data-resource-grid="true"' \
-            "artifacts/responsive-ui/explore-$width.html"
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=2200 \
-            --window-size="$width,$height" \
-            --screenshot="artifacts/responsive-ui/explore-$width.png" \
-            http://127.0.0.1:3000/
-          test -s "artifacts/responsive-ui/explore-$width.png"
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=2200 \
-            --window-size="$width,$height" \
-            --dump-dom \
-            http://127.0.0.1:3000/lab/resource-cards \
-            > "artifacts/responsive-ui/resource-cards-$width.html"
-          grep -q 'data-horizontal-overflow="false"' \
-            "artifacts/responsive-ui/resource-cards-$width.html"
+          grep -q 'data-collections-grid' \
+            "artifacts/responsive-ui/collections-$width.html"
+          grep -q 'data-collection-detail="saas-landing-pages"' \
+            "artifacts/responsive-ui/collection-detail-$width.html"
           grep -q 'data-resource-card-pilot' \
             "artifacts/responsive-ui/resource-cards-$width.html"
-
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --hide-scrollbars \
-            --force-device-scale-factor=1 \
-            --virtual-time-budget=2200 \
-            --window-size="$width,$height" \
-            --screenshot="artifacts/responsive-ui/resource-cards-$width.png" \
-            http://127.0.0.1:3000/lab/resource-cards
-          test -s "artifacts/responsive-ui/resource-cards-$width.png"
 
       - name: Upload search browser diagnostics
         if: always()
