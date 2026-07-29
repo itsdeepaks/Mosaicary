@@ -1,0 +1,120 @@
+name: Remediate and validate Supabase runtime
+
+on:
+  push:
+    branches: [feat/local-supabase-clients]
+    paths:
+      - ".github/workflows/remediate-and-validate-supabase-runtime.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/local-supabase-clients
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Apply audit-recommended Next patch
+        working-directory: web
+        run: |
+          npm install --save-exact next@16.2.12
+          npm install --save-dev --save-exact eslint-config-next@16.2.12
+
+      - name: Align scaffold dependency contract
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("web/tests/scaffold.test.mjs")
+          text = path.read_text(encoding="utf-8")
+          old = 'assert.equal(packageJson.dependencies.next, "16.2.9");'
+          new = 'assert.equal(packageJson.dependencies.next, "16.2.12");'
+          if old not in text:
+              raise SystemExit("Next.js scaffold assertion not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+      - name: Format changed files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            package.json \
+            tests/scaffold.test.mjs \
+            ../docs/slices/10.1a-local-supabase-client-contract.md
+
+      - name: Run focused tests
+        working-directory: web
+        run: node --test tests/supabase-client-contract.test.mjs tests/scaffold.test.mjs
+
+      - name: Check formatting
+        working-directory: web
+        run: npm run format:check
+
+      - name: Check types
+        working-directory: web
+        run: npm run typecheck
+
+      - name: Lint
+        working-directory: web
+        run: npm run lint
+
+      - name: Test
+        working-directory: web
+        run: npm test
+
+      - name: Check catalogue drift
+        working-directory: web
+        run: npm run catalogue:check
+
+      - name: Build
+        working-directory: web
+        run: npm run build
+
+      - name: Audit production dependencies
+        working-directory: web
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Remove temporary evidence and generated churn
+        run: |
+          rm -f docs/slices/10.1a-production-audit.json
+          rm -f docs/slices/10.1a-production-audit.status
+          rm -f .github/workflows/remediate-and-validate-supabase-runtime.yml
+          git restore web/next-env.d.ts web/tsconfig.json
+
+      - name: Verify and commit the focused cumulative diff
+        shell: bash
+        run: |
+          git add -A
+          git diff --cached --name-only origin/main | sort > /tmp/actual-files.txt
+          cat > /tmp/expected-files.txt <<'EOF'
+          build-slices.md
+          docs/slices/10.1a-local-supabase-client-contract.md
+          web/.env.example
+          web/lib/supabase/browser.ts
+          web/lib/supabase/config.ts
+          web/lib/supabase/database.types.ts
+          web/lib/supabase/server.ts
+          web/package-lock.json
+          web/package.json
+          web/tests/scaffold.test.mjs
+          web/tests/supabase-client-contract.test.mjs
+          EOF
+          diff -u /tmp/expected-files.txt /tmp/actual-files.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix: patch Next runtime and finalize Supabase clients"
+          git push origin HEAD:feat/local-supabase-clients
