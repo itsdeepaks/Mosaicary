@@ -1,0 +1,65 @@
+name: Validate Phase 1 release hardening branch
+
+on:
+  push:
+    branches: [chore/phase-1-release-hardening]
+    paths:
+      - ".github/workflows/phase-1-release-validate-bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: chore/phase-1-release-hardening
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Format changed application files
+        working-directory: web
+        run: npx prettier --write app/not-found.tsx tests/release-gate-browser.mjs tests/release-hardening.test.mjs
+
+      - name: Run focused tests
+        working-directory: web
+        run: node --test tests/release-hardening.test.mjs tests/footer-route-integrity.test.mjs
+
+      - name: Run full repository checks
+        working-directory: web
+        run: |
+          npm run format:check
+          npm run typecheck
+          npm run lint
+          npm test
+          npm run catalogue:check
+          npm run build
+
+      - name: Commit validated formatting
+        shell: bash
+        run: |
+          rm .github/workflows/phase-1-release-validate-bootstrap.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/app/not-found.tsx web/tests/release-gate-browser.mjs web/tests/release-hardening.test.mjs .github/workflows/phase-1-release-validate-bootstrap.yml
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: validate phase 1 release hardening"
+          git push origin HEAD:chore/phase-1-release-hardening
