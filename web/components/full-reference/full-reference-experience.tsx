@@ -87,6 +87,8 @@ export function FullReferenceExperience({
 }: FullReferenceExperienceProps) {
   const [state, setState] = useState(initialState);
   const stateRef = useRef(initialState);
+  const filterDialogRef = useRef<HTMLDialogElement>(null);
+  const filterTriggerRef = useRef<HTMLButtonElement>(null);
   const categoryIds = useMemo(
     () => new Set(categories.map((category) => category.id)),
     [categories],
@@ -173,7 +175,17 @@ export function FullReferenceExperience({
     applyState(defaultDiscoveryState);
   }, [applyState]);
 
-  const exploreHref = discoveryHref("/", state);
+  const openFilters = useCallback(() => {
+    filterDialogRef.current?.showModal();
+  }, []);
+
+  const closeFilters = useCallback(() => {
+    filterDialogRef.current?.close();
+  }, []);
+
+  const restoreFilterFocus = useCallback(() => {
+    filterTriggerRef.current?.focus();
+  }, []);
 
   return (
     <div className={styles.page} data-full-reference-page>
@@ -209,21 +221,250 @@ export function FullReferenceExperience({
         </div>
       </section>
 
-      <section className={styles.mobileHandoff} data-full-reference-handoff>
+      <section
+        aria-labelledby="mobile-reference-results-title"
+        className={styles.mobileReference}
+        data-full-reference-mobile
+      >
         <div className="tessli-container">
-          <div className={styles.handoffPanel}>
-            <p className={styles.eyebrow}>Desktop reference view</p>
-            <h2>The dense reference table is optimized for larger screens.</h2>
-            <p>
-              Use Explore on this screen size to search and filter the same
-              validated catalogue. Your current discovery settings will carry
-              across.
-            </p>
-            <Link className={styles.primaryAction} href={exploreHref}>
-              Continue in Explore
-            </Link>
+          <div className={styles.mobileSearchRow}>
+            <label className={styles.mobileSearchControl}>
+              <span>Search catalogue</span>
+              <input
+                data-mobile-reference-search
+                onChange={(event) => handleQueryChange(event.target.value)}
+                placeholder="Name, domain, description…"
+                type="search"
+                value={state.query}
+              />
+            </label>
           </div>
+
+          <div className={styles.mobileTools}>
+            <button
+              className={styles.filterTrigger}
+              data-reference-filter-trigger
+              onClick={openFilters}
+              ref={filterTriggerRef}
+              type="button"
+            >
+              Filters
+              {state.category || state.access.length > 0
+                ? ` (${(state.category ? 1 : 0) + state.access.length})`
+                : ""}
+            </button>
+            <label className={styles.mobileSortControl}>
+              <span className={styles.visuallyHidden}>Sort resources</span>
+              <select
+                data-mobile-reference-sort
+                onChange={(event) =>
+                  handleSortChange(event.target.value as DiscoverySort)
+                }
+                value={state.sort}
+              >
+                {sortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <header className={styles.mobileResultsHeader}>
+            <div>
+              <p className={styles.eyebrow}>Current view</p>
+              <h2 id="mobile-reference-results-title">
+                {resultCount} {resultCount === 1 ? "resource" : "resources"}
+              </h2>
+              <p>
+                {selectedCategoryLabel}
+                {state.access.length > 0
+                  ? ` · ${state.access.map((access) => accessLabels[access]).join(", ")}`
+                  : " · All access models"}
+              </p>
+            </div>
+          </header>
+
+          {resultSet.status === "error" ? (
+            <div
+              className={styles.statePanel}
+              data-mobile-reference-state="error"
+            >
+              <p className={styles.eyebrow}>Catalogue unavailable</p>
+              <h3>The reference view could not be prepared.</h3>
+              <p>Reload the page to retry the validated local catalogue.</p>
+              <Link className={styles.primaryAction} href="/resources">
+                Reload Full Reference
+              </Link>
+            </div>
+          ) : resultSet.resources.length === 0 ? (
+            <div
+              className={styles.statePanel}
+              data-mobile-reference-state="empty"
+            >
+              <p className={styles.eyebrow}>No matches</p>
+              <h3>Broaden the current reference view.</h3>
+              <p>
+                Clear the query or selected category and access filters to
+                restore more resources.
+              </p>
+              <button
+                className={styles.primaryAction}
+                data-mobile-reference-empty-reset
+                onClick={resetView}
+                type="button"
+              >
+                Reset reference view
+              </button>
+            </div>
+          ) : (
+            <ul className={styles.mobileRows} data-mobile-reference-rows>
+              {resultSet.resources.map(({ resource, categoryLabel }) => (
+                <li
+                  data-mobile-row-access={resource.access}
+                  data-mobile-row-category={resource.category}
+                  data-mobile-reference-row={resource.slug}
+                  key={resource.id}
+                >
+                  <a
+                    aria-label={`Open ${resource.name} on ${resource.domain}`}
+                    href={resource.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <span className={styles.mobileRowTopline}>
+                      <strong>{resource.name}</strong>
+                      <OpenIcon />
+                    </span>
+                    <span className={styles.mobileRowDomain}>
+                      {resource.domain}
+                    </span>
+                    <span className={styles.mobileRowDescription}>
+                      {resource.description}
+                    </span>
+                    <span className={styles.mobileRowMeta}>
+                      {categoryLabel} · {accessLabels[resource.access]}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <details className={styles.mobileSupport}>
+            <summary>About this reference</summary>
+            <p>
+              Curated order follows repository data. Tessli does not infer
+              popularity, quality scores, sponsorship, or trends.
+            </p>
+            <nav aria-label="Mobile reference support">
+              <Link href="/curation">Read the curation process</Link>
+              <Link href="/submit">Submit a resource</Link>
+              <Link href="/suggest">Suggest an improvement</Link>
+            </nav>
+          </details>
         </div>
+
+        <dialog
+          aria-labelledby="reference-filters-title"
+          className={styles.filterDialog}
+          data-reference-filter-dialog
+          onCancel={(event) => {
+            event.preventDefault();
+            closeFilters();
+          }}
+          onClose={restoreFilterFocus}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeFilters();
+            }
+          }}
+          ref={filterDialogRef}
+        >
+          <div className={styles.filterDialogHeader}>
+            <div>
+              <p className={styles.eyebrow}>Refine catalogue</p>
+              <h2 id="reference-filters-title">Filters</h2>
+            </div>
+            <button
+              aria-label="Close filters"
+              className={styles.closeButton}
+              onClick={closeFilters}
+              type="button"
+            >
+              ×
+            </button>
+          </div>
+          <div className={styles.filterDialogBody}>
+            <fieldset className={styles.fieldset}>
+              <legend>Category</legend>
+              <label className={styles.optionRow}>
+                <input
+                  checked={state.category === null}
+                  data-mobile-reference-category="all"
+                  name="mobile-reference-category"
+                  onChange={() => handleCategoryChange(null)}
+                  type="radio"
+                />
+                <span>All categories</span>
+                <small>{resources.length}</small>
+              </label>
+              {categories.map((category) => (
+                <label className={styles.optionRow} key={category.id}>
+                  <input
+                    checked={state.category === category.id}
+                    data-mobile-reference-category={category.id}
+                    name="mobile-reference-category"
+                    onChange={() => handleCategoryChange(category.id)}
+                    type="radio"
+                  />
+                  <span>{category.fullLabel}</span>
+                  <small>{category.count}</small>
+                </label>
+              ))}
+            </fieldset>
+            <fieldset className={styles.fieldset}>
+              <legend>Access model</legend>
+              {accessOptions.map((option) => (
+                <label className={styles.optionRow} key={option.value}>
+                  <input
+                    checked={state.access.includes(option.value)}
+                    data-mobile-reference-access={option.value}
+                    onChange={() => handleAccessToggle(option.value)}
+                    type="checkbox"
+                  />
+                  <span>{option.label}</span>
+                  <small>{option.count}</small>
+                </label>
+              ))}
+            </fieldset>
+          </div>
+          <div className={styles.filterDialogActions}>
+            <button
+              className={styles.resetButton}
+              data-mobile-reference-reset
+              disabled={
+                state.query === "" &&
+                state.category === null &&
+                state.access.length === 0 &&
+                state.sort === defaultDiscoveryState.sort
+              }
+              onClick={resetView}
+              type="button"
+            >
+              Reset reference view
+            </button>
+            <button
+              className={styles.primaryAction}
+              onClick={closeFilters}
+              type="button"
+            >
+              Show results
+            </button>
+          </div>
+        </dialog>
       </section>
 
       <section
