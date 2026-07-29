@@ -10,6 +10,11 @@ export type CollectionCoverStyle =
   | "motion"
   | "systems";
 
+export type CollectionResource = Readonly<{
+  resource: ResourceCardData;
+  categoryLabel: string;
+}>;
+
 export type PublishedCollection = Readonly<{
   id: string;
   slug: string;
@@ -19,11 +24,14 @@ export type PublishedCollection = Readonly<{
   coverStyle: CollectionCoverStyle;
   lastReviewedAt: string;
   status: "published";
-  resources: readonly ResourceCardData[];
+  resources: readonly CollectionResource[];
 }>;
 
 const resourceById = new Map(
   catalogue.resources.map((resource) => [resource.id, resource]),
+);
+const categoryLabelById = new Map(
+  catalogue.categories.map((category) => [category.id, category.label]),
 );
 
 function toResourceCardData(
@@ -48,13 +56,18 @@ function resolveCollection(
   collection: (typeof catalogue.collections)[number],
 ): PublishedCollection {
   const resources = collection.resourceIds.map((resourceId) => {
-    const resource = resourceById.get(resourceId);
-    if (!resource) {
+    const source = resourceById.get(resourceId);
+    if (!source) {
       throw new Error(
         `Collection ${collection.slug} references missing resource ${resourceId}.`,
       );
     }
-    return toResourceCardData(resource);
+
+    return {
+      resource: toResourceCardData(source),
+      categoryLabel:
+        categoryLabelById.get(source.category) ?? source.category,
+    };
   });
 
   return {
