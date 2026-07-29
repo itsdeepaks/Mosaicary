@@ -4227,5 +4227,132 @@
       "order": 10
     }
   ],
-  "collections": []
+  "collections": [
+    {
+      "id": "collection-saas-landing-pages",
+      "slug": "saas-landing-pages",
+      "title": "SaaS landing-page references",
+      "description": "Focused references for studying SaaS positioning, landing-page structure, pricing presentation, proof, copy, and conversion patterns.",
+      "resourceIds": [
+        "resource-1ef2bbb67602",
+        "resource-f52b14528531",
+        "resource-385af8e671b2",
+        "resource-be31b989dbbe",
+        "resource-8071ca23bfc4",
+        "resource-c6ead4379d56",
+        "resource-068a498e5c53",
+        "resource-4aeb8a54737a",
+        "resource-3028e7238961",
+        "resource-6482b53e4e09"
+      ],
+      "coverStyle": "editorial",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    },
+    {
+      "id": "collection-typography-font-tools",
+      "slug": "typography-font-tools",
+      "title": "Typography and font tools",
+      "description": "A practical starting set for finding typefaces, studying real typography, checking pairings, and exploring open and commercial font libraries.",
+      "resourceIds": [
+        "resource-75ecf91b7063",
+        "resource-25a6040823a7",
+        "resource-7ff8dc33fe5e",
+        "resource-e50e8d1ec69c",
+        "resource-098d155d3888",
+        "resource-3b9d710cd447",
+        "resource-07d9b88ef5af",
+        "resource-42936db47b6a",
+        "resource-bfe4ba65c95b",
+        "resource-35c3f2fef142"
+      ],
+      "coverStyle": "typography",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    },
+    {
+      "id": "collection-motion-starter-pack",
+      "slug": "motion-starter-pack",
+      "title": "Motion starter pack",
+      "description": "A balanced introduction to interface animation, interactive vectors, JavaScript motion, WebGL, and browser-based 3D workflows.",
+      "resourceIds": [
+        "resource-374543d4f72b",
+        "resource-9042d48e084f",
+        "resource-eae789634e34",
+        "resource-a69034dde468",
+        "resource-631345718892",
+        "resource-e5c348f9190f",
+        "resource-c873b7d6cf1d",
+        "resource-e0917de2c7a9",
+        "resource-23cc7dc75f79",
+        "resource-9ab2847bb0d5"
+      ],
+      "coverStyle": "motion",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    },
+    {
+      "id": "collection-open-source-ui-libraries",
+      "slug": "open-source-ui-libraries",
+      "title": "Open-source UI libraries",
+      "description": "Open-source component systems and primitives for building accessible, composable, and implementation-ready web interfaces.",
+      "resourceIds": [
+        "resource-affc29967a7c",
+        "resource-01db82f90e23",
+        "resource-3bfbe7e95242",
+        "resource-9ad947201ac6",
+        "resource-1cd898a493ab",
+        "resource-efc9a91db0cb",
+        "resource-ea2802bd8265",
+        "resource-2210207ad328",
+        "resource-d94d49dfe5a3",
+        "resource-1f691e6fcca8"
+      ],
+      "coverStyle": "systems",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    },
+    {
+      "id": "collection-accessible-colour-tools",
+      "slug": "accessible-colour-tools",
+      "title": "Accessible colour tools",
+      "description": "Tools for building colour systems, checking contrast, understanding visual-access needs, and evaluating interface accessibility.",
+      "resourceIds": [
+        "resource-a2f7775b8c79",
+        "resource-fe952dd7c89c",
+        "resource-9b8e899f4893",
+        "resource-9aca4d63712d",
+        "resource-4eee7a21dbf7",
+        "resource-b44930562cf2",
+        "resource-3cfed5eefb62",
+        "resource-06ff97d405dd",
+        "resource-9829cb4f86f3",
+        "resource-2f7f7a4aa766"
+      ],
+      "coverStyle": "systems",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    },
+    {
+      "id": "collection-design-systems-worth-studying",
+      "slug": "design-systems-worth-studying",
+      "title": "Design systems worth studying",
+      "description": "Public design systems that demonstrate foundations, tokens, content guidance, accessibility, component architecture, and product-specific patterns.",
+      "resourceIds": [
+        "resource-a3911f1d6257",
+        "resource-d99ec836c0db",
+        "resource-da29edad8096",
+        "resource-ea00ff19bb49",
+        "resource-2a6274dc58f9",
+        "resource-f9a5dce2d302",
+        "resource-5df16e75e20e",
+        "resource-5c3090a40968",
+        "resource-d3111f212292",
+        "resource-d4ea74da16b8"
+      ],
+      "coverStyle": "systems",
+      "lastReviewedAt": "2026-07-29",
+      "status": "published"
+    }
+  ]
 }
