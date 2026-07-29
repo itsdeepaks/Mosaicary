@@ -92,10 +92,7 @@ test("client factories use the public key and preserve request cookie boundaries
   assert.match(browser, /createBrowserClient<Database>/);
   assert.match(browser, /readSupabasePublicConfig\(\)/);
   assert.match(config, /process\.env\.NEXT_PUBLIC_SUPABASE_URL/);
-  assert.match(
-    config,
-    /process\.env\.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/,
-  );
+  assert.match(config, /process\.env\.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/);
   assert.doesNotMatch(config, /process\.env\[[^\]]+\]/);
   assert.match(server, /await cookies\(\)/);
   assert.match(server, /createServerClient<Database>/);
