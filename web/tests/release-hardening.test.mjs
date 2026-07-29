@@ -1,0 +1,108 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { test } from "node:test";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const currentFile = fileURLToPath(import.meta.url);
+const webRoot = path.resolve(path.dirname(currentFile), "..");
+const repositoryRoot = path.resolve(webRoot, "..");
+
+async function readRepositoryFile(relativePath) {
+  return readFile(path.join(repositoryRoot, relativePath), "utf8");
+}
+
+test("release ledger separates hardening from external production cutover", async () => {
+  const slices = await readRepositoryFile("build-slices.md");
+
+  assert.match(
+    slices,
+    /\| 9\.1 \| About, curation, content policy, privacy, and terms \| DONE \| 2\.2 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 9\.2 \| Phase 1 release hardening and deployment runbook \| DONE \| 5\.2, 6\.2, 7\.2, 8\.2, 9\.1 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 9\.3 \| Production replacement and rollback verification \| BLOCKED \| 9\.2, Vercel project access \|/,
+  );
+});
+
+test("release workflow covers the locked checks and formal viewport set", async () => {
+  const workflow = await readRepositoryFile(
+    ".github/workflows/phase-1-release-gate.yml",
+  );
+  const browser = await readRepositoryFile(
+    "web/tests/release-gate-browser.mjs",
+  );
+
+  for (const command of [
+    "npm ci",
+    "npm run format:check",
+    "npm run typecheck",
+    "npm run lint",
+    "npm test",
+    "npm run catalogue:check",
+    "npm run build",
+  ]) {
+    assert.match(
+      workflow,
+      new RegExp(command.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+    );
+  }
+
+  for (const viewport of [
+    "1440, 900",
+    "1280, 800",
+    "1024, 768",
+    "768, 1024",
+    "430, 932",
+    "390, 844",
+    "360, 800",
+  ]) {
+    assert.match(browser, new RegExp(viewport));
+  }
+
+  for (const route of [
+    "/collections",
+    "/resources",
+    "/saved",
+    "/about",
+    "/curation",
+    "/privacy",
+    "/terms",
+    "/content-policy",
+    "/submit",
+    "/suggest",
+    "/a-clearly-missing-route",
+  ]) {
+    assert.match(browser, new RegExp(route.replaceAll("/", "\\/")));
+  }
+
+  assert.match(browser, /data-saved-resources-empty/);
+  assert.match(browser, /scrollWidth > document\.documentElement\.clientWidth/);
+  assert.match(workflow, /tessli-phase-1-release-evidence/);
+});
+
+test("release note records exclusions, evidence, and rollback boundary", async () => {
+  const note = await readRepositoryFile(
+    "docs/slices/9.2-phase-1-release-hardening.md",
+  );
+  const readme = await readRepositoryFile("README.md");
+
+  for (const heading of [
+    "Acceptance criteria",
+    "Exclusions",
+    "Release evidence",
+    "Production preconditions",
+    "Rollback procedure",
+  ]) {
+    assert.match(note, new RegExp(`## ${heading}`));
+  }
+
+  assert.match(note, /does not change the production deployment target/i);
+  assert.match(note, /previous known-good deployment/i);
+  assert.match(readme, /Phase 1 release candidate/i);
+  assert.match(readme, /production replacement remains blocked/i);
+});

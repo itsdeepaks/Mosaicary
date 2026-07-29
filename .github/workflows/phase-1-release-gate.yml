@@ -1,0 +1,124 @@
+name: Phase 1 Release Gate
+
+on:
+  pull_request:
+    paths:
+      - "web/**"
+      - ".github/workflows/phase-1-release-gate.yml"
+      - ".github/workflows/web-ci.yml"
+      - "README.md"
+      - "build-slices.md"
+      - "docs/slices/9.2-phase-1-release-hardening.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/catalogue.schema.json"
+      - "schemas/collections.schema.json"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/phase-1-release-gate.yml"
+      - ".github/workflows/web-ci.yml"
+      - "README.md"
+      - "build-slices.md"
+      - "docs/slices/9.2-phase-1-release-hardening.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/catalogue.schema.json"
+      - "schemas/collections.schema.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase-1-release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run release contract test
+        run: node --test tests/release-hardening.test.mjs
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Check types
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Check catalogue drift
+        run: npm run catalogue:check
+
+      - name: Build
+        run: npm run build
+
+      - name: Run browser release matrix
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-release-next.log 2>&1 &
+          server_pid=$!
+          chrome_pid=""
+
+          cleanup() {
+            if [ -n "$chrome_pid" ]; then
+              kill "$chrome_pid" 2>/dev/null || true
+            fi
+            kill "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          curl --fail --silent --show-error \
+            --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/ > /tmp/tessli-release-home.html
+
+          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$chrome_bin"
+          mkdir -p artifacts/phase-1-release
+
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-allow-origins=* \
+            --remote-debugging-port=9222 \
+            --user-data-dir=/tmp/tessli-release-cdp \
+            about:blank > artifacts/phase-1-release/chrome.log 2>&1 &
+          chrome_pid=$!
+
+          node tests/release-gate-browser.mjs 2>&1 | tee artifacts/phase-1-release/release-gate.log
+
+      - name: Upload Phase 1 release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-phase-1-release-evidence
+          path: web/artifacts/phase-1-release/*
+          if-no-files-found: error
+          retention-days: 14
