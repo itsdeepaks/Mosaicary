@@ -58,10 +58,7 @@ export function CollectionCover({
   );
 }
 
-export function CollectionCard({
-  collection,
-  variant,
-}: CollectionCardProps) {
+export function CollectionCard({ collection, variant }: CollectionCardProps) {
   const titleId = `collection-${collection.slug}-title`;
   const descriptionId = `collection-${collection.slug}-description`;
 
