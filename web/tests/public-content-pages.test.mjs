@@ -1,0 +1,45 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+
+const webRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
+const routes = ["about", "curation", "privacy", "terms", "content-policy"];
+const read = (file) => readFile(path.join(webRoot, file), "utf8");
+
+test("public content routes replace preview shells with factual Phase 1 pages", async () => {
+  const pages = await Promise.all(
+    routes.map((route) => read(`app/${route}/page.tsx`)),
+  );
+  for (const page of pages) {
+    assert.match(page, /<PublicContentPage/);
+    assert.doesNotMatch(page, /RoutePlaceholder|preview notice|before launch/i);
+    assert.doesNotMatch(page, /fetch\(|<form|Sign in|account dashboard/i);
+  }
+  assert.match(
+    pages[0],
+    /295 repository-managed resources across 11 practical categories/,
+  );
+  assert.match(pages[1], /pricing, licensing, availability/i);
+  assert.match(pages[2], /local browser storage/i);
+  assert.match(pages[3], /not an endorsement, warranty, licence grant/i);
+  assert.match(pages[4], /Remote SVG markup is never injected/i);
+});
+
+test("public content frame is semantic and responsive", async () => {
+  const [component, styles] = await Promise.all([
+    read("components/public-content/public-content-page.tsx"),
+    read("components/public-content/public-content-page.module.css"),
+  ]);
+  assert.match(component, /id="main-content"/);
+  assert.match(component, /<article className=\{styles\.article\}>/);
+  assert.match(component, /aria-label="Related Tessli pages"/);
+  assert.match(styles, /grid-template-columns: repeat\(12/);
+  assert.match(styles, /@media \(max-width: 1024px\)/);
+  assert.match(styles, /@media \(max-width: 720px\)/);
+  assert.doesNotMatch(styles, /backdrop-filter|border-radius: 1[2-9]px/);
+});

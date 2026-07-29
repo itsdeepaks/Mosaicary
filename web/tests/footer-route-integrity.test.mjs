@@ -29,6 +29,11 @@ const implementedRoutes = new Set([
   "/collections",
   "/resources",
   "/saved",
+  "/about",
+  "/curation",
+  "/privacy",
+  "/terms",
+  "/content-policy",
 ]);
 const routeShells = footerRoutes.filter(
   (route) => !implementedRoutes.has(route),
