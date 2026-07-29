@@ -152,7 +152,13 @@ jobs:
           grep -q 'data-saved-resources-page="true"' /tmp/tessli-saved.html
           grep -q "Your saves stay in this browser" /tmp/tessli-saved.html
 
-          shell_routes=(submit suggest about curation privacy terms content-policy)
+          for route in about curation privacy terms content-policy; do
+            curl --fail --silent --show-error \
+              "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
+            grep -q "Keep reading" "/tmp/tessli-$route.html"
+          done
+
+          shell_routes=(submit suggest)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
               "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
