@@ -52,40 +52,40 @@ Stop and fix before merge when any of these occur:
 
 ## 4. Slice status
 
-| ID   | Slice                                                                  | Status  | Depends on                 |
-| ---- | ---------------------------------------------------------------------- | ------- | -------------------------- |
-| 0.1  | Research, design contract, assets, brand preview                       | DONE    | —                          |
-| 0.2  | Repository operating contract                                          | DONE    | 0.1                        |
-| 1.1  | Next.js application scaffold and CI baseline                           | DONE    | 0.2                        |
-| 1.2  | Fonts, tokens, grain, responsive layout lab                            | DONE    | 1.1                        |
-| 2.1  | Global header and navigation shell                                     | DONE    | 1.2                        |
-| 2.2  | Footer and launch route integrity                                      | DONE    | 2.1                        |
-| 3.1  | Explore hero composition                                               | DONE    | 2.2                        |
-| 3.2  | Search interaction and truthful facts                                  | DONE    | 3.1                        |
-| 4.1  | Catalogue CSV-to-JSON migration and validation                         | DONE    | 1.1                        |
-| 4.2  | Discovery URL state, category, access, and sort controls               | DONE    | 3.2, 4.1                   |
-| 5.1  | Resource-card pilot with media fallbacks                               | DONE    | 4.1                        |
-| 5.2  | Responsive resource grid and complete Explore composition              | DONE    | 4.2, 5.1                   |
-| 6.1  | Repository-maintained collection schema and launch data                | DONE    | 4.1                        |
-| 6.2  | Collections page and collection detail                                 | DONE    | 6.1                        |
-| 7.1  | Full Reference desktop table/list                                      | DONE    | 4.1                        |
-| 7.1a | Visual realignment contract and canonical reference intake             | DONE    | 7.1                        |
-| 7.1b | Explore hero, search, and platform-neutral shortcut realignment        | DONE    | 7.1a                       |
-| 7.1c | Explore category rail containment and overflow affordance              | DONE    | 7.1b                       |
-| 7.1d | Explore resource-card grid density and shared-border layout            | DONE    | 7.1c                       |
-| 7.2  | Full Reference tablet/mobile filters and compact rows                  | DONE    | 7.1, 7.1d                  |
-| 8.1  | Browser-local save store and legacy-key migration                      | DONE    | 5.1                        |
-| 8.2  | Saved page, empty state, clear and undo                                | DONE    | 8.1                        |
-| 9.1  | About, curation, content policy, privacy, and terms                    | DONE    | 2.2                        |
-| 9.2  | Phase 1 release hardening and deployment runbook                       | DONE    | 5.2, 6.2, 7.2, 8.2, 9.1    |
-| 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE    | 9.2                        |
-| 9.3  | Production replacement and rollback verification                       | BLOCKED | 9.2, Vercel project access |
-| 10.1 | Supabase project integration and auth clients                          | BLOCKED | Phase 1, credentials       |
-| 10.2 | Auth shell, password, OTP, and Google                                  | PLANNED | 10.1                       |
-| 11.1 | User-data schema and RLS                                               | PLANNED | 10.1                       |
-| 11.2 | Cloud saves, private collections, notes, local import                  | PLANNED | 10.2, 11.1                 |
-| 12.1 | Submit, suggest, and report forms                                      | PLANNED | 10.2, 11.1                 |
-| 12.2 | Moderation state and transactional email                               | PLANNED | 12.1, Resend               |
+| ID | Slice | Status | Depends on |
+|---|---|---|---|
+| 0.1 | Research, design contract, assets, brand preview | DONE | — |
+| 0.2 | Repository operating contract | DONE | 0.1 |
+| 1.1 | Next.js application scaffold and CI baseline | DONE | 0.2 |
+| 1.2 | Fonts, tokens, grain, responsive layout lab | DONE | 1.1 |
+| 2.1 | Global header and navigation shell | DONE | 1.2 |
+| 2.2 | Footer and launch route integrity | DONE | 2.1 |
+| 3.1 | Explore hero composition | DONE | 2.2 |
+| 3.2 | Search interaction and truthful facts | DONE | 3.1 |
+| 4.1 | Catalogue CSV-to-JSON migration and validation | DONE | 1.1 |
+| 4.2 | Discovery URL state, category, access, and sort controls | DONE | 3.2, 4.1 |
+| 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
+| 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
+| 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
+| 6.2 | Collections page and collection detail | DONE | 6.1 |
+| 7.1 | Full Reference desktop table/list | DONE | 4.1 |
+| 7.1a | Visual realignment contract and canonical reference intake | DONE | 7.1 |
+| 7.1b | Explore hero, search, and platform-neutral shortcut realignment | DONE | 7.1a |
+| 7.1c | Explore category rail containment and overflow affordance | DONE | 7.1b |
+| 7.1d | Explore resource-card grid density and shared-border layout | DONE | 7.1c |
+| 7.2 | Full Reference tablet/mobile filters and compact rows | DONE | 7.1, 7.1d |
+| 8.1 | Browser-local save store and legacy-key migration | DONE | 5.1 |
+| 8.2 | Saved page, empty state, clear and undo | DONE | 8.1 |
+| 9.1 | About, curation, content policy, privacy, and terms | DONE | 2.2 |
+| 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |
+| 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
+| 9.3 | Production replacement and rollback verification | BLOCKED | 9.2, Vercel project access |
+| 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |
+| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1 |
+| 11.1 | User-data schema and RLS | PLANNED | 10.1 |
+| 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2, 11.1 |
+| 12.1 | Submit, suggest, and report forms | PLANNED | 10.2, 11.1 |
+| 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
 
 ## 5. Slice 0.2 — Repository operating contract
 
