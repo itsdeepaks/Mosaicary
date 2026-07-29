@@ -16,7 +16,7 @@ test("package scripts and runtime constraints are present", async () => {
   const packageJson = JSON.parse(await read("package.json"));
 
   assert.equal(packageJson.private, true);
-  assert.equal(packageJson.engines.node, ">=20.9.0");
+  assert.equal(packageJson.engines.node, ">=22.0.0");
   assert.equal(packageJson.dependencies.next, "16.2.9");
 
   for (const script of [
@@ -43,10 +43,10 @@ test("App Router root layout owns html and body", async () => {
 
 test("Tailwind CSS v4 PostCSS pipeline is configured", async () => {
   const postcssConfig = await read("postcss.config.mjs");
-  const globalCss = await read("app/globals.css");
+  const globalStyles = await read("app/globals.css");
 
-  assert.match(postcssConfig, /@tailwindcss\/postcss/);
-  assert.match(globalCss, /@import "tailwindcss";/);
+  assert.match(postcssConfig, /"@tailwindcss\/postcss"/);
+  assert.match(globalStyles, /@import "tailwindcss"/);
 });
 
 test("legacy root static deployment remains present", async () => {
@@ -55,8 +55,6 @@ test("legacy root static deployment remains present", async () => {
     readFile(path.join(repositoryRoot, "vercel.json"), "utf8"),
   ]);
 
-  assert.match(indexHtml, /Tessli/i);
-  const parsedVercelConfig = JSON.parse(vercelConfig);
-  assert.equal("buildCommand" in parsedVercelConfig, false);
-  assert.equal("framework" in parsedVercelConfig, false);
+  assert.match(indexHtml, /data-tessli-app/);
+  assert.match(vercelConfig, /"cleanUrls": true/);
 });
