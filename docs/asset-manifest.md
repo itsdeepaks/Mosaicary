@@ -1,74 +1,80 @@
 # Tessli Visual Asset Manifest
 
-Status: **committed to the static brand preview for visual approval**
+Status: **canonical reference intake completed; production use remains controlled**
 
-The browser-review assets live under:
+The canonical, user-authorized source references live under:
 
 ```text
-brand-preview/assets/
+docs/ref-img/
 ```
 
-They are optimized review variants, not necessarily the final production exports. Higher-resolution source files remain available in the separate asset handoff pack.
+They are art-direction references, not production UI. Their hashes below make later visual comparisons reproducible without modifying their pixels.
 
 ## Hero artwork
 
-Committed preview path:
+Canonical source:
 
 ```text
-brand-preview/assets/tessli-hero-geometry.webp
+docs/ref-img/tessli-hero-geometry.webp
+```
+
+- dimensions: `1200 × 800`
+- format: WebP
+- size: `107,546 bytes`
+- SHA-256: `6512760bc1d14ad84a7a81d573abe756cdde44b42b1c80fa4182a8c3b0f1e6b3`
+- purpose: canonical art-direction source
+- accessibility: decorative; render with empty alt text
+
+Approved production derivative:
+
+```text
+web/public/brand/tessli-hero-geometry.webp
 ```
 
 - dimensions: `900 × 614`
-- format: transparent WebP
 - size: `61,732 bytes`
 - SHA-256: `0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583`
-- purpose: browser-rendered desktop/tablet hero specimen
-- accessibility: decorative; render with empty alt text
+- use: decorative hero art only; it must retain intrinsic dimensions and an empty alt attribute.
 
-Production target after approval:
-
-```text
-public/brand/tessli-hero-geometry.webp
-```
-
-A separate mobile crop must be approved after the real Newsreader headline wrapping is reviewed in-browser. Do not simply shrink the desktop asset below 390px.
+A separate mobile crop requires approval after the real Newsreader headline wrapping is reviewed in-browser. Do not merely shrink the desktop composition below 390px.
 
 ## Canonical desktop references
 
-These are compressed reference thumbnails for the static preview. They preserve the art direction but are not production UI assets.
+These are canonical desktop art-direction captures. They preserve composition, hierarchy, and component language but are not production UI assets.
 
 ### Explore
 
-- path: `brand-preview/assets/explore-desktop.webp`
-- dimensions: `900 × 637`
-- size: `29,786 bytes`
-- SHA-256: `3548303697609855d003f3b1c3e0e00866138b6945a2cffee695d98b2a25e4ea`
+- path: `docs/ref-img/explore-desktop.webp`
+- dimensions: `1200 × 849`
+- size: `48,744 bytes`
+- SHA-256: `c59333f47a69cde89cf3971cd5b99ef358701f346d248712360c59aa9640ea14`
 
 ### Collections
 
-- path: `brand-preview/assets/collections-desktop.webp`
-- dimensions: `360 × 255`
-- size: `6,330 bytes`
-- SHA-256: `4bcf703b6365ddac075a21352ba7abe421ef19b71957b5d2113627445e5038ec`
+- path: `docs/ref-img/collections-desktop.webp`
+- dimensions: `1200 × 849`
+- size: `51,658 bytes`
+- SHA-256: `5e02b4c2775e854bf78e364d5d0d8d0f6b04a2c74bfb418fd0030b22edd468ae`
 
 ### Saved
 
-- path: `brand-preview/assets/saved-desktop.webp`
-- dimensions: `360 × 255`
-- size: `5,156 bytes`
-- SHA-256: `9e5ecdb2c81531c2930db9083666a932d1890012786fa282285eb74c717ad953`
+- path: `docs/ref-img/saved-desktop.webp`
+- dimensions: `1200 × 849`
+- size: `42,034 bytes`
+- SHA-256: `d00e2e30ba64c95455af405f130e3e9457f60b7659b37085bf23f8175a76e5c1`
 
 ### Full Reference
 
-- path: `brand-preview/assets/full-reference-desktop.webp`
-- dimensions: `360 × 255`
-- size: `4,938 bytes`
-- SHA-256: `6fc1c0820ca038f1745ca19f923d5c0534643716a9f0af751eb1402abcfb656b`
+- path: `docs/ref-img/full-reference-desktop.webp`
+- dimensions: `1200 × 849`
+- size: `42,952 bytes`
+- SHA-256: `f98bc42b544fb40dcf1a260ac055707eb533edd5883d9c62150e128ee1901cea`
 
 ## Asset rules
 
 - References are art-direction and layout targets, not sources of fictional data.
 - Do not use the reference screenshots inside the production Tessli application.
+- `brand-preview/assets/` is a legacy static-specimen set. It may be used to run the preview but is not a canonical source, production asset, or replacement for the tracked references above.
 - Production hero may be re-exported after crop approval, but preserve transparency and the warm stone/charcoal/orange palette.
 - Do not apply a second heavy grain layer over the hero.
 - Resource thumbnails are not included as production assets; they follow `docs/data-and-media-contract.md`.

@@ -166,21 +166,22 @@ Do not scrape or redistribute destination content beyond necessary metadata and 
 Tracked assets:
 
 ```text
-design/assets/tessli-hero-geometry-source.webp
-public/brand/tessli-hero-geometry.webp
-design/reference/explore-desktop.webp
-design/reference/collections-desktop.webp
-design/reference/saved-desktop.webp
-design/reference/full-reference-desktop.webp
+docs/ref-img/tessli-hero-geometry.webp
+web/public/brand/tessli-hero-geometry.webp
+docs/ref-img/explore-desktop.webp
+docs/ref-img/collections-desktop.webp
+docs/ref-img/saved-desktop.webp
+docs/ref-img/full-reference-desktop.webp
 ```
 
 Hero image:
 
-- transparent;
-- 1536×1024 source;
+- canonical art-direction source is 1200×800 WebP;
 - decorative;
-- production WebP currently approximately 200 KB;
+- production derivative is 900×614 WebP (61,732 bytes);
 - future mobile crop created only after mobile hero composition is approved.
+
+The original page captures are canonical art-direction references only. They must not be rendered inside the production application. See `docs/asset-manifest.md` for immutable dimensions and fingerprints.
 
 ## 10. Privacy and analytics
 
