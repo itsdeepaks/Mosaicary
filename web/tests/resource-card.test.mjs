@@ -70,6 +70,7 @@ test("resource card geometry survives long copy and missing media", async () => 
   assert.match(css, /min-width: 44px/);
   assert.match(css, /min-height: 44px/);
   assert.match(css, /\.card:hover,\s*\.card:focus-within/);
+  assert.doesNotMatch(css, /translateY\(-2px\)/);
   assert.match(css, /@media \(forced-colors: active\)/);
   assert.doesNotMatch(css, /border-radius: 1[2-9]px|backdrop-filter/);
 });

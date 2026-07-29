@@ -67,6 +67,10 @@ test("Explore grid follows the approved four, two, one responsive contract", asy
   );
 
   assert.match(css, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /gap: 1px/);
+  assert.match(css, /border: 1px solid var\(--line\)/);
+  assert.match(css, /background: var\(--line\)/);
+  assert.match(css, /\.grid > li:focus-within/);
   assert.match(css, /@media \(max-width: 1279px\)/);
   assert.match(css, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 767px\)/);

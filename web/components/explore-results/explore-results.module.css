@@ -54,8 +54,10 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-6);
+  gap: 1px;
   margin: var(--space-8) 0 0;
+  border: 1px solid var(--line);
+  background: var(--line);
   padding: 0;
   list-style: none;
 }
@@ -63,6 +65,12 @@
 .grid > li {
   display: grid;
   min-width: 0;
+  background: var(--surface);
+}
+
+.grid > li:focus-within {
+  position: relative;
+  z-index: 1;
 }
 
 .loadMoreFrame {
@@ -163,7 +171,6 @@
 
   .grid {
     grid-template-columns: 1fr;
-    gap: var(--space-5);
     margin-top: var(--space-6);
   }
 
