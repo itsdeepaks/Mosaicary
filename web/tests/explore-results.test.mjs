@@ -26,7 +26,10 @@ test("result derivation uses deterministic token, category, access, and name con
   assert.match(state, /\.\.\.resource\.tags/);
   assert.match(state, /resource\.category !== state\.category/);
   assert.match(state, /state\.access\.includes\(resource\.access\)/);
-  assert.match(state, /tokens\.every\(\(token\) => haystack\.includes\(token\)\)/);
+  assert.match(
+    state,
+    /tokens\.every\(\(token\) => haystack\.includes\(token\)\)/,
+  );
   assert.match(state, /state\.sort === "name-desc" \? -1 : 1/);
   assert.match(state, /left\.curatedIndex - right\.curatedIndex/);
   assert.match(state, /status: "error"/);
@@ -41,13 +44,19 @@ test("Explore results render semantic ready, empty, error, and load-more states"
   assert.match(results, /data-explore-results="empty"/);
   assert.match(results, /data-explore-results="ready"/);
   assert.match(results, /data-result-count=\{resultCount\}/);
-  assert.match(results, /data-visible-result-count=\{visibleResources\.length\}/);
+  assert.match(
+    results,
+    /data-visible-result-count=\{visibleResources\.length\}/,
+  );
   assert.match(results, /<ul className=\{styles\.grid\} data-resource-grid>/);
   assert.match(results, /<ResourceCard/);
   assert.doesNotMatch(results, /onSavedChange=|saved=\{/);
   assert.match(results, /data-reset-discovery/);
   assert.match(results, /data-load-more-resources/);
-  assert.match(results, /Showing \{visibleResources\.length\} of \{resultCount\}/);
+  assert.match(
+    results,
+    /Showing \{visibleResources\.length\} of \{resultCount\}/,
+  );
   assert.match(results, /All matching resources are visible/);
   assert.doesNotMatch(results, /localStorage|sessionStorage|fetch\(/);
 });
