@@ -24,7 +24,12 @@ const footerRoutes = [
   "/content-policy",
 ];
 
-const routeShells = [...footerRoutes.slice(1), "/saved"];
+const routeShells = [
+  ...footerRoutes.filter(
+    (route) => route !== "/" && route !== "/collections",
+  ),
+  "/saved",
+];
 
 test("every internal footer destination has an App Router page", async () => {
   for (const route of footerRoutes) {
