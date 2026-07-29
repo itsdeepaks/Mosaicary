@@ -3,14 +3,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  buildCatalogue,
+  buildReleaseCatalogue,
   CATALOGUE_PATH,
   REPORT_PATH,
-} from "./catalogue-lib.mjs";
+} from "./release-catalogue-lib.mjs";
 
 const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "../..");
-const result = await buildCatalogue({ root: repoRoot });
+const result = await buildReleaseCatalogue({ root: repoRoot });
 
 if (result.report.issues.errors.length > 0) {
   console.error(
@@ -41,7 +41,7 @@ if (result.report.issues.errors.length > 0) {
     process.exitCode = 1;
   } else {
     console.log(
-      `Catalogue check passed for ${result.report.summary.resources} resources and ${result.report.summary.categories} categories.`,
+      `Catalogue check passed for ${result.report.summary.resources} resources, ${result.report.summary.categories} categories, and ${result.report.summary.collections} collections.`,
     );
   }
 }
