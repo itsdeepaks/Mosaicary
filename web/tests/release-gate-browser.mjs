@@ -36,8 +36,8 @@ const routeChecks = [
   ["/content-policy", 200, "Keep reading"],
   ["/submit", 200, "What this route does today"],
   ["/suggest", 200, "What this route does today"],
-  ["/collections/not-a-real-collection", 404, "404"],
-  ["/a-clearly-missing-route", 404, "404"],
+  ["/collections/not-a-real-collection", 404, "Page not found"],
+  ["/a-clearly-missing-route", 404, "Page not found"],
 ];
 
 for (const [path, expectedStatus, expectedText] of routeChecks) {
@@ -55,10 +55,23 @@ const visualCases = [
     path: "/collections/saas-landing-pages",
     selector: "[data-collection-detail=saas-landing-pages]",
   },
-  { name: "full-reference", path: "/resources", selector: "[data-full-reference-page=true]" },
-  { name: "saved", path: "/saved", selector: "[data-saved-resources-page=true]", saved: true },
+  {
+    name: "full-reference",
+    path: "/resources",
+    selector: "[data-full-reference-page=true]",
+  },
+  {
+    name: "saved",
+    path: "/saved",
+    selector: "[data-saved-resources-page=true]",
+    saved: true,
+  },
   { name: "about", path: "/about", selector: "#main-content article" },
-  { name: "contribution-guidance", path: "/submit", selector: "#main-content" },
+  {
+    name: "contribution-guidance",
+    path: "/submit",
+    selector: "#main-content",
+  },
   { name: "not-found", path: "/a-clearly-missing-route", selector: "main" },
 ];
 
@@ -98,8 +111,15 @@ socket.addEventListener("message", (event) => {
   if (message.method === "Runtime.exceptionThrown") {
     consoleFailures.push(message.params.exceptionDetails.text);
   }
-  if (message.method === "Log.entryAdded" && message.params.entry.level === "error") {
-    consoleFailures.push(message.params.entry.text);
+  if (
+    message.method === "Runtime.consoleAPICalled" &&
+    message.params.type === "error"
+  ) {
+    consoleFailures.push(
+      message.params.args
+        .map((argument) => argument.value ?? argument.description ?? "console error")
+        .join(" "),
+    );
   }
   const request = pending.get(message.id);
   if (!request) return;
@@ -138,7 +158,6 @@ async function waitFor(expression, label, timeout = 10_000) {
 await mkdir(outputDirectory, { recursive: true });
 await send("Page.enable");
 await send("Runtime.enable");
-await send("Log.enable");
 
 for (const [width, height] of viewports) {
   await send("Emulation.setDeviceMetricsOverride", {
@@ -151,19 +170,28 @@ for (const [width, height] of viewports) {
   for (const visualCase of visualCases) {
     if (visualCase.saved) {
       await send("Page.navigate", { url: `${origin}/` });
-      await waitFor("document.readyState === 'complete'", "Explore before saved seed");
+      await waitFor(
+        "document.readyState === 'complete'",
+        "Explore before saved seed",
+      );
       await evaluate(
         `localStorage.setItem('tessli-saved-resource-ids-v2', JSON.stringify([${JSON.stringify(catalogue.resources[0].id)}, ${JSON.stringify(catalogue.resources[1].id)}])); true`,
       );
     }
 
     await send("Page.navigate", { url: `${origin}${visualCase.path}` });
-    await waitFor("document.readyState === 'complete'", `${visualCase.name} document`);
+    await waitFor(
+      "document.readyState === 'complete'",
+      `${visualCase.name} document`,
+    );
     await waitFor(
       `Boolean(document.querySelector(${JSON.stringify(visualCase.selector)}))`,
       `${visualCase.name} marker`,
     );
-    await waitFor("document.fonts.status === 'loaded'", `${visualCase.name} fonts`);
+    await waitFor(
+      "document.fonts.status === 'loaded'",
+      `${visualCase.name} fonts`,
+    );
 
     const audit = await evaluate(`(() => ({
       hasMain: Boolean(document.querySelector('main')),
@@ -195,7 +223,10 @@ await send("Emulation.setDeviceMetricsOverride", {
   mobile: true,
 });
 await send("Page.navigate", { url: `${origin}/` });
-await waitFor("document.readyState === 'complete'", "Explore before empty Saved");
+await waitFor(
+  "document.readyState === 'complete'",
+  "Explore before empty Saved",
+);
 await evaluate("localStorage.setItem('tessli-saved-resource-ids-v2', '[]'); true");
 await send("Page.navigate", { url: `${origin}/saved` });
 await waitFor(
@@ -213,5 +244,9 @@ await writeFile(
 );
 
 socket.close();
-assert.deepEqual(consoleFailures, [], `Browser errors: ${consoleFailures.join(" | ")}`);
+assert.deepEqual(
+  consoleFailures,
+  [],
+  `Browser errors: ${consoleFailures.join(" | ")}`,
+);
 console.log("Phase 1 release route and viewport matrix passed.");
