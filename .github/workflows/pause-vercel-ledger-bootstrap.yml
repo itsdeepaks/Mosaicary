@@ -1,0 +1,70 @@
+name: Finalize paused Vercel deployment slice
+
+on:
+  push:
+    branches: [chore/pause-vercel-auto-deployments]
+    paths:
+      - ".github/workflows/pause-vercel-ledger-bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: chore/pause-vercel-auto-deployments
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Update slice ledger
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("build-slices.md")
+          text = path.read_text(encoding="utf-8")
+          anchor = "| 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |"
+          replacement = anchor + "\n| 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |"
+          if replacement not in text:
+              if anchor not in text:
+                  raise SystemExit("Slice 9.2 ledger anchor not found")
+              text = text.replace(anchor, replacement, 1)
+              path.write_text(text, encoding="utf-8")
+
+      - name: Format changed files
+        working-directory: web
+        run: npx prettier --write ../vercel.json ../README.md ../build-slices.md ../docs/slices/9.2a-pause-vercel-auto-deployments.md tests/vercel-deployment-policy.test.mjs
+
+      - name: Run focused policy test
+        working-directory: web
+        run: node --test tests/vercel-deployment-policy.test.mjs
+
+      - name: Remove bootstrap workflow
+        run: rm .github/workflows/pause-vercel-ledger-bootstrap.yml
+
+      - name: Commit finalized slice
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vercel.json README.md build-slices.md docs/slices/9.2a-pause-vercel-auto-deployments.md web/tests/vercel-deployment-policy.test.mjs .github/workflows/pause-vercel-ledger-bootstrap.yml
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore: finalize paused Vercel deployment mode"
+          git push origin HEAD:chore/pause-vercel-auto-deployments
