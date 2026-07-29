@@ -33,7 +33,9 @@ test("release workflow covers the locked checks and formal viewport set", async 
   const workflow = await readRepositoryFile(
     ".github/workflows/phase-1-release-gate.yml",
   );
-  const browser = await readRepositoryFile("web/tests/release-gate-browser.mjs");
+  const browser = await readRepositoryFile(
+    "web/tests/release-gate-browser.mjs",
+  );
 
   for (const command of [
     "npm ci",
@@ -44,7 +46,10 @@ test("release workflow covers the locked checks and formal viewport set", async 
     "npm run catalogue:check",
     "npm run build",
   ]) {
-    assert.match(workflow, new RegExp(command.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(
+      workflow,
+      new RegExp(command.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+    );
   }
 
   for (const viewport of [

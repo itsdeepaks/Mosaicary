@@ -3,7 +3,10 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const endpoint = process.env.CDP_ENDPOINT ?? "http://127.0.0.1:9222";
 const origin = process.env.TESSLI_ORIGIN ?? "http://127.0.0.1:3000";
-const outputDirectory = new URL("../artifacts/phase-1-release/", import.meta.url);
+const outputDirectory = new URL(
+  "../artifacts/phase-1-release/",
+  import.meta.url,
+);
 const catalogue = JSON.parse(
   await readFile(new URL("../data/catalogue.json", import.meta.url), "utf8"),
 );
@@ -26,7 +29,11 @@ const routeChecks = [
   ["/collections/motion-starter-pack", 200, "Motion starter pack"],
   ["/collections/open-source-ui-libraries", 200, "Open-source UI libraries"],
   ["/collections/accessible-colour-tools", 200, "Accessible colour tools"],
-  ["/collections/design-systems-worth-studying", 200, "Design systems worth studying"],
+  [
+    "/collections/design-systems-worth-studying",
+    200,
+    "Design systems worth studying",
+  ],
   ["/resources", 200, "Source-backed, not ranked"],
   ["/saved", 200, "Your saves stay in this browser"],
   ["/about", 200, "Keep reading"],
@@ -49,7 +56,11 @@ for (const [path, expectedStatus, expectedText] of routeChecks) {
 
 const visualCases = [
   { name: "explore", path: "/", selector: "[data-explore-results=ready]" },
-  { name: "collections", path: "/collections", selector: "[data-collections-grid]" },
+  {
+    name: "collections",
+    path: "/collections",
+    selector: "[data-collections-grid]",
+  },
   {
     name: "collection-detail",
     path: "/collections/saas-landing-pages",
@@ -117,7 +128,10 @@ socket.addEventListener("message", (event) => {
   ) {
     consoleFailures.push(
       message.params.args
-        .map((argument) => argument.value ?? argument.description ?? "console error")
+        .map(
+          (argument) =>
+            argument.value ?? argument.description ?? "console error",
+        )
         .join(" "),
     );
   }
@@ -142,7 +156,8 @@ async function evaluate(expression) {
     expression,
     returnByValue: true,
   });
-  if (response.exceptionDetails) throw new Error(response.exceptionDetails.text);
+  if (response.exceptionDetails)
+    throw new Error(response.exceptionDetails.text);
   return response.result.value;
 }
 
@@ -201,7 +216,11 @@ for (const [width, height] of viewports) {
     }))()`);
     assert.equal(audit.hasMain, true, `${visualCase.name} main at ${width}`);
     assert.equal(audit.hasHeading, true, `${visualCase.name} h1 at ${width}`);
-    assert.equal(audit.overflow, false, `${visualCase.name} overflow at ${width}`);
+    assert.equal(
+      audit.overflow,
+      false,
+      `${visualCase.name} overflow at ${width}`,
+    );
     assert.ok(audit.title.length > 0, `${visualCase.name} title at ${width}`);
 
     const screenshot = await send("Page.captureScreenshot", {
@@ -227,7 +246,9 @@ await waitFor(
   "document.readyState === 'complete'",
   "Explore before empty Saved",
 );
-await evaluate("localStorage.setItem('tessli-saved-resource-ids-v2', '[]'); true");
+await evaluate(
+  "localStorage.setItem('tessli-saved-resource-ids-v2', '[]'); true",
+);
 await send("Page.navigate", { url: `${origin}/saved` });
 await waitFor(
   "Boolean(document.querySelector('[data-saved-resources-empty]'))",
