@@ -2,13 +2,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 import ts from "typescript";
 
 const currentFile = fileURLToPath(import.meta.url);
 const webRoot = path.resolve(path.dirname(currentFile), "..");
-const repositoryRoot = path.resolve(webRoot, "..");
 const validPublishableKey = `sb_publishable_${"a".repeat(32)}`;
 
 async function readWebFile(relativePath) {
@@ -119,7 +118,10 @@ test("empty database types remain explicit until the schema slice", async () => 
   const databaseTypes = await readWebFile("lib/supabase/database.types.ts");
 
   assert.match(databaseTypes, /Tables: \{ \[_ in never\]: never \}/);
-  assert.match(databaseTypes, /Replace this file with `supabase gen types typescript`/);
+  assert.match(
+    databaseTypes,
+    /Replace this file with `supabase gen types typescript`/,
+  );
   assert.doesNotMatch(databaseTypes, /profiles:/);
   assert.doesNotMatch(databaseTypes, /saved_resources:/);
 });
