@@ -77,14 +77,23 @@
 
 .cover[data-collection-cover-style="typography"] {
   background:
-    linear-gradient(90deg, var(--surface) 0 48%, transparent 48% 52%, var(--surface) 52%),
+    linear-gradient(
+      90deg,
+      var(--surface) 0 48%,
+      transparent 48% 52%,
+      var(--surface) 52%
+    ),
     var(--surface-muted);
 }
 
 .cover[data-collection-cover-style="motion"] {
   background:
     radial-gradient(circle at 72% 28%, var(--accent) 0 12px, transparent 13px),
-    radial-gradient(circle at 62% 66%, var(--text-strong) 0 38px, transparent 39px),
+    radial-gradient(
+      circle at 62% 66%,
+      var(--text-strong) 0 38px,
+      transparent 39px
+    ),
     var(--surface-muted);
 }
 
