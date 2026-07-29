@@ -80,9 +80,10 @@ Stop and fix before merge when any of these occur:
 | 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |
 | 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
 | 9.3 | Production replacement and rollback verification | BLOCKED | 9.2, Vercel project access |
-| 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |
-| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1 |
-| 11.1 | User-data schema and RLS | PLANNED | 10.1 |
+| 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
+| 10.1b | Supabase cloud project link and client smoke test | BLOCKED | 10.1a, project approval |
+| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1b |
+| 11.1 | User-data schema and RLS | PLANNED | 10.1b |
 | 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2, 11.1 |
 | 12.1 | Submit, suggest, and report forms | PLANNED | 10.2, 11.1 |
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |

@@ -4,8 +4,7 @@ export type SupabasePublicConfig = Readonly<{
 }>;
 
 const URL_ENVIRONMENT_KEY = "NEXT_PUBLIC_SUPABASE_URL";
-const PUBLISHABLE_KEY_ENVIRONMENT_KEY =
-  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY";
+const PUBLISHABLE_KEY_ENVIRONMENT_KEY = "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY";
 
 export class SupabaseConfigurationError extends Error {
   constructor(message: string) {
