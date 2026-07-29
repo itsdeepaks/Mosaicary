@@ -9,6 +9,7 @@ import {
   buildReleaseCatalogue,
   COLLECTION_SCHEMA_PATH,
   COLLECTION_SOURCE_PATH,
+  prepareCollectionComposition,
   validateCollectionSource,
 } from "../scripts/release-catalogue-lib.mjs";
 
@@ -181,6 +182,31 @@ test("collection source validator rejects malformed launch metadata", async () =
   assert.equal(codes.has("collection-status"), true);
   assert.equal(codes.has("collection-resource-count"), true);
   assert.equal(codes.has("unexpected-keys"), true);
+});
+
+test("invalid collection source reports errors and publishes no collections", async () => {
+  const [{ catalogue }, { source, schema }] = await Promise.all([
+    releaseBuild(),
+    collectionInputs(),
+  ]);
+  const invalid = structuredClone(source);
+  invalid.collections[0].resourceIds = null;
+
+  const composition = prepareCollectionComposition(
+    invalid,
+    schema,
+    catalogue.resources,
+  );
+
+  assert.equal(composition.errors.length > 0, true);
+  assert.equal(composition.sourceCollections.length, 6);
+  assert.deepEqual(composition.collections, []);
+  assert.equal(
+    composition.errors.some(
+      (error) => error.code === "collection-resource-array",
+    ),
+    true,
+  );
 });
 
 test("release catalogue and collection report output are deterministic", async () => {
