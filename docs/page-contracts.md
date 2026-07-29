@@ -9,6 +9,7 @@
 - `32–48px` side gutters;
 - header navigation visible;
 - resource grid: four columns where card width remains at least `270px`.
+- dense catalogue grids may be visually continuous inside one bordered frame; their outer spacing still follows the page container.
 
 ### Tablet: 768–1279px
 
@@ -26,6 +27,7 @@
 - one-column cards;
 - mobile menu sheet;
 - category scroller;
+- intentional category overflow affordance rather than clipped labels;
 - filter sheet;
 - large tables transform to rows/cards;
 - no essential hover-only behaviour.
@@ -66,6 +68,12 @@ Artwork:
 - maximum visual width about 46% of hero;
 - must not overlap search or copy;
 - no continuous motion in version one.
+
+Visual target:
+
+- the hero artwork is large enough to counterbalance the display headline, with generous empty space around both;
+- the search field and truthful fact row stay aligned to the copy column;
+- at desktop widths, contain category navigation within its own full-width surface: primary categories remain visible and overflow moves behind `More` rather than being clipped.
 
 ### Tablet
 

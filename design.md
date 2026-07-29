@@ -1,7 +1,7 @@
 # Tessli Design System
 
-Status: **pre-development visual contract**  
-Last updated: 2026-07-28
+Status: **active visual contract**
+Last updated: 2026-07-29
 
 This document is the concise source of truth for Tessli's visual identity. Page structure, component behaviour, data rules, architecture, and delivery slices live in the linked documents under `docs/`.
 
@@ -22,17 +22,17 @@ It should feel:
 
 Desktop direction:
 
-- `design/reference/explore-desktop.webp`
-- `design/reference/collections-desktop.webp`
-- `design/reference/saved-desktop.webp`
-- `design/reference/full-reference-desktop.webp`
+- `docs/ref-img/explore-desktop.webp`
+- `docs/ref-img/collections-desktop.webp`
+- `docs/ref-img/saved-desktop.webp`
+- `docs/ref-img/full-reference-desktop.webp`
 
 Approved hero artwork:
 
-- source: `design/assets/tessli-hero-geometry-source.webp`
-- production candidate: `public/brand/tessli-hero-geometry.webp`
+- canonical source: `docs/ref-img/tessli-hero-geometry.webp`
+- production derivative: `web/public/brand/tessli-hero-geometry.webp`
 
-The references define the **composition, atmosphere, hierarchy, and component language**. They are not literal specifications for fictional data, tiny generated text, or impossible measurements.
+The references define the **composition, atmosphere, hierarchy, and component language**. They are not literal specifications for fictional data, tiny generated text, or impossible measurements. `brand-preview/assets/` remains a legacy specimen set for the static preview; it is not the canonical source set and must not be used as production UI.
 
 ## 3. Non-negotiable design principles
 

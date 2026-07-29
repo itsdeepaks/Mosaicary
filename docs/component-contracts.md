@@ -31,6 +31,7 @@ Each component must be implemented, browser-tested, and approved independently b
 - desktop header height: approximately `64px`;
 - sticky only after visual testing; no heavy blur;
 - active route uses orange underline, not filled pill;
+- Phase 1 shows only routes and utilities that work: the Saved shortcut appears after the browser-local Saved page is delivered; sign-in/account waits for the real auth slice; a theme control waits for two genuinely designed themes;
 - mobile navigation opens a full-height sheet;
 - Escape closes open menus/sheets;
 - focus returns to the trigger.
@@ -99,7 +100,8 @@ Show `Sign in`, not a fake avatar.
 
 ### Behaviour
 
-- `/` or `Cmd/Ctrl + K` may focus global search;
+- `/` or `Ctrl/Command + K` may focus global search;
+- when a visible hint is used, it must be platform-neutral (for example, `Ctrl / ⌘ K`) rather than presenting the Mac Command symbol as universal;
 - Escape clears first, then removes focus;
 - debounce `80–120ms` for local filtering;
 - no network call for the initial 295-entry catalogue;
@@ -123,14 +125,15 @@ On mobile, use a two-by-two grid. Do not create horizontal overflow for these it
 - horizontal bordered surface;
 - category icon, label, and optional count;
 - active item uses orange text/underline;
-- “More” opens remaining categories only when necessary.
+- primary categories stay contained within the page frame; “More” opens remaining categories only when necessary instead of clipping the rail.
 
 ### Mobile
 
 - horizontally scrollable chips or a compact category sheet;
 - first and last items receive edge padding;
 - active item is always scrolled into view;
-- scrollbar visually hidden but scrolling preserved.
+- a visible edge/overflow affordance communicates that more categories are available; scrollbar may be visually hidden only when that affordance remains;
+- scrolling remains available by touch, wheel, keyboard, and assistive technology.
 
 ## 7. Tabs
 
@@ -163,6 +166,13 @@ Used for `All resources`, `Saved`, and `Full reference`.
 - middle-click and modifier-click must work;
 - selection of text remains possible;
 - hover and focus-within share a visual treatment.
+
+### Grouped-grid treatment
+
+- dense catalogue grids may use a shared border and zero visual gutters so adjacent cards read as one composed reference frame;
+- use collapsed interior borders or a single-pixel overlap so joining edges never double in weight;
+- preserve a clear focus treatment that is visible across neighbouring cards;
+- responsive column changes recompute the shared frame rather than reintroducing arbitrary card gaps.
 
 ### States
 
