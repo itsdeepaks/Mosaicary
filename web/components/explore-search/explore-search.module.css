@@ -75,14 +75,15 @@
 }
 
 .shortcut kbd {
-  min-width: 22px;
+  min-width: max-content;
   border: 1px solid var(--line);
   border-radius: var(--radius-control-sm);
   background: var(--surface-muted);
   font-family: inherit;
   font-size: var(--text-micro);
   font-weight: 650;
-  line-height: 22px;
+  line-height: 24px;
+  padding-inline: 6px;
   text-align: center;
 }
 

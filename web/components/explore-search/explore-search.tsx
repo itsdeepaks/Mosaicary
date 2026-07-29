@@ -174,8 +174,7 @@ export function ExploreSearch({
           </button>
         ) : (
           <span aria-hidden="true" className={styles.shortcut}>
-            <kbd>⌘</kbd>
-            <kbd>K</kbd>
+            <kbd>Ctrl / ⌘ K</kbd>
           </span>
         )}
       </form>
