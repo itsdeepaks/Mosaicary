@@ -15,6 +15,7 @@ import {
   slugify,
   validateCatalogueAgainstSchema,
 } from "../scripts/catalogue-lib.mjs";
+import { buildReleaseCatalogue } from "../scripts/release-catalogue-lib.mjs";
 
 const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "../..");
@@ -100,7 +101,7 @@ test("generated identifiers, slugs, URLs, and domains are unique and valid", asy
   assert.equal(report.duplicates.urls.length, 0);
 });
 
-test("migration does not invent tags, collections, or useful-for metadata", async () => {
+test("CSV migration does not invent tags, collections, or useful-for metadata", async () => {
   const { catalogue } = await catalogueBuild();
 
   assert.equal(catalogue.collections.length, 0);
@@ -150,8 +151,8 @@ test("schema shape accepts defined optional properties and rejects unknown keys"
   );
 });
 
-test("committed catalogue data matches deterministic migration output", async () => {
-  const result = await catalogueBuild();
+test("committed catalogue data matches deterministic release composition", async () => {
+  const result = await buildReleaseCatalogue({ root: repoRoot });
   const [committedCatalogue, committedReport] = await Promise.all([
     readFile(path.join(repoRoot, CATALOGUE_PATH), "utf8"),
     readFile(path.join(repoRoot, REPORT_PATH), "utf8"),
