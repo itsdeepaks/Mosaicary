@@ -315,9 +315,10 @@ export async function buildReleaseCatalogue(options = {}) {
     );
   }
 
-  const collections = Array.isArray(collectionSource?.collections)
+  const sourceCollections = Array.isArray(collectionSource?.collections)
     ? collectionSource.collections
     : [];
+  const collections = collectionErrors.length === 0 ? sourceCollections : [];
   const catalogue = {
     ...base.catalogue,
     collections,
@@ -331,7 +332,7 @@ export async function buildReleaseCatalogue(options = {}) {
     collectionSource: {
       path: COLLECTION_SOURCE_PATH,
       sha256: collectionSourceSha256,
-      collectionCount: collections.length,
+      collectionCount: sourceCollections.length,
     },
     summary: {
       ...base.report.summary,
