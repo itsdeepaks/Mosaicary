@@ -67,6 +67,11 @@ test("controls use route links, category buttons, validated access, and native d
   assert.match(controls, /data-category=\{category\.id\}/);
   assert.match(controls, /categoryScrollerRef/);
   assert.match(controls, /scroller\.scrollTo/);
+  assert.match(controls, /primaryCategoryIds/);
+  assert.match(controls, /<span>More<\/span>/);
+  assert.match(controls, /id="overflow-categories"/);
+  assert.match(controls, /event\.key === "Escape"/);
+  assert.match(controls, /moreTriggerRef\.current\?\.focus\(\)/);
   assert.doesNotMatch(controls, /scrollIntoView/);
   assert.match(controls, /data-resource-view="all"/);
   assert.match(controls, /data-resource-view="saved"/);
@@ -91,6 +96,10 @@ test("discovery controls remain sharp, scroll-safe, and touch complete", async (
   );
 
   assert.match(css, /overflow-x: auto/);
+  assert.match(css, /\.desktopCategoryList/);
+  assert.match(css, /\.mobileCategoryList/);
+  assert.match(css, /\.categorySurface::after/);
+  assert.match(css, /content: "›"/);
   assert.match(css, /scrollbar-width: none/);
   assert.match(css, /white-space: nowrap/);
   assert.match(css, /min-height: 58px/);

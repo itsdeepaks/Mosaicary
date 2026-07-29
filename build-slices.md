@@ -70,8 +70,8 @@ Stop and fix before merge when any of these occur:
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |
 | 7.1a | Visual realignment contract and canonical reference intake | DONE | 7.1 |
-| 7.1b | Explore hero, search, and platform-neutral shortcut realignment | NEXT | 7.1a |
-| 7.1c | Explore category rail containment and overflow affordance | PLANNED | 7.1b |
+| 7.1b | Explore hero, search, and platform-neutral shortcut realignment | DONE | 7.1a |
+| 7.1c | Explore category rail containment and overflow affordance | NEXT | 7.1b |
 | 7.1d | Explore resource-card grid density and shared-border layout | PLANNED | 7.1c |
 | 7.2 | Full Reference tablet/mobile filters and compact rows | PLANNED | 7.1, 7.1d |
 | 8.1 | Browser-local save store and legacy-key migration | PLANNED | 5.1 |

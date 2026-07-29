@@ -31,6 +31,16 @@ const sortOptions: readonly { value: DiscoverySort; label: string }[] = [
   { value: "name-desc", label: "Name Z–A" },
 ];
 
+const primaryCategoryIds = new Set([
+  "website-inspiration",
+  "ui-libraries",
+  "design-systems",
+  "motion-3d",
+  "typography",
+  "icons",
+  "visual-assets",
+]);
+
 function FilterIcon() {
   return (
     <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
@@ -47,6 +57,14 @@ function CloseIcon() {
   );
 }
 
+function ChevronIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
+      <path d="m7 10 5 5 5-5" />
+    </svg>
+  );
+}
+
 export function DiscoveryControls({
   categories,
   accessOptions,
@@ -57,8 +75,10 @@ export function DiscoveryControls({
   onClearFilters,
 }: DiscoveryControlsProps) {
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const activeCategoryRef = useRef<HTMLButtonElement>(null);
   const categoryScrollerRef = useRef<HTMLDivElement>(null);
+  const moreTriggerRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const filterTriggerRef = useRef<HTMLButtonElement>(null);
@@ -68,6 +88,15 @@ export function DiscoveryControls({
     0,
   );
   const activeFilterCount = state.access.length + (state.category ? 1 : 0);
+  const primaryCategories = categories.filter((category) =>
+    primaryCategoryIds.has(category.id),
+  );
+  const overflowCategories = categories.filter(
+    (category) => !primaryCategoryIds.has(category.id),
+  );
+  const overflowHasActiveCategory = overflowCategories.some(
+    (category) => category.id === state.category,
+  );
 
   useEffect(() => {
     const activeCategory = activeCategoryRef.current;
@@ -94,6 +123,49 @@ export function DiscoveryControls({
 
     scroller.scrollTo({ behavior: "auto", left: targetScroll });
   }, [state.category]);
+
+  useEffect(() => {
+    if (!moreOpen) {
+      return;
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMoreOpen(false);
+        window.requestAnimationFrame(() => moreTriggerRef.current?.focus());
+      }
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [moreOpen]);
+
+  const selectCategory = (category: string | null) => {
+    onCategoryChange(category);
+    setMoreOpen(false);
+  };
+
+  const categoryButton = (category: DiscoveryCategoryOption) => {
+    const active = state.category === category.id;
+
+    return (
+      <button
+        aria-label={`${category.fullLabel}, ${category.count} resources`}
+        aria-pressed={active}
+        className={styles.categoryButton}
+        data-category={category.id}
+        key={category.id}
+        onClick={() => selectCategory(category.id)}
+        ref={active ? activeCategoryRef : undefined}
+        title={category.fullLabel}
+        type="button"
+      >
+        <span>{category.label}</span>
+        <span className={styles.categoryCount}>{category.count}</span>
+      </button>
+    );
+  };
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -140,43 +212,67 @@ export function DiscoveryControls({
       </h2>
 
       <div className={styles.categorySurface}>
-        <div
-          aria-label="Browse resources by category"
-          className={styles.categoryScroller}
-          ref={categoryScrollerRef}
-          role="group"
-        >
-          <button
-            aria-pressed={state.category === null}
-            className={styles.categoryButton}
-            data-category="all"
-            onClick={() => onCategoryChange(null)}
-            ref={state.category === null ? activeCategoryRef : undefined}
-            type="button"
+        <div className={styles.categoryScroller} ref={categoryScrollerRef}>
+          <div
+            aria-label="Browse resources by category"
+            className={`${styles.categoryList} ${styles.desktopCategoryList}`}
+            role="group"
           >
-            <span>All categories</span>
-            <span className={styles.categoryCount}>{totalCount}</span>
-          </button>
-          {categories.map((category) => {
-            const active = state.category === category.id;
-
-            return (
+            <button
+              aria-pressed={state.category === null}
+              className={styles.categoryButton}
+              data-category="all"
+              onClick={() => selectCategory(null)}
+              ref={state.category === null ? activeCategoryRef : undefined}
+              type="button"
+            >
+              <span>All categories</span>
+              <span className={styles.categoryCount}>{totalCount}</span>
+            </button>
+            {primaryCategories.map(categoryButton)}
+            <div className={styles.moreMenu}>
               <button
-                aria-label={`${category.fullLabel}, ${category.count} resources`}
-                aria-pressed={active}
-                className={styles.categoryButton}
-                data-category={category.id}
-                key={category.id}
-                onClick={() => onCategoryChange(category.id)}
-                ref={active ? activeCategoryRef : undefined}
-                title={category.fullLabel}
+                aria-controls="overflow-categories"
+                aria-expanded={moreOpen}
+                className={styles.moreTrigger}
+                data-active={overflowHasActiveCategory || undefined}
+                onClick={() => setMoreOpen((current) => !current)}
+                ref={moreTriggerRef}
                 type="button"
               >
-                <span>{category.label}</span>
-                <span className={styles.categoryCount}>{category.count}</span>
+                <span>More</span>
+                <ChevronIcon />
               </button>
-            );
-          })}
+              {moreOpen ? (
+                <div
+                  aria-label="More resource categories"
+                  className={styles.morePanel}
+                  id="overflow-categories"
+                  role="group"
+                >
+                  {overflowCategories.map(categoryButton)}
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div
+            aria-label="Browse resources by category"
+            className={`${styles.categoryList} ${styles.mobileCategoryList}`}
+            role="group"
+          >
+            <button
+              aria-pressed={state.category === null}
+              className={styles.categoryButton}
+              data-category="all"
+              onClick={() => selectCategory(null)}
+              ref={state.category === null ? activeCategoryRef : undefined}
+              type="button"
+            >
+              <span>All categories</span>
+              <span className={styles.categoryCount}>{totalCount}</span>
+            </button>
+            {categories.map(categoryButton)}
+          </div>
         </div>
       </div>
 
