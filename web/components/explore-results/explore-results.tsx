@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { ResourceCard } from "@/components/resource-card/resource-card";
 import type { DiscoveryState } from "@/components/explore-discovery/discovery-state";
 
@@ -52,9 +54,9 @@ export function ExploreResults({
             Tessli has not changed your filters. Reload Explore to retry the
             validated local catalogue.
           </p>
-          <a className={styles.primaryAction} href="/">
+          <Link className={styles.primaryAction} href="/">
             Reload Explore
-          </a>
+          </Link>
         </div>
       </section>
     );
