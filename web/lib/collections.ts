@@ -5,10 +5,7 @@ import type {
 } from "@/components/resource-card/resource-card";
 
 export type CollectionCoverStyle =
-  | "editorial"
-  | "typography"
-  | "motion"
-  | "systems";
+  "editorial" | "typography" | "motion" | "systems";
 
 export type CollectionResource = Readonly<{
   resource: ResourceCardData;
@@ -65,8 +62,7 @@ function resolveCollection(
 
     return {
       resource: toResourceCardData(source),
-      categoryLabel:
-        categoryLabelById.get(source.category) ?? source.category,
+      categoryLabel: categoryLabelById.get(source.category) ?? source.category,
     };
   });
 
