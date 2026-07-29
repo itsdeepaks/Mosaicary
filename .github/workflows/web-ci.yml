@@ -30,54 +30,13 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  generate-collection-output:
-    if: github.event_name == 'pull_request' && github.head_ref == 'feat/collection-schema-data'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    defaults:
-      run:
-        working-directory: web
-    steps:
-      - name: Check out feature branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: web/package-lock.json
-
-      - name: Install locked dependencies
-        run: npm ci
-
-      - name: Generate validated catalogue outputs
-        run: npm run catalogue:generate
-
-      - name: Commit deterministic outputs
-        working-directory: .
-        shell: bash
-        run: |
-          if git diff --quiet -- web/data/catalogue.json web/data/catalogue-validation.json; then
-            echo "Generated catalogue outputs are already current."
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add web/data/catalogue.json web/data/catalogue-validation.json
-          git commit -m "data: generate launch collections"
-          git push origin HEAD:${{ github.head_ref }}
-
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15
