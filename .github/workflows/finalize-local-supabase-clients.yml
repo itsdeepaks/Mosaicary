@@ -1,0 +1,123 @@
+name: Finalize local Supabase client slice
+
+on:
+  push:
+    branches: [feat/local-supabase-clients]
+    paths:
+      - ".github/workflows/finalize-local-supabase-clients.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/local-supabase-clients
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Pin runtime and Supabase dependencies
+        working-directory: web
+        run: |
+          npm pkg set engines.node=">=22.0.0"
+          npm install --save-exact @supabase/ssr@latest @supabase/supabase-js@latest
+
+      - name: Update slice ledger without table reformatting
+        shell: python
+        run: |
+          import subprocess
+          from pathlib import Path
+
+          path = Path("build-slices.md")
+          text = subprocess.check_output(
+              ["git", "show", "origin/main:build-slices.md"],
+              text=True,
+              encoding="utf-8",
+          )
+          old = "\n".join([
+              "| 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |",
+              "| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1 |",
+              "| 11.1 | User-data schema and RLS | PLANNED | 10.1 |",
+          ])
+          new = "\n".join([
+              "| 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |",
+              "| 10.1b | Supabase cloud project link and client smoke test | BLOCKED | 10.1a, project approval |",
+              "| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1b |",
+              "| 11.1 | User-data schema and RLS | PLANNED | 10.1b |",
+          ])
+          if old not in text:
+              raise SystemExit("Supabase slice ledger block not found on main")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+      - name: Format changed source files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            package.json \
+            lib/supabase/config.ts \
+            lib/supabase/database.types.ts \
+            lib/supabase/browser.ts \
+            lib/supabase/server.ts \
+            tests/supabase-client-contract.test.mjs \
+            ../docs/slices/10.1a-local-supabase-client-contract.md
+
+      - name: Run focused Supabase contract tests
+        working-directory: web
+        run: node --test tests/supabase-client-contract.test.mjs
+
+      - name: Check formatting
+        working-directory: web
+        run: npm run format:check
+
+      - name: Check types
+        working-directory: web
+        run: npm run typecheck
+
+      - name: Lint
+        working-directory: web
+        run: npm run lint
+
+      - name: Test
+        working-directory: web
+        run: npm test
+
+      - name: Check catalogue drift
+        working-directory: web
+        run: npm run catalogue:check
+
+      - name: Build
+        working-directory: web
+        run: npm run build
+
+      - name: Remove bootstrap workflow
+        run: rm .github/workflows/finalize-local-supabase-clients.yml
+
+      - name: Commit finalized slice
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            .github/workflows/finalize-local-supabase-clients.yml \
+            build-slices.md \
+            docs/slices/10.1a-local-supabase-client-contract.md \
+            web/.env.example \
+            web/package.json \
+            web/package-lock.json \
+            web/lib/supabase \
+            web/tests/supabase-client-contract.test.mjs
+          git commit -m "feat: finalize local Supabase client contract"
+          git push origin HEAD:feat/local-supabase-clients
