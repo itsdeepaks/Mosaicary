@@ -1,0 +1,57 @@
+name: Bootstrap Phase 1 release ledger
+
+on:
+  push:
+    branches: [chore/phase-1-release-hardening]
+    paths:
+      - ".github/workflows/phase-1-release-ledger-bootstrap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: chore/phase-1-release-hardening
+          fetch-depth: 0
+
+      - name: Update release ledger
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("build-slices.md")
+          text = path.read_text(encoding="utf-8")
+          old = """| 9.1 | About, curation, content policy, privacy, and terms | NEXT | 2.2 |
+          | 9.2 | Phase 1 preview hardening and production replacement | PLANNED | 5.2, 6.2, 7.2, 8.2, 9.1 |
+          | 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |"""
+          new = """| 9.1 | About, curation, content policy, privacy, and terms | DONE | 2.2 |
+          | 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |
+          | 9.3 | Production replacement and rollback verification | BLOCKED | 9.2, Vercel project access |
+          | 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |"""
+          if old not in text:
+              raise SystemExit("Expected Slice 9 status block was not found.")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+          rm .github/workflows/phase-1-release-ledger-bootstrap.yml
+
+      - name: Verify focused release contract
+        working-directory: web
+        run: |
+          npm ci
+          node --test tests/release-hardening.test.mjs
+
+      - name: Commit ledger update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md .github/workflows/phase-1-release-ledger-bootstrap.yml
+          git commit -m "docs: finalize phase 1 release ledger"
+          git push origin HEAD:chore/phase-1-release-hardening
