@@ -76,11 +76,13 @@ The metadata is manually curated and may become outdated as destination websites
 
 ## Deployment
 
-The repository root remains configured as the legacy static Vercel deployment until the production replacement slice can verify the live project settings and record a rollback target.
+Automatic Vercel Git deployments are temporarily disabled in the root `vercel.json` so branch pushes and merges can continue through local development and GitHub Actions without consuming Vercel deployment capacity.
+
+The repository root remains the legacy static production fallback until the production replacement slice can verify the live project settings and record a rollback target. Pausing automatic deployment does not delete the Vercel project, existing deployments, or domain assignments.
 
 Do not treat a green Vercel badge alone as evidence that the `web/` Next.js application is deployed. A valid release preview must be probed for the Next.js homepage, Saved workspace, Full Reference page, public-content routes, and expected 404 behaviour.
 
-The included root `vercel.json` continues to provide conservative browser-security headers for the legacy deployment. Production cutover requirements and rollback instructions are documented in `docs/slices/9.2-phase-1-release-hardening.md`.
+The included root `vercel.json` continues to provide conservative browser-security headers for the legacy deployment. Production cutover requirements and rollback instructions are documented in `docs/slices/9.2-phase-1-release-hardening.md`; the temporary pause and re-enable procedure are documented in `docs/slices/9.2a-pause-vercel-auto-deployments.md`.
 
 ## Scope
 

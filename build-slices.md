@@ -78,6 +78,7 @@ Stop and fix before merge when any of these occur:
 | 8.2 | Saved page, empty state, clear and undo | DONE | 8.1 |
 | 9.1 | About, curation, content policy, privacy, and terms | DONE | 2.2 |
 | 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |
+| 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
 | 9.3 | Production replacement and rollback verification | BLOCKED | 9.2, Vercel project access |
 | 10.1 | Supabase project integration and auth clients | BLOCKED | Phase 1, credentials |
 | 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1 |
