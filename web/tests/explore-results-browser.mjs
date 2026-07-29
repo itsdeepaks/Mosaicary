@@ -105,7 +105,11 @@ function resultCountExpression(expected) {
 }
 
 async function loadEveryResult() {
-  while (await evaluate('Boolean(document.querySelector("[data-load-more-resources]"))')) {
+  while (
+    await evaluate(
+      'Boolean(document.querySelector("[data-load-more-resources]"))',
+    )
+  ) {
     const before = await evaluate(
       'Number(document.querySelector("[data-explore-results]")?.getAttribute("data-visible-result-count"))',
     );
@@ -178,15 +182,21 @@ assert.equal(
   "Every matching resource should be reachable through Load more.",
 );
 assert.equal(
-  await evaluate('document.querySelectorAll("[data-resource-grid] > li").length'),
+  await evaluate(
+    'document.querySelectorAll("[data-resource-grid] > li").length',
+  ),
   295,
 );
 assert.equal(
-  await evaluate('Boolean(document.querySelector("[data-load-more-resources]"))'),
+  await evaluate(
+    'Boolean(document.querySelector("[data-load-more-resources]"))',
+  ),
   false,
 );
 assert.match(
-  await evaluate('document.querySelector("[data-explore-results]")?.textContent ?? ""'),
+  await evaluate(
+    'document.querySelector("[data-explore-results]")?.textContent ?? ""',
+  ),
   /All matching resources are visible/,
 );
 
@@ -308,4 +318,6 @@ assert.equal(
 );
 
 socket.close();
-console.log("Explore result filtering, sorting, loading, and history checks passed.");
+console.log(
+  "Explore result filtering, sorting, loading, and history checks passed.",
+);
