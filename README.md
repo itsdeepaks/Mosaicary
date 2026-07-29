@@ -11,14 +11,17 @@ It is intentionally a manual-use reference library. It does not scrape, proxy, o
 - Save a browser-local shortlist without creating an account.
 - Preserve filters in the URL for shareable and repeatable research sessions.
 - Open resources directly from their cards in a new tab.
-- Read the complete Markdown reference from the **Full reference** view.
-- Run entirely as a static site with no backend or environment variables.
+- Browse six repository-maintained collections and their ordered resource lists.
+- Use the dense **Full Reference** view for the complete catalogue.
+- Read truthful About, curation, privacy, terms, and content-policy pages.
 
-## Current static preview
+## Phase 1 release candidate
 
-The repository root remains the current public/static Tessli experience while the replacement application is built and reviewed in isolated slices.
+The complete Phase 1 Next.js application lives in `web/`. It includes Explore, Collections, Full Reference, browser-local Saved, public content and legal routes, contribution guidance, responsive layouts, and browser-tested interaction states.
 
-From the repository root:
+Production replacement remains blocked until the active Vercel project configuration and previous known-good production deployment are readable and recorded. The repository-root static experience remains the production fallback until that separate cutover slice is approved.
+
+The legacy static experience can still be inspected from the repository root:
 
 ```powershell
 python -m http.server 8000 --bind 127.0.0.1
@@ -28,15 +31,13 @@ Then open `http://127.0.0.1:8000`.
 
 ## Next.js application workspace
 
-The replacement application lives in `web/`. Slice 1.1 establishes only the framework, TypeScript, Tailwind CSS, tests, and CI baseline; it does not replace the public interface.
-
 ```powershell
 cd web
 npm ci
 npm run dev
 ```
 
-Then open `http://localhost:3000`. The developer-only scaffold lab is available at `http://localhost:3000/lab`.
+Then open `http://localhost:3000`. The developer-only component lab is available at `http://localhost:3000/lab`.
 
 Quality commands:
 
@@ -45,8 +46,11 @@ npm run format:check
 npm run typecheck
 npm run lint
 npm test
+npm run catalogue:check
 npm run build
 ```
+
+The permanent Phase 1 release workflow additionally runs the complete route and responsive browser matrix and uploads review evidence.
 
 ## Data source
 
@@ -72,13 +76,11 @@ The metadata is manually curated and may become outdated as destination websites
 
 ## Deployment
 
-The repository root remains configured as a static Vercel project during the application rebuild. It requires no build command and no environment variables.
+The repository root remains configured as the legacy static Vercel deployment until the production replacement slice can verify the live project settings and record a rollback target.
 
-```powershell
-npx vercel --prod
-```
+Do not treat a green Vercel badge alone as evidence that the `web/` Next.js application is deployed. A valid release preview must be probed for the Next.js homepage, Saved workspace, Full Reference page, public-content routes, and expected 404 behaviour.
 
-The included `vercel.json` adds conservative browser-security headers. The `web/` application is not the production deployment target until the Phase 1 cutover slice is reviewed and approved.
+The included root `vercel.json` continues to provide conservative browser-security headers for the legacy deployment. Production cutover requirements and rollback instructions are documented in `docs/slices/9.2-phase-1-release-hardening.md`.
 
 ## Scope
 
