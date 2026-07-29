@@ -24,8 +24,9 @@ const footerRoutes = [
   "/content-policy",
 ];
 
+const implementedRoutes = new Set(["/", "/collections", "/resources"]);
 const routeShells = [
-  ...footerRoutes.filter((route) => route !== "/" && route !== "/collections"),
+  ...footerRoutes.filter((route) => !implementedRoutes.has(route)),
   "/saved",
 ];
 
