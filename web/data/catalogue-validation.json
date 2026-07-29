@@ -20,7 +20,9 @@
       "optional": 75,
       "yes": 8,
       "after-trial": 1
-    }
+    },
+    "collections": 6,
+    "collectionItems": 60
   },
   "categoryCounts": [
     {
@@ -270,5 +272,54 @@
         ]
       }
     ]
-  }
+  },
+  "collectionSource": {
+    "path": "lib_data/tessli-launch-collections.json",
+    "sha256": "51d37161655f72017ba68ac5c4c52d499374805a3ae42a16acd56eeeeb5c79f6",
+    "collectionCount": 6
+  },
+  "collections": [
+    {
+      "id": "collection-saas-landing-pages",
+      "slug": "saas-landing-pages",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    },
+    {
+      "id": "collection-typography-font-tools",
+      "slug": "typography-font-tools",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    },
+    {
+      "id": "collection-motion-starter-pack",
+      "slug": "motion-starter-pack",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    },
+    {
+      "id": "collection-open-source-ui-libraries",
+      "slug": "open-source-ui-libraries",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    },
+    {
+      "id": "collection-accessible-colour-tools",
+      "slug": "accessible-colour-tools",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    },
+    {
+      "id": "collection-design-systems-worth-studying",
+      "slug": "design-systems-worth-studying",
+      "resourceCount": 10,
+      "status": "published",
+      "lastReviewedAt": "2026-07-29"
+    }
+  ]
 }

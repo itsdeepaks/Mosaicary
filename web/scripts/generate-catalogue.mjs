@@ -3,14 +3,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  buildCatalogue,
+  buildReleaseCatalogue,
   CATALOGUE_PATH,
   REPORT_PATH,
-} from "./catalogue-lib.mjs";
+} from "./release-catalogue-lib.mjs";
 
 const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "../..");
-const { catalogueText, report, reportText } = await buildCatalogue({
+const { catalogueText, report, reportText } = await buildReleaseCatalogue({
   root: repoRoot,
 });
 const cataloguePath = path.join(repoRoot, CATALOGUE_PATH);
@@ -21,7 +21,7 @@ await writeFile(reportPath, reportText, "utf8");
 
 if (report.issues.errors.length > 0) {
   console.error(
-    `Catalogue migration found ${report.issues.errors.length} blocking issue(s).`,
+    `Catalogue generation found ${report.issues.errors.length} blocking issue(s).`,
   );
   for (const error of report.issues.errors) {
     console.error(`- [${error.code}] ${error.message}`);
@@ -32,7 +32,7 @@ if (report.issues.errors.length > 0) {
   await writeFile(cataloguePath, catalogueText, "utf8");
 
   console.log(
-    `Generated ${report.summary.resources} resources across ${report.summary.categories} categories.`,
+    `Generated ${report.summary.resources} resources, ${report.summary.categories} categories, and ${report.summary.collections} collections.`,
   );
   console.log(
     `Validation report contains ${report.issues.warnings.length} review warning(s) and no blocking errors.`,

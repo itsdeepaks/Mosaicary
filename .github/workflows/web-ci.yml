@@ -9,8 +9,11 @@ on:
       - "README.md"
       - "build-slices.md"
       - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
       - "schemas/catalogue.schema.json"
+      - "schemas/collections.schema.json"
       - "docs/data-and-media-contract.md"
+      - "docs/slices/**"
   push:
     branches: [main]
     paths:
@@ -20,8 +23,11 @@ on:
       - "README.md"
       - "build-slices.md"
       - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
       - "schemas/catalogue.schema.json"
+      - "schemas/collections.schema.json"
       - "docs/data-and-media-contract.md"
+      - "docs/slices/**"
 
 permissions:
   contents: read

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tessli:schema:launch-collections:v1",
+  "title": "Tessli Launch Collections",
+  "description": "Repository-maintained Phase 1 public collection source.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "collections"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "collections": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "$ref": "#/$defs/collection"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "slug",
+        "title",
+        "description",
+        "resourceIds",
+        "coverStyle",
+        "lastReviewedAt",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "slug": {
+          "$ref": "#/$defs/identifier"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "resourceIds": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 24,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "uniqueItems": true
+        },
+        "coverStyle": {
+          "type": "string",
+          "enum": ["editorial", "typography", "motion", "systems"]
+        },
+        "lastReviewedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "const": "published"
+        }
+      }
+    }
+  }
+}
