@@ -111,7 +111,9 @@ export function ExploreResults({
             <h2 id="explore-results-title">
               {resultCount} {resultCount === 1 ? "resource" : "resources"}
             </h2>
-            <p className={styles.summary}>{resultSummary(resultCount, state)}</p>
+            <p className={styles.summary}>
+              {resultSummary(resultCount, state)}
+            </p>
           </div>
           <p aria-live="polite" className={styles.visibleSummary}>
             Showing {visibleResources.length} of {resultCount}
@@ -121,10 +123,7 @@ export function ExploreResults({
         <ul className={styles.grid} data-resource-grid>
           {visibleResources.map(({ resource, categoryLabel }) => (
             <li key={resource.id}>
-              <ResourceCard
-                categoryLabel={categoryLabel}
-                resource={resource}
-              />
+              <ResourceCard categoryLabel={categoryLabel} resource={resource} />
             </li>
           ))}
         </ul>
