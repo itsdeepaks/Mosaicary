@@ -10,7 +10,7 @@ export const navigationItems: readonly NavigationItem[] = [
   { label: "Collections", href: "/collections", available: true },
   { label: "Resources", href: "/resources", available: true },
   { label: "About", href: "/about", available: true },
-  { label: "Saved", href: "/saved", available: false },
+  { label: "Saved", href: "/saved", available: true },
 ] as const;
 
 export const availableNavigationItems = navigationItems.filter(

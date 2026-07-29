@@ -22,10 +22,14 @@ function uniqueStrings(values: readonly unknown[]) {
 
 function readArray(storage: BrowserStorage, key: string) {
   try {
-    const parsed = JSON.parse(storage.getItem(key) ?? "null");
-    return Array.isArray(parsed) ? uniqueStrings(parsed) : [];
+    const stored = storage.getItem(key);
+    const parsed = JSON.parse(stored ?? "null");
+    return {
+      exists: stored !== null && Array.isArray(parsed),
+      values: Array.isArray(parsed) ? uniqueStrings(parsed) : [],
+    };
   } catch {
-    return [];
+    return { exists: false, values: [] };
   }
 }
 
@@ -63,15 +67,15 @@ export function readSavedResourceIds(resources: readonly ResourceCardData[]) {
     return [];
   }
 
-  const currentValues = readArray(storage, savedResourceStoreKey);
-  if (currentValues.length > 0) {
-    return currentValues;
+  const current = readArray(storage, savedResourceStoreKey);
+  if (current.exists) {
+    return current.values;
   }
 
   const identifiers = resourceIdentifiers(resources);
   const migrated = uniqueStrings(
     legacySaveKeys.flatMap((key) =>
-      mapLegacyValues(readArray(storage, key), identifiers),
+      mapLegacyValues(readArray(storage, key).values, identifiers),
     ),
   );
 

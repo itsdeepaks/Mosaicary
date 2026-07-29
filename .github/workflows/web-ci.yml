@@ -148,7 +148,11 @@ jobs:
             http://127.0.0.1:3000/collections/not-a-real-collection)"
           test "$unknown_collection_status" = "404"
 
-          shell_routes=(saved submit suggest about curation privacy terms content-policy)
+          curl --fail --silent --show-error http://127.0.0.1:3000/saved > /tmp/tessli-saved.html
+          grep -q 'data-saved-resources-page="true"' /tmp/tessli-saved.html
+          grep -q "Your saves stay in this browser" /tmp/tessli-saved.html
+
+          shell_routes=(submit suggest about curation privacy terms content-policy)
           for route in "${shell_routes[@]}"; do
             curl --fail --silent --show-error \
               "http://127.0.0.1:3000/$route" > "/tmp/tessli-$route.html"
@@ -176,6 +180,7 @@ jobs:
           node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/saved-resources-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           kill "$search_chrome_pid" 2>/dev/null || true
           wait "$search_chrome_pid" 2>/dev/null || true
           search_chrome_pid=""

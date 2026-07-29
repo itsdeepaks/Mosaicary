@@ -24,11 +24,15 @@ const footerRoutes = [
   "/content-policy",
 ];
 
-const implementedRoutes = new Set(["/", "/collections", "/resources"]);
-const routeShells = [
-  ...footerRoutes.filter((route) => !implementedRoutes.has(route)),
+const implementedRoutes = new Set([
+  "/",
+  "/collections",
+  "/resources",
   "/saved",
-];
+]);
+const routeShells = footerRoutes.filter(
+  (route) => !implementedRoutes.has(route),
+);
 
 test("every internal footer destination has an App Router page", async () => {
   for (const route of footerRoutes) {
@@ -93,7 +97,7 @@ test("header exposes only routes implemented by this slice", async () => {
     );
   }
 
-  assert.match(navigation, /label: "Saved"[\s\S]*?available: false/);
+  assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
 });
 
 test("global footer stays inside the modal-inert site content wrapper", async () => {

@@ -138,19 +138,19 @@ test("search supports controlled URL state and live result counts", async () => 
   assert.match(hero, /resultCount=\{resultCount\}/);
 });
 
-test("Saved remains an honest shell while Full Reference uses validated catalogue data", async () => {
+test("Saved and Full Reference use validated catalogue data without remote state", async () => {
   const [saved, resources, navigation] = await Promise.all([
     read("app/saved/page.tsx"),
     read("app/resources/page.tsx"),
     read("components/site-header/navigation.ts"),
   ]);
 
-  assert.match(saved, /<RoutePlaceholder/);
-  assert.match(saved, /private to this browser/i);
-  assert.doesNotMatch(saved, /localStorage|<form|fetch\(/);
+  assert.match(saved, /import catalogue from "@\/data\/catalogue\.json"/);
+  assert.match(saved, /<SavedResourcesExperience/);
+  assert.doesNotMatch(saved, /RoutePlaceholder|localStorage|fetch\(/);
   assert.match(resources, /import catalogue from "@\/data\/catalogue\.json"/);
   assert.match(resources, /<FullReferenceExperience/);
   assert.doesNotMatch(resources, /RoutePlaceholder|localStorage|fetch\(/);
-  assert.match(navigation, /label: "Saved"[\s\S]*?available: false/);
+  assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Resources"[\s\S]*?available: true/);
 });

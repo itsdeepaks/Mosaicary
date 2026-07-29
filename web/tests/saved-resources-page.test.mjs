@@ -1,0 +1,41 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+
+const currentFile = fileURLToPath(import.meta.url);
+const webRoot = path.resolve(path.dirname(currentFile), "..");
+
+async function read(relativePath) {
+  return readFile(path.join(webRoot, relativePath), "utf8");
+}
+
+test("Saved page provides a local, recent-first workspace with reversible clear", async () => {
+  const [experience, styles] = await Promise.all([
+    read("components/saved-resources/saved-resources-experience.tsx"),
+    read("components/saved-resources/saved-resources.module.css"),
+  ]);
+
+  assert.match(experience, /^"use client";/);
+  assert.match(experience, /readSavedResourceIds\(resources\)/);
+  assert.match(experience, /writeSavedResourceIds\(\[\]\)/);
+  assert.match(experience, /\.slice\(\)\s*\.reverse\(\)/);
+  assert.match(experience, /data-saved-resources-empty/);
+  assert.match(experience, /data-clear-saved/);
+  assert.match(experience, /data-confirm-clear-saved/);
+  assert.match(experience, /data-undo-clear-saved/);
+  assert.match(experience, /<dialog/);
+  assert.match(experience, /event\.preventDefault\(\)/);
+  assert.match(experience, /event\.key === "Escape"/);
+  assert.match(experience, /clearTriggerRef\.current\?\.focus\(\)/);
+  assert.match(experience, /aria-live="polite"/);
+  assert.doesNotMatch(
+    experience,
+    /fetch\(|sessionStorage|sign in|collection|notes/i,
+  );
+  assert.match(styles, /grid-template-columns: repeat\(4/);
+  assert.match(styles, /gap: 1px/);
+  assert.match(styles, /@media \(max-width: 767px\)/);
+  assert.doesNotMatch(styles, /backdrop-filter|border-radius: 1[2-9]px/);
+});
