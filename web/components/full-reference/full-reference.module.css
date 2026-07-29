@@ -78,7 +78,10 @@
 
 .desktopGrid {
   display: grid;
-  grid-template-columns: minmax(220px, 0.78fr) minmax(0, 2.5fr) minmax(210px, 0.72fr);
+  grid-template-columns: minmax(220px, 0.78fr) minmax(0, 2.5fr) minmax(
+      210px,
+      0.72fr
+    );
   align-items: start;
   gap: var(--space-6);
 }
@@ -492,7 +495,10 @@
 
 @media (max-width: 1279px) {
   .desktopGrid {
-    grid-template-columns: minmax(210px, 0.72fr) minmax(0, 2.28fr) minmax(190px, 0.66fr);
+    grid-template-columns: minmax(210px, 0.72fr) minmax(0, 2.28fr) minmax(
+        190px,
+        0.66fr
+      );
     gap: var(--space-4);
   }
 

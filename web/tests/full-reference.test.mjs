@@ -20,7 +20,10 @@ test("Full Reference route passes the validated catalogue into shared discovery 
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<FullReferenceExperience/);
   assert.match(page, /resources=\{resources\}/);
-  assert.doesNotMatch(page, /RoutePlaceholder|fetch\(|previewImageUrl|faviconUrl/);
+  assert.doesNotMatch(
+    page,
+    /RoutePlaceholder|fetch\(|previewImageUrl|faviconUrl/,
+  );
 });
 
 test("desktop reference state reuses canonical discovery derivation and browser history", async () => {
@@ -29,7 +32,10 @@ test("desktop reference state reuses canonical discovery derivation and browser 
   );
 
   assert.match(experience, /^"use client";/);
-  assert.match(experience, /deriveExploreResults\(resources, categoryLabels, state\)/);
+  assert.match(
+    experience,
+    /deriveExploreResults\(resources, categoryLabels, state\)/,
+  );
   assert.match(experience, /discoveryHref\("\/resources", state\)/);
   assert.match(experience, /discoveryHref\("\/", state\)/);
   assert.match(experience, /window\.history\.state \?\? \{\}/);
@@ -51,7 +57,10 @@ test("Full Reference uses native controls and one semantic all-row table", async
   assert.match(experience, /type="radio"/);
   assert.match(experience, /type="checkbox"/);
   assert.match(experience, /<select/);
-  assert.match(experience, /<table className=\{styles\.table\} data-reference-table>/);
+  assert.match(
+    experience,
+    /<table className=\{styles\.table\} data-reference-table>/,
+  );
   assert.match(experience, /<caption>/);
   assert.match(experience, /<thead>/);
   assert.match(experience, /<tbody>/);
@@ -74,12 +83,16 @@ test("supporting panel is factual and omits unsupported ranking signals", async 
 
   assert.match(experience, /Source-backed, not ranked/);
   assert.match(experience, /Curated order follows repository data/);
+  assert.match(
+    experience,
+    /does not infer\s+popularity, quality scores, sponsorship, or trends/,
+  );
   assert.match(experience, /href="\/curation"/);
   assert.match(experience, /href="\/submit"/);
   assert.match(experience, /href="\/suggest"/);
   assert.doesNotMatch(
     experience,
-    /popular tags|trending tags|sponsored|quality score|rating/i,
+    /data-(?:quality-score|rating|popularity|trend)|popular tags|trending tags/i,
   );
 });
 
@@ -91,7 +104,7 @@ test("responsive contract withholds desktop table below 1100px and shows Explore
 
   assert.match(
     css,
-    /grid-template-columns: minmax\(220px, 0\.78fr\) minmax\(0, 2\.5fr\) minmax\(210px, 0\.72fr\)/,
+    /grid-template-columns:\s*minmax\(220px,\s*0\.78fr\)\s*minmax\(0,\s*2\.5fr\)\s*minmax\(\s*210px,\s*0\.72fr\s*\)/,
   );
   assert.match(css, /\.table\s*\{[\s\S]*?min-width: 720px/);
   assert.match(css, /@media \(max-width: 1099px\)/);

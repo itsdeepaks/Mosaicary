@@ -188,7 +188,10 @@ export function FullReferenceExperience({
                 resources, with source-backed category and access metadata.
               </p>
             </div>
-            <dl className={styles.introFacts} aria-label="Reference catalogue facts">
+            <dl
+              className={styles.introFacts}
+              aria-label="Reference catalogue facts"
+            >
               <div>
                 <dt>Validated resources</dt>
                 <dd>{resources.length}</dd>
@@ -229,7 +232,10 @@ export function FullReferenceExperience({
         data-full-reference-desktop
       >
         <div className={`tessli-container ${styles.desktopGrid}`}>
-          <aside className={styles.filterSidebar} aria-label="Reference filters">
+          <aside
+            className={styles.filterSidebar}
+            aria-label="Reference filters"
+          >
             <div className={styles.stickyPanel}>
               <label className={styles.searchControl}>
                 <span>Search catalogue</span>
@@ -386,7 +392,9 @@ export function FullReferenceExperience({
                       <th scope="col">Category</th>
                       <th scope="col">Access</th>
                       <th scope="col">
-                        <span className={styles.visuallyHidden}>Open resource</span>
+                        <span className={styles.visuallyHidden}>
+                          Open resource
+                        </span>
                       </th>
                     </tr>
                   </thead>
@@ -427,7 +435,10 @@ export function FullReferenceExperience({
             )}
           </div>
 
-          <aside className={styles.supportSidebar} aria-label="Reference guidance">
+          <aside
+            className={styles.supportSidebar}
+            aria-label="Reference guidance"
+          >
             <div className={styles.stickyPanel}>
               <section className={styles.supportSection}>
                 <p className={styles.eyebrow}>About this view</p>
@@ -451,7 +462,10 @@ export function FullReferenceExperience({
                   <dd>{accessOptions.length}</dd>
                 </div>
               </dl>
-              <nav aria-label="Reference support" className={styles.supportLinks}>
+              <nav
+                aria-label="Reference support"
+                className={styles.supportLinks}
+              >
                 <Link href="/curation">Read the curation process</Link>
                 <Link href="/submit">Submit a resource</Link>
                 <Link href="/suggest">Suggest an improvement</Link>

@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 const endpoint = process.env.CDP_ENDPOINT ?? "http://127.0.0.1:9222";
 const origin = process.env.TESSLI_ORIGIN ?? "http://127.0.0.1:3000";
+const catalogue = JSON.parse(
+  await readFile(new URL("../data/catalogue.json", import.meta.url), "utf8"),
+);
+const curatedNames = catalogue.resources.map((resource) => resource.name);
 const pending = new Map();
 let messageId = 0;
 
@@ -137,6 +142,13 @@ assert.equal(
   ),
   295,
 );
+assert.deepEqual(
+  await evaluate(
+    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
+  ),
+  curatedNames,
+  "Curated order should match the deterministic repository catalogue.",
+);
 assert.equal(
   await evaluate(
     `document.querySelectorAll('[data-reference-table] [data-resource-save]').length`,
@@ -155,7 +167,22 @@ assert.equal(
   ),
   "Resources",
 );
+assert.equal(
+  await evaluate(
+    "document.documentElement.scrollWidth <= document.documentElement.clientWidth",
+  ),
+  true,
+  "The desktop reference must not overflow horizontally.",
+);
+assert.equal(
+  await evaluate(
+    `document.querySelectorAll('[data-quality-score], [data-rating], [data-popularity], [data-trend]').length`,
+  ),
+  0,
+  "The reference must not expose invented ranking data.",
+);
 
+const initialHistoryLength = await evaluate("window.history.length");
 await evaluate(`(() => {
   const input = document.querySelector('[data-full-reference-search]');
   const setter = Object.getOwnPropertyDescriptor(
@@ -173,6 +200,11 @@ await waitFor(
   `Number(document.querySelector('[data-reference-announcement]')?.textContent.match(/^\\d+/)?.[0]) > 0 && document.querySelector('[data-reference-announcement]')?.textContent.includes('match “motion”')`,
   "search result announcement",
 );
+assert.equal(
+  await evaluate("window.history.length"),
+  initialHistoryLength,
+  "Search should replace the current history entry.",
+);
 const motionCount = await evaluate(
   `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length`,
 );
@@ -184,6 +216,15 @@ await evaluate(
 await waitFor(
   `new URLSearchParams(window.location.search).get('category') === 'motion-3d'`,
   "category URL state",
+);
+await waitFor(
+  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
+  "non-empty exact-category result set",
+);
+assert.equal(
+  await evaluate("window.history.length"),
+  initialHistoryLength + 1,
+  "Category changes should push a history entry.",
 );
 assert.equal(
   await evaluate(
@@ -199,11 +240,55 @@ await waitFor(
   `new URLSearchParams(window.location.search).get('access') === 'free'`,
   "access URL state",
 );
+await waitFor(
+  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
+  "non-empty free-access result set",
+);
 assert.equal(
   await evaluate(
     `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-row]')).every((row) => row.getAttribute('data-reference-access') === 'free')`,
   ),
   true,
+);
+
+await evaluate(
+  `document.querySelector('[data-reference-access="open-source"]')?.click()`,
+);
+await waitFor(
+  `new URLSearchParams(window.location.search).get('access') === 'free,open-source'`,
+  "multi-access URL state",
+);
+await waitFor(
+  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
+  "non-empty multi-access result set",
+);
+const multiAccessValues = await evaluate(
+  `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-row]')).map((row) => row.getAttribute('data-reference-access'))`,
+);
+assert.equal(
+  multiAccessValues.every((access) => ["free", "open-source"].includes(access)),
+  true,
+);
+assert.equal(multiAccessValues.includes("free"), true);
+assert.equal(multiAccessValues.includes("open-source"), true);
+
+await evaluate(`(() => {
+  const select = document.querySelector('[data-reference-sort]');
+  select.value = 'name-asc';
+  select.dispatchEvent(new Event('change', { bubbles: true }));
+})()`);
+await waitFor(
+  `new URLSearchParams(window.location.search).get('sort') === 'name-asc'`,
+  "ascending sort URL state",
+);
+const ascendingNames = await evaluate(
+  `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
+);
+assert.deepEqual(
+  ascendingNames,
+  [...ascendingNames].sort((left, right) =>
+    left.localeCompare(right, "en", { numeric: true, sensitivity: "base" }),
+  ),
 );
 
 await evaluate(`(() => {
@@ -213,22 +298,29 @@ await evaluate(`(() => {
 })()`);
 await waitFor(
   `new URLSearchParams(window.location.search).get('sort') === 'name-desc'`,
-  "sort URL state",
+  "descending sort URL state",
 );
-const sortedNames = await evaluate(
+const descendingNames = await evaluate(
   `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
 );
 assert.deepEqual(
-  sortedNames,
-  [...sortedNames].sort((left, right) =>
+  descendingNames,
+  [...descendingNames].sort((left, right) =>
     right.localeCompare(left, "en", { numeric: true, sensitivity: "base" }),
   ),
 );
 
 await evaluate("window.history.back()");
 await waitFor(
-  `new URLSearchParams(window.location.search).get('sort') === null && document.querySelector('[data-reference-sort]')?.value === 'curated'`,
-  "Back restored curated sort",
+  `new URLSearchParams(window.location.search).get('sort') === 'name-asc' && document.querySelector('[data-reference-sort]')?.value === 'name-asc'`,
+  "Back restored ascending sort",
+);
+assert.deepEqual(
+  await evaluate(
+    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
+  ),
+  ascendingNames,
+  "Back should restore the matching rows and order.",
 );
 await evaluate("window.history.forward()");
 await waitFor(
@@ -255,33 +347,48 @@ assert.equal(
   "/resources",
 );
 
-await setViewport(768, 1200);
-await navigate(
-  "/resources?q=type&category=typography&access=free&sort=name-asc",
-  `document.querySelector('[data-full-reference-handoff]') !== null`,
-);
-assert.equal(
-  await evaluate(
-    `getComputedStyle(document.querySelector('[data-full-reference-desktop]')).display === 'none'`,
-  ),
-  true,
-);
-assert.equal(
-  await evaluate(
-    `getComputedStyle(document.querySelector('[data-full-reference-handoff]')).display !== 'none'`,
-  ),
-  true,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelector('[data-full-reference-handoff] a')?.getAttribute('href')`,
-  ),
-  "/?q=type&category=typography&access=free&sort=name-asc",
-);
-assert.equal(
-  await evaluate("document.documentElement.scrollWidth <= window.innerWidth"),
-  true,
-);
+for (const width of [1024, 768, 390, 320]) {
+  await setViewport(width, 1200);
+  await navigate(
+    "/resources?q=type&category=typography&access=free&sort=name-asc",
+    `document.querySelector('[data-full-reference-handoff]') !== null`,
+  );
+  assert.equal(await evaluate("window.innerWidth"), width);
+  assert.equal(
+    await evaluate(
+      `getComputedStyle(document.querySelector('[data-full-reference-desktop]')).display === 'none'`,
+    ),
+    true,
+  );
+  assert.equal(
+    await evaluate(
+      `getComputedStyle(document.querySelector('[data-full-reference-handoff]')).display !== 'none'`,
+    ),
+    true,
+  );
+  assert.equal(
+    await evaluate(
+      `document.querySelector('[data-full-reference-handoff] a')?.getAttribute('href')`,
+    ),
+    "/?q=type&category=typography&access=free&sort=name-asc",
+  );
+  assert.equal(
+    await evaluate(
+      "document.documentElement.scrollWidth <= document.documentElement.clientWidth",
+    ),
+    true,
+    `The ${width}px handoff must not overflow horizontally.`,
+  );
+  assert.equal(
+    await evaluate(
+      `document.querySelectorAll('dialog, [data-filter-dialog], [data-mobile-reference-row]').length`,
+    ),
+    0,
+    "Slice 7.1 must not include the responsive filter sheet or compact rows.",
+  );
+}
 
 socket.close();
-console.log("Full Reference desktop state and responsive handoff checks passed.");
+console.log(
+  "Full Reference desktop state and responsive handoff checks passed.",
+);
