@@ -85,7 +85,7 @@ test("release workflow covers the locked checks and formal viewport set", async 
   assert.match(workflow, /tessli-phase-1-release-evidence/);
 });
 
-test("release note records exclusions, evidence, and rollback boundary", async () => {
+test("release note and README preserve evidence and rollback boundaries", async () => {
   const note = await readRepositoryFile(
     "docs/slices/9.2-phase-1-release-hardening.md",
   );
@@ -103,6 +103,9 @@ test("release note records exclusions, evidence, and rollback boundary", async (
 
   assert.match(note, /does not change the production deployment target/i);
   assert.match(note, /previous known-good deployment/i);
-  assert.match(readme, /Phase 1 release candidate/i);
-  assert.match(readme, /production replacement remains blocked/i);
+  assert.match(readme, /Phase 1 application/i);
+  assert.match(readme, /web\/package\.json/i);
+  assert.match(readme, /previous repository-root static production deployment/i);
+  assert.match(readme, /rollback target/i);
+  assert.match(readme, /probe `\/`, `\/collections`, `\/resources`, `\/saved`, `\/about`/i);
 });
