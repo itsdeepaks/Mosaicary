@@ -1,0 +1,29 @@
+name: Auth Shell PR Patch
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch-contracts:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/credential-ready-auth-shell
+          fetch-depth: 0
+      - name: Apply exact contract patch
+        run: python .github/scripts/patch-auth-shell-contracts.py
+      - name: Commit contract updates and helper removal
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "test: add auth shell to release matrix"
+          git push origin HEAD:feat/credential-ready-auth-shell
