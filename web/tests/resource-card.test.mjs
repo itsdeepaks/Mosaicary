@@ -67,6 +67,14 @@ test("resource card geometry survives long copy and restores restrained hover mo
   assert.match(css, /\.mediaLabel\s*\{[\s\S]*?background:/);
   assert.match(css, /-webkit-line-clamp: 2/);
   assert.match(css, /-webkit-line-clamp: 3/);
+  assert.doesNotMatch(css, /min-height:\s*2\.5em/);
+  assert.doesNotMatch(css, /min-height:\s*4\.35em/);
+  assert.match(
+    css,
+    /\.description\s*\{[\s\S]*?margin: var\(--space-2\) 0 0/,
+  );
+  assert.match(css, /\.tags\s*\{[\s\S]*?margin-top: var\(--space-3\)/);
+  assert.match(css, /\.footer\s*\{[\s\S]*?margin-top: auto/);
   assert.match(css, /min-width: 44px/);
   assert.match(css, /min-height: 44px/);
   assert.match(css, /\.card::before/);
