@@ -12,8 +12,11 @@ async function readRepositoryFile(relativePath) {
   return readFile(path.join(repositoryRoot, relativePath), "utf8");
 }
 
-test("release ledger separates hardening from external production cutover", async () => {
+test("release ledger records the verified production cutover", async () => {
   const slices = await readRepositoryFile("build-slices.md");
+  const cutover = await readRepositoryFile(
+    "docs/slices/9.3-production-replacement.md",
+  );
 
   assert.match(
     slices,
@@ -25,8 +28,11 @@ test("release ledger separates hardening from external production cutover", asyn
   );
   assert.match(
     slices,
-    /\| 9\.3 \| Production replacement and rollback verification \| BLOCKED \| 9\.2, Vercel project access \|/,
+    /\| 9\.3 \| Production replacement and rollback verification \| DONE \| 9\.2 \|/,
   );
+  assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
+  assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
+  assert.match(cutover, /no grouped runtime errors/i);
 });
 
 test("release workflow covers the locked checks and formal viewport set", async () => {
