@@ -3,6 +3,16 @@ export type SupabasePublicConfig = Readonly<{
   publishableKey: string;
 }>;
 
+export type SupabaseConfigurationStatus =
+  | Readonly<{
+      state: "configured";
+      config: SupabasePublicConfig;
+    }>
+  | Readonly<{
+      state: "unconfigured";
+      message: string;
+    }>;
+
 type SupabasePublicEnvironment = Readonly<{
   NEXT_PUBLIC_SUPABASE_URL?: string;
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
@@ -110,4 +120,24 @@ export function readSupabasePublicConfig(
   );
 
   return { publishableKey, url };
+}
+
+export function inspectSupabasePublicConfig(
+  environment: SupabasePublicEnvironment = readRuntimeEnvironment(),
+): SupabaseConfigurationStatus {
+  try {
+    return {
+      state: "configured",
+      config: readSupabasePublicConfig(environment),
+    };
+  } catch (error) {
+    if (error instanceof SupabaseConfigurationError) {
+      return {
+        state: "unconfigured",
+        message: error.message,
+      };
+    }
+
+    throw error;
+  }
 }
