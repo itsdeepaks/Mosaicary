@@ -52,7 +52,10 @@ test("header exposes separate desktop and mobile account entry points", async ()
   assert.match(header, /aria-current=\{isAuthActive \? "page" : undefined\}/);
   assert.match(styles, /\.accountLink \{/);
   assert.match(styles, /\.mobileAccountLink \{/);
-  assert.match(styles, /\.desktopNavigation,\n  \.accountLink \{\n    display: none;/);
+  assert.match(
+    styles,
+    /\.desktopNavigation,\n  \.accountLink \{\n    display: none;/,
+  );
 });
 
 test("auth shell follows the editorial responsive design contract", async () => {

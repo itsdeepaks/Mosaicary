@@ -28,7 +28,10 @@ export function AuthShell({ configurationState }: AuthShellProps) {
       data-auth-shell="ready"
     >
       <div className={`tessli-container ${styles.layout}`}>
-        <section className={styles.introduction} aria-labelledby="auth-page-title">
+        <section
+          className={styles.introduction}
+          aria-labelledby="auth-page-title"
+        >
           <p className={styles.eyebrow}>Private workspace</p>
           <h1 className={styles.title} id="auth-page-title">
             Keep your research close.
@@ -70,7 +73,10 @@ export function AuthShell({ configurationState }: AuthShellProps) {
             <p className={styles.panelDescription}>{statusDescription}</p>
           </div>
 
-          <form aria-describedby="auth-availability-note" className={styles.form}>
+          <form
+            aria-describedby="auth-availability-note"
+            className={styles.form}
+          >
             <fieldset className={styles.fieldset} disabled>
               <legend className={styles.visuallyHidden}>Sign-in methods</legend>
 
