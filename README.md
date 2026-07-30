@@ -15,19 +15,11 @@ It is intentionally a manual-use reference library. It does not scrape, proxy, o
 - Use the dense **Full Reference** view for the complete catalogue.
 - Read truthful About, curation, privacy, terms, and content-policy pages.
 
-## Phase 1 release candidate
+## Phase 1 application
 
 The complete Phase 1 Next.js application lives in `web/`. It includes Explore, Collections, Full Reference, browser-local Saved, public content and legal routes, contribution guidance, responsive layouts, and browser-tested interaction states.
 
-Production replacement remains blocked until the active Vercel project configuration and previous known-good production deployment are readable and recorded. The repository-root static experience remains the production fallback until that separate cutover slice is approved.
-
-The legacy static experience can still be inspected from the repository root:
-
-```powershell
-python -m http.server 8000 --bind 127.0.0.1
-```
-
-Then open `http://127.0.0.1:8000`.
+The obsolete repository-root static entry point has been retired. Vercel is configured from the repository root to build `web/package.json` with the Next.js builder, so Git imports deploy the application workspace rather than silently serving a root `index.html`.
 
 ## Next.js application workspace
 
@@ -76,13 +68,11 @@ The metadata is manually curated and may become outdated as destination websites
 
 ## Deployment
 
-Automatic Vercel Git deployments are temporarily disabled in the root `vercel.json` so branch pushes and merges can continue through local development and GitHub Actions without consuming Vercel deployment capacity.
+The root `vercel.json` intentionally targets `web/package.json` with Vercel’s Next.js builder and enables reviewed Git deployments. It preserves conservative browser-security headers while avoiding duplicate framework files or dependencies at the repository root.
 
-The repository root remains the legacy static production fallback until the production replacement slice can verify the live project settings and record a rollback target. Pausing automatic deployment does not delete the Vercel project, existing deployments, or domain assignments.
+Every deployment must still be verified against the Next.js route matrix. A READY badge alone is not evidence that the correct application is serving. At minimum, probe `/`, `/collections`, `/resources`, `/saved`, `/about`, and expected not-found behaviour.
 
-Do not treat a green Vercel badge alone as evidence that the `web/` Next.js application is deployed. A valid release preview must be probed for the Next.js homepage, Saved workspace, Full Reference page, public-content routes, and expected 404 behaviour.
-
-The included root `vercel.json` continues to provide conservative browser-security headers for the legacy deployment. Production cutover requirements and rollback instructions are documented in `docs/slices/9.2-phase-1-release-hardening.md`; the temporary pause and re-enable procedure are documented in `docs/slices/9.2a-pause-vercel-auto-deployments.md`.
+The previous repository-root static production deployment is retained in Vercel as a rollback target until the Next.js production cutover and observation checks are complete. Production-cutover requirements and rollback instructions are documented in `docs/slices/9.2-phase-1-release-hardening.md`.
 
 ## Scope
 

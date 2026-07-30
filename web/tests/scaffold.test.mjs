@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
+import { constants } from "node:fs";
 import { test } from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -49,14 +50,19 @@ test("Tailwind CSS v4 PostCSS pipeline is configured", async () => {
   assert.match(globalCss, /@import "tailwindcss";/);
 });
 
-test("legacy root static deployment remains present", async () => {
-  const [indexHtml, vercelConfig] = await Promise.all([
-    readFile(path.join(repositoryRoot, "index.html"), "utf8"),
-    readFile(path.join(repositoryRoot, "vercel.json"), "utf8"),
-  ]);
+test("repository root deploys the Next.js workspace without a static fallback", async () => {
+  const legacyIndexPath = path.join(repositoryRoot, "index.html");
+  const vercelConfig = JSON.parse(
+    await readFile(path.join(repositoryRoot, "vercel.json"), "utf8"),
+  );
 
-  assert.match(indexHtml, /Tessli/i);
-  const parsedVercelConfig = JSON.parse(vercelConfig);
-  assert.equal("buildCommand" in parsedVercelConfig, false);
-  assert.equal("framework" in parsedVercelConfig, false);
+  await assert.rejects(access(legacyIndexPath, constants.F_OK), {
+    code: "ENOENT",
+  });
+  assert.deepEqual(vercelConfig.builds, [
+    {
+      src: "web/package.json",
+      use: "@vercel/next",
+    },
+  ]);
 });
