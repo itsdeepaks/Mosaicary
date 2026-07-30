@@ -62,21 +62,21 @@ test("Explore results render semantic ready, empty, error, and load-more states"
   assert.doesNotMatch(results, /localStorage|sessionStorage|fetch\(/);
 });
 
-test("Explore grid follows the approved four, two, one responsive contract", async () => {
+test("Explore grid follows the approved three, two, one responsive contract", async () => {
   const css = await read(
     "components/explore-results/explore-results.module.css",
   );
 
-  assert.match(css, /grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(css, /gap: 1px/);
   assert.match(css, /border: 1px solid var\(--line\)/);
   assert.match(css, /background: var\(--line\)/);
   assert.match(css, /\.grid > li:focus-within/);
-  assert.match(css, /@media \(max-width: 1279px\)/);
+  assert.match(css, /@media \(max-width: 1023px\)/);
   assert.match(css, /grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /grid-template-columns: 1fr/);
   assert.match(css, /min-height: 44px/);
   assert.match(css, /@media \(forced-colors: active\)/);
-  assert.doesNotMatch(css, /grid-template-columns: repeat\(3|backdrop-filter/);
+  assert.doesNotMatch(css, /grid-template-columns: repeat\(4|backdrop-filter/);
 });
