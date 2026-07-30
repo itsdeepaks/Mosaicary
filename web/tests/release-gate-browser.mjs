@@ -238,7 +238,7 @@ for (const [width, height] of viewports) {
         return {
           configuration: shell?.getAttribute('data-auth-configuration'),
           controlsDisabled:
-            controls.length === 3 && controls.every((control) => control.disabled),
+            controls.length === 3 && controls.every((control) => control.matches(':disabled')),
           fieldsetDisabled: Boolean(fieldset?.disabled),
           noSubmitCopy: document.body.textContent.includes(
             'No sign-in request is sent from this page yet',

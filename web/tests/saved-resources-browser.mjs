@@ -183,7 +183,7 @@ const authAudit = await evaluate(`(() => {
   return {
     configuration: shell?.getAttribute('data-auth-configuration'),
     controlsDisabled:
-      controls.length === 3 && controls.every((control) => control.disabled),
+      controls.length === 3 && controls.every((control) => control.matches(':disabled')),
     fieldsetDisabled: Boolean(fieldset?.disabled),
     localSaves: localStorage.getItem('tessli-saved-resource-ids-v2'),
     noSubmitCopy: document.body.textContent.includes(
