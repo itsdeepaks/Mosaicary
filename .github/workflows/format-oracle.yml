@@ -1,0 +1,43 @@
+name: Format Oracle
+
+on:
+  push:
+    branches:
+      - fix/explore-three-column-hover
+
+permissions:
+  contents: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Apply repository formatter
+        working-directory: web
+        run: npx prettier --write components/resource-card/resource-card.module.css tests/resource-card.test.mjs
+
+      - name: Print exact formatter diff
+        run: git diff -- web/components/resource-card/resource-card.module.css web/tests/resource-card.test.mjs
+
+      - name: Upload formatted files
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-format-oracle
+          path: |
+            web/components/resource-card/resource-card.module.css
+            web/tests/resource-card.test.mjs
+          retention-days: 1
