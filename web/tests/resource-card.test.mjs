@@ -57,7 +57,7 @@ test("resource media follows the safe preview, favicon, generated fallback chain
   );
 });
 
-test("resource card geometry survives long copy and missing media", async () => {
+test("resource card geometry survives long copy and restores restrained hover motion", async () => {
   const css = await read("components/resource-card/resource-card.module.css");
 
   assert.match(css, /aspect-ratio: 16 \/ 10/);
@@ -69,8 +69,16 @@ test("resource card geometry survives long copy and missing media", async () => 
   assert.match(css, /-webkit-line-clamp: 3/);
   assert.match(css, /min-width: 44px/);
   assert.match(css, /min-height: 44px/);
+  assert.match(css, /\.card::before/);
+  assert.match(css, /transition: background-size var\(--motion-fast\)/);
   assert.match(css, /\.card:hover,\s*\.card:focus-within/);
-  assert.doesNotMatch(css, /translateY\(-2px\)/);
+  assert.match(css, /transform: translateY\(-2px\)/);
+  assert.match(css, /\.card:hover::before,\s*\.card:focus-within::before/);
+  assert.match(
+    css,
+    /background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%/,
+  );
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /@media \(forced-colors: active\)/);
   assert.doesNotMatch(css, /border-radius: 1[2-9]px|backdrop-filter/);
 });
