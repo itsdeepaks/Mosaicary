@@ -11,14 +11,16 @@ async function readVercelConfig() {
   return JSON.parse(await readFile(vercelConfigUrl, "utf8"));
 }
 
-test("Vercel builds and deploys the Next.js workspace", async () => {
+test("Vercel targets the nested Next.js package", async () => {
   const config = await readVercelConfig();
 
   assert.equal(config.$schema, "https://openapi.vercel.sh/vercel.json");
-  assert.equal(config.framework, "nextjs");
-  assert.equal(config.installCommand, "npm --prefix web ci");
-  assert.equal(config.buildCommand, "npm --prefix web run build");
-  assert.equal(config.outputDirectory, "web/.next");
+  assert.deepEqual(config.builds, [
+    {
+      src: "web/package.json",
+      use: "@vercel/next",
+    },
+  ]);
   assert.equal(config.git?.deploymentEnabled, true);
 });
 
