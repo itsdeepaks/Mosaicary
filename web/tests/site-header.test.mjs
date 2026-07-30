@@ -36,7 +36,9 @@ test("header implements accessible modal navigation behaviour", async () => {
   assert.match(header, /event\.key !== "Tab"/);
   assert.match(header, /desktopQuery\.addEventListener\("change"/);
   assert.match(header, /window\.addEventListener\("popstate"/);
-  assert.doesNotMatch(header, /Sign in|fake avatar|theme toggle/i);
+  assert.match(header, /href="\/auth"/);
+  assert.match(header, /Sign in to Tessli/);
+  assert.doesNotMatch(header, /fake avatar|theme toggle/i);
 });
 
 test("header avoids synchronous state updates during effect setup", async () => {
