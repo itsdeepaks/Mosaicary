@@ -74,7 +74,10 @@ test("resource card geometry survives long copy and restores restrained hover mo
   assert.match(css, /\.card:hover,\s*\.card:focus-within/);
   assert.match(css, /transform: translateY\(-2px\)/);
   assert.match(css, /\.card:hover::before,\s*\.card:focus-within::before/);
-  assert.match(css, /background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%/);
+  assert.match(
+    css,
+    /background-size:\s*100% 1px,\s*1px 100%,\s*100% 1px,\s*1px 100%/,
+  );
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /@media \(forced-colors: active\)/);
   assert.doesNotMatch(css, /border-radius: 1[2-9]px|backdrop-filter/);
