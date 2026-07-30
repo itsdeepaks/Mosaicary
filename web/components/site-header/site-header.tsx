@@ -18,6 +18,7 @@ export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const isAuthActive = pathname.startsWith("/auth");
 
   const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
@@ -156,6 +157,13 @@ export function SiteHeader() {
         </nav>
 
         <div className={styles.actions}>
+          <Link
+            aria-current={isAuthActive ? "page" : undefined}
+            className={`${styles.accountLink} ${isAuthActive ? styles.accountLinkActive : ""}`}
+            href="/auth"
+          >
+            Sign in
+          </Link>
           <button
             aria-controls="mobile-navigation-sheet"
             aria-expanded={isMenuOpen}
@@ -225,6 +233,15 @@ export function SiteHeader() {
               );
             })}
           </nav>
+          <Link
+            aria-current={isAuthActive ? "page" : undefined}
+            className={`${styles.mobileAccountLink} ${isAuthActive ? styles.mobileAccountLinkActive : ""}`}
+            href="/auth"
+            onClick={closeMenu}
+          >
+            <span>Sign in to Tessli</span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </header>
