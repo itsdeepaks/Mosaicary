@@ -81,11 +81,13 @@ Stop and fix before merge when any of these occur:
 | 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
 | 9.3 | Production replacement and rollback verification | DONE | 9.2 |
 | 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
-| 10.1b | Supabase cloud project link and client smoke test | BLOCKED | 10.1a, project approval |
-| 10.2 | Auth shell, password, OTP, and Google | PLANNED | 10.1b |
+| 10.1b | Supabase cloud project link and client smoke test | DEFERRED | 10.1a, project approval |
+| 10.1c | Credential-ready Supabase activation contract | DONE | 10.1a |
+| 10.2a | Credential-ready auth shell and unavailable state | NEXT | 10.1c |
+| 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
 | 11.1 | User-data schema and RLS | PLANNED | 10.1b |
-| 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2, 11.1 |
-| 12.1 | Submit, suggest, and report forms | PLANNED | 10.2, 11.1 |
+| 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
+| 12.1 | Submit, suggest, and report forms | PLANNED | 10.2b, 11.1 |
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
 
 ## 5. Slice 0.2 — Repository operating contract
@@ -383,12 +385,13 @@ Do not proceed to Collections until the complete Explore page passes visual, acc
 
 ## 17. Slices 10–12 — Accounts and community
 
-These begin only after Phase 1 and required credentials are available.
+Credential-ready contracts and UI may proceed after Phase 1 without cloud credentials. Live authentication, database/RLS verification, cloud data, email delivery, and community workflows remain blocked until their external setup is available.
 
 Requirements include:
 
-- Supabase SSR/cookie clients;
-- password, OTP, and Google auth;
+- Supabase SSR/cookie clients and explicit configuration readiness;
+- a truthful unavailable auth state before credentials exist;
+- password, OTP, and Google auth activation after cloud linking;
 - Resend custom SMTP;
 - RLS-tested user schema;
 - cloud saves and collections;
