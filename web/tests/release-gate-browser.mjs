@@ -43,6 +43,7 @@ const routeChecks = [
   ["/content-policy", 200, "Keep reading"],
   ["/submit", 200, "What this route does today"],
   ["/suggest", 200, "What this route does today"],
+  ["/auth", 200, "Account access unavailable"],
   ["/collections/not-a-real-collection", 404, "Page not found"],
   ["/a-clearly-missing-route", 404, "Page not found"],
 ];
@@ -78,6 +79,12 @@ const visualCases = [
     saved: true,
   },
   { name: "about", path: "/about", selector: "#main-content article" },
+  {
+    name: "auth",
+    path: "/auth",
+    selector: "[data-auth-shell=ready]",
+    auth: true,
+  },
   {
     name: "contribution-guidance",
     path: "/submit",
@@ -222,6 +229,43 @@ for (const [width, height] of viewports) {
       `${visualCase.name} overflow at ${width}`,
     );
     assert.ok(audit.title.length > 0, `${visualCase.name} title at ${width}`);
+
+    if (visualCase.auth) {
+      const authAudit = await evaluate(`(() => {
+        const shell = document.querySelector('[data-auth-shell=ready]');
+        const fieldset = shell?.querySelector('fieldset');
+        const controls = [...(fieldset?.querySelectorAll('button, input') ?? [])];
+        return {
+          configuration: shell?.getAttribute('data-auth-configuration'),
+          controlsDisabled:
+            controls.length === 3 && controls.every((control) => control.matches(':disabled')),
+          fieldsetDisabled: Boolean(fieldset?.disabled),
+          noSubmitCopy: document.body.textContent.includes(
+            'No sign-in request is sent from this page yet',
+          ),
+        };
+      })()`);
+      assert.equal(
+        authAudit.configuration,
+        "unconfigured",
+        `auth configuration at ${width}`,
+      );
+      assert.equal(
+        authAudit.fieldsetDisabled,
+        true,
+        `auth fieldset disabled at ${width}`,
+      );
+      assert.equal(
+        authAudit.controlsDisabled,
+        true,
+        `auth controls disabled at ${width}`,
+      );
+      assert.equal(
+        authAudit.noSubmitCopy,
+        true,
+        `auth no-submit copy at ${width}`,
+      );
+    }
 
     const screenshot = await send("Page.captureScreenshot", {
       format: "png",
