@@ -83,7 +83,7 @@ Stop and fix before merge when any of these occur:
 | 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
 | 10.1b | Supabase cloud project link and client smoke test | DEFERRED | 10.1a, project approval |
 | 10.1c | Credential-ready Supabase activation contract | DONE | 10.1a |
-| 10.2a | Credential-ready auth shell and unavailable state | NEXT | 10.1c |
+| 10.2a | Credential-ready auth shell and unavailable state | DONE | 10.1c |
 | 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
 | 11.1 | User-data schema and RLS | PLANNED | 10.1b |
 | 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
