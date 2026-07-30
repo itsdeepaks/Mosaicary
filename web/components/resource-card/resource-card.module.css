@@ -193,7 +193,6 @@
 .headingCopy h3 {
   display: -webkit-box;
   overflow: hidden;
-  min-height: 2.5em;
   margin: 0;
   color: var(--text-strong);
   font-size: var(--text-h3);
@@ -207,8 +206,7 @@
 .description {
   display: -webkit-box;
   overflow: hidden;
-  min-height: 4.35em;
-  margin: var(--space-3) 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--text-body);
   font-size: var(--text-body-sm);
   line-height: 1.45;
@@ -220,7 +218,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .tags span {
