@@ -105,7 +105,10 @@ test("release note and README preserve evidence and rollback boundaries", async 
   assert.match(note, /previous known-good deployment/i);
   assert.match(readme, /Phase 1 application/i);
   assert.match(readme, /web\/package\.json/i);
-  assert.match(readme, /previous repository-root static production deployment/i);
+  assert.match(
+    readme,
+    /previous repository-root static production deployment/i,
+  );
   assert.match(readme, /rollback target/i);
   assert.match(
     readme,
