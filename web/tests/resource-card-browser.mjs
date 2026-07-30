@@ -131,6 +131,23 @@ async function revealCard(slug) {
   await delay(100);
 }
 
+async function hoverCard(slug) {
+  const point = await evaluate(`(() => {
+    const card = document.querySelector('[data-resource-slug="${slug}"]');
+    const rect = card.getBoundingClientRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+  })()`);
+
+  await send("Input.dispatchMouseEvent", {
+    type: "mouseMoved",
+    x: point.x,
+    y: point.y,
+  });
+}
+
 async function activateCardLink({ button, modifiers = 0 }) {
   const point = await evaluate(`(() => {
     const link = document.querySelector('[data-resource-slug="land-book"] a');
@@ -186,6 +203,16 @@ await waitFor(
   '(() => { const card = document.querySelector("[data-resource-slug=land-book]"); const image = card?.querySelector("img"); return card?.getAttribute("data-media-state") === "preview" && image?.complete === true && image.naturalWidth > 0; })()',
   "the valid preview image",
 );
+await hoverCard("land-book");
+await waitFor(
+  'getComputedStyle(document.querySelector("[data-resource-slug=land-book]")).transform !== "none"',
+  "the card hover lift",
+);
+await waitFor(
+  'getComputedStyle(document.querySelector("[data-resource-slug=land-book]"), "::before").backgroundSize.includes("100% 1px")',
+  "the card hover border trace",
+);
+
 await revealCard("lapa-ninja");
 await waitFor(
   'document.querySelector("[data-resource-slug=lapa-ninja]")?.getAttribute("data-media-state") === "favicon"',
@@ -247,4 +274,6 @@ assert.equal(
 );
 
 socket.close();
-console.log("Resource card fallback, save, and native-link checks passed.");
+console.log(
+  "Resource card hover, fallback, save, and native-link checks passed.",
+);

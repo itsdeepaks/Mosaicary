@@ -11,9 +11,38 @@
     transform var(--motion-fast) var(--ease-standard);
 }
 
+.card::before {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background:
+    linear-gradient(90deg, var(--accent), var(--accent)) top left / 0 1px
+      no-repeat,
+    linear-gradient(180deg, var(--accent), var(--accent)) top right / 1px 0
+      no-repeat,
+    linear-gradient(270deg, var(--accent), var(--accent)) bottom right / 0 1px
+      no-repeat,
+    linear-gradient(0deg, var(--accent), var(--accent)) bottom left / 1px 0
+      no-repeat;
+  content: "";
+  pointer-events: none;
+  transition: background-size var(--motion-fast) var(--ease-standard);
+}
+
 .card:hover,
 .card:focus-within {
+  z-index: 1;
   background: var(--surface);
+  transform: translateY(-2px);
+}
+
+.card:hover::before,
+.card:focus-within::before {
+  background-size:
+    100% 1px,
+    1px 100%,
+    100% 1px,
+    1px 100%;
 }
 
 .card[data-resource-status="unavailable"] {
@@ -304,13 +333,22 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .card,
+  .card::before {
+    transition: none;
+  }
+
   .card:hover,
   .card:focus-within {
-    transition: none;
+    transform: none;
   }
 }
 
 @media (forced-colors: active) {
+  .card::before {
+    display: none;
+  }
+
   .card:focus-within {
     outline: 3px solid Highlight;
     outline-offset: 3px;
