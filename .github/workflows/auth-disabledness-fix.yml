@@ -1,0 +1,44 @@
+name: Auth Disabledness Fix
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  fix-browser-disabledness:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/credential-ready-auth-shell
+          fetch-depth: 0
+      - name: Correct inherited fieldset disabledness assertions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          old = "controls.every((control) => control.disabled)"
+          new = "controls.every((control) => control.matches(':disabled'))"
+          paths = [
+              Path("web/tests/release-gate-browser.mjs"),
+              Path("web/tests/saved-resources-browser.mjs"),
+          ]
+          for path in paths:
+              content = path.read_text(encoding="utf-8")
+              if content.count(old) != 1:
+                  raise SystemExit(f"Expected exactly one disabledness assertion in {path}")
+              path.write_text(content.replace(old, new), encoding="utf-8")
+          PY
+      - name: Commit corrected browser assertions
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add web/tests/release-gate-browser.mjs web/tests/saved-resources-browser.mjs
+          git commit -m "test: assert inherited fieldset disabledness"
+          git push origin HEAD:feat/credential-ready-auth-shell
