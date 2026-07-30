@@ -81,6 +81,28 @@ test("public Supabase configuration rejects missing, unsafe, and secret values",
   }
 });
 
+test("optional readiness inspection keeps the app usable before credentials exist", async () => {
+  const { inspectSupabasePublicConfig } = await loadConfigModule();
+
+  const unconfigured = inspectSupabasePublicConfig({});
+  assert.equal(unconfigured.state, "unconfigured");
+  assert.match(unconfigured.message, /NEXT_PUBLIC_SUPABASE_URL/);
+
+  assert.deepEqual(
+    inspectSupabasePublicConfig({
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: validPublishableKey,
+      NEXT_PUBLIC_SUPABASE_URL: "https://tessli.supabase.co",
+    }),
+    {
+      state: "configured",
+      config: {
+        publishableKey: validPublishableKey,
+        url: "https://tessli.supabase.co",
+      },
+    },
+  );
+});
+
 test("client factories use the public key and preserve request cookie boundaries", async () => {
   const [browser, config, server, environmentExample] = await Promise.all([
     readWebFile("lib/supabase/browser.ts"),
@@ -98,8 +120,9 @@ test("client factories use the public key and preserve request cookie boundaries
   assert.match(server, /createServerClient<Database>/);
   assert.match(server, /getAll\(\)/);
   assert.match(server, /setAll\(cookiesToSet\)/);
-  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_URL=/);
-  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=/);
+  assert.match(environmentExample, /NEXT_PUBLIC_SITE_URL=/);
+  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_URL=\n/);
+  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\n/);
 
   const implementation = `${browser}\n${server}`;
   assert.doesNotMatch(implementation, /SUPABASE_SERVICE_ROLE_KEY/);
