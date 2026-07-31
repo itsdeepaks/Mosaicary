@@ -195,3 +195,19 @@ The original page captures are canonical art-direction references only. They mus
 - no personal data is required to browse;
 - analytics must not be implied in copy before selected and documented;
 - if optional analytics/cookies are introduced, consent and privacy copy must match actual behaviour.
+
+## 11. Candidate discovery and review
+
+Unverified media research is stored separately at `lib_data/resource-media-candidates.json` and validated by `schemas/resource-media-candidates.schema.json`.
+
+Candidate records:
+
+- never enrich production catalogue output automatically;
+- preserve the resource ID, catalogue name, and canonical destination;
+- distinguish pending, candidate, blocked, failed, no-raster, uncertain, and rejected outcomes;
+- record source page, checked date, redirects, response-header content type, and reviewer state when discovery occurs;
+- accept only HTTPS, credential-free, public-hosted JPEG, PNG, WebP, or AVIF URLs;
+- reject remote SVGs, literal IP hosts, local/private destinations, unsafe ports, and excessive redirects;
+- require manual review before any record is copied into approved media.
+
+The offline review generator and check are deterministic and network-free. The explicit discovery command is not part of normal build, test, or CI and may process only selected catalogue resources. See `docs/resource-media-workflow.md` for the contributor procedure and approval checklist.
