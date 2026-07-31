@@ -96,7 +96,8 @@ Stop and fix before merge when any of these occur:
 | 13.0 | UI-intelligence roadmap, research, provider boundary, and schema | DONE | current main |
 | 13.1 | Capability-profile pilot for 20 high-value resources | DONE | 13.0 |
 | 13.2 | Profile validation, evidence freshness, and review tooling | DONE | 13.1 |
-| 13.3 | Local context-engine provider & file-backed index | NEXT | 13.2 |
+| 13.3 | Local context-engine provider & file-backed index | DONE | 13.2 |
+| 13.4 | Research stack builder and Markdown reference-packet export | NEXT | 13.3 |
 
 ## 5. Slice 0.2 — Repository operating contract
 

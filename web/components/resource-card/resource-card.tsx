@@ -2,6 +2,11 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 
+import {
+  getIntelligenceBadge,
+  getIntelligenceProfile,
+} from "@/lib/intelligence";
+
 import styles from "./resource-card.module.css";
 
 export type ResourceCardAccess =
@@ -19,6 +24,9 @@ export type ResourceCardData = Readonly<{
   usefulFor: readonly string[];
   tags: readonly string[];
   status: "active" | "needs-review" | "unavailable";
+  faviconUrl?: string;
+  previewImageUrl?: string;
+  previewSource?: "manual" | "open-graph" | "favicon" | "generated";
 }>;
 
 type ResourceCardMedia = Readonly<{
@@ -167,6 +175,11 @@ export function ResourceCard({
     };
   }, [activeMedia?.src]);
 
+  const profile =
+    getIntelligenceProfile(resource.slug) ||
+    getIntelligenceProfile(resource.id);
+  const badgeText = profile ? getIntelligenceBadge(profile) : null;
+
   return (
     <article
       className={styles.card}
@@ -223,6 +236,14 @@ export function ResourceCard({
           </p>
 
           <div aria-label="Resource attributes" className={styles.tags}>
+            {badgeText && (
+              <span
+                data-intelligence-badge="true"
+                style={{ fontWeight: 600, color: "var(--accent)" }}
+              >
+                {badgeText}
+              </span>
+            )}
             {visibleTags.map((tag) => (
               <span key={tag}>{tag}</span>
             ))}
