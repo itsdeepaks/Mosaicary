@@ -9,6 +9,11 @@ import {
 } from "@/components/resource-card/resource-card";
 
 import {
+  ToastNotification,
+  type ToastMessage,
+} from "@/components/toast-notification/toast-notification";
+
+import {
   readSavedResourceIds,
   savedResourceStoreKey,
   writeSavedResourceIds,
@@ -35,8 +40,13 @@ export function SavedResourcesExperience({
     readonly string[] | null
   >(null);
   const [announcement, setAnnouncement] = useState("");
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const clearTriggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const handleDismissToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   useEffect(() => {
     const synchronizeSavedResources = () => {
@@ -84,9 +94,13 @@ export function SavedResourcesExperience({
       setClearedResourceIds(null);
 
       const resource = resourcesById.get(resourceId);
-      setAnnouncement(
-        `${resource?.name ?? "Resource"} ${saved ? "saved" : "removed from saved resources"}.`,
-      );
+      const name = resource?.name ?? "Resource";
+      const message = `${name} ${saved ? "saved to browser" : "removed"}.`;
+      setAnnouncement(message);
+      setToasts((prev) => [
+        ...prev,
+        { id: `toast-${Date.now()}-${Math.random()}`, message },
+      ]);
     },
     [resourcesById, savedResourceIds],
   );
@@ -100,7 +114,22 @@ export function SavedResourcesExperience({
     writeSavedResourceIds([]);
     setSavedResourceIds([]);
     setClearedResourceIds(previous);
-    setAnnouncement("Saved resources cleared. You can undo this change.");
+    const message = "Saved resources cleared.";
+    setAnnouncement(`${message} You can undo this change.`);
+    setToasts((prev) => [
+      ...prev,
+      {
+        id: `toast-${Date.now()}`,
+        message,
+        onUndo: () => {
+          writeSavedResourceIds(previous);
+          setSavedResourceIds(previous);
+          setClearedResourceIds(null);
+          setAnnouncement(`${resourceCountLabel(previous.length)} restored.`);
+        },
+        undoLabel: "Undo",
+      },
+    ]);
     closeConfirmation();
   };
 
@@ -248,6 +277,7 @@ export function SavedResourcesExperience({
           </div>
         </div>
       </dialog>
+      <ToastNotification toasts={toasts} onDismiss={handleDismissToast} />
     </section>
   );
 }

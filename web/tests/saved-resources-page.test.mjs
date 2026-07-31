@@ -29,6 +29,7 @@ test("Saved page provides a local, recent-first workspace with reversible clear"
   assert.match(experience, /event\.preventDefault\(\)/);
   assert.match(experience, /event\.key === "Escape"/);
   assert.match(experience, /clearTriggerRef\.current\?\.focus\(\)/);
+  assert.match(experience, /<ToastNotification/);
   assert.match(experience, /aria-live="polite"/);
   assert.doesNotMatch(
     experience,
@@ -38,4 +39,18 @@ test("Saved page provides a local, recent-first workspace with reversible clear"
   assert.match(styles, /gap: 1px/);
   assert.match(styles, /@media \(max-width: 767px\)/);
   assert.doesNotMatch(styles, /backdrop-filter|border-radius: 1[2-9]px/);
+});
+
+test("Toast notification component is accessible and un-opinionated", async () => {
+  const [toastComponent, toastStyles] = await Promise.all([
+    read("components/toast-notification/toast-notification.tsx"),
+    read("components/toast-notification/toast-notification.module.css"),
+  ]);
+
+  assert.match(toastComponent, /aria-live="polite"/);
+  assert.match(toastComponent, /data-toast-container="true"/);
+  assert.match(toastComponent, /data-toast-undo="true"/);
+  assert.match(toastStyles, /\.container/);
+  assert.match(toastStyles, /\.toast/);
+  assert.match(toastStyles, /\.undoButton/);
 });

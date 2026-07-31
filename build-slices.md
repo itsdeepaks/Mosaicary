@@ -75,8 +75,8 @@ Stop and fix before merge when any of these occur:
 | 7.1d | Explore resource-card grid density and shared-border layout | DONE | 7.1c |
 | 7.1e | UI realignment: grain opacity, mobile hero height & card border collapse | DONE | 7.1d |
 | 7.2 | Full Reference tablet/mobile filters and compact rows | DONE | 7.1, 7.1d |
-| 7.2a | Saved workspace toast notifications, confirmation modal & undo buffer | NEXT | 7.1e, 8.2 |
-| 7.2b | Full Reference verification date metadata & date sorting | PLANNED | 7.2, 7.2a |
+| 7.2a | Saved workspace toast notifications, confirmation modal & undo buffer | DONE | 7.1e, 8.2 |
+| 7.2b | Full Reference verification date metadata & date sorting | NEXT | 7.2, 7.2a |
 | 8.1 | Browser-local save store and legacy-key migration | DONE | 5.1 |
 | 8.2 | Saved page, empty state, clear and undo | DONE | 8.1 |
 | 9.1 | About, curation, content policy, privacy, and terms | DONE | 2.2 |
