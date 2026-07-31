@@ -20,10 +20,9 @@ test("Full Reference route passes the validated catalogue into shared discovery 
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<FullReferenceExperience/);
   assert.match(page, /resources=\{resources\}/);
-  assert.doesNotMatch(
-    page,
-    /RoutePlaceholder|fetch\(|previewImageUrl|faviconUrl/,
-  );
+  assert.match(page, /previewImageUrl: resource\.previewImageUrl/);
+  assert.match(page, /faviconUrl: resource\.faviconUrl/);
+  assert.doesNotMatch(page, /RoutePlaceholder|fetch\(/);
 });
 
 test("desktop reference state reuses canonical discovery derivation and browser history", async () => {

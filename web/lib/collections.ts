@@ -46,6 +46,9 @@ function toResourceCardData(
     usefulFor: resource.usefulFor,
     tags: resource.tags,
     status: resource.status as ResourceCardData["status"],
+    faviconUrl: resource.faviconUrl,
+    previewImageUrl: resource.previewImageUrl,
+    previewSource: resource.previewSource as ResourceCardData["previewSource"],
   };
 }
 

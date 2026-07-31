@@ -27,6 +27,8 @@ type Resource = {
 
 The current CSV is migrated into deterministic typed JSON under `web/data/`. The migration preserves all 295 entries, records source SHA-256 provenance, and reports invalid URLs, missing descriptions, exact duplicate URLs, duplicate domains, slug collisions, or unknown source labels.
 
+Approved media is a separate, repository-managed sidecar at `lib_data/resource-media.json`, validated by `schemas/resource-media.schema.json`. It is keyed by stable resource ID and deterministically merged into the generated catalogue. Its approval count and SHA-256 are included in `web/data/catalogue-validation.json`; this preserves the CSV as catalogue truth while keeping media review explicit.
+
 `free-trial` is preserved as its own access value because the source contains one explicitly researched free-trial resource. It must not be silently converted to freemium or paid.
 
 ## 2. Category model
@@ -117,7 +119,9 @@ The user preference is to avoid storing every website image in Tessli's database
 
 ### Initial implementation
 
-- metadata enrichment runs server-side or during catalogue build;
+- approved preview metadata is merged during catalogue build, but the build never fetches external media;
+- every sidecar URL must be HTTPS, public-hosted, credential-free, and a declared raster image type;
+- sidecar rows include a checked date and, for previews, manual or Open Graph provenance;
 - extract declared icons and Open Graph image URLs;
 - UI uses fixed aspect-ratio media boxes;
 - use native `<img>` for arbitrary third-party domains;
@@ -145,6 +149,8 @@ A first-party media proxy/cache may be introduced with:
 - malware/unsafe SVG handling;
 - caching in object storage;
 - takedown and refresh support.
+
+Discovery, refresh, screenshot capture, proxying, and caching are intentionally deferred. They require a separate security and operational review rather than being introduced as part of the static source contract.
 
 ## 8. Metadata enrichment
 

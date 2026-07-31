@@ -194,8 +194,15 @@ assert.equal(
   await evaluate(
     'document.querySelectorAll("[data-resource-grid] [data-media-state=generated]").length',
   ),
-  48,
-  "Public cards should use truthful generated media until metadata exists.",
+  45,
+  "Only the three approved media records should replace generated fallbacks.",
+);
+assert.equal(
+  await evaluate(
+    'document.querySelectorAll("[data-resource-grid] [data-media-state=preview]").length',
+  ),
+  3,
+  "Approved media records should render their previews in the first result batch.",
 );
 assert.match(
   await evaluate(

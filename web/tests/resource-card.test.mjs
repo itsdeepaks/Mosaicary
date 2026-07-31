@@ -37,6 +37,8 @@ test("resource media follows the safe preview, favicon, generated fallback chain
 
   assert.match(component, /kind: "preview"/);
   assert.match(component, /kind: "favicon"/);
+  assert.match(component, /resource\.previewImageUrl/);
+  assert.match(component, /resource\.faviconUrl/);
   assert.match(component, /generatedMark\(resource\.name\)/);
   assert.match(component, /addEventListener\("error", advanceFallback\)/);
   assert.match(component, /image\.complete && image\.naturalWidth === 0/);
@@ -46,10 +48,7 @@ test("resource media follows the safe preview, favicon, generated fallback chain
   assert.match(component, /decoding="async"/);
   assert.match(component, /referrerPolicy="no-referrer"/);
   assert.match(component, /!value\.startsWith\("\/\/"\)/);
-  assert.match(
-    component,
-    /url\.protocol === "https:" \|\| url\.protocol === "http:"/,
-  );
+  assert.match(component, /url\.protocol === "https:"/);
   assert.doesNotMatch(component, /onLoad=|data-media-loaded/);
   assert.doesNotMatch(
     component,

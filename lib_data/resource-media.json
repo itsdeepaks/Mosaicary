@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "resources": [
+    {
+      "resourceId": "resource-3ea619b0ed5d",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5ce10a4c0b5f0b05f522e746/6a4a19c7af17b15abe7f8a0a_toools-design-ogimg.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.toools.design",
+        "checkedAt": "2026-07-31",
+        "contentType": "image/jpeg"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5ce10a4c0b5f0b05f522e746/6a04fc6e5e84a0009e4f999f_toools-design-favicon-light.png",
+        "checkedAt": "2026-07-31",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-4798232a04e5",
+      "status": "approved",
+      "preview": {
+        "url": "https://assets.onepagelove.com/cdn-cgi/image/width=1200,height=628,fit=cover,gravity=top,format=jpg,quality=85/wp-content/uploads/global/one-page-love-meta.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://onepagelove.com",
+        "checkedAt": "2026-07-31",
+        "contentType": "image/jpeg"
+      },
+      "favicon": {
+        "url": "https://onepagelove.com/wp-content/themes/onepagelove/frontend/img/favicon/favicon-32x32.png",
+        "checkedAt": "2026-07-31",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-2bd75e3b5922",
+      "status": "approved",
+      "preview": {
+        "url": "https://assets.awwwards.com/assets/images/pages/about-certificates/awwwards.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.awwwards.com",
+        "checkedAt": "2026-07-31",
+        "contentType": "image/jpeg"
+      }
+    }
+  ]
+}

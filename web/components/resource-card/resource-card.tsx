@@ -88,7 +88,7 @@ function safeImageSource(value: string | undefined) {
 
   try {
     const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:" ? value : null;
+    return url.protocol === "https:" ? value : null;
   } catch {
     return null;
   }
@@ -98,8 +98,10 @@ function createMediaCandidates(
   resource: ResourceCardData,
   media: ResourceCardMedia | undefined,
 ): MediaCandidate[] {
-  const previewUrl = safeImageSource(media?.previewUrl);
-  const faviconUrl = safeImageSource(media?.faviconUrl);
+  const previewUrl = safeImageSource(
+    media?.previewUrl ?? resource.previewImageUrl,
+  );
+  const faviconUrl = safeImageSource(media?.faviconUrl ?? resource.faviconUrl);
   const candidates: MediaCandidate[] = [];
 
   if (previewUrl) {

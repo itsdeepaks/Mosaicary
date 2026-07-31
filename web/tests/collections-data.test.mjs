@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
@@ -12,6 +11,7 @@ import {
   prepareCollectionComposition,
   validateCollectionSource,
 } from "../scripts/release-catalogue-lib.mjs";
+import { sourceProvenanceSha256 } from "../scripts/catalogue-lib.mjs";
 
 const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "../..");
@@ -120,7 +120,7 @@ test("collection source provenance is deterministic and separate from CSV proven
     releaseBuild(),
     collectionInputs(),
   ]);
-  const sourceSha256 = createHash("sha256").update(sourceBuffer).digest("hex");
+  const sourceSha256 = sourceProvenanceSha256(sourceBuffer);
 
   assert.deepEqual(catalogue.collections, source.collections);
   assert.equal(report.source.path, "lib_data/design-resource-library-295.csv");

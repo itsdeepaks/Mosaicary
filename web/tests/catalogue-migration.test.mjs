@@ -13,6 +13,7 @@ import {
   REPORT_PATH,
   SCHEMA_PATH,
   slugify,
+  sourceProvenanceSha256,
   validateCatalogueAgainstSchema,
 } from "../scripts/catalogue-lib.mjs";
 import { buildReleaseCatalogue } from "../scripts/release-catalogue-lib.mjs";
@@ -121,6 +122,13 @@ test("catalogue and validation output are deterministic", async () => {
   assert.equal(first.catalogueText, second.catalogueText);
   assert.equal(first.reportText, second.reportText);
   assert.match(first.catalogue.source.sha256, /^[a-f0-9]{64}$/);
+});
+
+test("catalogue provenance hashing is stable across line endings", () => {
+  assert.equal(
+    sourceProvenanceSha256("Category,Website\r\nTools,Example\r\n"),
+    sourceProvenanceSha256("Category,Website\nTools,Example\n"),
+  );
 });
 
 test("schema shape accepts defined optional properties and rejects unknown keys", async () => {
