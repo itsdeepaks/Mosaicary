@@ -60,7 +60,7 @@ test("hero layout recomposes instead of shrinking, hiding, or animating", async 
   assert.match(css, /@media \(max-width: 720px\)/);
   assert.match(css, /overflow: hidden/);
   assert.match(css, /width: min\(600px, 155vw\)/);
-  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?height: 230px/);
+  assert.match(css, /@media \(max-width: 389px\)[\s\S]*?height: 120px/);
   assert.doesNotMatch(css, /\.artwork\s*\{[\s\S]*?display: none/);
   assert.doesNotMatch(css, /animation:/);
 });

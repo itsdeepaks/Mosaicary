@@ -311,6 +311,10 @@
 }
 
 @media (max-width: 480px) {
+  .card {
+    border-bottom: 1px solid var(--line-subtle);
+  }
+
   .body {
     padding: var(--space-4);
   }
