@@ -32,7 +32,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5ce10a4c0b5f0b05f522e746/6a4a19c7af17b15abe7f8a0a_toools-design-ogimg.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5ce10a4c0b5f0b05f522e746/6a04fc6e5e84a0009e4f999f_toools-design-favicon-light.png"
     },
     {
       "id": "resource-602441c6550b",
@@ -60,7 +63,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://assets.onepagelove.com/cdn-cgi/image/width=1200,height=628,fit=cover,gravity=top,format=jpg,quality=85/wp-content/uploads/global/one-page-love-meta.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://onepagelove.com/wp-content/themes/onepagelove/frontend/img/favicon/favicon-32x32.png"
     },
     {
       "id": "resource-2bd75e3b5922",
@@ -74,7 +80,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://assets.awwwards.com/assets/images/pages/about-certificates/awwwards.jpg",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-a5297d09a82a",

@@ -66,6 +66,8 @@ Stop and fix before merge when any of these occur:
 | 4.2 | Discovery URL state, category, access, and sort controls | DONE | 3.2, 4.1 |
 | 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
 | 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
+| 5.3a | Approved resource-media source and rendering pilot | NEXT | 5.2 |
+| 5.3b | Media discovery and review tooling | PLANNED | 5.3a |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |
@@ -98,7 +100,7 @@ Stop and fix before merge when any of these occur:
 | 13.2 | Profile validation, evidence freshness, and review tooling | DONE | 13.1 |
 | 13.3 | Local context-engine provider & file-backed index | DONE | 13.2 |
 | 13.4 | Research stack builder and Markdown reference-packet export | DONE | 13.3 |
-| 13.5 | Read-only Tessli MCP over native metadata | NEXT | 13.4 |
+| 13.5 | Read-only Tessli MCP over native metadata | PLANNED | 13.4 |
 
 ## 5. Slice 0.2 — Repository operating contract
 
@@ -349,6 +351,40 @@ Test at least 12 real entries covering:
 ### Stop condition
 
 Do not proceed to Collections until the complete Explore page passes visual, accessibility, and responsive QA.
+
+## 15a. Slice 5.3a — Approved resource-media source and rendering pilot
+
+### Goal
+
+Make a small set of reviewed, external raster previews available to existing resource cards without changing the public catalogue source or adding a network fetcher.
+
+### Scope
+
+- a schema-validated, repository-managed media sidecar keyed by stable resource ID;
+- deterministic merge into generated catalogue data, including provenance in the validation report;
+- approved HTTPS raster preview and favicon metadata only;
+- existing card fallback chain exercised with production data;
+- responsive and interaction QA of affected routes.
+
+### Acceptance criteria
+
+- the media sidecar rejects unknown or duplicate resources, unsafe URLs, non-raster content types, and invalid provenance;
+- generation remains deterministic and retains all 295 catalogue rows;
+- approved previews render in Explore and Saved, and the shared collection-card adapter receives the same fields;
+- missing or failed media still reaches the existing favicon and generated-letter fallbacks;
+- no external media is fetched during generation, test, or build;
+- browser QA covers 1440, 1024, 768, and 390px without horizontal overflow or runtime errors.
+
+### Exclusions
+
+- no crawler, proxy, screenshot service, binary download, or cache;
+- no broad remote-image optimiser configuration;
+- no speculative or unreviewed media rows;
+- no mass enrichment: the pilot can start with fewer than the 5.1 lab coverage cases where only a smaller set has verified provenance.
+
+### Follow-up slice 5.3b
+
+Build reviewed discovery and refresh tooling only after the source contract has proved stable. It must preserve the same validation boundary and separately address CSP/cache policy, redirect handling, content-size limits, and reviewer workflow.
 
 ## 16. Slices 6–9 — Phase 1 completion
 

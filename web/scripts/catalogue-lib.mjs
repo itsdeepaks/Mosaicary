@@ -244,6 +244,11 @@ function stableResourceId(url) {
   return `resource-${digest}`;
 }
 
+export function sourceProvenanceSha256(source) {
+  const normalized = source.toString("utf8").replace(/\r\n?/g, "\n");
+  return createHash("sha256").update(normalized, "utf8").digest("hex");
+}
+
 function issue(code, message, details = {}) {
   return { code, message, ...details };
 }
@@ -437,7 +442,7 @@ export async function buildCatalogue(options = {}) {
     readFile(sourcePath),
     readFile(schemaPath, "utf8"),
   ]);
-  const sourceSha256 = createHash("sha256").update(sourceBuffer).digest("hex");
+  const sourceSha256 = sourceProvenanceSha256(sourceBuffer);
   const rows = parseCsv(sourceBuffer.toString("utf8"));
   const headers = rows.shift() ?? [];
   const errors = [];

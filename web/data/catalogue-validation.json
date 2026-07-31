@@ -22,7 +22,8 @@
       "after-trial": 1
     },
     "collections": 6,
-    "collectionItems": 60
+    "collectionItems": 60,
+    "approvedMedia": 3
   },
   "categoryCounts": [
     {
@@ -277,6 +278,11 @@
     "path": "lib_data/tessli-launch-collections.json",
     "sha256": "51d37161655f72017ba68ac5c4c52d499374805a3ae42a16acd56eeeeb5c79f6",
     "collectionCount": 6
+  },
+  "mediaSource": {
+    "path": "lib_data/resource-media.json",
+    "sha256": "482ed6517a25cdee329e9b8d28a782b7a1b4eb8f382ef0d1958427b72a92bb7c",
+    "approvedCount": 3
   },
   "collections": [
     {

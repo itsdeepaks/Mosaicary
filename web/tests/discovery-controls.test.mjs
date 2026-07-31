@@ -120,7 +120,9 @@ test("Explore page passes the validated catalogue into the integrated experience
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<ExploreExperience/);
   assert.match(page, /resources=\{resources\}/);
-  assert.doesNotMatch(page, /fetch\(|previewImageUrl|faviconUrl/);
+  assert.match(page, /previewImageUrl: resource\.previewImageUrl/);
+  assert.match(page, /faviconUrl: resource\.faviconUrl/);
+  assert.doesNotMatch(page, /fetch\(/);
 });
 
 test("search supports controlled URL state and live result counts", async () => {

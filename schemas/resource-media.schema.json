@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tessli:schema:resource-media:v1",
+  "title": "Tessli Resource Media",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "resources"],
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/resourceMedia" }
+    }
+  },
+  "$defs": {
+    "date": { "type": "string", "format": "date" },
+    "rasterImage": {
+      "type": "string",
+      "enum": ["image/avif", "image/jpeg", "image/png", "image/webp"]
+    },
+    "httpsUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "preview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url",
+        "source",
+        "sourcePageUrl",
+        "checkedAt",
+        "contentType"
+      ],
+      "properties": {
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "source": { "type": "string", "enum": ["manual", "open-graph"] },
+        "sourcePageUrl": { "$ref": "#/$defs/httpsUrl" },
+        "checkedAt": { "$ref": "#/$defs/date" },
+        "contentType": { "$ref": "#/$defs/rasterImage" }
+      }
+    },
+    "favicon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "checkedAt", "contentType"],
+      "properties": {
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "checkedAt": { "$ref": "#/$defs/date" },
+        "contentType": { "$ref": "#/$defs/rasterImage" }
+      }
+    },
+    "resourceMedia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resourceId", "status"],
+      "properties": {
+        "resourceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "status": { "type": "string", "const": "approved" },
+        "preview": { "$ref": "#/$defs/preview" },
+        "favicon": { "$ref": "#/$defs/favicon" }
+      },
+      "anyOf": [{ "required": ["preview"] }, { "required": ["favicon"] }]
+    }
+  }
+}

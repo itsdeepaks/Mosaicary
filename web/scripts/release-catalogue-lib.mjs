@@ -1,5 +1,5 @@
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { isIP } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -7,12 +7,15 @@ import {
   buildCatalogue,
   CATALOGUE_PATH,
   REPORT_PATH,
+  sourceProvenanceSha256,
 } from "./catalogue-lib.mjs";
 
 export { CATALOGUE_PATH, REPORT_PATH };
 
 export const COLLECTION_SOURCE_PATH = "lib_data/tessli-launch-collections.json";
 export const COLLECTION_SCHEMA_PATH = "schemas/collections.schema.json";
+export const MEDIA_SOURCE_PATH = "lib_data/resource-media.json";
+export const MEDIA_SCHEMA_PATH = "schemas/resource-media.schema.json";
 
 function repoRootFromModule() {
   const currentFile = fileURLToPath(import.meta.url);
@@ -74,6 +77,219 @@ function validBoundedString(value, schema) {
     value.trim().length >= (schema.minLength ?? 0) &&
     value.length <= (schema.maxLength ?? Number.POSITIVE_INFINITY)
   );
+}
+
+function validHttpsUrl(value) {
+  if (typeof value !== "string" || value.length > 2_048) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    return (
+      url.protocol === "https:" &&
+      !url.username &&
+      !url.password &&
+      hostname.includes(".") &&
+      hostname !== "localhost" &&
+      !hostname.endsWith(".localhost") &&
+      !hostname.endsWith(".local") &&
+      isIP(hostname) === 0
+    );
+  } catch {
+    return false;
+  }
+}
+
+function mediaFields(entry) {
+  const fields = {};
+  if (entry.preview) {
+    fields.previewImageUrl = entry.preview.url;
+    fields.previewSource = entry.preview.source;
+  }
+  if (entry.favicon) {
+    fields.faviconUrl = entry.favicon.url;
+  }
+  return fields;
+}
+
+export function validateMediaSource(source, schema, resources) {
+  const errors = [];
+  errors.push(
+    ...objectShapeIssues(
+      source,
+      schema.required,
+      Object.keys(schema.properties),
+      "Media source",
+    ),
+  );
+
+  if (!source || typeof source !== "object" || Array.isArray(source)) {
+    return errors;
+  }
+  if (source.version !== schema.properties.version.const) {
+    errors.push(issue("media-version", "Media source version is invalid."));
+  }
+  if (!Array.isArray(source.resources)) {
+    errors.push(
+      issue("media-array", "Media source resources must be an array."),
+    );
+    return errors;
+  }
+
+  const availableResourceIds = new Set(
+    resources.map((resource) => resource.id),
+  );
+  const resourceIds = new Set();
+  const resourceSchema = schema.$defs.resourceMedia;
+  const previewSchema = schema.$defs.preview;
+  const faviconSchema = schema.$defs.favicon;
+  const rasterTypes = new Set(schema.$defs.rasterImage.enum);
+  const previewSources = new Set(previewSchema.properties.source.enum);
+
+  for (const [index, entry] of source.resources.entries()) {
+    const label = `Media entry ${entry?.resourceId ?? index + 1}`;
+    errors.push(
+      ...objectShapeIssues(
+        entry,
+        resourceSchema.required,
+        Object.keys(resourceSchema.properties),
+        label,
+      ),
+    );
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      continue;
+    }
+    if (!availableResourceIds.has(entry.resourceId)) {
+      errors.push(
+        issue(
+          "unknown-media-resource",
+          `${label} references an unknown resource.`,
+          {
+            resourceId: entry.resourceId,
+          },
+        ),
+      );
+    }
+    if (resourceIds.has(entry.resourceId)) {
+      errors.push(
+        issue(
+          "duplicate-media-resource",
+          `${label} duplicates a resource ID.`,
+          {
+            resourceId: entry.resourceId,
+          },
+        ),
+      );
+    }
+    resourceIds.add(entry.resourceId);
+    if (entry.status !== "approved") {
+      errors.push(issue("media-status", `${label} is not approved.`));
+    }
+    if (!entry.preview && !entry.favicon) {
+      errors.push(
+        issue("missing-media", `${label} has no preview or favicon.`),
+      );
+    }
+
+    if (entry.preview) {
+      errors.push(
+        ...objectShapeIssues(
+          entry.preview,
+          previewSchema.required,
+          Object.keys(previewSchema.properties),
+          `${label} preview`,
+        ),
+      );
+      if (!validHttpsUrl(entry.preview.url)) {
+        errors.push(
+          issue("invalid-preview-url", `${label} preview URL is unsafe.`),
+        );
+      }
+      if (!validHttpsUrl(entry.preview.sourcePageUrl)) {
+        errors.push(
+          issue(
+            "invalid-preview-provenance",
+            `${label} preview source page is unsafe.`,
+          ),
+        );
+      }
+      if (!previewSources.has(entry.preview.source)) {
+        errors.push(
+          issue(
+            "invalid-preview-source",
+            `${label} preview source is invalid.`,
+          ),
+        );
+      }
+      if (!validIsoDate(entry.preview.checkedAt)) {
+        errors.push(
+          issue("invalid-preview-date", `${label} preview date is invalid.`),
+        );
+      }
+      if (!rasterTypes.has(entry.preview.contentType)) {
+        errors.push(
+          issue(
+            "invalid-preview-type",
+            `${label} preview is not raster media.`,
+          ),
+        );
+      }
+    }
+
+    if (entry.favicon) {
+      errors.push(
+        ...objectShapeIssues(
+          entry.favicon,
+          faviconSchema.required,
+          Object.keys(faviconSchema.properties),
+          `${label} favicon`,
+        ),
+      );
+      if (!validHttpsUrl(entry.favicon.url)) {
+        errors.push(
+          issue("invalid-favicon-url", `${label} favicon URL is unsafe.`),
+        );
+      }
+      if (!validIsoDate(entry.favicon.checkedAt)) {
+        errors.push(
+          issue("invalid-favicon-date", `${label} favicon date is invalid.`),
+        );
+      }
+      if (!rasterTypes.has(entry.favicon.contentType)) {
+        errors.push(
+          issue(
+            "invalid-favicon-type",
+            `${label} favicon is not raster media.`,
+          ),
+        );
+      }
+    }
+  }
+
+  return errors;
+}
+
+export function prepareMediaComposition(
+  source,
+  schema,
+  resources,
+  initialErrors = [],
+) {
+  const errors = [...initialErrors];
+  if (source) {
+    errors.push(...validateMediaSource(source, schema, resources));
+  }
+  const approvedResources =
+    errors.length === 0 && Array.isArray(source?.resources)
+      ? source.resources
+      : [];
+  const byResourceId = new Map(
+    approvedResources.map((entry) => [entry.resourceId, mediaFields(entry)]),
+  );
+
+  return { errors, approvedResources, byResourceId };
 }
 
 export function validateCollectionSource(source, schema, resources) {
@@ -314,16 +530,27 @@ export async function buildReleaseCatalogue(options = {}) {
   const base = await buildCatalogue({ root });
   const collectionSourcePath = path.join(root, COLLECTION_SOURCE_PATH);
   const collectionSchemaPath = path.join(root, COLLECTION_SCHEMA_PATH);
-  const [collectionSourceBuffer, collectionSchemaText] = await Promise.all([
+  const mediaSourcePath = path.join(root, MEDIA_SOURCE_PATH);
+  const mediaSchemaPath = path.join(root, MEDIA_SCHEMA_PATH);
+  const [
+    collectionSourceBuffer,
+    collectionSchemaText,
+    mediaSourceBuffer,
+    mediaSchemaText,
+  ] = await Promise.all([
     readFile(collectionSourcePath),
     readFile(collectionSchemaPath, "utf8"),
+    readFile(mediaSourcePath),
+    readFile(mediaSchemaPath, "utf8"),
   ]);
-  const collectionSourceSha256 = createHash("sha256")
-    .update(collectionSourceBuffer)
-    .digest("hex");
+  const collectionSourceSha256 = sourceProvenanceSha256(collectionSourceBuffer);
   const collectionSchema = JSON.parse(collectionSchemaText);
+  const mediaSourceSha256 = sourceProvenanceSha256(mediaSourceBuffer);
+  const mediaSchema = JSON.parse(mediaSchemaText);
   const parseErrors = [];
+  const mediaParseErrors = [];
   let collectionSource = null;
+  let mediaSource = null;
 
   try {
     collectionSource = JSON.parse(collectionSourceBuffer.toString("utf8"));
@@ -335,14 +562,36 @@ export async function buildReleaseCatalogue(options = {}) {
     );
   }
 
+  try {
+    mediaSource = JSON.parse(mediaSourceBuffer.toString("utf8"));
+  } catch (error) {
+    mediaParseErrors.push(
+      issue("media-json", "Media source is not valid JSON.", {
+        reason: error instanceof Error ? error.message : "Unknown JSON error",
+      }),
+    );
+  }
+
+  const mediaComposition = prepareMediaComposition(
+    mediaSource,
+    mediaSchema,
+    base.catalogue.resources,
+    mediaParseErrors,
+  );
+  const resources = base.catalogue.resources.map((resource) => ({
+    ...resource,
+    ...mediaComposition.byResourceId.get(resource.id),
+  }));
+
   const composition = prepareCollectionComposition(
     collectionSource,
     collectionSchema,
-    base.catalogue.resources,
+    resources,
     parseErrors,
   );
   const catalogue = {
     ...base.catalogue,
+    resources,
     collections: composition.collections,
   };
   const collectionItems = composition.collections.reduce(
@@ -356,10 +605,16 @@ export async function buildReleaseCatalogue(options = {}) {
       sha256: collectionSourceSha256,
       collectionCount: composition.sourceCollections.length,
     },
+    mediaSource: {
+      path: MEDIA_SOURCE_PATH,
+      sha256: mediaSourceSha256,
+      approvedCount: mediaComposition.approvedResources.length,
+    },
     summary: {
       ...base.report.summary,
       collections: composition.collections.length,
       collectionItems,
+      approvedMedia: mediaComposition.approvedResources.length,
     },
     collections: composition.collections.map((collection) => ({
       id: collection.id,
@@ -369,7 +624,11 @@ export async function buildReleaseCatalogue(options = {}) {
       lastReviewedAt: collection.lastReviewedAt,
     })),
     issues: {
-      errors: [...base.report.issues.errors, ...composition.errors],
+      errors: [
+        ...base.report.issues.errors,
+        ...mediaComposition.errors,
+        ...composition.errors,
+      ],
       warnings: base.report.issues.warnings,
     },
   };
