@@ -30,3 +30,4 @@
 ## Approval boundary
 
 A reviewer may copy a record into `lib_data/resource-media.json` only after changing `reviewerStatus` to `approved-for-copy` and independently verifying the source page, final raster response headers, visual suitability, and rights/takedown considerations. The review script never performs that copy.
+

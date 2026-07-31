@@ -18,26 +18,24 @@ function ipv4Number(value) {
   const parts = value.split(".").map(Number);
   if (
     parts.length !== 4 ||
-    parts.some(
-      (part) => !Number.isInteger(part) || part < 0 || part > 255,
-    )
+    parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)
   ) {
     return null;
   }
   return (
-    ((parts[0] << 24) >>> 0) +
-    (parts[1] << 16) +
-    (parts[2] << 8) +
-    parts[3]
-  ) >>> 0;
+    (((parts[0] << 24) >>> 0) +
+      (parts[1] << 16) +
+      (parts[2] << 8) +
+      parts[3]) >>>
+    0
+  );
 }
 
 function ipv4InRange(value, network, prefix) {
   const address = ipv4Number(value);
   const base = ipv4Number(network);
   if (address === null || base === null) return false;
-  const mask =
-    prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
+  const mask = prefix === 0 ? 0 : (0xffffffff << (32 - prefix)) >>> 0;
   return (address & mask) === (base & mask);
 }
 
@@ -55,8 +53,7 @@ function expandIpv6(value) {
   const halves = input.split("::");
   if (halves.length > 2) return null;
   const left = halves[0] ? halves[0].split(":") : [];
-  const right =
-    halves.length === 2 && halves[1] ? halves[1].split(":") : [];
+  const right = halves.length === 2 && halves[1] ? halves[1].split(":") : [];
   const missing = 8 - left.length - right.length;
   if (missing < 0 || (halves.length === 1 && missing !== 0)) return null;
   const parts = [...left, ...Array(missing).fill("0"), ...right];
@@ -72,10 +69,7 @@ function expandIpv6(value) {
 function ipv6BigInt(value) {
   const parts = expandIpv6(value);
   if (!parts) return null;
-  return parts.reduce(
-    (result, part) => (result << 16n) | BigInt(part),
-    0n,
-  );
+  return parts.reduce((result, part) => (result << 16n) | BigInt(part), 0n);
 }
 
 function ipv6InRange(value, network, prefix) {
@@ -144,9 +138,7 @@ export async function validatePublicNetworkUrl(
   if (!Array.isArray(addresses) || addresses.length === 0) {
     throw new Error("Hostname did not resolve to an address.");
   }
-  const unsafe = addresses.find(
-    (entry) => !isPublicIpAddress(entry.address),
-  );
+  const unsafe = addresses.find((entry) => !isPublicIpAddress(entry.address));
   if (unsafe) {
     throw new Error(
       `Hostname resolved to a non-public address (${unsafe.address}).`,
@@ -240,11 +232,7 @@ export function extractMetadataCandidates(html, pageUrl) {
 
   const metaMap = new Map();
   for (const attributes of metas) {
-    const key = (
-      attributes.property ||
-      attributes.name ||
-      ""
-    ).toLowerCase();
+    const key = (attributes.property || attributes.name || "").toLowerCase();
     const content = attributes.content
       ? decodeEntities(attributes.content.trim())
       : "";
@@ -296,10 +284,7 @@ export function extractMetadataCandidates(html, pageUrl) {
   const faviconUrls = [];
   for (const entry of faviconLinks) {
     try {
-      const resolved = new URL(
-        decodeEntities(entry.href),
-        pageUrl,
-      ).toString();
+      const resolved = new URL(decodeEntities(entry.href), pageUrl).toString();
       if (!faviconUrls.includes(resolved)) faviconUrls.push(resolved);
     } catch {
       // Ignore invalid link metadata.
@@ -375,17 +360,17 @@ async function requestWithValidatedRedirects(
 }
 
 export async function probeRasterUrl(value, options = {}) {
-  const { response, finalUrl, redirects } =
-    await requestWithValidatedRedirects(value, {
+  const { response, finalUrl, redirects } = await requestWithValidatedRedirects(
+    value,
+    {
       ...options,
       headers: {
-        Accept:
-          "image/avif,image/webp,image/png,image/jpeg;q=0.9,*/*;q=0.1",
+        Accept: "image/avif,image/webp,image/png,image/jpeg;q=0.9,*/*;q=0.1",
         Range: "bytes=0-0",
-        "User-Agent":
-          "TessliMediaReview/1.0 (+repository metadata review)",
+        "User-Agent": "TessliMediaReview/1.0 (+repository metadata review)",
       },
-    });
+    },
+  );
   const contentType = (response.headers.get("content-type") || "")
     .split(";", 1)[0]
     .trim()
@@ -431,8 +416,7 @@ export async function discoverResourceMedia(
       limits,
       headers: {
         Accept: "text/html,application/xhtml+xml;q=0.9",
-        "User-Agent":
-          "TessliMediaReview/1.0 (+repository metadata review)",
+        "User-Agent": "TessliMediaReview/1.0 (+repository metadata review)",
       },
     });
     result.sourcePageUrl = source.finalUrl;
@@ -452,9 +436,7 @@ export async function discoverResourceMedia(
       return result;
     }
 
-    const contentType = (
-      source.response.headers.get("content-type") || ""
-    )
+    const contentType = (source.response.headers.get("content-type") || "")
       .split(";", 1)[0]
       .trim()
       .toLowerCase();
@@ -469,10 +451,7 @@ export async function discoverResourceMedia(
       return result;
     }
 
-    const html = await readLimitedText(
-      source.response,
-      limits.maxHtmlBytes,
-    );
+    const html = await readLimitedText(source.response, limits.maxHtmlBytes);
     const metadata = extractMetadataCandidates(html, source.finalUrl);
 
     for (const previewUrl of metadata.previewUrls) {

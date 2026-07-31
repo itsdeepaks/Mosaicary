@@ -6,8 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import { buildReleaseCatalogue } from "./release-catalogue-lib.mjs";
 
-export const CANDIDATE_SOURCE_PATH =
-  "lib_data/resource-media-candidates.json";
+export const CANDIDATE_SOURCE_PATH = "lib_data/resource-media-candidates.json";
 export const CANDIDATE_SCHEMA_PATH =
   "schemas/resource-media-candidates.schema.json";
 export const CANDIDATE_REPORT_JSON_PATH =
@@ -61,12 +60,7 @@ const PREVIEW_KEYS = new Set([
   "provenance",
   "checkedAt",
 ]);
-const FAVICON_KEYS = new Set([
-  "url",
-  "contentType",
-  "provenance",
-  "checkedAt",
-]);
+const FAVICON_KEYS = new Set(["url", "contentType", "provenance", "checkedAt"]);
 
 function repoRootFromModule() {
   const currentFile = fileURLToPath(import.meta.url);
@@ -83,8 +77,7 @@ function validDate(value) {
   }
   const date = new Date(`${value}T00:00:00.000Z`);
   return (
-    !Number.isNaN(date.valueOf()) &&
-    date.toISOString().slice(0, 10) === value
+    !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === value
   );
 }
 
@@ -174,10 +167,7 @@ function validateMedia(value, label, { preview = false } = {}) {
   }
   if (!validDate(value.checkedAt)) {
     errors.push(
-      issue(
-        `invalid-${label}-date`,
-        `${label} checkedAt must be an ISO date.`,
-      ),
+      issue(`invalid-${label}-date`, `${label} checkedAt must be an ISO date.`),
     );
   }
   if (preview && !new Set(["manual", "open-graph"]).has(value.source)) {
@@ -210,7 +200,10 @@ export function validateCandidateSource(source, catalogueResources) {
   if (!source || typeof source !== "object" || Array.isArray(source)) {
     return {
       errors: [
-        issue("invalid-candidate-source", "Candidate source must be an object."),
+        issue(
+          "invalid-candidate-source",
+          "Candidate source must be an object.",
+        ),
       ],
       warnings,
     };
@@ -226,11 +219,16 @@ export function validateCandidateSource(source, catalogueResources) {
     );
   }
   if (source.version !== 1) {
-    errors.push(issue("candidate-version", "Candidate source version must be 1."));
+    errors.push(
+      issue("candidate-version", "Candidate source version must be 1."),
+    );
   }
   if (!Array.isArray(source.resources)) {
     errors.push(
-      issue("candidate-resources", "Candidate source resources must be an array."),
+      issue(
+        "candidate-resources",
+        "Candidate source resources must be an array.",
+      ),
     );
     return { errors, warnings };
   }
@@ -601,16 +599,12 @@ export function buildReviewReport({
       readyForCopy: records.filter(
         (record) => record.reviewerStatus === "approved-for-copy",
       ).length,
-      pending: records.filter(
-        (record) => record.discoveryStatus === "pending",
-      ).length,
+      pending: records.filter((record) => record.discoveryStatus === "pending")
+        .length,
       blockedOrUnresolved: records.filter((record) =>
-        new Set([
-          "blocked",
-          "failed",
-          "no-raster-media",
-          "uncertain",
-        ]).has(record.discoveryStatus),
+        new Set(["blocked", "failed", "no-raster-media", "uncertain"]).has(
+          record.discoveryStatus,
+        ),
       ).length,
       rejected: records.filter(
         (record) =>
@@ -676,10 +670,7 @@ export function renderReviewMarkdown(report) {
     "A reviewer may copy a record into `lib_data/resource-media.json` only after changing `reviewerStatus` to `approved-for-copy` and independently verifying the source page, final raster response headers, visual suitability, and rights/takedown considerations. The review script never performs that copy.",
     "",
   );
-  if (
-    report.issues.errors.length > 0 ||
-    report.issues.warnings.length > 0
-  ) {
+  if (report.issues.errors.length > 0 || report.issues.warnings.length > 0) {
     lines.push("## Validation findings", "");
     for (const entry of report.issues.errors) {
       lines.push(`- **ERROR ${entry.code}:** ${entry.message}`);

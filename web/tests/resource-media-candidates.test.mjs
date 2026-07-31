@@ -26,9 +26,7 @@ const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "../..");
 
 async function readJson(relativePath) {
-  return JSON.parse(
-    await readFile(path.join(repoRoot, relativePath), "utf8"),
-  );
+  return JSON.parse(await readFile(path.join(repoRoot, relativePath), "utf8"));
 }
 
 test("candidate source and reports remain deterministic and review-only", async () => {
@@ -41,10 +39,7 @@ test("candidate source and reports remain deterministic and review-only", async 
       buildRepositoryReview({ root: repoRoot }),
     ]);
 
-  assert.equal(
-    schema.$id,
-    "urn:tessli:schema:resource-media-candidates:v1",
-  );
+  assert.equal(schema.$id, "urn:tessli:schema:resource-media-candidates:v1");
   const validation = validateCandidateSource(
     source,
     release.catalogue.resources,
@@ -135,10 +130,7 @@ test("candidate validation rejects unsafe and invented review data", async () =>
     assert.equal(codes.has(code), true, `missing validation code ${code}`);
   }
 
-  assert.match(
-    validateCandidateUrl("http://example.com/image.png"),
-    /HTTPS/,
-  );
+  assert.match(validateCandidateUrl("http://example.com/image.png"), /HTTPS/);
   assert.match(
     validateCandidateUrl("https://localhost/image.png"),
     /private-style/,
@@ -178,10 +170,7 @@ test("malformed candidate data cannot enrich production catalogue output", async
     buildReleaseCatalogue({ root: repoRoot }),
     buildReleaseCatalogue({ root: tempRoot }),
   ]);
-  assert.equal(
-    withMalformedCandidate.catalogueText,
-    baseline.catalogueText,
-  );
+  assert.equal(withMalformedCandidate.catalogueText, baseline.catalogueText);
   assert.equal(withMalformedCandidate.report.summary.approvedMedia, 3);
 });
 
@@ -192,10 +181,7 @@ test("metadata parser resolves Open Graph and favicon URLs without executing HTM
     <link rel="icon" sizes="32x32" href="/favicon-32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.example.com/touch.png">
   </head><body><script>throw new Error("must not run")</script></body></html>`;
-  const result = extractMetadataCandidates(
-    html,
-    "https://example.com/path",
-  );
+  const result = extractMetadataCandidates(html, "https://example.com/path");
   assert.deepEqual(result.previewUrls, [
     "https://example.com/assets/card.webp?x=1&y=2",
     "https://cdn.example.com/later.png",
@@ -220,17 +206,10 @@ test("public address classification blocks unsafe address ranges", () => {
     "2001:db8::1",
     "::ffff:127.0.0.1",
   ]) {
-    assert.equal(
-      isPublicIpAddress(value),
-      false,
-      `${value} should be blocked`,
-    );
+    assert.equal(isPublicIpAddress(value), false, `${value} should be blocked`);
   }
   assert.equal(isPublicIpAddress("93.184.216.34"), true);
-  assert.equal(
-    isPublicIpAddress("2606:2800:220:1:248:1893:25c8:1946"),
-    true,
-  );
+  assert.equal(isPublicIpAddress("2606:2800:220:1:248:1893:25c8:1946"), true);
 });
 
 test("explicit discovery emits review-pending raster candidates", async () => {
@@ -259,9 +238,7 @@ test("explicit discovery emits review-pending raster candidates", async () => {
     }
     throw new Error(`Unexpected URL ${url}`);
   };
-  const lookup = async () => [
-    { address: "93.184.216.34", family: 4 },
-  ];
+  const lookup = async () => [{ address: "93.184.216.34", family: 4 }];
   const resource = {
     id: "resource-example",
     name: "Example",
@@ -280,9 +257,7 @@ test("explicit discovery emits review-pending raster candidates", async () => {
 });
 
 test("explicit discovery records unsafe redirects and non-raster responses", async () => {
-  const lookup = async () => [
-    { address: "93.184.216.34", family: 4 },
-  ];
+  const lookup = async () => [{ address: "93.184.216.34", family: 4 }];
   const resource = {
     id: "resource-example",
     name: "Example",
