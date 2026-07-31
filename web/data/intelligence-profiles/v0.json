@@ -1,0 +1,43 @@
+{
+  "profileVersion": 1,
+  "resourceId": "v0",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Generative AI UI component system built by Vercel producing React and Tailwind CSS output",
+  "capabilities": [
+    "generative-ui-builder",
+    "component-library",
+    "code-implementation"
+  ],
+  "contentObjects": ["component", "code", "generated-output"],
+  "platforms": ["web"],
+  "frameworks": ["react", "tailwind", "next-js"],
+  "designTools": [],
+  "deliveryFormats": ["source-code", "generated-output", "web-page"],
+  "integrationMethods": ["website", "cli"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "yes",
+    "facets": ["prompt", "component-type"]
+  },
+  "workflowFit": ["rapid-prototyping", "component-generation"],
+  "limitations": ["Generative credits required for heavy generation"],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "recommended",
+    "userCredentialRequired": true,
+    "termsReviewRequired": true,
+    "notes": ["Generated code output can be used directly in Next.js projects"]
+  },
+  "evidence": [
+    {
+      "claim": "Vercel generative UI system producing copyable React/Tailwind code",
+      "sourceUrl": "https://v0.dev",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

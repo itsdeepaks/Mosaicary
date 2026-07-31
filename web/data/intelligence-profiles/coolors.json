@@ -1,0 +1,47 @@
+{
+  "profileVersion": 1,
+  "resourceId": "coolors",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Super-fast color palette generator, color extractor, and contrast checker",
+  "capabilities": [
+    "color-palette-generation",
+    "accessibility-checking",
+    "tool-integration"
+  ],
+  "contentObjects": ["asset", "tool"],
+  "platforms": ["web", "mobile"],
+  "frameworks": [],
+  "designTools": ["figma"],
+  "deliveryFormats": ["web-page", "downloadable-asset", "structured-data"],
+  "integrationMethods": ["website", "plugin", "browser-extension"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["color-family", "style", "contrast"]
+  },
+  "workflowFit": [
+    "color-token-creation",
+    "palette-exploration",
+    "contrast-verification"
+  ],
+  "limitations": ["Pro export formats require subscription"],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["Color values and hex codes are public data"]
+  },
+  "evidence": [
+    {
+      "claim": "Color scheme generator and contrast analysis tool",
+      "sourceUrl": "https://coolors.co",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

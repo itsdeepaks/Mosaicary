@@ -1,0 +1,39 @@
+{
+  "profileVersion": 1,
+  "resourceId": "motion",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Production-ready React and JavaScript animation engine (formerly Framer Motion)",
+  "capabilities": ["motion-inspiration", "code-implementation"],
+  "contentObjects": ["code", "documentation", "motion-example"],
+  "platforms": ["web"],
+  "frameworks": ["react", "next-js"],
+  "designTools": [],
+  "deliveryFormats": ["source-code", "package", "documentation"],
+  "integrationMethods": ["npm-package", "github", "website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["animation-type", "api"]
+  },
+  "workflowFit": ["micro-interactions", "page-transitions", "layout-animation"],
+  "limitations": ["Requires React for motion/react integration"],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["MIT open source animation library"]
+  },
+  "evidence": [
+    {
+      "claim": "Declarative animation library for React and web interfaces",
+      "sourceUrl": "https://motion.dev",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

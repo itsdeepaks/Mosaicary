@@ -12,6 +12,7 @@ on:
       - "lib_data/tessli-launch-collections.json"
       - "schemas/catalogue.schema.json"
       - "schemas/collections.schema.json"
+      - "schemas/resource-intelligence-profile.schema.json"
       - "docs/data-and-media-contract.md"
       - "docs/slices/**"
   push:
@@ -26,6 +27,7 @@ on:
       - "lib_data/tessli-launch-collections.json"
       - "schemas/catalogue.schema.json"
       - "schemas/collections.schema.json"
+      - "schemas/resource-intelligence-profile.schema.json"
       - "docs/data-and-media-contract.md"
       - "docs/slices/**"
 

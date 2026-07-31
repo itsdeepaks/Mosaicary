@@ -1,0 +1,59 @@
+{
+  "profileVersion": 1,
+  "resourceId": "nicelydone",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "SaaS product interface, landing page, and component research index",
+  "capabilities": [
+    "product-flow-research",
+    "saas-ui-research",
+    "component-inspiration"
+  ],
+  "contentObjects": ["website", "page", "section", "product-flow"],
+  "platforms": ["web"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website", "mcp"],
+  "agentInterfaces": [
+    {
+      "type": "mcp",
+      "transport": "http",
+      "endpoint": "https://nicelydone.club/mcp",
+      "authentication": "bearer-token",
+      "credentialOwner": "user",
+      "dataReturned": ["saas-screens", "flow-metadata"],
+      "persistencePolicy": "transient",
+      "status": "documented",
+      "documentationUrl": "https://nicelydone.club/mcp"
+    }
+  ],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["saas-category", "screen-type", "component-type"]
+  },
+  "workflowFit": [
+    "saas-dashboard-design",
+    "onboarding-flows",
+    "settings-page-ux"
+  ],
+  "limitations": ["Pro features require user paid subscription"],
+  "governance": {
+    "defaultPersistence": "transient",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": true,
+    "termsReviewRequired": true,
+    "notes": ["Dedicated SaaS design reference source"]
+  },
+  "evidence": [
+    {
+      "claim": "Curated SaaS screen library with official agent MCP support",
+      "sourceUrl": "https://nicelydone.club/mcp",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

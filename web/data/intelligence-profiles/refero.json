@@ -1,0 +1,55 @@
+{
+  "profileVersion": 1,
+  "resourceId": "refero",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "UX pattern and real-product screen reference library with official agent MCP access",
+  "capabilities": [
+    "product-flow-research",
+    "ui-pattern-analysis",
+    "screen-inspiration"
+  ],
+  "contentObjects": ["website", "page", "section", "pattern"],
+  "platforms": ["web", "mobile"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website", "mcp"],
+  "agentInterfaces": [
+    {
+      "type": "mcp",
+      "transport": "http",
+      "endpoint": "https://mcp.refero.design/mcp",
+      "authentication": "bearer-token",
+      "credentialOwner": "user",
+      "dataReturned": ["ux-patterns", "screen-previews"],
+      "persistencePolicy": "transient",
+      "status": "documented",
+      "documentationUrl": "https://doc.refero.design/mcp/getting-started"
+    }
+  ],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["pattern", "page-type", "element"]
+  },
+  "workflowFit": ["ux-pattern-research", "web-application-flows"],
+  "limitations": ["Refero Pro account required for full access"],
+  "governance": {
+    "defaultPersistence": "transient",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": true,
+    "termsReviewRequired": true,
+    "notes": ["Requires Refero user token"]
+  },
+  "evidence": [
+    {
+      "claim": "Refero MCP server enables research across curated web UX patterns",
+      "sourceUrl": "https://doc.refero.design/mcp/getting-started",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "profileVersion": 1,
+  "resourceId": "mobbin",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Comprehensive Mobile (iOS/Android) and Web UX app flow & screen reference library",
+  "capabilities": [
+    "product-flow-research",
+    "screen-inspiration",
+    "ui-pattern-analysis"
+  ],
+  "contentObjects": ["website", "page", "section", "product-flow", "pattern"],
+  "platforms": ["mobile", "web", "desktop"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website", "api", "mcp"],
+  "agentInterfaces": [
+    {
+      "type": "mcp",
+      "transport": "http",
+      "endpoint": "https://api.mobbin.com/mcp",
+      "authentication": "bearer-token",
+      "credentialOwner": "user",
+      "dataReturned": ["screen-screenshots", "app-metadata", "flow-steps"],
+      "persistencePolicy": "transient",
+      "status": "documented",
+      "documentationUrl": "https://mobbin.com/mcp"
+    }
+  ],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "yes",
+    "facets": ["platform", "app-category", "screen-type", "element", "flow"]
+  },
+  "workflowFit": [
+    "app-flow-design",
+    "onboarding-ux",
+    "checkout-flow",
+    "mobile-ui"
+  ],
+  "limitations": [
+    "Full corpus requires Mobbin Pro/Team subscription",
+    "API and MCP require user-owned paid credentials",
+    "Screenshots cannot be stored or redistributed"
+  ],
+  "governance": {
+    "defaultPersistence": "transient",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": true,
+    "termsReviewRequired": true,
+    "notes": ["User-owned token required for MCP access"]
+  },
+  "evidence": [
+    {
+      "claim": "Official Mobbin MCP server provides search over 600,000+ app screens and flows",
+      "sourceUrl": "https://mobbin.com/mcp",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

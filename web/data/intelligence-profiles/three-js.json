@@ -1,0 +1,39 @@
+{
+  "profileVersion": 1,
+  "resourceId": "three-js",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "JavaScript 3D library rendering WebGL scenes, animations, shaders, and spatial visuals",
+  "capabilities": ["motion-inspiration", "code-implementation"],
+  "contentObjects": ["code", "documentation", "asset"],
+  "platforms": ["web"],
+  "frameworks": ["react"],
+  "designTools": [],
+  "deliveryFormats": ["source-code", "package", "documentation"],
+  "integrationMethods": ["npm-package", "github", "website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["example-type", "api"]
+  },
+  "workflowFit": ["3d-hero-background", "interactive-canvas-graphics"],
+  "limitations": ["High performance requirement on mobile devices"],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["MIT open source 3D library"]
+  },
+  "evidence": [
+    {
+      "claim": "Open-source 3D WebGL graphics engine",
+      "sourceUrl": "https://threejs.org",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

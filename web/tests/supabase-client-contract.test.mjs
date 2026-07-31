@@ -121,8 +121,11 @@ test("client factories use the public key and preserve request cookie boundaries
   assert.match(server, /getAll\(\)/);
   assert.match(server, /setAll\(cookiesToSet\)/);
   assert.match(environmentExample, /NEXT_PUBLIC_SITE_URL=/);
-  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_URL=\n/);
-  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\n/);
+  assert.match(environmentExample, /NEXT_PUBLIC_SUPABASE_URL=\r?\n/);
+  assert.match(
+    environmentExample,
+    /NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\r?\n/,
+  );
 
   const implementation = `${browser}\n${server}`;
   assert.doesNotMatch(implementation, /SUPABASE_SERVICE_ROLE_KEY/);

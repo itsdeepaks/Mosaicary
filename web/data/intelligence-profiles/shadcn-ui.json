@@ -1,0 +1,69 @@
+{
+  "profileVersion": 1,
+  "resourceId": "shadcn-ui",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Open-source, accessible React/Tailwind copy-paste component registry and CLI ecosystem",
+  "capabilities": [
+    "component-library",
+    "code-implementation",
+    "mcp-integration"
+  ],
+  "contentObjects": ["component", "code", "design-system", "documentation"],
+  "platforms": ["web"],
+  "frameworks": ["react", "tailwind", "next-js"],
+  "designTools": ["figma"],
+  "deliveryFormats": [
+    "source-code",
+    "package",
+    "documentation",
+    "structured-data"
+  ],
+  "integrationMethods": ["website", "cli", "npm-package", "github", "mcp"],
+  "agentInterfaces": [
+    {
+      "type": "mcp",
+      "transport": "stdio",
+      "authentication": "none",
+      "credentialOwner": "none",
+      "dataReturned": [
+        "component-code",
+        "registry-metadata",
+        "installation-commands"
+      ],
+      "persistencePolicy": "persistent",
+      "status": "documented",
+      "documentationUrl": "https://ui.shadcn.com/docs/mcp"
+    }
+  ],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["component-type", "registry"]
+  },
+  "workflowFit": [
+    "frontend-building",
+    "accessible-components",
+    "design-system-setup"
+  ],
+  "limitations": [
+    "Components are unstyled primitives requiring Tailwind styling"
+  ],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["MIT licensed open code components"]
+  },
+  "evidence": [
+    {
+      "claim": "Official shadcn registry MCP allows browsing and installing component code",
+      "sourceUrl": "https://ui.shadcn.com/docs/mcp",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

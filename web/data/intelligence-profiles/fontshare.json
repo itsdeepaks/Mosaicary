@@ -1,0 +1,41 @@
+{
+  "profileVersion": 1,
+  "resourceId": "fontshare",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Free, high-quality font service and typography discovery platform by Indian Type Foundry",
+  "capabilities": ["typography-inspiration", "asset-discovery"],
+  "contentObjects": ["font", "asset", "documentation"],
+  "platforms": ["web", "desktop", "print"],
+  "frameworks": [],
+  "designTools": ["figma"],
+  "deliveryFormats": ["downloadable-asset", "documentation", "web-page"],
+  "integrationMethods": ["website", "manual-download"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["category", "style", "variable-font"]
+  },
+  "workflowFit": ["brand-typography", "web-font-selection", "heading-pairings"],
+  "limitations": [
+    "100% free for personal and commercial use under ITF license"
+  ],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "restricted",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["Free font files under Fontshare license"]
+  },
+  "evidence": [
+    {
+      "claim": "Free font service for commercial and personal web use",
+      "sourceUrl": "https://www.fontshare.com",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

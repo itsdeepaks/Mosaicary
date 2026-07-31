@@ -1,0 +1,48 @@
+{
+  "profileVersion": 1,
+  "resourceId": "siteinspire",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Curated showcase gallery of clean, interactive, and editorial web design",
+  "capabilities": ["landing-page-inspiration", "editorial-design-research"],
+  "contentObjects": ["website", "page"],
+  "platforms": ["web"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["style", "type", "subject", "color"]
+  },
+  "workflowFit": [
+    "visual-direction",
+    "editorial-inspiration",
+    "brand-identity-research"
+  ],
+  "limitations": [
+    "No code or component exports",
+    "Purely visual inspiration gallery"
+  ],
+  "governance": {
+    "defaultPersistence": "metadata-only",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": [
+      "Attribute original website creators when referencing layout styles"
+    ]
+  },
+  "evidence": [
+    {
+      "claim": "Curated index of web design filtered by style and industry",
+      "sourceUrl": "https://www.siteinspire.com",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

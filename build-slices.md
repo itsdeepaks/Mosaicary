@@ -89,6 +89,9 @@ Stop and fix before merge when any of these occur:
 | 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
 | 12.1 | Submit, suggest, and report forms | PLANNED | 10.2b, 11.1 |
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
+| 13.0 | UI-intelligence roadmap, research, provider boundary, and schema | DONE | current main |
+| 13.1 | Capability-profile pilot for 20 high-value resources | DONE | 13.0 |
+| 13.2 | Profile validation, evidence freshness, and review tooling | NEXT | 13.1 |
 
 ## 5. Slice 0.2 — Repository operating contract
 

@@ -1,0 +1,80 @@
+{
+  "profileVersion": 1,
+  "resourceId": "landingfolio",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Landing page & section component showcase with official HTTP/MCP agent access",
+  "capabilities": [
+    "landing-page-inspiration",
+    "section-inspiration",
+    "component-library",
+    "mcp-integration"
+  ],
+  "contentObjects": ["website", "page", "section", "component", "template"],
+  "platforms": ["web", "mobile"],
+  "frameworks": ["tailwind", "react", "vue", "webflow"],
+  "designTools": ["figma"],
+  "deliveryFormats": [
+    "web-page",
+    "screenshot",
+    "source-link",
+    "source-code",
+    "figma-file"
+  ],
+  "integrationMethods": ["website", "mcp", "manual-download"],
+  "agentInterfaces": [
+    {
+      "type": "mcp",
+      "transport": "http",
+      "endpoint": "https://mcp.landingfolio.com/mcp",
+      "authentication": "bearer-token",
+      "credentialOwner": "user",
+      "dailyRequestLimit": 100,
+      "burstPerMinute": 10,
+      "dataReturned": [
+        "section-screenshots",
+        "category-metadata",
+        "source-urls"
+      ],
+      "persistencePolicy": "transient",
+      "status": "documented",
+      "documentationUrl": "https://www.landingfolio.com/mcp"
+    }
+  ],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["category", "component-type", "color", "device", "framework"]
+  },
+  "workflowFit": [
+    "hero-research",
+    "section-design",
+    "component-selection",
+    "landing-page-build"
+  ],
+  "limitations": [
+    "Paid components require membership",
+    "Screenshots cannot be mirrored or redistributed under terms",
+    "MCP free tier capped at 100 requests per day"
+  ],
+  "governance": {
+    "defaultPersistence": "transient",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": true,
+    "notes": [
+      "Official MCP available at mcp.landingfolio.com/mcp",
+      "Retain original source URLs for reference packets"
+    ]
+  },
+  "evidence": [
+    {
+      "claim": "Official HTTP MCP server provides access to 4,600+ section examples",
+      "sourceUrl": "https://www.landingfolio.com/mcp",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

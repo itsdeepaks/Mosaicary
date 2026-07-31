@@ -1,0 +1,50 @@
+{
+  "profileVersion": 1,
+  "resourceId": "godly",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Curated showcase of high-end web design, rich typography, and interactive creative web work",
+  "capabilities": [
+    "landing-page-inspiration",
+    "motion-inspiration",
+    "typography-inspiration"
+  ],
+  "contentObjects": ["website", "page", "motion-example"],
+  "platforms": ["web", "mobile"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["category", "style", "animation"]
+  },
+  "workflowFit": [
+    "creative-direction",
+    "motion-research",
+    "high-end-landing-pages"
+  ],
+  "limitations": [
+    "No source code provided",
+    "Focuses on bespoke/agency implementations"
+  ],
+  "governance": {
+    "defaultPersistence": "metadata-only",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["High-craft inspiration reference"]
+  },
+  "evidence": [
+    {
+      "claim": "High-asthetic curated gallery featuring web animations and typography",
+      "sourceUrl": "https://godly.website",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

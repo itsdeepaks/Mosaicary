@@ -1,0 +1,45 @@
+{
+  "profileVersion": 1,
+  "resourceId": "ant-design",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Comprehensive enterprise-class React UI design language and component library",
+  "capabilities": ["component-library", "design-system", "code-implementation"],
+  "contentObjects": ["component", "design-system", "code", "documentation"],
+  "platforms": ["web", "desktop"],
+  "frameworks": ["react"],
+  "designTools": ["figma"],
+  "deliveryFormats": ["source-code", "package", "documentation"],
+  "integrationMethods": ["website", "npm-package", "github"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["component-group", "version"]
+  },
+  "workflowFit": [
+    "enterprise-dashboard",
+    "data-dense-ui",
+    "admin-panel-building"
+  ],
+  "limitations": [
+    "Opinionated styling that requires dedicated token customization"
+  ],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "not-required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["MIT licensed enterprise UI library"]
+  },
+  "evidence": [
+    {
+      "claim": "Enterprise UI design system specification and React implementation",
+      "sourceUrl": "https://ant.design",
+      "sourceType": "official-documentation",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

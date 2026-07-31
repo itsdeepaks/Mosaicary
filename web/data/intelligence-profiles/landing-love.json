@@ -1,0 +1,39 @@
+{
+  "profileVersion": 1,
+  "resourceId": "landing-love",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Curated showcase of creative, animated, and micro-landing page websites",
+  "capabilities": ["landing-page-inspiration", "motion-inspiration"],
+  "contentObjects": ["website", "page", "motion-example"],
+  "platforms": ["web"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "screenshot", "source-link"],
+  "integrationMethods": ["website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["category", "animation", "style"]
+  },
+  "workflowFit": ["micro-site-design", "interactive-landing-page"],
+  "limitations": ["No code files included"],
+  "governance": {
+    "defaultPersistence": "metadata-only",
+    "assetRedistribution": "prohibited",
+    "sourceAttribution": "required",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["Visual motion inspiration source"]
+  },
+  "evidence": [
+    {
+      "claim": "Hand-picked collection of animated landing pages",
+      "sourceUrl": "https://www.landing.love",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

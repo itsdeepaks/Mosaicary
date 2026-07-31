@@ -1,0 +1,49 @@
+{
+  "profileVersion": 1,
+  "resourceId": "relume",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "AI website sitemap, wireframe generator, and massive React/Webflow component library",
+  "capabilities": [
+    "landing-page-inspiration",
+    "component-library",
+    "generative-ui-builder"
+  ],
+  "contentObjects": ["website", "page", "section", "component", "template"],
+  "platforms": ["web"],
+  "frameworks": ["react", "tailwind", "webflow"],
+  "designTools": ["figma"],
+  "deliveryFormats": ["source-code", "figma-file", "web-page"],
+  "integrationMethods": ["website", "plugin"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["component-category", "framework"]
+  },
+  "workflowFit": [
+    "sitemap-architecture",
+    "wireframing",
+    "component-library-setup"
+  ],
+  "limitations": [
+    "Free tier includes limited components; full access is subscription-based"
+  ],
+  "governance": {
+    "defaultPersistence": "transient",
+    "assetRedistribution": "restricted",
+    "sourceAttribution": "recommended",
+    "userCredentialRequired": true,
+    "termsReviewRequired": true,
+    "notes": ["React and Figma export support"]
+  },
+  "evidence": [
+    {
+      "claim": "AI sitebuilder and React/Figma component library",
+      "sourceUrl": "https://www.relume.io",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

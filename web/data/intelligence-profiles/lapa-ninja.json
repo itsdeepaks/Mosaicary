@@ -1,0 +1,39 @@
+{
+  "profileVersion": 1,
+  "resourceId": "lapa-ninja",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Landing page showcase, free book/course recommendations, and UI template index",
+  "capabilities": ["landing-page-inspiration", "template-discovery"],
+  "contentObjects": ["website", "page", "template", "article"],
+  "platforms": ["web"],
+  "frameworks": ["react", "tailwind"],
+  "designTools": ["figma"],
+  "deliveryFormats": ["web-page", "screenshot", "source-link", "template"],
+  "integrationMethods": ["website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": true,
+    "semanticSearch": "no",
+    "facets": ["category", "color", "freebies"]
+  },
+  "workflowFit": ["landing-page-research", "template-selection"],
+  "limitations": ["Third-party templates have separate licences"],
+  "governance": {
+    "defaultPersistence": "metadata-only",
+    "assetRedistribution": "restricted",
+    "sourceAttribution": "recommended",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": ["Free resources and paid templates mixed"]
+  },
+  "evidence": [
+    {
+      "claim": "Category-filtered landing page gallery with downloadable freebies",
+      "sourceUrl": "https://www.lapa.ninja",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}

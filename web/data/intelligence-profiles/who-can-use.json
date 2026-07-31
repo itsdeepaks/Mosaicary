@@ -1,0 +1,41 @@
+{
+  "profileVersion": 1,
+  "resourceId": "who-can-use",
+  "status": "verified",
+  "verifiedAt": "2026-07-31",
+  "summary": "Color contrast accessibility tool calculating WCAG ratings across visual impairment simulations",
+  "capabilities": ["accessibility-checking", "color-palette-generation"],
+  "contentObjects": ["tool", "documentation"],
+  "platforms": ["web"],
+  "frameworks": [],
+  "designTools": [],
+  "deliveryFormats": ["web-page", "structured-data"],
+  "integrationMethods": ["website"],
+  "agentInterfaces": [],
+  "discovery": {
+    "textSearch": false,
+    "semanticSearch": "no",
+    "facets": ["wcag-level", "vision-type"]
+  },
+  "workflowFit": ["wcag-compliance-audit", "accessible-color-selection"],
+  "limitations": ["Interactive single-pair color tool"],
+  "governance": {
+    "defaultPersistence": "persistent",
+    "assetRedistribution": "allowed",
+    "sourceAttribution": "recommended",
+    "userCredentialRequired": false,
+    "termsReviewRequired": false,
+    "notes": [
+      "Simulates visual impairments (cataracts, color blindness, low vision)"
+    ]
+  },
+  "evidence": [
+    {
+      "claim": "WCAG contrast checker simulating visual impairment types",
+      "sourceUrl": "https://whocanuse.com",
+      "sourceType": "official-product-page",
+      "verifiedAt": "2026-07-31",
+      "confidence": "certain"
+    }
+  ]
+}
