@@ -11,6 +11,8 @@
     "start": "next start",
     "catalogue:generate": "node scripts/generate-catalogue.mjs",
     "catalogue:check": "node scripts/check-catalogue.mjs",
+    "profiles:generate": "node scripts/generate-intelligence-profiles.mjs",
+    "profiles:check": "node scripts/check-intelligence-profiles.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "node --test tests/*.test.mjs",

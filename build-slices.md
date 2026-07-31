@@ -95,7 +95,8 @@ Stop and fix before merge when any of these occur:
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
 | 13.0 | UI-intelligence roadmap, research, provider boundary, and schema | DONE | current main |
 | 13.1 | Capability-profile pilot for 20 high-value resources | DONE | 13.0 |
-| 13.2 | Profile validation, evidence freshness, and review tooling | NEXT | 13.1 |
+| 13.2 | Profile validation, evidence freshness, and review tooling | DONE | 13.1 |
+| 13.3 | Local context-engine provider & file-backed index | NEXT | 13.2 |
 
 ## 5. Slice 0.2 — Repository operating contract
 

@@ -9,7 +9,7 @@
     "component-library",
     "code-implementation"
   ],
-  "contentObjects": ["component", "code", "generated-output"],
+  "contentObjects": ["component", "code", "tool"],
   "platforms": ["web"],
   "frameworks": ["react", "tailwind", "next-js"],
   "designTools": [],
