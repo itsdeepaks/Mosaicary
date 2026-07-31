@@ -71,7 +71,9 @@ export function deriveExploreResults(
         return tokens.every((token) => haystack.includes(token));
       });
 
-    if (state.sort !== "curated") {
+    if (state.sort === "verified") {
+      filtered.sort((left, right) => left.curatedIndex - right.curatedIndex);
+    } else if (state.sort !== "curated") {
       const direction = state.sort === "name-desc" ? -1 : 1;
       filtered.sort((left, right) => {
         const nameOrder = nameCollator.compare(

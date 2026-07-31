@@ -10,6 +10,7 @@ export const discoverySortValues = [
   "curated",
   "name-asc",
   "name-desc",
+  "verified",
 ] as const;
 
 export type DiscoveryAccess = (typeof discoveryAccessValues)[number];

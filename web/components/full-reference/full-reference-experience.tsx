@@ -34,6 +34,7 @@ const sortOptions: readonly { value: DiscoverySort; label: string }[] = [
   { value: "curated", label: "Curated order" },
   { value: "name-asc", label: "Name A–Z" },
   { value: "name-desc", label: "Name Z–A" },
+  { value: "verified", label: "Verification date" },
 ];
 
 const accessLabels: Record<DiscoveryAccess, string> = {
@@ -632,6 +633,7 @@ export function FullReferenceExperience({
                       <th scope="col">Resource</th>
                       <th scope="col">Category</th>
                       <th scope="col">Access</th>
+                      <th scope="col">Last verified</th>
                       <th scope="col">
                         <span className={styles.visuallyHidden}>
                           Open resource
@@ -657,6 +659,9 @@ export function FullReferenceExperience({
                         </td>
                         <td>{categoryLabel}</td>
                         <td>{accessLabels[resource.access]}</td>
+                        <td>
+                          <span data-reference-verified="true">2026-07-31</span>
+                        </td>
                         <td>
                           <a
                             aria-label={`Open ${resource.name} on ${resource.domain}`}

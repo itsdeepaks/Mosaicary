@@ -71,6 +71,9 @@ test("Full Reference uses native controls, a semantic desktop table, and compact
   assert.match(experience, /data-reference-state="error"/);
   assert.match(experience, /data-mobile-reference-rows/);
   assert.match(experience, /data-mobile-reference-row/);
+  assert.match(experience, /<th scope="col">Last verified<\/th>/);
+  assert.match(experience, /data-reference-verified="true"/);
+  assert.match(experience, /value: "verified", label: "Verification date"/);
   assert.match(experience, /<dialog/);
   assert.doesNotMatch(
     experience,
