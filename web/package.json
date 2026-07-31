@@ -18,7 +18,7 @@
     "media:discover": "node scripts/discover-resource-media.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs && node scripts/check-resource-media-candidates.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
