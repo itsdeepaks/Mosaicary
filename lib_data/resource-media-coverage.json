@@ -151,83 +151,124 @@
     },
     {
       "resourceId": "resource-16a9509c3d04",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-2ee2185ec069",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-211e84697a02",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source exceeded the 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-c5f9ae1c7798",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-a768b0ada1e7",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Open Graph and favicon metadata resolved only to disallowed SVG or a missing raster response."
+      ]
     },
     {
       "resourceId": "resource-1cd85fba3a9b",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source exceeded the 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-f297ebee087b",
-      "disposition": "pending"
+      "disposition": "failed",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 404."
+      ]
     },
     {
       "resourceId": "resource-3894be38dacd",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source could not be fetched; the failure was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-46c4289c2359",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-a122af04190c",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Available favicon metadata resolved only to unsupported ICO responses and no preview was available."
+      ]
     },
     {
       "resourceId": "resource-c1be6f2c9435",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-51178b0aa186",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-27b7f2ecec64",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical domain redirected to Details.so and the discovered media represented that different brand rather than inspo.page."
+      ]
     },
     {
       "resourceId": "resource-910c4b25079b",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-cab36eb734de",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-3a1b90436f0b",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-14231b7b938a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-52bddd200880",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e0bd932107d2",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-d9b680b771cc",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9ec09353e25c",
