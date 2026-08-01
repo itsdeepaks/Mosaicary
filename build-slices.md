@@ -71,8 +71,8 @@ Stop and fix before merge when any of these occur:
 | 5.3b | Media discovery and review tooling | DONE | 5.3a |
 | 5.3c | Reviewed media discovery pilot | DONE | 5.3b |
 | 5.3d | Reviewed asset-generator media pilot | DONE | 5.3c |
-| 5.4a | Full-catalogue media disposition manifest and batch architecture | PLANNED | 5.3d, 0.3 |
-| 5.4b | Reviewed metadata-discovery batches | PLANNED | 5.4a |
+| 5.4a | Full-catalogue media disposition manifest and batch architecture | DONE | 5.3d, 0.3 |
+| 5.4b | Reviewed metadata-discovery batches | NEXT | 5.4a |
 | 5.4c | Screenshot fallback policy and feasibility | DEFERRED | 5.4b, explicit approval |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
