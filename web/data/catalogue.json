@@ -3526,7 +3526,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.undraw.co/static/ud24ogimage.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://undraw.co/apple-touch-icon.png"
     },
     {
       "id": "resource-92baaed92865",
@@ -3540,7 +3543,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://storyset.com/apple-touch-icon.png"
     },
     {
       "id": "resource-08a9f0e0bd50",
@@ -3554,7 +3558,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/626f5d0ae6c15c780f2dd5c4/6336572b684b9428785ccd40_DrawKit%20Website%20preview.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/682d1c6b3c16bb956eafd69b/682d1c6b3c16bb956eafd82f_DrawKit-Webclip.png"
     },
     {
       "id": "resource-1423085a332a",

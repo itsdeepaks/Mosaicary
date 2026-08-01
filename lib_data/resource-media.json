@@ -43,6 +43,47 @@
         "checkedAt": "2026-07-31",
         "contentType": "image/jpeg"
       }
+    },
+    {
+      "resourceId": "resource-73d75733406d",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.undraw.co/static/ud24ogimage.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://undraw.co",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://undraw.co/apple-touch-icon.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-92baaed92865",
+      "status": "approved",
+      "favicon": {
+        "url": "https://storyset.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-08a9f0e0bd50",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/626f5d0ae6c15c780f2dd5c4/6336572b684b9428785ccd40_DrawKit%20Website%20preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.drawkit.com",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/682d1c6b3c16bb956eafd69b/682d1c6b3c16bb956eafd82f_DrawKit-Webclip.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
     }
   ]
 }
