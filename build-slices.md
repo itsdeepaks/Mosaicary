@@ -67,7 +67,7 @@ Stop and fix before merge when any of these occur:
 | 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
 | 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
 | 5.3a | Approved resource-media source and rendering pilot | DONE | 5.2 |
-| 5.3b | Media discovery and review tooling | NEXT | 5.3a |
+| 5.3b | Media discovery and review tooling | DONE | 5.3a |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |
