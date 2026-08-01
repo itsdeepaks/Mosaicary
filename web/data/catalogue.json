@@ -3729,7 +3729,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.fffuel.co/images/cover.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-6887c11205e8",
@@ -3743,7 +3745,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://haikei.app/haikei-cover.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-7a8f527e423f",

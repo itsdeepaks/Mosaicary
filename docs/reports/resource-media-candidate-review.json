@@ -2,19 +2,19 @@
   "version": 1,
   "source": {
     "path": "lib_data/resource-media-candidates.json",
-    "sha256": "52c9f478dafb5afd2b4cf7e604edae1f8752b7912d6f13414cc529bd3e8b4f39",
+    "sha256": "fec18966fc35e6d9d7daca63c6de91681be22ca0221e6ca1b509f9cac3fd20c0",
     "recordCount": 8
   },
   "approvedSource": {
     "path": "lib_data/resource-media.json",
-    "approvedCount": 6
+    "approvedCount": 8
   },
   "summary": {
-    "approvedProduction": 6,
+    "approvedProduction": 8,
     "reviewTargets": 8,
-    "discoveredCandidates": 3,
-    "readyForCopy": 3,
-    "pending": 5,
+    "discoveredCandidates": 5,
+    "readyForCopy": 5,
+    "pending": 3,
     "blockedOrUnresolved": 0,
     "rejected": 0,
     "errors": 0,
@@ -22,12 +22,12 @@
   },
   "counts": {
     "byDiscoveryStatus": {
-      "candidate": 3,
-      "pending": 5
+      "candidate": 5,
+      "pending": 3
     },
     "byReviewerStatus": {
-      "approved-for-copy": 3,
-      "unreviewed": 5
+      "approved-for-copy": 5,
+      "unreviewed": 3
     }
   },
   "records": [
@@ -106,20 +106,67 @@
       "resourceId": "resource-7fa85ad18d65",
       "resourceName": "fffuel",
       "canonicalUrl": "https://fffuel.co",
-      "discoveryStatus": "pending",
-      "reviewerStatus": "unreviewed",
+      "discoveryStatus": "candidate",
+      "reviewerStatus": "approved-for-copy",
+      "sourcePageUrl": "https://www.fffuel.co/",
+      "checkedAt": "2026-08-01",
+      "redirects": [
+        "https://www.fffuel.co/"
+      ],
+      "preview": {
+        "url": "https://www.fffuel.co/images/cover.png",
+        "source": "open-graph",
+        "contentType": "image/png",
+        "provenance": "response-header",
+        "checkedAt": "2026-08-01"
+      },
+      "issues": [
+        {
+          "code": "favicon-rejected",
+          "message": "Unsupported media content type: image/vnd.microsoft.icon.",
+          "url": "https://www.fffuel.co/images/favicon/favicon.ico"
+        },
+        {
+          "code": "favicon-rejected",
+          "message": "Remote SVG media is not allowed.",
+          "url": "https://www.fffuel.co/images/favicon/favicon.svg"
+        },
+        {
+          "code": "favicon-rejected",
+          "message": "Media request returned HTTP 404.",
+          "url": "https://www.fffuel.co/favicon.ico"
+        }
+      ],
       "notes": [
-        "Asset-generator pilot target. Run the explicit discovery command before review."
+        "Explicit 5.3d discovery followed the canonical redirect and returned a source-declared Open Graph PNG; ICO, SVG, and missing favicon candidates remained rejected.",
+        "Manual review confirmed a clean, brand-specific grid of fffuel generators without advertising, authentication, cookie overlays, or stale campaign content."
       ]
     },
     {
       "resourceId": "resource-6887c11205e8",
       "resourceName": "Haikei",
       "canonicalUrl": "https://haikei.app",
-      "discoveryStatus": "pending",
-      "reviewerStatus": "unreviewed",
+      "discoveryStatus": "candidate",
+      "reviewerStatus": "approved-for-copy",
+      "sourcePageUrl": "https://haikei.app",
+      "checkedAt": "2026-08-01",
+      "preview": {
+        "url": "https://haikei.app/haikei-cover.png",
+        "source": "open-graph",
+        "contentType": "image/png",
+        "provenance": "response-header",
+        "checkedAt": "2026-08-01"
+      },
+      "issues": [
+        {
+          "code": "favicon-rejected",
+          "message": "Unsupported media content type: image/vnd.microsoft.icon.",
+          "url": "https://haikei.app/favicon.ico"
+        }
+      ],
       "notes": [
-        "Asset-generator pilot target. Run the explicit discovery command before review."
+        "Explicit 5.3d discovery returned a source-declared Open Graph PNG while preserving the unsupported ICO favicon rejection.",
+        "Manual review confirmed a clean Haikei-branded generator mosaic without advertising, authentication, cookie overlays, or unrelated campaign content."
       ]
     },
     {
@@ -158,10 +205,12 @@
     "warnings": [
       {
         "code": "candidate-already-approved",
-        "message": "Candidate source contains 3 resource(s) already present in approved media.",
+        "message": "Candidate source contains 5 resource(s) already present in approved media.",
         "resourceIds": [
           "resource-08a9f0e0bd50",
+          "resource-6887c11205e8",
           "resource-73d75733406d",
+          "resource-7fa85ad18d65",
           "resource-92baaed92865"
         ]
       }
