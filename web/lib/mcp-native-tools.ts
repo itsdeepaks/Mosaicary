@@ -133,7 +133,10 @@ function resolveUniqueResources(
 }
 
 function getProfile(resource: CatalogueResource): ResourceIntelligenceProfile | null {
-  return getIntelligenceProfile(resource.id);
+  return (
+    getIntelligenceProfile(resource.id) ??
+    getIntelligenceProfile(resource.slug)
+  );
 }
 
 function matchesEvery(
