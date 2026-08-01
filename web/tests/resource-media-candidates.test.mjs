@@ -54,7 +54,13 @@ test("candidate source and reports remain deterministic and review-only", async 
   );
   assert.deepEqual(
     approvedForCopy.map((record) => record.resourceId),
-    ["resource-73d75733406d", "resource-92baaed92865", "resource-08a9f0e0bd50"],
+    [
+      "resource-73d75733406d",
+      "resource-92baaed92865",
+      "resource-08a9f0e0bd50",
+      "resource-7fa85ad18d65",
+      "resource-6887c11205e8",
+    ],
   );
   assert.equal(
     approvedForCopy.every(
@@ -64,7 +70,7 @@ test("candidate source and reports remain deterministic and review-only", async 
     ),
     true,
   );
-  assert.equal(pending.length, 5);
+  assert.equal(pending.length, 3);
   assert.equal(
     pending.every(
       (record) =>
@@ -83,11 +89,11 @@ test("candidate source and reports remain deterministic and review-only", async 
       path.join(repoRoot, CANDIDATE_SOURCE_PATH),
     ),
   });
-  assert.equal(repositoryReview.report.summary.approvedProduction, 6);
+  assert.equal(repositoryReview.report.summary.approvedProduction, 8);
   assert.equal(repositoryReview.report.summary.reviewTargets, 8);
-  assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);
-  assert.equal(repositoryReview.report.summary.readyForCopy, 3);
-  assert.equal(repositoryReview.report.summary.pending, 5);
+  assert.equal(repositoryReview.report.summary.discoveredCandidates, 5);
+  assert.equal(repositoryReview.report.summary.readyForCopy, 5);
+  assert.equal(repositoryReview.report.summary.pending, 3);
   assert.equal(repositoryReview.report.summary.errors, 0);
   assert.equal(repositoryReview.reportJson, serializeReport(reportAgain));
   assert.equal(

@@ -69,6 +69,7 @@ Stop and fix before merge when any of these occur:
 | 5.3a | Approved resource-media source and rendering pilot | DONE | 5.2 |
 | 5.3b | Media discovery and review tooling | DONE | 5.3a |
 | 5.3c | Reviewed media discovery pilot | DONE | 5.3b |
+| 5.3d | Reviewed asset-generator media pilot | DONE | 5.3c |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |

@@ -43,6 +43,8 @@ test("approved media is merged deterministically into only its linked resources"
       "undraw",
       "storyset",
       "drawkit",
+      "fffuel",
+      "haikei",
     ],
   );
   assert.equal(enriched[0].previewSource, "open-graph");
@@ -53,8 +55,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 6);
-  assert.equal(result.report.summary.approvedMedia, 6);
+  assert.equal(result.report.mediaSource.approvedCount, 8);
+  assert.equal(result.report.summary.approvedMedia, 8);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
