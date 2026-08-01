@@ -62,6 +62,18 @@ test("approved media is merged deterministically into only its linked resources"
       "mobbin",
       "refero",
       "page-flows",
+      "pttrns",
+      "interface-index",
+      "ux-bites",
+      "spotted-in-prod",
+      "pushkeen",
+      "paywallpro",
+      "laudable-apps",
+      "saasframe",
+      "saas-interface",
+      "webframe",
+      "ui-garage",
+      "collect-ui",
       "undraw",
       "storyset",
       "drawkit",
@@ -77,8 +89,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 30);
-  assert.equal(result.report.summary.approvedMedia, 30);
+  assert.equal(result.report.mediaSource.approvedCount, 42);
+  assert.equal(result.report.summary.approvedMedia, 42);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {

@@ -410,6 +410,147 @@
         "checkedAt": "2026-08-02",
         "contentType": "image/png"
       }
+    },
+    {
+      "resourceId": "resource-ac7884b515b0",
+      "status": "approved",
+      "favicon": {
+        "url": "https://www.pttrns.com/wp-content/uploads/2022/07/favicon-300x300.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-cd0047dcee72",
+      "status": "approved",
+      "preview": {
+        "url": "https://interface-index.com/assets/interface-index-opengraph-share-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://interface-index.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://interface-index.com/favicons/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-69979d461779",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.craft.cloud/983dd56a-1291-4f1f-ba2b-57c60e14c22a/assets/images/UXBites.jpg?width=1200&height=630&quality=82&fit=cover&s=dY5gls4sy2fXZUuDCQLhhP5z6E5rJlP7GW83Soj_d6Q",
+        "source": "open-graph",
+        "sourcePageUrl": "https://builtformars.com/ux-bites",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-fe4c69647281",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.spottedinprod.com/opengraph-image.png?opengraph-image.ab455828.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.spottedinprod.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://www.spottedinprod.com/apple-icon.jpg?apple-icon.a92d0c31.jpg",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      }
+    },
+    {
+      "resourceId": "resource-0ef7f1529f9e",
+      "status": "approved",
+      "preview": {
+        "url": "https://djqvvvbpwetdfwhwbsin.supabase.co/storage/v1/object/public/static/og_image.png?v=1.0",
+        "source": "open-graph",
+        "sourcePageUrl": "https://pushkeen.ai",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-c7f686b41a96",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.dingyuebao.cn/paywall/assets/seo.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.paywallpro.app",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-60706995bb78",
+      "status": "approved",
+      "preview": {
+        "url": "https://laudableapps.com/images/og.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://laudableapps.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      }
+    },
+    {
+      "resourceId": "resource-52b39211e431",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5e9dc792e1210c2d5df7eba4/63f2c6022d342cc2330d5ff4_SaaSFrame%20PH%201.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.saasframe.io",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      }
+    },
+    {
+      "resourceId": "resource-b4c81fa6f889",
+      "status": "approved",
+      "favicon": {
+        "url": "https://saasinterface.com/wp-content/themes/saasinterface/dist/images/favicon-32x32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-f99e8dec0ce5",
+      "status": "approved",
+      "preview": {
+        "url": "https://webframe.xyz/site-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://webframe.xyz",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-804d857049dd",
+      "status": "approved",
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/6191a88a1c0e3983292beff7/65b9a33e8a695f1636c77064_webclip.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-92552c3fd004",
+      "status": "approved",
+      "preview": {
+        "url": "https://collectui.com/og-image.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://collectui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      },
+      "favicon": {
+        "url": "https://collectui.com/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
     }
   ]
 }

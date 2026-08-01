@@ -272,83 +272,127 @@
     },
     {
       "resourceId": "resource-9ec09353e25c",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical domain redirected to ScreensDesign and returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-5c66064d184b",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical domain redirected to Page Flows and the discovered favicon represented that different brand rather than Screenlane."
+      ]
     },
     {
       "resourceId": "resource-ac7884b515b0",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-158d833178cc",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical domain redirected to ScreensDesign and returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-cd0047dcee72",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-69979d461779",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-fbcb29e83b14",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source exceeded the 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-33a500177818",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Available favicon metadata resolved only to an unsupported ICO response and no preview was available."
+      ]
     },
     {
       "resourceId": "resource-fe4c69647281",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-886b75da6429",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical domain redirected to ScreensDesign and the discovered preview represented that different brand rather than Scrnshts."
+      ]
     },
     {
       "resourceId": "resource-0ef7f1529f9e",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c7f686b41a96",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-60706995bb78",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-2792fea54078",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Available favicon metadata resolved only to an unsupported ICO response and no preview was available."
+      ]
     },
     {
       "resourceId": "resource-acfe63268811",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source exceeded the 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-52b39211e431",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b4c81fa6f889",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-f99e8dec0ce5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-804d857049dd",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-92552c3fd004",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-95bb76a538d3",

@@ -710,7 +710,8 @@
       "subscriptionRequired": "yes",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://www.pttrns.com/wp-content/uploads/2022/07/favicon-300x300.png"
     },
     {
       "id": "resource-158d833178cc",
@@ -738,7 +739,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://interface-index.com/assets/interface-index-opengraph-share-image.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://interface-index.com/favicons/apple-touch-icon.png"
     },
     {
       "id": "resource-69979d461779",
@@ -752,7 +756,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.craft.cloud/983dd56a-1291-4f1f-ba2b-57c60e14c22a/assets/images/UXBites.jpg?width=1200&height=630&quality=82&fit=cover&s=dY5gls4sy2fXZUuDCQLhhP5z6E5rJlP7GW83Soj_d6Q",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-fbcb29e83b14",
@@ -794,7 +800,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.spottedinprod.com/opengraph-image.png?opengraph-image.ab455828.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.spottedinprod.com/apple-icon.jpg?apple-icon.a92d0c31.jpg"
     },
     {
       "id": "resource-886b75da6429",
@@ -822,7 +831,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://djqvvvbpwetdfwhwbsin.supabase.co/storage/v1/object/public/static/og_image.png?v=1.0",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-c7f686b41a96",
@@ -836,7 +847,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.dingyuebao.cn/paywall/assets/seo.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-60706995bb78",
@@ -850,7 +863,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://laudableapps.com/images/og.jpg",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-2792fea54078",
@@ -892,7 +907,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5e9dc792e1210c2d5df7eba4/63f2c6022d342cc2330d5ff4_SaaSFrame%20PH%201.webp",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-b4c81fa6f889",
@@ -906,7 +923,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://saasinterface.com/wp-content/themes/saasinterface/dist/images/favicon-32x32.png"
     },
     {
       "id": "resource-f99e8dec0ce5",
@@ -920,7 +938,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://webframe.xyz/site-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-804d857049dd",
@@ -934,7 +954,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://cdn.prod.website-files.com/6191a88a1c0e3983292beff7/65b9a33e8a695f1636c77064_webclip.png"
     },
     {
       "id": "resource-92552c3fd004",
@@ -948,7 +969,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://collectui.com/og-image.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://collectui.com/favicon.png"
     },
     {
       "id": "resource-95bb76a538d3",
