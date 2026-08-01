@@ -102,7 +102,7 @@ Stop and fix before merge when any of these occur:
 | 13.2 | Profile validation, evidence freshness, and review tooling | DONE | 13.1 |
 | 13.3 | Local context-engine provider & file-backed index | DONE | 13.2 |
 | 13.4 | Research stack builder and Markdown reference-packet export | DONE | 13.3 |
-| 13.5 | Read-only Tessli MCP over native metadata | PLANNED | 13.4 |
+| 13.5 | Read-only Tessli MCP over native metadata | DONE | 13.4 |
 
 ## 5. Slice 0.2 — Repository operating contract
 
