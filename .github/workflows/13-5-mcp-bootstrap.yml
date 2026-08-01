@@ -1,0 +1,103 @@
+name: Slice 13.5 MCP bootstrap
+
+on:
+  push:
+    branches:
+      - feat/native-tessli-mcp
+    paths:
+      - .github/workflows/13-5-mcp-bootstrap.yml
+      - docs/slices/13.5-native-tessli-mcp.md
+      - docs/tessli-native-mcp.md
+      - web/lib/mcp-native-tools.ts
+      - web/mcp/server.ts
+      - web/package.json
+      - web/package-lock.json
+      - web/tests/mcp-native-tools.test.mjs
+      - web/tests/mcp-stdio.test.mjs
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/native-tessli-mcp
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Generate exact lockfile
+        working-directory: web
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Format scoped files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            ../docs/slices/13.5-native-tessli-mcp.md \
+            ../docs/tessli-native-mcp.md \
+            lib/mcp-native-tools.ts \
+            mcp/server.ts \
+            package.json \
+            tests/mcp-native-tools.test.mjs \
+            tests/mcp-stdio.test.mjs
+
+      - name: Run focused MCP tests
+        working-directory: web
+        run: node --test tests/mcp-native-tools.test.mjs tests/mcp-stdio.test.mjs
+
+      - name: Check types
+        working-directory: web
+        run: npm run typecheck
+
+      - name: Lint
+        working-directory: web
+        run: npm run lint
+
+      - name: Commit generated lockfile and formatting
+        shell: bash
+        run: |
+          git add \
+            docs/slices/13.5-native-tessli-mcp.md \
+            docs/tessli-native-mcp.md \
+            web/lib/mcp-native-tools.ts \
+            web/mcp/server.ts \
+            web/package.json \
+            web/package-lock.json \
+            web/tests/mcp-native-tools.test.mjs \
+            web/tests/mcp-stdio.test.mjs
+
+          unexpected="$(git diff --cached --name-only | grep -Ev '^(docs/slices/13\.5-native-tessli-mcp\.md|docs/tessli-native-mcp\.md|web/lib/mcp-native-tools\.ts|web/mcp/server\.ts|web/package\.json|web/package-lock\.json|web/tests/mcp-native-tools\.test\.mjs|web/tests/mcp-stdio\.test\.mjs)$' || true)"
+          if [ -n "$unexpected" ]; then
+            echo "Unexpected staged files:"
+            echo "$unexpected"
+            exit 1
+          fi
+
+          if git diff --cached --quiet; then
+            echo "No bootstrap changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: lock and format native MCP slice"
+          git push origin HEAD:feat/native-tessli-mcp
