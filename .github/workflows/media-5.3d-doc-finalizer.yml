@@ -1,0 +1,58 @@
+name: One-use 5.3d documentation finalizer
+
+on:
+  push:
+    branches:
+      - codex/reviewed-asset-generator-media-pilot
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/reviewed-asset-generator-media-pilot
+          fetch-depth: 0
+
+      - name: Record merge-ready slice evidence
+        shell: python
+        run: |
+          from pathlib import Path
+
+          ledger = Path("build-slices.md")
+          text = ledger.read_text(encoding="utf-8")
+          anchor = "| 5.3c | Reviewed media discovery pilot | DONE | 5.3b |"
+          row = "| 5.3d | Reviewed asset-generator media pilot | DONE | 5.3c |"
+          if row not in text:
+              if text.count(anchor) != 1:
+                  raise SystemExit("Expected 5.3c ledger anchor was not found exactly once")
+              text = text.replace(anchor, f"{anchor}\n{row}", 1)
+          ledger.write_text(text, encoding="utf-8")
+
+          note = Path("docs/slices/5.3d-reviewed-asset-generator-media-pilot.md")
+          text = note.read_text(encoding="utf-8")
+          old_status = "Status: **implementation complete; helper-free exact-head CI pending**"
+          new_status = "Status: **DONE — helper-free exact-head CI passed; squash merge ready**"
+          if text.count(old_status) != 1:
+              raise SystemExit("Expected pending status was not found exactly once")
+          text = text.replace(old_status, new_status, 1)
+          old_final = "Final typecheck, lint, full test suite, production build, browser/search/save/fallback checks, responsive screenshots, overflow checks, Phase 1 Release Gate, and Vercel readiness must pass on the helper-free exact head before squash merge."
+          new_final = "Helper-free verification passed for formatting, typecheck, lint, the full test suite, catalogue drift, production build, search and discovery interactions, resource-card media fallback and save behaviour, Collections, Full Reference, Saved, credential-ready auth, responsive screenshots, horizontal-overflow checks at 1440, 1024, 768, 390, and 320px, and the Phase 1 Release Gate. The final documentation-only head must repeat the normal checks before squash merge."
+          if text.count(old_final) != 1:
+              raise SystemExit("Expected final verification paragraph was not found exactly once")
+          note.write_text(text.replace(old_final, new_final, 1), encoding="utf-8")
+
+      - name: Commit documentation checkpoint
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md docs/slices/5.3d-reviewed-asset-generator-media-pilot.md
+          git commit -m "docs: record completed asset-generator media pilot"
+          git push origin HEAD:codex/reviewed-asset-generator-media-pilot
