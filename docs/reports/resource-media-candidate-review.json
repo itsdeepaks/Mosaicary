@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "source": {
+    "path": "lib_data/resource-media-candidates.json",
+    "sha256": "1637898d8b4caa1c8a1f6635850b89f045fe11f89bab70c4904f4cd1d2ffdade",
+    "recordCount": 8
+  },
+  "approvedSource": {
+    "path": "lib_data/resource-media.json",
+    "approvedCount": 3
+  },
+  "summary": {
+    "approvedProduction": 3,
+    "reviewTargets": 8,
+    "discoveredCandidates": 0,
+    "readyForCopy": 0,
+    "pending": 8,
+    "blockedOrUnresolved": 0,
+    "rejected": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "counts": {
+    "byDiscoveryStatus": {
+      "pending": 8
+    },
+    "byReviewerStatus": {
+      "unreviewed": 8
+    }
+  },
+  "records": [
+    {
+      "resourceId": "resource-73d75733406d",
+      "resourceName": "unDraw",
+      "canonicalUrl": "https://undraw.co",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Asset-library pilot target. Run the explicit discovery command before review."
+      ]
+    },
+    {
+      "resourceId": "resource-92baaed92865",
+      "resourceName": "Storyset",
+      "canonicalUrl": "https://storyset.com",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Asset-library pilot target. Run the explicit discovery command before review."
+      ]
+    },
+    {
+      "resourceId": "resource-08a9f0e0bd50",
+      "resourceName": "DrawKit",
+      "canonicalUrl": "https://www.drawkit.com",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Asset-library pilot target. Run the explicit discovery command before review."
+      ]
+    },
+    {
+      "resourceId": "resource-7fa85ad18d65",
+      "resourceName": "fffuel",
+      "canonicalUrl": "https://fffuel.co",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Asset-generator pilot target. Run the explicit discovery command before review."
+      ]
+    },
+    {
+      "resourceId": "resource-6887c11205e8",
+      "resourceName": "Haikei",
+      "canonicalUrl": "https://haikei.app",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Asset-generator pilot target. Run the explicit discovery command before review."
+      ]
+    },
+    {
+      "resourceId": "resource-b79c0850bbff",
+      "resourceName": "Figma Community",
+      "canonicalUrl": "https://www.figma.com/community",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Design-resource pilot target. Authentication walls or anti-bot responses must be recorded, not bypassed."
+      ]
+    },
+    {
+      "resourceId": "resource-076ade306587",
+      "resourceName": "UI8",
+      "canonicalUrl": "https://ui8.net",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Design-asset marketplace pilot target. Do not infer licence rights from discovered metadata."
+      ]
+    },
+    {
+      "resourceId": "resource-0e09218b32a8",
+      "resourceName": "Creative Market",
+      "canonicalUrl": "https://creativemarket.com",
+      "discoveryStatus": "pending",
+      "reviewerStatus": "unreviewed",
+      "notes": [
+        "Design-asset marketplace pilot target. Do not infer licence rights from discovered metadata."
+      ]
+    }
+  ],
+  "issues": {
+    "errors": [],
+    "warnings": []
+  }
+}

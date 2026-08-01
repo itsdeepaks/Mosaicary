@@ -66,8 +66,8 @@ Stop and fix before merge when any of these occur:
 | 4.2 | Discovery URL state, category, access, and sort controls | DONE | 3.2, 4.1 |
 | 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
 | 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
-| 5.3a | Approved resource-media source and rendering pilot | NEXT | 5.2 |
-| 5.3b | Media discovery and review tooling | PLANNED | 5.3a |
+| 5.3a | Approved resource-media source and rendering pilot | DONE | 5.2 |
+| 5.3b | Media discovery and review tooling | DONE | 5.3a |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |
@@ -382,9 +382,9 @@ Make a small set of reviewed, external raster previews available to existing res
 - no speculative or unreviewed media rows;
 - no mass enrichment: the pilot can start with fewer than the 5.1 lab coverage cases where only a smaller set has verified provenance.
 
-### Follow-up slice 5.3b
+### Slice 5.3b — reviewed discovery and refresh tooling
 
-Build reviewed discovery and refresh tooling only after the source contract has proved stable. It must preserve the same validation boundary and separately address CSP/cache policy, redirect handling, content-size limits, and reviewer workflow.
+A separate candidate/review source, deterministic offline report, and explicit opt-in discovery command preserve the approved-media boundary. Discovery validates redirects, public network destinations, response size, raster content types, and reviewer state without running during normal build, test, or CI.
 
 ## 16. Slices 6–9 — Phase 1 completion
 

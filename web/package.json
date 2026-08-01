@@ -13,9 +13,12 @@
     "catalogue:check": "node scripts/check-catalogue.mjs",
     "profiles:generate": "node scripts/generate-intelligence-profiles.mjs",
     "profiles:check": "node scripts/check-intelligence-profiles.mjs",
+    "media:review:generate": "node scripts/generate-resource-media-review.mjs",
+    "media:review:check": "node scripts/check-resource-media-candidates.mjs",
+    "media:discover": "node scripts/discover-resource-media.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs && node scripts/check-resource-media-candidates.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
