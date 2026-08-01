@@ -200,6 +200,13 @@ The original page captures are canonical art-direction references only. They mus
 
 Unverified media research is stored separately at `lib_data/resource-media-candidates.json` and validated by `schemas/resource-media-candidates.schema.json`.
 
+Full-catalogue research coverage is stored at
+`lib_data/resource-media-coverage.json` and validated by
+`schemas/resource-media-coverage.schema.json`. The coverage manifest contains
+all 295 stable resource IDs in canonical catalogue order. It is separate from
+the bounded candidate queue so completeness can be measured without weakening
+the 50-record review limit or publishing candidates automatically.
+
 Candidate records:
 
 - never enrich production catalogue output automatically;
@@ -211,3 +218,9 @@ Candidate records:
 - require manual review before any record is copied into approved media.
 
 The offline review generator and check are deterministic and network-free. The explicit discovery command is not part of normal build, test, or CI and may process only selected catalogue resources. See `docs/resource-media-workflow.md` for the contributor procedure and approval checklist.
+
+The generated-letter UI fallback is not evidence that media research occurred.
+Every coverage record starts `pending` and may reach `approved-media`,
+`no-suitable-raster`, `blocked`, `failed`, or `rejected`. Every terminal outcome
+records a checked date. Coverage is complete only when all 295 IDs are present
+and none remain pending.

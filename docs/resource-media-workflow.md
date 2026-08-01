@@ -4,13 +4,15 @@ Tessli keeps approved production media and unverified discovery evidence separat
 
 ## Sources of truth
 
-| Purpose | File |
-|---|---|
-| Approved production media | `lib_data/resource-media.json` |
-| Discovery and review queue | `lib_data/resource-media-candidates.json` |
-| Approved-media schema | `schemas/resource-media.schema.json` |
-| Candidate/review schema | `schemas/resource-media-candidates.schema.json` |
-| Deterministic review report | `docs/reports/resource-media-candidate-review.{json,md}` |
+| Purpose                          | File                                                     |
+| -------------------------------- | -------------------------------------------------------- |
+| Approved production media        | `lib_data/resource-media.json`                           |
+| Discovery and review queue       | `lib_data/resource-media-candidates.json`                |
+| Full-catalogue research coverage | `lib_data/resource-media-coverage.json`                  |
+| Approved-media schema            | `schemas/resource-media.schema.json`                     |
+| Candidate/review schema          | `schemas/resource-media-candidates.schema.json`          |
+| Coverage schema                  | `schemas/resource-media-coverage.schema.json`            |
+| Deterministic review report      | `docs/reports/resource-media-candidate-review.{json,md}` |
 
 Only `lib_data/resource-media.json` is composed into `web/data/catalogue.json`. Candidate records are never read by catalogue generation.
 
@@ -56,6 +58,40 @@ npm run media:review:check
 The generator reads repository files only. It creates deterministic JSON and Markdown reports. The check command fails when candidate validation has errors or committed reports are stale.
 
 These commands do not access the network.
+
+## Full-catalogue coverage commands
+
+From `web/`:
+
+```bash
+npm run media:coverage:generate
+npm run media:coverage:check
+npm run media:batch:select -- --limit 20
+npm run media:batch:select -- --limit 20 --after resource-example
+```
+
+The generator preserves reviewed terminal outcomes, reconciles approved media,
+adds newly catalogued IDs as pending, and writes canonical catalogue order. The
+check rejects missing, duplicate, unknown, out-of-order, falsely approved, or
+stale records. Both commands are deterministic and network-free.
+
+The batch selector emits only pending IDs, never fetches a website, never edits
+a repository file, and rejects limits outside 1–20. `--after` resumes after a
+known manifest ID while preserving catalogue order.
+
+Coverage dispositions are:
+
+- `pending` — research has not reached a terminal outcome;
+- `approved-media` — production media exists in the approved sidecar;
+- `no-suitable-raster` — reviewed metadata contained no suitable raster;
+- `blocked` — safe discovery stopped at an authentication, anti-bot, network,
+  or policy boundary;
+- `failed` — the public source failed without producing reviewable evidence;
+- `rejected` — reviewed media was unsuitable.
+
+Except for `pending`, every disposition requires `checkedAt`. The generated
+letter displayed by a card is presentation fallback only and never changes the
+coverage disposition.
 
 ## Explicit discovery command
 
@@ -155,3 +191,8 @@ Slice 5.3b starts with eight asset/design-resource review targets:
 - Creative Market.
 
 They remain `pending` until an explicit discovery run is performed and reviewed. The slice does not approve all 295 resources.
+
+Slice 5.4a expands the coverage ledger to all 295 catalogue resources without
+running discovery. At its baseline, 8 resources are `approved-media` and 287
+remain `pending`. Later 5.4b batches update reviewed outcomes through separate
+short-lived branches and PRs.
