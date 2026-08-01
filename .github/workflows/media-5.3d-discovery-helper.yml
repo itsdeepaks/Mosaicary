@@ -1,0 +1,48 @@
+name: One-use 5.3d media discovery
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    if: github.head_ref == 'codex/reviewed-asset-generator-media-pilot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Discover only fffuel and Haikei
+        working-directory: web
+        run: |
+          npm run media:discover -- \
+            --checked-at 2026-08-01 \
+            --output artifacts/5.3d-media-discovery.json \
+            --resource-id resource-7fa85ad18d65 \
+            --resource-id resource-6887c11205e8
+
+      - name: Upload review-only discovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-5.3d-media-discovery
+          path: artifacts/5.3d-media-discovery.json
+          if-no-files-found: error
+          retention-days: 2
