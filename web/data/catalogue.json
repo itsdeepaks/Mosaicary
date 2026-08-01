@@ -368,7 +368,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/64fe0870e6e4f3a42a145c1c/6514c4e3bcde78421b541de9_open-graph.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/64fe0870e6e4f3a42a145c1c/650866dc23fd1193a04dcb30_app-clip.png"
     },
     {
       "id": "resource-2ee2185ec069",
@@ -382,7 +385,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/65ba70a4bb6f912baf009423/6899c6b37147b1d3587301c5_2533.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/65ba70a4bb6f912baf009423/65bc1ed89a6f1dd0c60f93c4_Frame%203.png"
     },
     {
       "id": "resource-211e84697a02",
@@ -410,7 +416,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://framerusercontent.com/assets/wCuoawEW0qbKivA7KjNgcPtGUoE.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://framerusercontent.com/images/guIul9Er3h97K5iT2hUme3EDuM.png"
     },
     {
       "id": "resource-a768b0ada1e7",
@@ -480,7 +489,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.a-fresh.website/a/2mNsxrKcXN2U0NnPyI6xqK/a-fresh-social-share.jpg",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-a122af04190c",
@@ -508,7 +519,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://framerusercontent.com/images/yXhxFS3RMgsD2U3vLGvsjBaE4Q.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://framerusercontent.com/images/wvsg35aPOjBoT6Jli6VVqeJ9Qs.png"
     },
     {
       "id": "resource-51178b0aa186",
@@ -522,7 +536,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.a1.gallery/images/og-default.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.a1.gallery/images/a1-favicon-192.png"
     },
     {
       "id": "resource-27b7f2ecec64",
@@ -550,7 +567,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://webzooo.com/og-image.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://webzooo.com/apple-touch-icon.png"
     },
     {
       "id": "resource-cab36eb734de",
@@ -564,7 +584,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://recent.design/og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-3a1b90436f0b",
@@ -578,7 +600,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://detail.design/og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-14231b7b938a",
@@ -592,7 +616,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://bentogrids.com/images/og.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://bentogrids.com/favicon/icon-512x512.png"
     },
     {
       "id": "resource-52bddd200880",
@@ -606,7 +633,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://framerusercontent.com/assets/FE3uqmxi41SxsiiVq9JNJC1Pwc.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://framerusercontent.com/images/2cz8ZUxTsw3gbMD0g6JE4jLsgr8.png"
     },
     {
       "id": "resource-e0bd932107d2",
@@ -620,7 +650,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://refero.design/open-graph-4-1200x630.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://refero.design/apple-icon-180x180.png"
     },
     {
       "id": "resource-d9b680b771cc",
@@ -634,7 +667,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://pageflows.com/static/website/images/apple-icon-180x180.png"
     },
     {
       "id": "resource-9ec09353e25c",

@@ -224,6 +224,192 @@
         "checkedAt": "2026-08-02",
         "contentType": "image/webp"
       }
+    },
+    {
+      "resourceId": "resource-16a9509c3d04",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/64fe0870e6e4f3a42a145c1c/6514c4e3bcde78421b541de9_open-graph.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.footer.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/64fe0870e6e4f3a42a145c1c/650866dc23fd1193a04dcb30_app-clip.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-2ee2185ec069",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/65ba70a4bb6f912baf009423/6899c6b37147b1d3587301c5_2533.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.404s.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/65ba70a4bb6f912baf009423/65bc1ed89a6f1dd0c60f93c4_Frame%203.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-c5f9ae1c7798",
+      "status": "approved",
+      "preview": {
+        "url": "https://framerusercontent.com/assets/wCuoawEW0qbKivA7KjNgcPtGUoE.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://browsingmode.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      },
+      "favicon": {
+        "url": "https://framerusercontent.com/images/guIul9Er3h97K5iT2hUme3EDuM.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-46c4289c2359",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.a-fresh.website/a/2mNsxrKcXN2U0NnPyI6xqK/a-fresh-social-share.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.a-fresh.website/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      }
+    },
+    {
+      "resourceId": "resource-c1be6f2c9435",
+      "status": "approved",
+      "preview": {
+        "url": "https://framerusercontent.com/images/yXhxFS3RMgsD2U3vLGvsjBaE4Q.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.cta.gallery",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      },
+      "favicon": {
+        "url": "https://framerusercontent.com/images/wvsg35aPOjBoT6Jli6VVqeJ9Qs.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-51178b0aa186",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.a1.gallery/images/og-default.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.a1.gallery",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      },
+      "favicon": {
+        "url": "https://www.a1.gallery/images/a1-favicon-192.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-910c4b25079b",
+      "status": "approved",
+      "preview": {
+        "url": "https://webzooo.com/og-image.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://webzooo.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      },
+      "favicon": {
+        "url": "https://webzooo.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-cab36eb734de",
+      "status": "approved",
+      "preview": {
+        "url": "https://recent.design/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://recent.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-3a1b90436f0b",
+      "status": "approved",
+      "preview": {
+        "url": "https://detail.design/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://detail.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-14231b7b938a",
+      "status": "approved",
+      "preview": {
+        "url": "https://bentogrids.com/images/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://bentogrids.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://bentogrids.com/favicon/icon-512x512.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-52bddd200880",
+      "status": "approved",
+      "preview": {
+        "url": "https://framerusercontent.com/assets/FE3uqmxi41SxsiiVq9JNJC1Pwc.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://mobbin.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://framerusercontent.com/images/2cz8ZUxTsw3gbMD0g6JE4jLsgr8.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-e0bd932107d2",
+      "status": "approved",
+      "preview": {
+        "url": "https://refero.design/open-graph-4-1200x630.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://refero.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://refero.design/apple-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-d9b680b771cc",
+      "status": "approved",
+      "favicon": {
+        "url": "https://pageflows.com/static/website/images/apple-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
     }
   ]
 }

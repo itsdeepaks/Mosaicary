@@ -194,21 +194,21 @@ assert.equal(
   await evaluate(
     'document.querySelectorAll("[data-resource-grid] [data-media-state=generated]").length',
   ),
-  36,
+  23,
   "Only reviewed media in the first result batch should replace generated fallbacks.",
 );
 assert.equal(
   await evaluate(
     'document.querySelectorAll("[data-resource-grid] [data-media-state=preview]").length',
   ),
-  9,
+  21,
   "Approved media records should render their previews in the first result batch.",
 );
 assert.equal(
   await evaluate(
     'document.querySelectorAll("[data-resource-grid] [data-media-state=favicon]").length',
   ),
-  3,
+  4,
   "Approved favicon-only records should render before generated fallbacks.",
 );
 assert.match(
