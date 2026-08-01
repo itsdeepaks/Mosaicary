@@ -36,7 +36,14 @@ test("approved media is merged deterministically into only its linked resources"
   assert.equal(result.report.issues.errors.length, 0);
   assert.deepEqual(
     enriched.map((resource) => resource.slug),
-    ["toools-design", "one-page-love", "awwwards"],
+    [
+      "toools-design",
+      "one-page-love",
+      "awwwards",
+      "undraw",
+      "storyset",
+      "drawkit",
+    ],
   );
   assert.equal(enriched[0].previewSource, "open-graph");
   assert.equal(result.report.mediaSource.path, MEDIA_SOURCE_PATH);
@@ -46,8 +53,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 3);
-  assert.equal(result.report.summary.approvedMedia, 3);
+  assert.equal(result.report.mediaSource.approvedCount, 6);
+  assert.equal(result.report.summary.approvedMedia, 6);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {

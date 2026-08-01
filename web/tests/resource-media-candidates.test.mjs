@@ -46,10 +46,28 @@ test("candidate source and reports remain deterministic and review-only", async 
   );
   assert.deepEqual(validation.errors, []);
   assert.equal(source.resources.length, 8);
+  const approvedForCopy = source.resources.filter(
+    (record) => record.reviewerStatus === "approved-for-copy",
+  );
+  const pending = source.resources.filter(
+    (record) => record.discoveryStatus === "pending",
+  );
+  assert.deepEqual(
+    approvedForCopy.map((record) => record.resourceId),
+    ["resource-73d75733406d", "resource-92baaed92865", "resource-08a9f0e0bd50"],
+  );
   assert.equal(
-    source.resources.every(
+    approvedForCopy.every(
       (record) =>
-        record.discoveryStatus === "pending" &&
+        record.discoveryStatus === "candidate" &&
+        Boolean(record.preview || record.favicon),
+    ),
+    true,
+  );
+  assert.equal(pending.length, 5);
+  assert.equal(
+    pending.every(
+      (record) =>
         record.reviewerStatus === "unreviewed" &&
         !record.preview &&
         !record.favicon,
@@ -65,10 +83,11 @@ test("candidate source and reports remain deterministic and review-only", async 
       path.join(repoRoot, CANDIDATE_SOURCE_PATH),
     ),
   });
-  assert.equal(repositoryReview.report.summary.approvedProduction, 3);
+  assert.equal(repositoryReview.report.summary.approvedProduction, 6);
   assert.equal(repositoryReview.report.summary.reviewTargets, 8);
-  assert.equal(repositoryReview.report.summary.discoveredCandidates, 0);
-  assert.equal(repositoryReview.report.summary.pending, 8);
+  assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);
+  assert.equal(repositoryReview.report.summary.readyForCopy, 3);
+  assert.equal(repositoryReview.report.summary.pending, 5);
   assert.equal(repositoryReview.report.summary.errors, 0);
   assert.equal(repositoryReview.reportJson, serializeReport(reportAgain));
   assert.equal(
@@ -171,7 +190,10 @@ test("malformed candidate data cannot enrich production catalogue output", async
     buildReleaseCatalogue({ root: tempRoot }),
   ]);
   assert.equal(withMalformedCandidate.catalogueText, baseline.catalogueText);
-  assert.equal(withMalformedCandidate.report.summary.approvedMedia, 3);
+  assert.equal(
+    withMalformedCandidate.report.summary.approvedMedia,
+    baseline.report.summary.approvedMedia,
+  );
 });
 
 test("metadata parser resolves Open Graph and favicon URLs without executing HTML", () => {
