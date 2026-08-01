@@ -1,0 +1,58 @@
+name: One-use reviewed media visual evidence
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  review-assets:
+    if: github.head_ref == 'codex/reviewed-media-discovery-pilot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+
+      - name: Download exact discovered raster files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p review-assets
+          curl --fail --location --max-redirs 3 --connect-timeout 10 --max-time 30 \
+            --output review-assets/undraw-preview.png \
+            'https://cdn.undraw.co/static/ud24ogimage.png'
+          curl --fail --location --max-redirs 3 --connect-timeout 10 --max-time 30 \
+            --output review-assets/undraw-favicon.png \
+            'https://undraw.co/apple-touch-icon.png'
+          curl --fail --location --max-redirs 3 --connect-timeout 10 --max-time 30 \
+            --output review-assets/storyset-favicon.png \
+            'https://storyset.com/apple-touch-icon.png'
+          curl --fail --location --max-redirs 3 --connect-timeout 10 --max-time 30 \
+            --output review-assets/drawkit-preview.png \
+            'https://cdn.prod.website-files.com/626f5d0ae6c15c780f2dd5c4/6336572b684b9428785ccd40_DrawKit%20Website%20preview.png'
+          curl --fail --location --max-redirs 3 --connect-timeout 10 --max-time 30 \
+            --output review-assets/drawkit-favicon.png \
+            'https://cdn.prod.website-files.com/682d1c6b3c16bb956eafd69b/682d1c6b3c16bb956eafd82f_DrawKit-Webclip.png'
+
+      - name: Verify raster files
+        shell: bash
+        run: |
+          set -euo pipefail
+          file review-assets/*
+          test -s review-assets/undraw-preview.png
+          test -s review-assets/undraw-favicon.png
+          test -s review-assets/storyset-favicon.png
+          test -s review-assets/drawkit-preview.png
+          test -s review-assets/drawkit-favicon.png
+
+      - name: Upload short-lived visual review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-5.3c-media-review-assets
+          path: review-assets/*.png
+          if-no-files-found: error
+          retention-days: 2
