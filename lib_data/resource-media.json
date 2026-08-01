@@ -106,6 +106,124 @@
         "checkedAt": "2026-08-01",
         "contentType": "image/png"
       }
+    },
+    {
+      "resourceId": "resource-def4db859619",
+      "status": "approved",
+      "favicon": {
+        "url": "https://thefwa.com/favicons/apple-touch-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a7ae7a615066",
+      "status": "approved",
+      "favicon": {
+        "url": "https://bestwebsite.gallery/assets/images/bitmap/favicon/apple-touch-icon-152x152.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9a7fe5ea46f5",
+      "status": "approved",
+      "preview": {
+        "url": "https://minimal.gallery/wp-content/themes/minimalgallery/assets/img/meta/og.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://minimal.gallery",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      },
+      "favicon": {
+        "url": "https://minimal.gallery/wp-content/themes/minimalgallery/assets/favicon/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-f2e570494baf",
+      "status": "approved",
+      "favicon": {
+        "url": "https://siiimple.com/wp-content/uploads/2018/02/cropped-favicon-1-1-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-16efe83c69aa",
+      "status": "approved",
+      "preview": {
+        "url": "https://d3alngem7je9z2.cloudfront.net/sitesee_banner.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://sitesee.co",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://sitesee.co/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-859433d5d4ec",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.landing.love/img/social.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.landing.love",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      },
+      "favicon": {
+        "url": "https://www.landing.love/img/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a15a27462f41",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5ea7fc450fe2ee12b924f695/63f1a4bc731066c857d55d0b_97ffe48072aebe00cb0efe5b320f4130_OpenGraph-min.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.darkmodedesign.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5ea7fc450fe2ee12b924f695/6a6c2105544b94d5960c409f_Icon_Webclip.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-dc6f10c11773",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.dark.design/og.avif",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.dark.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      },
+      "favicon": {
+        "url": "https://www.dark.design/favicon.avif",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-a76216149326",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/65676438ff1c480b81cf0085/65d0d08ee366dcfc3c73aa94_ogimage%20(2).webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.navbar.gallery",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp"
+      }
     }
   ]
 }

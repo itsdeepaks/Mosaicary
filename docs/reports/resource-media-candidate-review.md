@@ -4,7 +4,7 @@
 
 ## Summary
 
-- Approved production records: **8**
+- Approved production records: **17**
 - Review targets: **8**
 - Discovered candidates: **5**
 - Approved for manual copy: **5**

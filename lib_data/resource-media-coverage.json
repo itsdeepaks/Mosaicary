@@ -3,7 +3,11 @@
   "resources": [
     {
       "resourceId": "resource-72db4d1ca982",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Open Graph media failed and available favicon metadata resolved only to SVG or ICO."
+      ]
     },
     {
       "resourceId": "resource-3ea619b0ed5d",
@@ -12,7 +16,11 @@
     },
     {
       "resourceId": "resource-602441c6550b",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-4798232a04e5",
@@ -26,75 +34,120 @@
     },
     {
       "resourceId": "resource-a5297d09a82a",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 429; the rate limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-169e5a48b03e",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Discovery reached a non-HTTPS source boundary and stopped without following it."
+      ]
     },
     {
       "resourceId": "resource-db60acdf7cd7",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-74ccbd68a672",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Available favicon metadata resolved only to SVG or a missing raster response."
+      ]
     },
     {
       "resourceId": "resource-def4db859619",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b3453071dc4e",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The discovered favicon was visually low-information and unsuitable for the card tile."
+      ]
     },
     {
       "resourceId": "resource-c5b1425b1432",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The discovered favicon was a low-information colour tile rather than a useful brand mark."
+      ]
     },
     {
       "resourceId": "resource-a7ae7a615066",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9a7fe5ea46f5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-f2e570494baf",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-16efe83c69aa",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-154e355b6bfc",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The discovered favicon was a low-information colour circle rather than a useful brand mark."
+      ]
     },
     {
       "resourceId": "resource-859433d5d4ec",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-8934e2f80a0c",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-a15a27462f41",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-dc6f10c11773",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-1887ed62876b",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The source HTML exceeded the one-megabyte discovery limit and was not downloaded further."
+      ]
     },
     {
       "resourceId": "resource-a76216149326",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-16a9509c3d04",
