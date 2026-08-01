@@ -56,6 +56,7 @@ Stop and fix before merge when any of these occur:
 |---|---|---|---|
 | 0.1 | Research, design contract, assets, brand preview | DONE | — |
 | 0.2 | Repository operating contract | DONE | 0.1 |
+| 0.3 | Supabase and media delivery realignment | DONE | 13.5 |
 | 1.1 | Next.js application scaffold and CI baseline | DONE | 0.2 |
 | 1.2 | Fonts, tokens, grain, responsive layout lab | DONE | 1.1 |
 | 2.1 | Global header and navigation shell | DONE | 1.2 |
@@ -70,6 +71,9 @@ Stop and fix before merge when any of these occur:
 | 5.3b | Media discovery and review tooling | DONE | 5.3a |
 | 5.3c | Reviewed media discovery pilot | DONE | 5.3b |
 | 5.3d | Reviewed asset-generator media pilot | DONE | 5.3c |
+| 5.4a | Full-catalogue media disposition manifest and batch architecture | PLANNED | 5.3d, 0.3 |
+| 5.4b | Reviewed metadata-discovery batches | PLANNED | 5.4a |
+| 5.4c | Screenshot fallback policy and feasibility | DEFERRED | 5.4b, explicit approval |
 | 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
 | 6.2 | Collections page and collection detail | DONE | 6.1 |
 | 7.1 | Full Reference desktop table/list | DONE | 4.1 |
@@ -88,7 +92,7 @@ Stop and fix before merge when any of these occur:
 | 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
 | 9.3 | Production replacement and rollback verification | DONE | 9.2 |
 | 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
-| 10.1b | Supabase cloud project link and client smoke test | DEFERRED | 10.1a, project approval |
+| 10.1b | Existing Supabase project link verification and client smoke test | NEXT | 10.1a, 0.3, authorized project access |
 | 10.1c | Credential-ready Supabase activation contract | DONE | 10.1a |
 | 10.2a | Credential-ready auth shell and unavailable state | DONE | 10.1c |
 | 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
@@ -388,6 +392,44 @@ Make a small set of reviewed, external raster previews available to existing res
 
 A separate candidate/review source, deterministic offline report, and explicit opt-in discovery command preserve the approved-media boundary. Discovery validates redirects, public network destinations, response size, raster content types, and reviewer state without running during normal build, test, or CI.
 
+### Slice 5.4a — full-catalogue media disposition and batch architecture
+
+The 5.3 tooling was a deliberately small pilot. Slice 5.4a scales the review
+contract without fetching or approving the remaining catalogue in the same PR.
+
+Required outcomes:
+
+- a deterministic, resumable coverage manifest represents all 295 stable
+  resource IDs without raising the candidate queue's 50-record review bound;
+- each resource begins as `pending` and can reach a terminal research outcome:
+  `approved-media`, `no-suitable-raster`, `blocked`, `failed`, or `rejected`;
+- approved media can contain a preview, favicon, or both;
+- generated-letter rendering remains the UI fallback for every resource without
+  approved media, but rendering a letter is not itself proof of completed
+  research;
+- batch selection is deterministic and limited to at most 20 resources per
+  explicit network run;
+- discovery remains absent from normal build, test, and CI;
+- the existing redirect, DNS, private-network, protocol, response-size, raster,
+  provenance, and manual-publication boundaries remain enforced.
+
+### Slice 5.4b — reviewed metadata-discovery batches
+
+Run one short-lived branch and PR per bounded batch from refreshed `main`.
+Temporary discovery output stays untracked. Human review is required before a
+candidate is copied into approved production media. Full metadata coverage is
+complete only when the manifest contains all 295 resource IDs and no resource
+remains `pending`; a blocked, failed, rejected, or no-suitable-raster result is
+truthful completion and continues to use the generated-letter UI fallback.
+
+### Slice 5.4c — screenshot fallback policy and feasibility
+
+Screenshots are not an automatic continuation of metadata discovery. This slice
+remains deferred until the completed metadata batches quantify the unresolved
+set and the user explicitly approves a reviewed policy for capture authority,
+licensing, authentication and anti-bot boundaries, cookie/consent screens,
+storage, retention, freshness, takedown, failure handling, and SSRF controls.
+
 ## 16. Slices 6–9 — Phase 1 completion
 
 ### Collections
@@ -433,7 +475,19 @@ A separate candidate/review source, deterministic offline report, and explicit o
 
 ## 17. Slices 10–12 — Accounts and community
 
-Credential-ready contracts and UI may proceed after Phase 1 without cloud credentials. Live authentication, database/RLS verification, cloud data, email delivery, and community workflows remain blocked until their external setup is available.
+An existing dedicated Tessli Supabase project has been supplied through local,
+ignored environment configuration. Slice 10.1b must select and verify that
+existing project; it must not create another project or repeat the obsolete
+project-cost approval flow. Public configuration proves client reachability but
+does not authorize dashboard, migration, advisor, OAuth, SMTP, or Vercel changes.
+Those checks require authenticated management access to the correct Tessli
+project, never the unrelated account visible through previously connected
+tooling.
+
+Credential-ready contracts and UI may proceed after Phase 1 without cloud
+credentials. Live authentication, database/RLS verification, cloud data, email
+delivery, and community workflows remain gated by their explicit predecessor
+slices and external configuration.
 
 Requirements include:
 
@@ -450,6 +504,10 @@ Requirements include:
 - transactional confirmations.
 
 No service-role key may enter browser code or GitHub.
+
+The account and media tracks are independent after Slice 0.3. They may be
+prioritized separately, but repository work still proceeds serially through the
+slice loop: one branch and PR at a time, each starting from refreshed `main`.
 
 ## 18. Required evidence in every PR
 
