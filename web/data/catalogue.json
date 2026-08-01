@@ -152,7 +152,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://thefwa.com/favicons/apple-touch-icon-180x180.png"
     },
     {
       "id": "resource-b3453071dc4e",
@@ -194,7 +195,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://bestwebsite.gallery/assets/images/bitmap/favicon/apple-touch-icon-152x152.png"
     },
     {
       "id": "resource-9a7fe5ea46f5",
@@ -208,7 +210,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://minimal.gallery/wp-content/themes/minimalgallery/assets/img/meta/og.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://minimal.gallery/wp-content/themes/minimalgallery/assets/favicon/apple-touch-icon.png"
     },
     {
       "id": "resource-f2e570494baf",
@@ -222,7 +227,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://siiimple.com/wp-content/uploads/2018/02/cropped-favicon-1-1-180x180.png"
     },
     {
       "id": "resource-16efe83c69aa",
@@ -236,7 +242,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://d3alngem7je9z2.cloudfront.net/sitesee_banner.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://sitesee.co/apple-touch-icon.png"
     },
     {
       "id": "resource-154e355b6bfc",
@@ -264,7 +273,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.landing.love/img/social.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.landing.love/img/favicon.png"
     },
     {
       "id": "resource-8934e2f80a0c",
@@ -292,7 +304,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5ea7fc450fe2ee12b924f695/63f1a4bc731066c857d55d0b_97ffe48072aebe00cb0efe5b320f4130_OpenGraph-min.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5ea7fc450fe2ee12b924f695/6a6c2105544b94d5960c409f_Icon_Webclip.png"
     },
     {
       "id": "resource-dc6f10c11773",
@@ -306,7 +321,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.dark.design/og.avif",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.dark.design/favicon.avif"
     },
     {
       "id": "resource-1887ed62876b",
@@ -334,7 +352,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/65676438ff1c480b81cf0085/65d0d08ee366dcfc3c73aa94_ogimage%20(2).webp",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-16a9509c3d04",

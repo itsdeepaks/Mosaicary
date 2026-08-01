@@ -40,6 +40,15 @@ test("approved media is merged deterministically into only its linked resources"
       "toools-design",
       "one-page-love",
       "awwwards",
+      "the-fwa",
+      "best-website-gallery",
+      "minimal-gallery",
+      "siiimple",
+      "sitesee",
+      "landing-love",
+      "dark-mode-design",
+      "dark-design",
+      "navbar-gallery",
       "undraw",
       "storyset",
       "drawkit",
@@ -55,8 +64,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 8);
-  assert.equal(result.report.summary.approvedMedia, 8);
+  assert.equal(result.report.mediaSource.approvedCount, 17);
+  assert.equal(result.report.summary.approvedMedia, 17);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
