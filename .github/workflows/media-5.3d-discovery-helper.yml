@@ -103,14 +103,8 @@ jobs:
 
           media = Path("web/tests/resource-media.test.mjs")
           text = media.read_text(encoding="utf-8")
-          old_slugs = '''      "storyset",
-              "drawkit",
-            ],'''
-          new_slugs = '''      "storyset",
-              "drawkit",
-              "fffuel",
-              "haikei",
-            ],'''
+          old_slugs = '      "drawkit",\n    ],'
+          new_slugs = '      "drawkit",\n      "fffuel",\n      "haikei",\n    ],'
           if text.count(old_slugs) != 1:
               raise SystemExit("Expected six-resource slug tail was not found exactly once")
           text = text.replace(old_slugs, new_slugs, 1)
