@@ -6,18 +6,21 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   discover:
-    if: github.head_ref == 'codex/reviewed-asset-generator-media-pilot'
+    if: github.head_ref == 'codex/reviewed-asset-generator-media-pilot' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - name: Check out pull request
+      - name: Check out feature branch
         uses: actions/checkout@v4
+        with:
+          ref: codex/reviewed-asset-generator-media-pilot
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -56,6 +59,91 @@ jobs:
           sha256sum artifacts/5.3d-review-assets/*.png \
             | tee artifacts/5.3d-review-assets/sha256.txt
 
+      - name: Update focused eight-record assertions
+        shell: python
+        run: |
+          from pathlib import Path
+
+          candidates = Path("web/tests/resource-media-candidates.test.mjs")
+          text = candidates.read_text(encoding="utf-8")
+          replacements = [
+              (
+                  '["resource-73d75733406d", "resource-92baaed92865", "resource-08a9f0e0bd50"],',
+                  '''[
+              "resource-73d75733406d",
+              "resource-92baaed92865",
+              "resource-08a9f0e0bd50",
+              "resource-7fa85ad18d65",
+              "resource-6887c11205e8",
+            ],''',
+              ),
+              ("  assert.equal(pending.length, 5);", "  assert.equal(pending.length, 3);"),
+              (
+                  "  assert.equal(repositoryReview.report.summary.approvedProduction, 6);",
+                  "  assert.equal(repositoryReview.report.summary.approvedProduction, 8);",
+              ),
+              (
+                  "  assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);",
+                  "  assert.equal(repositoryReview.report.summary.discoveredCandidates, 5);",
+              ),
+              (
+                  "  assert.equal(repositoryReview.report.summary.readyForCopy, 3);",
+                  "  assert.equal(repositoryReview.report.summary.readyForCopy, 5);",
+              ),
+              (
+                  "  assert.equal(repositoryReview.report.summary.pending, 5);",
+                  "  assert.equal(repositoryReview.report.summary.pending, 3);",
+              ),
+          ]
+          for old, new in replacements:
+              if text.count(old) != 1:
+                  raise SystemExit(f"Expected candidate assertion was not found exactly once: {old}")
+              text = text.replace(old, new, 1)
+          candidates.write_text(text, encoding="utf-8")
+
+          media = Path("web/tests/resource-media.test.mjs")
+          text = media.read_text(encoding="utf-8")
+          old_slugs = '''      "storyset",
+              "drawkit",
+            ],'''
+          new_slugs = '''      "storyset",
+              "drawkit",
+              "fffuel",
+              "haikei",
+            ],'''
+          if text.count(old_slugs) != 1:
+              raise SystemExit("Expected six-resource slug tail was not found exactly once")
+          text = text.replace(old_slugs, new_slugs, 1)
+          for old, new in [
+              (
+                  "  assert.equal(result.report.mediaSource.approvedCount, 6);",
+                  "  assert.equal(result.report.mediaSource.approvedCount, 8);",
+              ),
+              (
+                  "  assert.equal(result.report.summary.approvedMedia, 6);",
+                  "  assert.equal(result.report.summary.approvedMedia, 8);",
+              ),
+          ]:
+              if text.count(old) != 1:
+                  raise SystemExit(f"Expected media count assertion was not found exactly once: {old}")
+              text = text.replace(old, new, 1)
+          media.write_text(text, encoding="utf-8")
+
+      - name: Regenerate and format deterministic outputs
+        working-directory: web
+        run: |
+          npm run media:review:generate
+          npm run catalogue:generate
+          npm run format
+
+      - name: Run focused checks
+        working-directory: web
+        run: |
+          npm run media:review:check
+          node --test tests/resource-media-candidates.test.mjs tests/resource-media.test.mjs tests/catalogue-migration.test.mjs
+          npm run catalogue:check
+          npm run format:check
+
       - name: Upload review-only discovery evidence
         uses: actions/upload-artifact@v4
         with:
@@ -71,3 +159,22 @@ jobs:
           path: artifacts/5.3d-review-assets/*
           if-no-files-found: error
           retention-days: 2
+
+      - name: Commit deterministic reviewed-media outputs
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            docs/reports/resource-media-candidate-review.json \
+            docs/reports/resource-media-candidate-review.md \
+            web/data/catalogue-validation.json \
+            web/data/catalogue.json \
+            web/tests/resource-media-candidates.test.mjs \
+            web/tests/resource-media.test.mjs
+          if git diff --cached --quiet; then
+            echo "No deterministic output changes required."
+          else
+            git commit -m "data: regenerate reviewed asset-generator media outputs"
+            git push origin HEAD:codex/reviewed-asset-generator-media-pilot
+          fi
