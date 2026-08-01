@@ -1,0 +1,167 @@
+name: One-use reviewed media pilot test contract
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-contract:
+    if: github.head_ref == 'codex/reviewed-media-discovery-pilot' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: codex/reviewed-media-discovery-pilot
+          fetch-depth: 0
+
+      - name: Update exact pilot assertions
+        shell: python
+        run: |
+          from pathlib import Path
+
+          candidates = Path("web/tests/resource-media-candidates.test.mjs")
+          text = candidates.read_text(encoding="utf-8")
+          old = '''  assert.equal(source.resources.length, 8);
+          assert.equal(
+            source.resources.every(
+              (record) =>
+                record.discoveryStatus === "pending" &&
+                record.reviewerStatus === "unreviewed" &&
+                !record.preview &&
+                !record.favicon,
+            ),
+            true,
+          );'''
+          new = '''  assert.equal(source.resources.length, 8);
+          const approvedForCopy = source.resources.filter(
+            (record) => record.reviewerStatus === "approved-for-copy",
+          );
+          const pending = source.resources.filter(
+            (record) => record.discoveryStatus === "pending",
+          );
+          assert.deepEqual(
+            approvedForCopy.map((record) => record.resourceId),
+            [
+              "resource-73d75733406d",
+              "resource-92baaed92865",
+              "resource-08a9f0e0bd50",
+            ],
+          );
+          assert.equal(
+            approvedForCopy.every(
+              (record) =>
+                record.discoveryStatus === "candidate" &&
+                Boolean(record.preview || record.favicon),
+            ),
+            true,
+          );
+          assert.equal(pending.length, 5);
+          assert.equal(
+            pending.every(
+              (record) =>
+                record.reviewerStatus === "unreviewed" &&
+                !record.preview &&
+                !record.favicon,
+            ),
+            true,
+          );'''
+          if old not in text:
+            raise SystemExit("Original pending-only candidate assertion was not found")
+          text = text.replace(old, new, 1)
+          old_summary = '''  assert.equal(repositoryReview.report.summary.approvedProduction, 3);
+          assert.equal(repositoryReview.report.summary.reviewTargets, 8);
+          assert.equal(repositoryReview.report.summary.discoveredCandidates, 0);
+          assert.equal(repositoryReview.report.summary.pending, 8);'''
+          new_summary = '''  assert.equal(repositoryReview.report.summary.approvedProduction, 6);
+          assert.equal(repositoryReview.report.summary.reviewTargets, 8);
+          assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);
+          assert.equal(repositoryReview.report.summary.readyForCopy, 3);
+          assert.equal(repositoryReview.report.summary.pending, 5);'''
+          if old_summary not in text:
+            raise SystemExit("Original candidate summary assertions were not found")
+          text = text.replace(old_summary, new_summary, 1)
+          old_isolation = '''  assert.equal(withMalformedCandidate.report.summary.approvedMedia, 3);'''
+          new_isolation = '''  assert.equal(
+            withMalformedCandidate.report.summary.approvedMedia,
+            baseline.report.summary.approvedMedia,
+          );'''
+          if old_isolation not in text:
+            raise SystemExit("Original candidate isolation count was not found")
+          candidates.write_text(
+            text.replace(old_isolation, new_isolation, 1),
+            encoding="utf-8",
+          )
+
+          media = Path("web/tests/resource-media.test.mjs")
+          text = media.read_text(encoding="utf-8")
+          old_slugs = '''    ["toools-design", "one-page-love", "awwwards"],'''
+          new_slugs = '''    [
+              "toools-design",
+              "one-page-love",
+              "awwwards",
+              "undraw",
+              "storyset",
+              "drawkit",
+            ],'''
+          if old_slugs not in text:
+            raise SystemExit("Original three-resource slug assertion was not found")
+          text = text.replace(old_slugs, new_slugs, 1)
+          old_counts = '''  assert.equal(result.report.mediaSource.approvedCount, 3);
+          assert.equal(result.report.summary.approvedMedia, 3);'''
+          new_counts = '''  assert.equal(result.report.mediaSource.approvedCount, 6);
+          assert.equal(result.report.summary.approvedMedia, 6);'''
+          if old_counts not in text:
+            raise SystemExit("Original three-resource count assertions were not found")
+          media.write_text(text.replace(old_counts, new_counts, 1), encoding="utf-8")
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Regenerate and format
+        working-directory: web
+        run: |
+          npm run media:review:generate
+          npm run catalogue:generate
+          npm run format
+
+      - name: Run focused checks
+        working-directory: web
+        run: |
+          npm run media:review:check
+          node --test tests/resource-media-candidates.test.mjs tests/resource-media.test.mjs tests/catalogue-migration.test.mjs
+          npm run catalogue:check
+          npm run format:check
+
+      - name: Commit reviewed pilot contract
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            lib_data/resource-media.json \
+            lib_data/resource-media-candidates.json \
+            docs/reports/resource-media-candidate-review.json \
+            docs/reports/resource-media-candidate-review.md \
+            docs/slices/5.3c-reviewed-media-discovery-pilot.md \
+            web/data/catalogue.json \
+            web/data/catalogue-validation.json \
+            web/tests/resource-media-candidates.test.mjs \
+            web/tests/resource-media.test.mjs
+          git commit -m "test: update reviewed media pilot contract"
+          git push origin HEAD:codex/reviewed-media-discovery-pilot
