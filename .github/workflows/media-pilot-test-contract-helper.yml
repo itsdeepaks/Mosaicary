@@ -29,98 +29,107 @@ jobs:
 
           candidates = Path("web/tests/resource-media-candidates.test.mjs")
           text = candidates.read_text(encoding="utf-8")
-          old = '''  assert.equal(source.resources.length, 8);
-          assert.equal(
-            source.resources.every(
-              (record) =>
-                record.discoveryStatus === "pending" &&
-                record.reviewerStatus === "unreviewed" &&
-                !record.preview &&
-                !record.favicon,
-            ),
-            true,
-          );'''
-          new = '''  assert.equal(source.resources.length, 8);
-          const approvedForCopy = source.resources.filter(
-            (record) => record.reviewerStatus === "approved-for-copy",
-          );
-          const pending = source.resources.filter(
-            (record) => record.discoveryStatus === "pending",
-          );
-          assert.deepEqual(
-            approvedForCopy.map((record) => record.resourceId),
-            [
-              "resource-73d75733406d",
-              "resource-92baaed92865",
-              "resource-08a9f0e0bd50",
-            ],
-          );
-          assert.equal(
-            approvedForCopy.every(
-              (record) =>
-                record.discoveryStatus === "candidate" &&
-                Boolean(record.preview || record.favicon),
-            ),
-            true,
-          );
-          assert.equal(pending.length, 5);
-          assert.equal(
-            pending.every(
-              (record) =>
-                record.reviewerStatus === "unreviewed" &&
-                !record.preview &&
-                !record.favicon,
-            ),
-            true,
-          );'''
-          if old not in text:
-            raise SystemExit("Original pending-only candidate assertion was not found")
-          text = text.replace(old, new, 1)
-          old_summary = '''  assert.equal(repositoryReview.report.summary.approvedProduction, 3);
-          assert.equal(repositoryReview.report.summary.reviewTargets, 8);
-          assert.equal(repositoryReview.report.summary.discoveredCandidates, 0);
-          assert.equal(repositoryReview.report.summary.pending, 8);'''
-          new_summary = '''  assert.equal(repositoryReview.report.summary.approvedProduction, 6);
-          assert.equal(repositoryReview.report.summary.reviewTargets, 8);
-          assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);
-          assert.equal(repositoryReview.report.summary.readyForCopy, 3);
-          assert.equal(repositoryReview.report.summary.pending, 5);'''
-          if old_summary not in text:
-            raise SystemExit("Original candidate summary assertions were not found")
-          text = text.replace(old_summary, new_summary, 1)
-          old_isolation = '''  assert.equal(withMalformedCandidate.report.summary.approvedMedia, 3);'''
-          new_isolation = '''  assert.equal(
-            withMalformedCandidate.report.summary.approvedMedia,
-            baseline.report.summary.approvedMedia,
-          );'''
-          if old_isolation not in text:
-            raise SystemExit("Original candidate isolation count was not found")
-          candidates.write_text(
-            text.replace(old_isolation, new_isolation, 1),
-            encoding="utf-8",
-          )
+          start_marker = "  assert.equal(source.resources.length, 8);"
+          end_marker = "\n\n  const reportAgain"
+          start = text.find(start_marker)
+          end = text.find(end_marker, start)
+          if start < 0 or end < 0:
+              raise SystemExit("Candidate source assertion markers were not found")
+          block = "\n".join([
+              "  assert.equal(source.resources.length, 8);",
+              "  const approvedForCopy = source.resources.filter(",
+              "    (record) => record.reviewerStatus === \"approved-for-copy\",",
+              "  );",
+              "  const pending = source.resources.filter(",
+              "    (record) => record.discoveryStatus === \"pending\",",
+              "  );",
+              "  assert.deepEqual(",
+              "    approvedForCopy.map((record) => record.resourceId),",
+              "    [",
+              "      \"resource-73d75733406d\",",
+              "      \"resource-92baaed92865\",",
+              "      \"resource-08a9f0e0bd50\",",
+              "    ],",
+              "  );",
+              "  assert.equal(",
+              "    approvedForCopy.every(",
+              "      (record) =>",
+              "        record.discoveryStatus === \"candidate\" &&",
+              "        Boolean(record.preview || record.favicon),",
+              "    ),",
+              "    true,",
+              "  );",
+              "  assert.equal(pending.length, 5);",
+              "  assert.equal(",
+              "    pending.every(",
+              "      (record) =>",
+              "        record.reviewerStatus === \"unreviewed\" &&",
+              "        !record.preview &&",
+              "        !record.favicon,",
+              "    ),",
+              "    true,",
+              "  );",
+          ])
+          text = text[:start] + block + text[end:]
+          replacements = [
+              (
+                  "  assert.equal(repositoryReview.report.summary.approvedProduction, 3);",
+                  "  assert.equal(repositoryReview.report.summary.approvedProduction, 6);",
+              ),
+              (
+                  "  assert.equal(repositoryReview.report.summary.discoveredCandidates, 0);",
+                  "  assert.equal(repositoryReview.report.summary.discoveredCandidates, 3);\n  assert.equal(repositoryReview.report.summary.readyForCopy, 3);",
+              ),
+              (
+                  "  assert.equal(repositoryReview.report.summary.pending, 8);",
+                  "  assert.equal(repositoryReview.report.summary.pending, 5);",
+              ),
+              (
+                  "  assert.equal(withMalformedCandidate.report.summary.approvedMedia, 3);",
+                  "\n".join([
+                      "  assert.equal(",
+                      "    withMalformedCandidate.report.summary.approvedMedia,",
+                      "    baseline.report.summary.approvedMedia,",
+                      "  );",
+                  ]),
+              ),
+          ]
+          for old, new in replacements:
+              if text.count(old) != 1:
+                  raise SystemExit(f"Expected candidate assertion was not found exactly once: {old}")
+              text = text.replace(old, new, 1)
+          candidates.write_text(text, encoding="utf-8")
 
           media = Path("web/tests/resource-media.test.mjs")
           text = media.read_text(encoding="utf-8")
-          old_slugs = '''    ["toools-design", "one-page-love", "awwwards"],'''
-          new_slugs = '''    [
-              "toools-design",
-              "one-page-love",
-              "awwwards",
-              "undraw",
-              "storyset",
-              "drawkit",
-            ],'''
-          if old_slugs not in text:
-            raise SystemExit("Original three-resource slug assertion was not found")
+          old_slugs = '    ["toools-design", "one-page-love", "awwwards"],'
+          new_slugs = "\n".join([
+              "    [",
+              '      "toools-design",',
+              '      "one-page-love",',
+              '      "awwwards",',
+              '      "undraw",',
+              '      "storyset",',
+              '      "drawkit",',
+              "    ],",
+          ])
+          if text.count(old_slugs) != 1:
+              raise SystemExit("Original three-resource slug assertion was not found exactly once")
           text = text.replace(old_slugs, new_slugs, 1)
-          old_counts = '''  assert.equal(result.report.mediaSource.approvedCount, 3);
-          assert.equal(result.report.summary.approvedMedia, 3);'''
-          new_counts = '''  assert.equal(result.report.mediaSource.approvedCount, 6);
-          assert.equal(result.report.summary.approvedMedia, 6);'''
-          if old_counts not in text:
-            raise SystemExit("Original three-resource count assertions were not found")
-          media.write_text(text.replace(old_counts, new_counts, 1), encoding="utf-8")
+          for old, new in [
+              (
+                  "  assert.equal(result.report.mediaSource.approvedCount, 3);",
+                  "  assert.equal(result.report.mediaSource.approvedCount, 6);",
+              ),
+              (
+                  "  assert.equal(result.report.summary.approvedMedia, 3);",
+                  "  assert.equal(result.report.summary.approvedMedia, 6);",
+              ),
+          ]:
+              if text.count(old) != 1:
+                  raise SystemExit(f"Expected media count assertion was not found exactly once: {old}")
+              text = text.replace(old, new, 1)
+          media.write_text(text, encoding="utf-8")
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
