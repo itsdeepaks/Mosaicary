@@ -39,10 +39,35 @@ jobs:
             --resource-id resource-7fa85ad18d65 \
             --resource-id resource-6887c11205e8
 
+      - name: Download exact discovered raster responses for manual review
+        shell: bash
+        run: |
+          mkdir -p artifacts/5.3d-review-assets
+          curl --fail --location --silent --show-error \
+            --retry 2 --max-time 30 --proto '=https' \
+            --output artifacts/5.3d-review-assets/fffuel-cover.png \
+            'https://www.fffuel.co/images/cover.png'
+          curl --fail --location --silent --show-error \
+            --retry 2 --max-time 30 --proto '=https' \
+            --output artifacts/5.3d-review-assets/haikei-cover.png \
+            'https://haikei.app/haikei-cover.png'
+          file artifacts/5.3d-review-assets/*.png \
+            | tee artifacts/5.3d-review-assets/file-metadata.txt
+          sha256sum artifacts/5.3d-review-assets/*.png \
+            | tee artifacts/5.3d-review-assets/sha256.txt
+
       - name: Upload review-only discovery evidence
         uses: actions/upload-artifact@v4
         with:
           name: tessli-5.3d-media-discovery
           path: artifacts/5.3d-media-discovery.json
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Upload exact raster review evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-5.3d-media-review-assets
+          path: artifacts/5.3d-review-assets/*
           if-no-files-found: error
           retention-days: 2
