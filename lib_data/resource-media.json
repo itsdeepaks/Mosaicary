@@ -84,6 +84,28 @@
         "checkedAt": "2026-08-01",
         "contentType": "image/png"
       }
+    },
+    {
+      "resourceId": "resource-7fa85ad18d65",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.fffuel.co/images/cover.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.fffuel.co/",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-6887c11205e8",
+      "status": "approved",
+      "preview": {
+        "url": "https://haikei.app/haikei-cover.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://haikei.app",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
     }
   ]
 }
