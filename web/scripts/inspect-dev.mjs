@@ -20,9 +20,7 @@ async function inspectDevServer() {
     ];
     console.log(`\nResource card states (first 10):`);
     for (const match of cardMatches.slice(0, 10)) {
-      console.log(
-        ` - Resource: "${match[1]}", media-state: "${match[2]}"`,
-      );
+      console.log(` - Resource: "${match[1]}", media-state: "${match[2]}"`);
     }
   } catch (err) {
     console.error("Failed to connect to dev server:", err.message);
