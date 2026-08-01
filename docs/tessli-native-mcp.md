@@ -39,12 +39,7 @@ Use an absolute path to the Tessli checkout. A generic stdio configuration is:
   "mcpServers": {
     "tessli": {
       "command": "npm",
-      "args": [
-        "--prefix",
-        "/absolute/path/to/tessli/web",
-        "run",
-        "mcp"
-      ]
+      "args": ["--prefix", "/absolute/path/to/tessli/web", "run", "mcp"]
     }
   }
 }

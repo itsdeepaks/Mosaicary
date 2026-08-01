@@ -132,10 +132,11 @@ function resolveUniqueResources(
   return resources;
 }
 
-function getProfile(resource: CatalogueResource): ResourceIntelligenceProfile | null {
+function getProfile(
+  resource: CatalogueResource,
+): ResourceIntelligenceProfile | null {
   return (
-    getIntelligenceProfile(resource.id) ??
-    getIntelligenceProfile(resource.slug)
+    getIntelligenceProfile(resource.id) ?? getIntelligenceProfile(resource.slug)
   );
 }
 
