@@ -35,7 +35,7 @@ jobs:
         run: |
           mkdir -p artifacts/media-batch-06
           cd web
-          npm run media:batch:select -- --limit 20 > ../artifacts/media-batch-06/selection.json
+          node scripts/select-resource-media-batch.mjs --limit 20 > ../artifacts/media-batch-06/selection.json
           test "$(node -e 'const x=require("../artifacts/media-batch-06/selection.json"); process.stdout.write(String(x.resourceIds.length))')" = "20"
 
       - name: Discover official metadata
@@ -47,15 +47,27 @@ jobs:
             ARGS+=(--resource-id "$id")
           done
           cd web
-          npm run media:discover -- \
+          node scripts/discover-resource-media.mjs \
             --checked-at 2026-08-02 \
             --output ../artifacts/media-batch-06/candidates.json \
             "${ARGS[@]}"
 
       - name: Validate candidate evidence
         working-directory: web
+        shell: bash
         run: |
-          npm run media:review:check -- --source ../artifacts/media-batch-06/candidates.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { validateCandidateSource } from './scripts/resource-media-review-lib.mjs';
+          const candidates = JSON.parse(fs.readFileSync('../artifacts/media-batch-06/candidates.json', 'utf8'));
+          const catalogue = JSON.parse(fs.readFileSync('./data/catalogue.json', 'utf8'));
+          const result = validateCandidateSource(candidates, catalogue.resources);
+          if (result.errors.length) {
+            for (const error of result.errors) console.error(`[${error.code}] ${error.message}`);
+            process.exit(1);
+          }
+          console.log(`Validated ${candidates.resources.length} candidate records with ${result.warnings.length} warning(s).`);
+          NODE
 
       - name: Package exact raster responses for review
         run: >-
