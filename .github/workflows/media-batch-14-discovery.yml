@@ -9,7 +9,7 @@ jobs:
   discover:
     if: github.head_ref == 'codex/media-batch-14-reviewed'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with: {ref: "${{ github.head_ref }}"}
@@ -32,18 +32,38 @@ jobs:
           const first = require('./artifacts/remaining-media/selection-first.json');
           const final = require('./artifacts/remaining-media/selection-final.json');
           const resourceIds = [...first.resourceIds, ...final.resourceIds];
-          if (resourceIds.length !== 27) throw new Error(`Expected 27 remaining IDs, received ${resourceIds.length}.`);
+          if (first.resourceIds.length !== 20) throw new Error(`Expected 20 IDs in the first selection, received ${first.resourceIds.length}.`);
+          if (final.resourceIds.length !== 7) throw new Error(`Expected 7 IDs in the final selection, received ${final.resourceIds.length}.`);
           if (new Set(resourceIds).size !== resourceIds.length) throw new Error('Remaining selections contain duplicate IDs.');
           fs.writeFileSync('./artifacts/remaining-media/selection.json', `${JSON.stringify({version: 1, batches: [first, final], resourceIds}, null, 2)}\n`);
           NODE
-      - name: Discover canonical metadata
+      - name: Discover canonical metadata in bounded batches
         shell: bash
         run: |
-          mapfile -t IDS < <(node -e 'const x=require("./artifacts/remaining-media/selection.json"); for (const id of x.resourceIds) console.log(id)')
-          test "${#IDS[@]}" -eq 27
-          ARGS=(); for id in "${IDS[@]}"; do ARGS+=(--resource-id "$id"); done
-          cd web
-          node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output ../artifacts/remaining-media/candidates.json "${ARGS[@]}"
+          discover_batch() {
+            local selection="$1"
+            local output="$2"
+            mapfile -t IDS < <(node -e "const x=require('./artifacts/remaining-media/${selection}'); for (const id of x.resourceIds) console.log(id)")
+            test "${#IDS[@]}" -ge 1
+            test "${#IDS[@]}" -le 20
+            ARGS=(); for id in "${IDS[@]}"; do ARGS+=(--resource-id "$id"); done
+            cd web
+            node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output "../artifacts/remaining-media/${output}" "${ARGS[@]}"
+            cd ..
+          }
+          discover_batch selection-first.json candidates-first.json
+          discover_batch selection-final.json candidates-final.json
+          node <<'NODE'
+          const fs = require('node:fs');
+          const selection = require('./artifacts/remaining-media/selection.json');
+          const first = require('./artifacts/remaining-media/candidates-first.json');
+          const final = require('./artifacts/remaining-media/candidates-final.json');
+          const resources = [...first.resources, ...final.resources];
+          if (resources.length !== selection.resourceIds.length) throw new Error('Candidate count does not match the combined selection.');
+          if (new Set(resources.map((resource) => resource.resourceId)).size !== resources.length) throw new Error('Merged candidates contain duplicate IDs.');
+          if (resources.some((resource, index) => resource.resourceId !== selection.resourceIds[index])) throw new Error('Merged candidate order does not match deterministic selection order.');
+          fs.writeFileSync('./artifacts/remaining-media/candidates.json', `${JSON.stringify({version: 1, resources}, null, 2)}\n`);
+          NODE
       - name: Validate candidates
         working-directory: web
         shell: bash
