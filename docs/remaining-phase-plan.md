@@ -12,8 +12,8 @@ blocked slice complete.
 
 - the public catalogue remains repository-managed: 295 resources, 11
   categories, and 6 published collections;
-- reviewed media coverage is at 97 approved records, 127 pending resources,
-  and 71 reviewed terminal outcomes;
+- reviewed media coverage is at 112 approved records, 107 pending resources,
+  and 76 reviewed terminal outcomes;
 - the dedicated Supabase project has the eight user-owned tables, generated
   types, grants, and verified RLS isolation from Slice 11.1;
 - local, preview, and production hold only the public Supabase URL and
@@ -31,7 +31,7 @@ manual browser inspection, coverage reconciliation, and the normal local gate.
 Do not use screenshots as a substitute for permissioned preview media; Slice
 5.4c remains deferred until separately approved.
 
-The immediate next item is **5.4b-09**. It does not depend on authentication,
+The immediate next item is **5.4b-10**. It does not depend on authentication,
 Supabase Auth settings, a custom domain, or SMTP.
 
 ### Track B — domain-independent account preparation

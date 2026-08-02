@@ -1031,83 +1031,118 @@
     },
     {
       "resourceId": "resource-a69034dde468",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-631345718892",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e5c348f9190f",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official Three.js Open Graph collage was rejected as a 2.77 MB remote card payload; no suitable raster favicon fallback was declared."
+      ]
     },
     {
       "resourceId": "resource-c873b7d6cf1d",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical React Three Fiber documentation page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-e0917de2c7a9",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-23cc7dc75f79",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9ab2847bb0d5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-24346d293643",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c1e0d74b5033",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official Hover.css image was only 360×92 and was rejected as an unsuitable low-resolution card preview; no raster favicon fallback was available."
+      ]
     },
     {
       "resourceId": "resource-c69cb09bf119",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical AOS page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-d1f753224743",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-98824fd267d8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e91aab4f89fc",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-dd66f2159eaa",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e3968c0ccc25",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official p5.js Open Graph image was generic event photography rather than a clear product or library preview; no raster favicon fallback was declared."
+      ]
     },
     {
       "resourceId": "resource-60b9eb212f58",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-d5cb3a5709f2",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-75ecf91b7063",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-25a6040823a7",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-35c3f2fef142",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-7ff8dc33fe5e",
