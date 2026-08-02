@@ -289,7 +289,6 @@ for record in records:
 catalogue = read_json(ROOT / 'web/data/catalogue.json')
 catalogue_resources = catalogue['resources']
 order = {resource['id']: index for index, resource in enumerate(catalogue_resources)}
-slugs = {resource['id']: resource['slug'] for resource in catalogue_resources}
 
 media_path = ROOT / 'lib_data/resource-media.json'
 media_source = read_json(media_path)
@@ -366,6 +365,17 @@ media_test = media_test[:match.start()] + match.group(1) + array + match.group(2
 media_test = media_test.replace('approvedCount, 54', 'approvedCount, 70')
 media_test = media_test.replace('summary.approvedMedia, 54', 'summary.approvedMedia, 70')
 media_test_path.write_text(media_test, encoding='utf-8')
+
+candidate_test_path = ROOT / 'web/tests/resource-media-candidates.test.mjs'
+candidate_test = candidate_test_path.read_text(encoding='utf-8')
+if candidate_test.count('summary.approvedProduction, 54') != 1:
+    raise SystemExit('Candidate approved-production count assertion changed unexpectedly.')
+candidate_test = candidate_test.replace(
+    'summary.approvedProduction, 54',
+    'summary.approvedProduction, 70',
+    1,
+)
+candidate_test_path.write_text(candidate_test, encoding='utf-8')
 
 coverage_test_path = ROOT / 'web/tests/resource-media-coverage.test.mjs'
 coverage_test = coverage_test_path.read_text(encoding='utf-8')
