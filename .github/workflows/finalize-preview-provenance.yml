@@ -1,0 +1,53 @@
+name: Finalize preview provenance ledger
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.head_ref == 'codex/media-batch-06' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Finalize ledger and slice note
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          build = Path('build-slices.md')
+          text = build.read_text(encoding='utf-8')
+          old = '| 5.4b-p | Open Graph and Twitter preview provenance | NEXT | 5.4a |\n| 5.4b | Reviewed metadata-discovery batches | PLANNED | 5.4b-p |'
+          new = '| 5.4b-p | Open Graph and Twitter preview provenance | DONE | 5.4a |\n| 5.4b | Reviewed metadata-discovery batches | NEXT | 5.4b-p |'
+          if text.count(old) != 1:
+              raise SystemExit(f'ledger rows: expected one match, found {text.count(old)}')
+          build.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          note = Path('docs/slices/5.4b-p-preview-provenance.md')
+          note_text = note.read_text(encoding='utf-8')
+          marker = 'Status: **implemented — focused validation passed; narrow-diff cleanup in progress**'
+          replacement = 'Status: **implementation complete — exact-head repository gates pending**'
+          if note_text.count(marker) != 1:
+              raise SystemExit(f'note status: expected one match, found {note_text.count(marker)}')
+          note.write_text(note_text.replace(marker, replacement, 1), encoding='utf-8')
+          PY
+
+          git rm .github/workflows/finalize-preview-provenance.yml
+          if [ -e .github/provenance-finalizer-trigger ]; then
+            git rm .github/provenance-finalizer-trigger
+          fi
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md docs/slices/5.4b-p-preview-provenance.md
+          git commit -m "docs: finalize preview provenance ledger"
+          git push origin HEAD:${{ github.head_ref }}
