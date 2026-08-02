@@ -129,6 +129,21 @@ test("approved media is merged deterministically into only its linked resources"
       "design-systems-repo",
       "motion",
       "gsap",
+      "rive",
+      "spline",
+      "theatre-js",
+      "anime-js",
+      "autoanimate",
+      "animista",
+      "lenis",
+      "barba-js",
+      "swup",
+      "pixijs",
+      "unicorn-studio",
+      "motionity",
+      "google-fonts",
+      "fontshare",
+      "adobe-fonts",
       "undraw",
       "storyset",
       "drawkit",
@@ -144,8 +159,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 97);
-  assert.equal(result.report.summary.approvedMedia, 97);
+  assert.equal(result.report.mediaSource.approvedCount, 112);
+  assert.equal(result.report.summary.approvedMedia, 112);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {

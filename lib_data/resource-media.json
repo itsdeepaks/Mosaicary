@@ -1195,6 +1195,224 @@
       }
     },
     {
+      "resourceId": "resource-a69034dde468",
+      "status": "approved",
+      "preview": {
+        "url": "https://framerusercontent.com/images/yEWMbP7UtsS81SlkoxTasfabvc.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://rive.app",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://framerusercontent.com/images/jMyKrhKKXqpc15qYqC3A0pZELw.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-631345718892",
+      "status": "approved",
+      "preview": {
+        "url": "https://spline.design/_next/static/media/spline_image_banner.77c2eb63.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://spline.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://spline.design/images/icon_favicon32x32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e0917de2c7a9",
+      "status": "approved",
+      "favicon": {
+        "url": "https://www.theatrejs.com/logo_square_4x.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-23cc7dc75f79",
+      "status": "approved",
+      "preview": {
+        "url": "https://animejs.com/media/pages/home/d77f271f80-1782139879/generated-og-image.en.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://animejs.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://animejs.com/assets/images/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9ab2847bb0d5",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.formk.it/web-assets/auto-animate-og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://auto-animate.formkit.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://auto-animate.formkit.com/assets/favicon-vrVmGPPs.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-24346d293643",
+      "status": "approved",
+      "favicon": {
+        "url": "https://animista.net/images/favicons/apple-touch-icon-1024x1024.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-d1f753224743",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.lenis.dev/og.png?v=1",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.lenis.dev/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.lenis.dev/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-98824fd267d8",
+      "status": "approved",
+      "favicon": {
+        "url": "https://barba.js.org/favicons/apple-touch-icon.png?rev=1",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e91aab4f89fc",
+      "status": "approved",
+      "preview": {
+        "url": "https://swup.js.org/assets/images/swup-social-preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://swup.js.org",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://swup.js.org/assets/images/icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-dd66f2159eaa",
+      "status": "approved",
+      "preview": {
+        "url": "https://pixijs.com/images/ogimage.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://pixijs.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://pixijs.com/images/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-60b9eb212f58",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.unicorn.studio/images/ogg2.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.unicorn.studio",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.unicorn.studio/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-d5cb3a5709f2",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.motionity.app/meta.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.motionity.app",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-75ecf91b7063",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.gstatic.com/images/icons/material/apps/fonts/1x/catalog/v5/opengraph_color.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fonts.google.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.gstatic.com/images/branding/product/2x/google_fonts_96dp.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-25a6040823a7",
+      "status": "approved",
+      "favicon": {
+        "url": "https://www.fontshare.com/static/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-35c3f2fef142",
+      "status": "approved",
+      "preview": {
+        "url": "https://fonts.adobe.com/adobe-fonts-social.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fonts.adobe.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://afwebcdn.fonts.adobe.com/assets/apple-touch-icon@2x-83f87f1c2a2e99ad9b352321d8aaad7a9d9ae4e8ca2d0f68de2f9beea728a3aa.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {
