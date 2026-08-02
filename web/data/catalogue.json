@@ -3765,7 +3765,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.iconshock.com/img/iconshock_og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-42ec6bd7c929",
@@ -3779,7 +3781,10 @@
       "subscriptionRequired": "yes",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://nucleoapp.com/assets/img/open-graph-home.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://nucleoapp.com/assets/img/favicons/apple-touch-icon.png"
     },
     {
       "id": "resource-a54e66ac3b81",
@@ -3793,7 +3798,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://lordicon.com/media/assets/favicon/apple-touch-icon.png"
     },
     {
       "id": "resource-9a3213274725",
@@ -3807,7 +3813,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://useanimations.com/images/OGuseAnimationsImage.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://useanimations.com/images/apple-touch-icon.png"
     },
     {
       "id": "resource-1881f2f7bca1",
@@ -3835,7 +3844,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://iconify.design/assets/og/iconify.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://iconify.design/apple-touch-icon.png"
     },
     {
       "id": "resource-73d75733406d",
@@ -3912,7 +3924,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://blush.design/og-image.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://blush.design/apple-touch-icon.png"
     },
     {
       "id": "resource-a40e83b545d8",
@@ -3940,7 +3955,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://cdn.prod.website-files.com/63a9cb71c629474d4ae334b9/64a5f701714b5fe13a08253f_favicons%201%20(2).png"
     },
     {
       "id": "resource-24f188ac75f8",
@@ -3954,7 +3970,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5bff8886c3964a992e90d465/5c050a75fc73fba30bf816f1_seo-rectangle.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5bff8886c3964a992e90d465/5c00a0ce59aa851331d34687_favicon-256.png"
     },
     {
       "id": "resource-06d3e17295e5",
@@ -3968,7 +3987,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://absurd.design/img/social.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://absurd.design/img/favicon/favicon-196x196.png"
     },
     {
       "id": "resource-cbded4b3947c",
@@ -3982,7 +4004,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5d5d5904f8a21bfe5ff69367/5da4cb5454976755fcac7930_seo-doodles.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5d5d5904f8a21bfe5ff69367/5da4e9a454896ed80730e86b_icon-256w.png"
     },
     {
       "id": "resource-7fa1bd0c2c19",
@@ -4024,7 +4049,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://assets.mixkit.co/build/favicons/apple-icon-180x180-bd3d5e368063b793b955fa228a1d9311b54a29ac871f53c2e0c69e81d5fa0d48.png"
     },
     {
       "id": "resource-bae59802a7f9",
@@ -4038,7 +4064,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5f0a234d1293a2f4eb599bb5/6663071f6326830dc7376926_Open%20graph%20image.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5f0a234d1293a2f4eb599bb5/5f4550325567b37a486e00eb_black%20illustrations%20logo.png"
     },
     {
       "id": "resource-7fa85ad18d65",
@@ -4084,7 +4113,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://patternpad.com/images/patternpad-banner.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://patternpad.com/images/apple-touch-icon.png"
     },
     {
       "id": "resource-b79c0850bbff",
