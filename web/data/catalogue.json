@@ -3125,7 +3125,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/5dd40aa8049df8748c72d0ee/5ddd471cbe5e6601554a2a4d_happy-hues.jpeg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/5dd40aa8049df8748c72d0ee/5dd9b92056a2d6ed5e537c61_happy-hues-apple-icon.png"
     },
     {
       "id": "resource-3cfed5eefb62",
@@ -3139,7 +3142,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.realtimecolors.com/preview.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.realtimecolors.com/favicon.png"
     },
     {
       "id": "resource-e933d736d881",
@@ -3153,7 +3159,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://huemint.com/assets/img/logo-32.png"
     },
     {
       "id": "resource-b9fcec9624eb",
@@ -3167,7 +3174,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.khroma.co/assets/images/social.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-3ca920b6d522",
@@ -3181,7 +3190,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://grabient.com/grabber.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://grabient.com/apple-touch-icon.png"
     },
     {
       "id": "resource-ce8de103ef92",
@@ -3209,7 +3221,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://yeun.github.io/open-color/asset/images/og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-fe952dd7c89c",
@@ -3223,7 +3237,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://leonardocolor.io/assets/apple-icon-180x180-yEvmENnd.png"
     },
     {
       "id": "resource-9b8e899f4893",
@@ -3237,7 +3252,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.inclusivecolors.com/social-media-banner-large.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-d741bfd3dc39",
@@ -3251,7 +3268,9 @@
       "subscriptionRequired": "after-trial",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://atmos.style/og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-9aca4d63712d",
@@ -3265,7 +3284,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.whocanuse.com/whocanuse_banner.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.whocanuse.com/favicon.png"
     },
     {
       "id": "resource-b44930562cf2",
@@ -3279,7 +3301,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://www.getstark.co/apple-touch-icon.png"
     },
     {
       "id": "resource-4eee7a21dbf7",
@@ -3335,7 +3358,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://accessibilityinsights.io/img/accessibilityinsights.png"
     },
     {
       "id": "resource-73c723fce7b9",
@@ -3349,7 +3373,10 @@
       "subscriptionRequired": "yes",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://polypane.app/static/e4308456df9a4993bf251982bab22896/banner.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://polypane.app/icons/icon-512x512.png?v=5df5528946772487a6ab462ff2125f26"
     },
     {
       "id": "resource-71d6ae07f45c",
@@ -3363,7 +3390,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.gstatic.com/images/icons/material/apps/fonts/1x/material-symbols/material_symbols.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.gstatic.com/images/branding/product/2x/google_fonts_96dp.png"
     },
     {
       "id": "resource-43e9883510ec",
@@ -3377,7 +3407,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://heroicons.com/_next/static/media/social-card.fefc68e0.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://heroicons.com/_next/static/media/apple-touch-icon.822687be.png"
     },
     {
       "id": "resource-400401b2ab31",
@@ -3391,7 +3424,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://lucide.dev/og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-d9660d77b336",

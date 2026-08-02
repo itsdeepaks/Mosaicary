@@ -1569,6 +1569,221 @@
       }
     },
     {
+      "resourceId": "resource-c13e9c547a60",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5dd40aa8049df8748c72d0ee/5ddd471cbe5e6601554a2a4d_happy-hues.jpeg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.happyhues.co",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5dd40aa8049df8748c72d0ee/5dd9b92056a2d6ed5e537c61_happy-hues-apple-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-3cfed5eefb62",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.realtimecolors.com/preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.realtimecolors.com/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.realtimecolors.com/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e933d736d881",
+      "status": "approved",
+      "favicon": {
+        "url": "https://huemint.com/assets/img/logo-32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-b9fcec9624eb",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.khroma.co/assets/images/social.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.khroma.co",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-3ca920b6d522",
+      "status": "approved",
+      "preview": {
+        "url": "https://grabient.com/grabber.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://grabient.com/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      },
+      "favicon": {
+        "url": "https://grabient.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-06ff97d405dd",
+      "status": "approved",
+      "preview": {
+        "url": "https://yeun.github.io/open-color/asset/images/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://yeun.github.io/open-color/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-fe952dd7c89c",
+      "status": "approved",
+      "favicon": {
+        "url": "https://leonardocolor.io/assets/apple-icon-180x180-yEvmENnd.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9b8e899f4893",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.inclusivecolors.com/social-media-banner-large.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.inclusivecolors.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-d741bfd3dc39",
+      "status": "approved",
+      "preview": {
+        "url": "https://atmos.style/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://atmos.style",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-9aca4d63712d",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.whocanuse.com/whocanuse_banner.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.whocanuse.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.whocanuse.com/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-b44930562cf2",
+      "status": "approved",
+      "favicon": {
+        "url": "https://www.getstark.co/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9829cb4f86f3",
+      "status": "approved",
+      "favicon": {
+        "url": "https://accessibilityinsights.io/img/accessibilityinsights.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-73c723fce7b9",
+      "status": "approved",
+      "preview": {
+        "url": "https://polypane.app/static/e4308456df9a4993bf251982bab22896/banner.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://polypane.app",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://polypane.app/icons/icon-512x512.png?v=5df5528946772487a6ab462ff2125f26",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-71d6ae07f45c",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.gstatic.com/images/icons/material/apps/fonts/1x/material-symbols/material_symbols.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fonts.google.com/icons",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://www.gstatic.com/images/branding/product/2x/google_fonts_96dp.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-43e9883510ec",
+      "status": "approved",
+      "preview": {
+        "url": "https://heroicons.com/_next/static/media/social-card.fefc68e0.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://heroicons.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://heroicons.com/_next/static/media/apple-touch-icon.822687be.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-400401b2ab31",
+      "status": "approved",
+      "preview": {
+        "url": "https://lucide.dev/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://lucide.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {

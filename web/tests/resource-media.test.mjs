@@ -155,6 +155,22 @@ test("approved media is merged deterministically into only its linked resources"
       "tinkerfont",
       "fontsource",
       "adobe-color",
+      "happy-hues",
+      "realtime-colors",
+      "huemint",
+      "khroma",
+      "grabient",
+      "open-color",
+      "leonardo",
+      "inclusivecolors",
+      "atmos",
+      "who-can-use",
+      "stark",
+      "accessibility-insights",
+      "polypane",
+      "material-symbols",
+      "heroicons",
+      "lucide",
       "undraw",
       "storyset",
       "drawkit",
@@ -170,8 +186,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 123);
-  assert.equal(result.report.summary.approvedMedia, 123);
+  assert.equal(result.report.mediaSource.approvedCount, 139);
+  assert.equal(result.report.summary.approvedMedia, 139);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
