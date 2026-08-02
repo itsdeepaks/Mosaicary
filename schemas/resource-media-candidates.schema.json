@@ -6,15 +6,23 @@
   "additionalProperties": false,
   "required": ["version", "resources"],
   "properties": {
-    "version": { "type": "integer", "const": 1 },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
     "resources": {
       "type": "array",
       "maxItems": 50,
-      "items": { "$ref": "#/$defs/resourceCandidate" }
+      "items": {
+        "$ref": "#/$defs/resourceCandidate"
+      }
     }
   },
   "$defs": {
-    "date": { "type": "string", "format": "date" },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
     "httpsUrl": {
       "type": "string",
       "format": "uri",
@@ -34,8 +42,14 @@
           "type": "string",
           "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
         },
-        "message": { "type": "string", "minLength": 1, "maxLength": 500 },
-        "url": { "$ref": "#/$defs/httpsUrl" }
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        }
       }
     },
     "preview": {
@@ -43,14 +57,32 @@
       "additionalProperties": false,
       "required": ["url", "source", "contentType", "provenance", "checkedAt"],
       "properties": {
-        "url": { "$ref": "#/$defs/httpsUrl" },
-        "source": { "type": "string", "enum": ["manual", "open-graph"] },
-        "contentType": { "$ref": "#/$defs/rasterImage" },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["manual", "open-graph", "twitter"]
+        },
+        "contentType": {
+          "$ref": "#/$defs/rasterImage"
+        },
         "provenance": {
           "type": "string",
           "enum": ["response-header", "manual-review"]
         },
-        "checkedAt": { "$ref": "#/$defs/date" }
+        "checkedAt": {
+          "$ref": "#/$defs/date"
+        },
+        "sourceProperty": {
+          "type": "string",
+          "enum": [
+            "og:image:secure_url",
+            "og:image",
+            "twitter:image",
+            "twitter:image:src"
+          ]
+        }
       }
     },
     "favicon": {
@@ -58,13 +90,19 @@
       "additionalProperties": false,
       "required": ["url", "contentType", "provenance", "checkedAt"],
       "properties": {
-        "url": { "$ref": "#/$defs/httpsUrl" },
-        "contentType": { "$ref": "#/$defs/rasterImage" },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "contentType": {
+          "$ref": "#/$defs/rasterImage"
+        },
         "provenance": {
           "type": "string",
           "enum": ["response-header", "manual-review"]
         },
-        "checkedAt": { "$ref": "#/$defs/date" }
+        "checkedAt": {
+          "$ref": "#/$defs/date"
+        }
       }
     },
     "resourceCandidate": {
@@ -82,10 +120,20 @@
           "type": "string",
           "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
         },
-        "resourceName": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "canonicalUrl": { "$ref": "#/$defs/httpsUrl" },
-        "sourcePageUrl": { "$ref": "#/$defs/httpsUrl" },
-        "checkedAt": { "$ref": "#/$defs/date" },
+        "resourceName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "canonicalUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "sourcePageUrl": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "checkedAt": {
+          "$ref": "#/$defs/date"
+        },
         "discoveryStatus": {
           "type": "string",
           "enum": [
@@ -100,50 +148,87 @@
         },
         "reviewerStatus": {
           "type": "string",
-          "enum": ["unreviewed", "needs-review", "approved-for-copy", "rejected"]
+          "enum": [
+            "unreviewed",
+            "needs-review",
+            "approved-for-copy",
+            "rejected"
+          ]
         },
         "redirects": {
           "type": "array",
           "maxItems": 3,
           "uniqueItems": true,
-          "items": { "$ref": "#/$defs/httpsUrl" }
+          "items": {
+            "$ref": "#/$defs/httpsUrl"
+          }
         },
-        "preview": { "$ref": "#/$defs/preview" },
-        "favicon": { "$ref": "#/$defs/favicon" },
+        "preview": {
+          "$ref": "#/$defs/preview"
+        },
+        "favicon": {
+          "$ref": "#/$defs/favicon"
+        },
         "issues": {
           "type": "array",
           "maxItems": 20,
-          "items": { "$ref": "#/$defs/issue" }
+          "items": {
+            "$ref": "#/$defs/issue"
+          }
         },
         "notes": {
           "type": "array",
           "maxItems": 10,
-          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
         }
       },
       "allOf": [
         {
           "if": {
-            "properties": { "discoveryStatus": { "const": "candidate" } }
+            "properties": {
+              "discoveryStatus": {
+                "const": "candidate"
+              }
+            }
           },
           "then": {
             "required": ["sourcePageUrl", "checkedAt"],
             "anyOf": [
-              { "required": ["preview"] },
-              { "required": ["favicon"] }
+              {
+                "required": ["preview"]
+              },
+              {
+                "required": ["favicon"]
+              }
             ]
           }
         },
         {
           "if": {
-            "properties": { "reviewerStatus": { "const": "approved-for-copy" } }
+            "properties": {
+              "reviewerStatus": {
+                "const": "approved-for-copy"
+              }
+            }
           },
           "then": {
-            "properties": { "discoveryStatus": { "const": "candidate" } },
+            "properties": {
+              "discoveryStatus": {
+                "const": "candidate"
+              }
+            },
             "required": ["sourcePageUrl", "checkedAt"],
             "anyOf": [
-              { "required": ["preview"] },
-              { "required": ["favicon"] }
+              {
+                "required": ["preview"]
+              },
+              {
+                "required": ["favicon"]
+              }
             ]
           }
         }

@@ -214,9 +214,10 @@ Do not show unmeasured user counts, weekly additions, ratings, or trending claim
 Fallback chain:
 
 1. approved manual preview;
-2. Open Graph image URL;
-3. favicon in a designed tile;
-4. generated letter mark.
+2. official Open Graph image URL;
+3. official Twitter image URL;
+4. favicon in a designed tile;
+5. generated letter mark.
 
 The UI must remain complete when all external images fail.
 

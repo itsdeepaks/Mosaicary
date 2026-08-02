@@ -56,6 +56,7 @@ const RECORD_KEYS = new Set([
 const PREVIEW_KEYS = new Set([
   "url",
   "source",
+  "sourceProperty",
   "contentType",
   "provenance",
   "checkedAt",
@@ -170,23 +171,63 @@ function validateMedia(value, label, { preview = false } = {}) {
       issue(`invalid-${label}-date`, `${label} checkedAt must be an ISO date.`),
     );
   }
-  if (preview && !new Set(["manual", "open-graph"]).has(value.source)) {
+  if (
+    preview &&
+    !new Set(["manual", "open-graph", "twitter"]).has(value.source)
+  ) {
     errors.push(
       issue(
         "invalid-preview-source",
-        "Preview source must be manual or open-graph.",
+        "Preview source must be manual, open-graph, or twitter.",
       ),
     );
   }
+  if (preview && value.sourceProperty !== undefined) {
+    const allowedProperties = new Set([
+      "og:image:secure_url",
+      "og:image",
+      "twitter:image",
+      "twitter:image:src",
+    ]);
+    if (!allowedProperties.has(value.sourceProperty)) {
+      errors.push(
+        issue(
+          "invalid-preview-source-property",
+          "Preview sourceProperty is not a supported metadata property.",
+        ),
+      );
+    } else if (value.source === "manual") {
+      errors.push(
+        issue(
+          "manual-preview-source-property",
+          "Manual previews cannot claim an Open Graph or Twitter property.",
+        ),
+      );
+    } else if (
+      (value.source === "open-graph" &&
+        !value.sourceProperty.startsWith("og:")) ||
+      (value.source === "twitter" &&
+        !value.sourceProperty.startsWith("twitter:"))
+    ) {
+      errors.push(
+        issue(
+          "preview-source-property-mismatch",
+          "Preview source and sourceProperty do not match.",
+        ),
+      );
+    }
+  }
   if (
     preview &&
-    value.source === "open-graph" &&
+    new Set(["open-graph", "twitter"]).has(value.source) &&
     value.provenance !== "response-header"
   ) {
     errors.push(
       issue(
-        "invalid-open-graph-provenance",
-        "Open Graph candidates require response-header provenance.",
+        value.source === "twitter"
+          ? "invalid-twitter-provenance"
+          : "invalid-open-graph-provenance",
+        `${value.source === "twitter" ? "Twitter" : "Open Graph"} candidates require response-header provenance.`,
       ),
     );
   }

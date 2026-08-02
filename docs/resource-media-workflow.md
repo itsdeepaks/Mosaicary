@@ -20,8 +20,9 @@ Only `lib_data/resource-media.json` is composed into `web/data/catalogue.json`. 
 
 1. approved manual preview;
 2. approved Open Graph preview;
-3. approved favicon;
-4. generated letter mark.
+3. approved Twitter preview;
+4. approved favicon;
+5. generated letter mark.
 
 Discovery tooling does not change this order and does not change card code.
 
@@ -141,13 +142,14 @@ Before setting `reviewerStatus` to `approved-for-copy`:
 1. Open the canonical resource page manually.
 2. Confirm the source page declared the Open Graph URL or that a manual source is documented.
 3. Confirm the final media URL is HTTPS, public, credential-free, and raster.
-4. Confirm the actual response `Content-Type` matches the recorded value.
-5. Confirm the image is visually suitable as a Tessli card preview rather than an advertisement, cookie wall, stale campaign, unrelated logo, or low-information banner.
-6. Confirm no authentication, paywall, bot protection, or private content was bypassed.
-7. Do not infer a licence, price, access model, or redistribution right from metadata discovery.
-8. Record redirects and unresolved concerns.
-9. Consider content-policy attribution and takedown requirements.
-10. Review the complete PR diff before copying to approved media.
+4. Confirm the recorded `source` and exact `sourceProperty` match the canonical page declaration; do not label Twitter metadata as Open Graph.
+5. Confirm the actual response `Content-Type` matches the recorded value.
+6. Confirm the image is visually suitable as a Tessli card preview rather than an advertisement, cookie wall, stale campaign, unrelated logo, or low-information banner.
+7. Confirm no authentication, paywall, bot protection, or private content was bypassed.
+8. Do not infer a licence, price, access model, or redistribution right from metadata discovery.
+9. Record redirects and unresolved concerns.
+10. Consider content-policy attribution and takedown requirements.
+11. Review the complete PR diff before copying to approved media.
 
 ## Approving production media
 

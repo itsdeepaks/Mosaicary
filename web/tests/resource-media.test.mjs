@@ -113,6 +113,8 @@ test("media validation rejects unknown, duplicate, and unsafe resource metadata"
   ]);
   const invalid = structuredClone(source);
   invalid.resources[0].preview.url = "http://127.0.0.1/preview.jpg";
+  invalid.resources[0].preview.source = "twitter";
+  invalid.resources[0].preview.sourceProperty = "og:image";
   invalid.resources.push({
     ...structuredClone(source.resources[0]),
     resourceId: "resource-not-in-catalogue",
@@ -126,6 +128,10 @@ test("media validation rejects unknown, duplicate, and unsafe resource metadata"
   );
   assert.equal(
     errors.some((error) => error.code === "invalid-preview-url"),
+    true,
+  );
+  assert.equal(
+    errors.some((error) => error.code === "preview-source-property-mismatch"),
     true,
   );
   assert.equal(
