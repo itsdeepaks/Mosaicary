@@ -48,7 +48,7 @@ jobs:
             test "${#IDS[@]}" -le 20
             ARGS=(); for id in "${IDS[@]}"; do ARGS+=(--resource-id "$id"); done
             cd web
-            node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output "../artifacts/remaining-media/${output}" "${ARGS[@]}"
+            node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output "artifacts/remaining-media/${output}" "${ARGS[@]}"
             cd ..
           }
           discover_batch selection-first.json candidates-first.json
