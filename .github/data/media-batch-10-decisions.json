@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "batch": "10",
+  "checkedAt": "2026-08-02",
+  "sourceRunId": 30762572318,
+  "sourceArtifact": "tessli-media-batch-10-review",
+  "sourceArtifactId": 8837917259,
+  "sourceArtifactDigest": "sha256:4000d4155c566ecae3c47bc78d532086fdec12dbc9b45757f6c18c47f989d4dc",
+  "selectedIds": [
+    "resource-7ff8dc33fe5e",
+    "resource-e50e8d1ec69c",
+    "resource-098d155d3888",
+    "resource-1e6b6fad041e",
+    "resource-3b9d710cd447",
+    "resource-07d9b88ef5af",
+    "resource-bfe4ba65c95b",
+    "resource-51cf9c6399c6",
+    "resource-42936db47b6a",
+    "resource-ebb8f5b293dd",
+    "resource-b7677565a4ff",
+    "resource-a3de99297c3f",
+    "resource-62ae0ff6a769",
+    "resource-4b6676338efd",
+    "resource-9a194f839857",
+    "resource-628391285dd8",
+    "resource-40e0c2050ea6",
+    "resource-1557d6500f28",
+    "resource-6897bacf002e",
+    "resource-a2f7775b8c79"
+  ],
+  "approvals": {
+    "resource-7ff8dc33fe5e": ["preview"],
+    "resource-e50e8d1ec69c": ["preview", "favicon"],
+    "resource-3b9d710cd447": ["preview", "favicon"],
+    "resource-07d9b88ef5af": ["favicon"],
+    "resource-42936db47b6a": ["favicon"],
+    "resource-a3de99297c3f": ["preview", "favicon"],
+    "resource-4b6676338efd": ["preview", "favicon"],
+    "resource-9a194f839857": ["preview"],
+    "resource-628391285dd8": ["preview", "favicon"],
+    "resource-40e0c2050ea6": ["preview", "favicon"],
+    "resource-a2f7775b8c79": ["preview"]
+  },
+  "terminal": {
+    "resource-098d155d3888": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical Font Squirrel page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-1e6b6fad041e": {
+      "disposition": "rejected",
+      "note": "The official Fontesk image was a narrow 480×135 signature-font banner rather than a representative preview of the font catalogue; no raster favicon fallback was declared."
+    },
+    "resource-bfe4ba65c95b": {
+      "disposition": "blocked",
+      "note": "The canonical Velvetyne source was blocked during bounded discovery; the restriction was not bypassed."
+    },
+    "resource-51cf9c6399c6": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical Lost Type page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-ebb8f5b293dd": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical Fontjoy page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-b7677565a4ff": {
+      "disposition": "blocked",
+      "note": "The canonical FontGen source was blocked during bounded discovery; the restriction was not bypassed."
+    },
+    "resource-62ae0ff6a769": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical Variable Fonts page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-1557d6500f28": {
+      "disposition": "blocked",
+      "note": "The canonical Coolors source was blocked during bounded discovery; the restriction was not bypassed."
+    },
+    "resource-6897bacf002e": {
+      "disposition": "blocked",
+      "note": "The canonical Color Hunt source was blocked during bounded discovery; the restriction was not bypassed."
+    }
+  },
+  "notes": {
+    "resource-7ff8dc33fe5e": "Approved the official Typewolf Open Graph brand preview after exact review.",
+    "resource-e50e8d1ec69c": "Approved the official Fonts In Use typography-gallery Open Graph preview and raster favicon after exact review.",
+    "resource-3b9d710cd447": "Approved the official Free Faces Open Graph preview and raster favicon after exact review.",
+    "resource-07d9b88ef5af": "No suitable preview was declared; approved the official Open Foundry raster favicon fallback.",
+    "resource-42936db47b6a": "Approved the official FontPair raster favicon fallback. The sparse logo-only Open Graph card was rejected as low-information.",
+    "resource-a3de99297c3f": "Approved the official Font Mojo product-specific Open Graph preview and raster favicon after exact review.",
+    "resource-4b6676338efd": "Approved the official Font Alternatives product-specific Open Graph preview and raster favicon after exact review.",
+    "resource-9a194f839857": "Approved the official Sweetfont product-specific Open Graph preview after exact review.",
+    "resource-628391285dd8": "Approved the official Tinkerfont product-interface Open Graph preview and raster favicon after exact review.",
+    "resource-40e0c2050ea6": "Approved the official Fontsource catalogue-interface Open Graph preview and raster favicon after exact review.",
+    "resource-a2f7775b8c79": "Approved the official Adobe Color product-specific Open Graph artwork after exact review."
+  },
+  "nextBatch": "11",
+  "rasterReviewCount": 19
+}
