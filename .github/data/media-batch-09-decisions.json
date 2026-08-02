@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "batch": "09",
+  "checkedAt": "2026-08-02",
+  "sourceRunId": 30761149917,
+  "sourceArtifact": "tessli-media-batch-09-review",
+  "sourceArtifactId": 8837495444,
+  "sourceArtifactDigest": "sha256:4896a5e75ca14edd95c738f80f6e74baa9f5d4d01abb46515a52d5e9c2bf4d0c",
+  "selectedIds": [
+    "resource-a69034dde468",
+    "resource-631345718892",
+    "resource-e5c348f9190f",
+    "resource-c873b7d6cf1d",
+    "resource-e0917de2c7a9",
+    "resource-23cc7dc75f79",
+    "resource-9ab2847bb0d5",
+    "resource-24346d293643",
+    "resource-c1e0d74b5033",
+    "resource-c69cb09bf119",
+    "resource-d1f753224743",
+    "resource-98824fd267d8",
+    "resource-e91aab4f89fc",
+    "resource-dd66f2159eaa",
+    "resource-e3968c0ccc25",
+    "resource-60b9eb212f58",
+    "resource-d5cb3a5709f2",
+    "resource-75ecf91b7063",
+    "resource-25a6040823a7",
+    "resource-35c3f2fef142"
+  ],
+  "approvals": {
+    "resource-a69034dde468": ["preview", "favicon"],
+    "resource-631345718892": ["preview", "favicon"],
+    "resource-e0917de2c7a9": ["favicon"],
+    "resource-23cc7dc75f79": ["preview", "favicon"],
+    "resource-9ab2847bb0d5": ["preview", "favicon"],
+    "resource-24346d293643": ["favicon"],
+    "resource-d1f753224743": ["preview", "favicon"],
+    "resource-98824fd267d8": ["favicon"],
+    "resource-e91aab4f89fc": ["preview", "favicon"],
+    "resource-dd66f2159eaa": ["preview", "favicon"],
+    "resource-60b9eb212f58": ["preview", "favicon"],
+    "resource-d5cb3a5709f2": ["preview"],
+    "resource-75ecf91b7063": ["preview", "favicon"],
+    "resource-25a6040823a7": ["favicon"],
+    "resource-35c3f2fef142": ["preview", "favicon"]
+  },
+  "terminal": {
+    "resource-e5c348f9190f": {
+      "disposition": "rejected",
+      "note": "The official Three.js Open Graph collage was rejected as a 2.77 MB remote card payload; no suitable raster favicon fallback was declared."
+    },
+    "resource-c873b7d6cf1d": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical React Three Fiber documentation page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-c1e0d74b5033": {
+      "disposition": "rejected",
+      "note": "The official Hover.css image was only 360×92 and was rejected as an unsuitable low-resolution card preview; no raster favicon fallback was available."
+    },
+    "resource-c69cb09bf119": {
+      "disposition": "no-suitable-raster",
+      "note": "The canonical AOS page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+    },
+    "resource-e3968c0ccc25": {
+      "disposition": "rejected",
+      "note": "The official p5.js Open Graph image was generic event photography rather than a clear product or library preview; no raster favicon fallback was declared."
+    }
+  },
+  "notes": {
+    "resource-a69034dde468": "Approved the official Rive Open Graph preview and raster favicon after exact review.",
+    "resource-631345718892": "Approved the official Spline Open Graph preview and raster favicon after exact review.",
+    "resource-e0917de2c7a9": "Approved the official Theatre.js raster favicon fallback. Its 2327×990, 1.49 MB Open Graph artwork was rejected to avoid a heavy card payload.",
+    "resource-23cc7dc75f79": "Approved the official Anime.js Open Graph preview and raster favicon after exact review.",
+    "resource-9ab2847bb0d5": "Approved the official AutoAnimate Open Graph preview and raster favicon after exact review.",
+    "resource-24346d293643": "No suitable preview was declared; approved the official Animista raster favicon fallback.",
+    "resource-d1f753224743": "Approved the official Lenis Open Graph preview and raster favicon after exact review.",
+    "resource-98824fd267d8": "Approved the official Barba.js raster favicon fallback. The abstract dotted Open Graph image was rejected as low-information card media.",
+    "resource-e91aab4f89fc": "Approved the official Swup Open Graph preview and raster favicon after exact review.",
+    "resource-dd66f2159eaa": "Approved the official PixiJS Open Graph preview and raster favicon after exact review.",
+    "resource-60b9eb212f58": "Approved the official Unicorn Studio Open Graph preview and raster favicon after exact review.",
+    "resource-d5cb3a5709f2": "Approved the official Motionity product-interface Open Graph preview after exact review.",
+    "resource-75ecf91b7063": "Approved the official Google Fonts Open Graph preview and raster favicon after exact review.",
+    "resource-25a6040823a7": "Approved the official Fontshare raster favicon fallback. The sparse logo-only Open Graph card was rejected as low-information.",
+    "resource-35c3f2fef142": "Approved the official Adobe Fonts Open Graph preview and raster favicon after exact review."
+  },
+  "nextBatch": "10",
+  "rasterReviewCount": 31
+}
