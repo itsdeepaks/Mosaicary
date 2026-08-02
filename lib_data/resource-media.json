@@ -551,6 +551,72 @@
         "checkedAt": "2026-08-02",
         "contentType": "image/png"
       }
+    },
+    {
+      "resourceId": "resource-be4bfd235371",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.craft.cloud/983dd56a-1291-4f1f-ba2b-57c60e14c22a/assets/images/rootOG.jpg?width=1200&height=630&quality=82&fit=contain&s=JE_0V_IWMSrCXr_xGIzHYWtmY4QPTLRdfBzs_myuE7I",
+        "source": "open-graph",
+        "sourcePageUrl": "https://builtformars.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-c6ead4379d56",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.landingfolio.com/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.landingfolio.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-1ef2bbb67602",
+      "status": "approved",
+      "preview": {
+        "url": "https://saaspages.xyz/assets/img/cover.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://saaspages.xyz",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-f52b14528531",
+      "status": "approved",
+      "preview": {
+        "url": "https://saaslandingpage.com/wp-content/uploads/2023/12/Link-Share-Img@2x.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://saaslandingpage.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-3028e7238961",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.pagesthatprint.com/opengraph-image?7f8f5d1a86d4d3fd",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.pagesthatprint.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-be31b989dbbe",
+      "status": "approved",
+      "preview": {
+        "url": "https://saaswebsites.s3.amazonaws.com/wp-content/uploads/2021/10/12224853/twitter-share.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://saaswebsites.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      }
     }
   ]
 }

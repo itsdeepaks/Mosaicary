@@ -396,83 +396,145 @@
     },
     {
       "resourceId": "resource-95bb76a538d3",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source redirected to Page Flows, so its media was rejected as mismatched."
+      ]
     },
     {
       "resourceId": "resource-be4bfd235371",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c6ead4379d56",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-068a498e5c53",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Discovery found no acceptable raster preview or favicon."
+      ]
     },
     {
       "resourceId": "resource-1ef2bbb67602",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-f52b14528531",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-3028e7238961",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-385af8e671b2",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-be31b989dbbe",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-8071ca23bfc4",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source now identifies as Massimo Chieruzzi, so the discovered Facebook image was rejected as mismatched."
+      ]
     },
     {
       "resourceId": "resource-6482b53e4e09",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The candidate image could not be manually inspected because direct navigation was blocked by browser safety policy."
+      ]
     },
     {
       "resourceId": "resource-4aeb8a54737a",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Candidate media was discovered but not approved because manual raster inspection was not completed in this batch."
+      ]
     },
     {
       "resourceId": "resource-aab7c16fffb1",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Candidate media was discovered but not approved because manual raster inspection was not completed in this batch."
+      ]
     },
     {
       "resourceId": "resource-33ac0a63b8fc",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source could not be reached within discovery safety boundaries."
+      ]
     },
     {
       "resourceId": "resource-f5eae6c7040d",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Candidate media was discovered but not approved because manual raster inspection was not completed in this batch."
+      ]
     },
     {
       "resourceId": "resource-847d27f24972",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source could not be reached within discovery safety boundaries."
+      ]
     },
     {
       "resourceId": "resource-8dab0ae47043",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Candidate media was discovered but not approved because manual raster inspection was not completed in this batch."
+      ]
     },
     {
       "resourceId": "resource-984c1f3c1edb",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Discovery found no acceptable raster preview or favicon."
+      ]
     },
     {
       "resourceId": "resource-ccf11806422e",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Candidate media was discovered but not approved because manual raster inspection was not completed in this batch."
+      ]
     },
     {
       "resourceId": "resource-312c2f30d95c",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-8dc314976241",
