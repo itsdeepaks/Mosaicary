@@ -223,6 +223,38 @@ export function validateMediaSource(source, schema, resources) {
           ),
         );
       }
+      if (entry.preview.sourceProperty !== undefined) {
+        const allowedProperties = new Set(
+          previewSchema.properties.sourceProperty.enum,
+        );
+        if (!allowedProperties.has(entry.preview.sourceProperty)) {
+          errors.push(
+            issue(
+              "invalid-preview-source-property",
+              `${label} preview source property is invalid.`,
+            ),
+          );
+        } else if (entry.preview.source === "manual") {
+          errors.push(
+            issue(
+              "manual-preview-source-property",
+              `${label} manual preview cannot claim metadata provenance.`,
+            ),
+          );
+        } else if (
+          (entry.preview.source === "open-graph" &&
+            !entry.preview.sourceProperty.startsWith("og:")) ||
+          (entry.preview.source === "twitter" &&
+            !entry.preview.sourceProperty.startsWith("twitter:"))
+        ) {
+          errors.push(
+            issue(
+              "preview-source-property-mismatch",
+              `${label} preview source and property do not match.`,
+            ),
+          );
+        }
+      }
       if (!validIsoDate(entry.preview.checkedAt)) {
         errors.push(
           issue("invalid-preview-date", `${label} preview date is invalid.`),

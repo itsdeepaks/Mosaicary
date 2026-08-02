@@ -203,9 +203,10 @@ Relevant schema: `schemas/catalogue.schema.json`.
 Fallback order:
 
 1. approved manual preview;
-2. Open Graph image;
-3. favicon in a designed tile;
-4. generated letter mark.
+2. official Open Graph image;
+3. official Twitter image;
+4. favicon in a designed tile;
+5. generated letter mark.
 
 Requirements:
 

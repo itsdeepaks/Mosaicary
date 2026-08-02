@@ -125,6 +125,7 @@ test("candidate validation rejects unsafe and invented review data", async () =>
     preview: {
       url: "https://example.com/preview.svg",
       source: "open-graph",
+      sourceProperty: "twitter:image",
       contentType: "image/svg+xml",
       provenance: "manual-review",
       checkedAt: "2026-07-31",
@@ -149,6 +150,7 @@ test("candidate validation rejects unsafe and invented review data", async () =>
     "invalid-redirects",
     "invalid-preview-content-type",
     "invalid-open-graph-provenance",
+    "preview-source-property-mismatch",
     "duplicate-candidate-resource",
     "unknown-candidate-resource",
   ]) {
@@ -210,9 +212,17 @@ test("metadata parser resolves Open Graph and favicon URLs without executing HTM
     <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.example.com/touch.png">
   </head><body><script>throw new Error("must not run")</script></body></html>`;
   const result = extractMetadataCandidates(html, "https://example.com/path");
-  assert.deepEqual(result.previewUrls, [
-    "https://example.com/assets/card.webp?x=1&y=2",
-    "https://cdn.example.com/later.png",
+  assert.deepEqual(result.previewCandidates, [
+    {
+      url: "https://example.com/assets/card.webp?x=1&y=2",
+      source: "open-graph",
+      sourceProperty: "og:image",
+    },
+    {
+      url: "https://cdn.example.com/later.png",
+      source: "twitter",
+      sourceProperty: "twitter:image",
+    },
   ]);
   assert.deepEqual(result.faviconUrls.slice(0, 3), [
     "https://cdn.example.com/touch.png",
@@ -280,8 +290,73 @@ test("explicit discovery emits review-pending raster candidates", async () => {
   assert.equal(candidate.discoveryStatus, "candidate");
   assert.equal(candidate.reviewerStatus, "needs-review");
   assert.equal(candidate.preview.contentType, "image/webp");
+  assert.equal(candidate.preview.source, "open-graph");
+  assert.equal(candidate.preview.sourceProperty, "og:image");
   assert.equal(candidate.favicon.contentType, "image/png");
   assert.equal(candidate.preview.provenance, "response-header");
+});
+
+test("explicit discovery preserves Twitter fallback provenance", async () => {
+  const html = `<!doctype html><head>
+    <meta property="og:image" content="https://cdn.example.com/card.svg">
+    <meta name="twitter:image" content="https://cdn.example.com/card.png">
+  </head>`;
+  const lookup = async () => [{ address: "93.184.216.34", family: 4 }];
+  const candidate = await discoverResourceMedia(
+    { id: "resource-example", name: "Example", url: "https://example.com" },
+    {
+      checkedAt: "2026-08-02",
+      lookup,
+      fetchImpl: async (url) => {
+        if (url === "https://example.com") {
+          return new Response(html, {
+            status: 200,
+            headers: { "content-type": "text/html" },
+          });
+        }
+        if (url === "https://cdn.example.com/card.svg") {
+          return new Response("<svg/>", {
+            status: 200,
+            headers: { "content-type": "image/svg+xml" },
+          });
+        }
+        if (url === "https://cdn.example.com/card.png") {
+          return new Response(new Uint8Array([0]), {
+            status: 206,
+            headers: { "content-type": "image/png" },
+          });
+        }
+        return new Response("missing", {
+          status: 404,
+          headers: { "content-type": "text/plain" },
+        });
+      },
+    },
+  );
+
+  assert.equal(candidate.discoveryStatus, "candidate");
+  assert.equal(candidate.preview.source, "twitter");
+  assert.equal(candidate.preview.sourceProperty, "twitter:image");
+  assert.equal(candidate.preview.contentType, "image/png");
+  assert.equal(
+    candidate.issues.some((entry) => /SVG/.test(entry.message)),
+    true,
+  );
+});
+
+test("metadata parser de-duplicates identical preview URLs by priority", () => {
+  const html = `<!doctype html><head>
+    <meta property="og:image" content="https://cdn.example.com/shared.png">
+    <meta name="twitter:image" content="https://cdn.example.com/shared.png">
+  </head>`;
+  const result = extractMetadataCandidates(html, "https://example.com");
+  assert.deepEqual(result.previewCandidates, [
+    {
+      url: "https://cdn.example.com/shared.png",
+      source: "open-graph",
+      sourceProperty: "og:image",
+    },
+  ]);
 });
 
 test("explicit discovery records unsafe redirects and non-raster responses", async () => {

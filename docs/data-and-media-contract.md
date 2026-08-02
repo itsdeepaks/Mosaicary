@@ -19,7 +19,7 @@ type Resource = {
   tags: string[];
   faviconUrl?: string;
   previewImageUrl?: string;
-  previewSource?: "manual" | "open-graph" | "favicon" | "generated";
+  previewSource?: "manual" | "open-graph" | "twitter" | "favicon" | "generated";
   lastVerifiedAt?: string;
   status: "active" | "needs-review" | "unavailable";
 };
@@ -107,9 +107,10 @@ Move to Postgres full-text search only when catalogue size, moderation, or serve
 Resource cards use:
 
 1. approved manual preview;
-2. Open Graph image URL;
-3. site favicon in a designed tile;
-4. generated letter mark.
+2. official Open Graph image URL;
+3. official Twitter image URL;
+4. site favicon in a designed tile;
+5. generated letter mark.
 
 The card layout must remain complete when every external image fails.
 

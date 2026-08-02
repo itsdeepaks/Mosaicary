@@ -44,13 +44,22 @@
       "required": ["url", "source", "contentType", "provenance", "checkedAt"],
       "properties": {
         "url": { "$ref": "#/$defs/httpsUrl" },
-        "source": { "type": "string", "enum": ["manual", "open-graph"] },
+        "source": { "type": "string", "enum": ["manual", "open-graph", "twitter"] },
         "contentType": { "$ref": "#/$defs/rasterImage" },
         "provenance": {
           "type": "string",
           "enum": ["response-header", "manual-review"]
         },
-        "checkedAt": { "$ref": "#/$defs/date" }
+        "checkedAt": { "$ref": "#/$defs/date" },
+        "sourceProperty": {
+          "type": "string",
+          "enum": [
+            "og:image:secure_url",
+            "og:image",
+            "twitter:image",
+            "twitter:image:src"
+          ]
+        }
       }
     },
     "favicon": {

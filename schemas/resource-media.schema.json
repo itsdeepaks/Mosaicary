@@ -36,10 +36,19 @@
       ],
       "properties": {
         "url": { "$ref": "#/$defs/httpsUrl" },
-        "source": { "type": "string", "enum": ["manual", "open-graph"] },
+        "source": { "type": "string", "enum": ["manual", "open-graph", "twitter"] },
         "sourcePageUrl": { "$ref": "#/$defs/httpsUrl" },
         "checkedAt": { "$ref": "#/$defs/date" },
-        "contentType": { "$ref": "#/$defs/rasterImage" }
+        "contentType": { "$ref": "#/$defs/rasterImage" },
+        "sourceProperty": {
+          "type": "string",
+          "enum": [
+            "og:image:secure_url",
+            "og:image",
+            "twitter:image",
+            "twitter:image:src"
+          ]
+        }
       }
     },
     "favicon": {

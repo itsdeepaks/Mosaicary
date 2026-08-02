@@ -239,18 +239,27 @@ export function extractMetadataCandidates(html, pageUrl) {
     if (key && content && !metaMap.has(key)) metaMap.set(key, content);
   }
 
-  const previewUrls = [];
-  for (const key of [
+  const previewCandidates = [];
+  const seenPreviewUrls = new Set();
+  for (const sourceProperty of [
     "og:image:secure_url",
     "og:image",
     "twitter:image",
     "twitter:image:src",
   ]) {
-    const value = metaMap.get(key);
+    const value = metaMap.get(sourceProperty);
     if (!value) continue;
     try {
       const resolved = new URL(value, pageUrl).toString();
-      if (!previewUrls.includes(resolved)) previewUrls.push(resolved);
+      if (seenPreviewUrls.has(resolved)) continue;
+      seenPreviewUrls.add(resolved);
+      previewCandidates.push({
+        url: resolved,
+        source: sourceProperty.startsWith("twitter:")
+          ? "twitter"
+          : "open-graph",
+        sourceProperty,
+      });
     } catch {
       // Invalid metadata is represented by the absence of a safe candidate.
     }
@@ -294,7 +303,7 @@ export function extractMetadataCandidates(html, pageUrl) {
   if (!faviconUrls.includes(defaultFavicon)) {
     faviconUrls.push(defaultFavicon);
   }
-  return { previewUrls, faviconUrls };
+  return { previewCandidates, faviconUrls };
 }
 
 async function cancelBody(response) {
@@ -454,16 +463,17 @@ export async function discoverResourceMedia(
     const html = await readLimitedText(source.response, limits.maxHtmlBytes);
     const metadata = extractMetadataCandidates(html, source.finalUrl);
 
-    for (const previewUrl of metadata.previewUrls) {
+    for (const previewCandidate of metadata.previewCandidates) {
       try {
-        const probed = await probeRasterUrl(previewUrl, {
+        const probed = await probeRasterUrl(previewCandidate.url, {
           fetchImpl,
           lookup,
           limits,
         });
         result.preview = {
           url: probed.url,
-          source: "open-graph",
+          source: previewCandidate.source,
+          sourceProperty: previewCandidate.sourceProperty,
           contentType: probed.contentType,
           provenance: "response-header",
           checkedAt,
@@ -476,7 +486,7 @@ export async function discoverResourceMedia(
             error instanceof Error
               ? error.message
               : "Preview candidate was rejected.",
-          url: previewUrl,
+          url: previewCandidate.url,
         });
       }
     }
@@ -512,7 +522,7 @@ export async function discoverResourceMedia(
       if (result.issues.length === 0) delete result.issues;
     } else {
       result.discoveryStatus =
-        metadata.previewUrls.length || metadata.faviconUrls.length
+        metadata.previewCandidates.length || metadata.faviconUrls.length
           ? "uncertain"
           : "no-raster-media";
       if (result.issues.length === 0) {

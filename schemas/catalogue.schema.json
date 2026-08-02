@@ -148,7 +148,7 @@
         },
         "previewSource": {
           "type": "string",
-          "enum": ["manual", "open-graph", "favicon", "generated"]
+          "enum": ["manual", "open-graph", "twitter", "favicon", "generated"]
         },
         "lastVerifiedAt": {
           "type": "string",
