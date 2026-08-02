@@ -1,0 +1,59 @@
+name: Apply media Batch 10
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    branches: [main]
+permissions:
+  actions: read
+  contents: write
+jobs:
+  apply:
+    if: github.head_ref == 'codex/media-batch-10-reviewed' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {GH_TOKEN: "${{ github.token }}"}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: "${{ github.head_ref }}", fetch-depth: 0}
+      - uses: actions/setup-node@v7
+        with: {node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json}
+      - working-directory: web
+        run: npm ci
+      - name: Download reviewed evidence
+        shell: bash
+        run: |
+          mkdir -p artifacts/media-batch-10
+          test "$(gh api repos/${{ github.repository }}/actions/artifacts/8837917259 --jq .digest)" = "sha256:4000d4155c566ecae3c47bc78d532086fdec12dbc9b45757f6c18c47f989d4dc"
+          gh run download 30762572318 --name tessli-media-batch-10-review --dir artifacts/media-batch-10
+      - name: Apply decisions
+        run: python .github/scripts/apply-reviewed-media-batch.py
+      - name: Generate outputs
+        working-directory: web
+        run: |
+          npm run media:review:generate
+          npm run media:coverage:generate
+          npm run catalogue:generate
+      - name: Format authored files
+        working-directory: web
+        run: npx prettier --write ../docs/remaining-phase-plan.md ../docs/slices/5.4b-10-reviewed-media-discovery.md tests/resource-media.test.mjs tests/resource-media-coverage.test.mjs tests/resource-media-candidates.test.mjs
+      - name: Focused checks
+        working-directory: web
+        run: |
+          node --test tests/resource-media.test.mjs tests/resource-media-coverage.test.mjs tests/resource-media-candidates.test.mjs
+          npm run media:review:check
+          npm run media:coverage:check
+          npm run catalogue:check
+          npm run typecheck
+          npm run lint
+      - name: Verify counts and commit
+        shell: bash
+        run: |
+          node -e 'const fs=require("fs");const m=JSON.parse(fs.readFileSync("lib_data/resource-media.json"));const c=JSON.parse(fs.readFileSync("lib_data/resource-media-coverage.json"));const p=c.resources.filter(x=>x.disposition==="pending").length;if(m.resources.length!==123||p!==87)process.exit(1);console.log({approved:m.resources.length,pending:p})'
+          rm -rf artifacts
+          git rm .github/workflows/media-batch-10-discovery.yml .github/workflows/apply-media-batch-10.yml .github/scripts/package-media-review.mjs .github/scripts/apply-reviewed-media-batch.py .github/data/media-batch-10-decisions.json
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs lib_data web/data web/tests
+          git commit -m "feat: approve tenth reviewed media batch"
+          git push origin HEAD:${{ github.head_ref }}
