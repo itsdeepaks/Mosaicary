@@ -2819,7 +2819,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.typewolf.com/assets/img/typewolf-og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-e50e8d1ec69c",
@@ -2833,7 +2835,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cards.fontsinuse.com/cardshot?s=twitter&t=gallery&url=https://fontsinuse.com/&k=fea3b3b2f54abc640c7705b62dd465bd&v=5e95ed98",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://assets.fontsinuse.com/images/icons/apple-touch-icon-180x180.png"
     },
     {
       "id": "resource-098d155d3888",
@@ -2875,7 +2880,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.prod.website-files.com/69eb208431be71c3a2eed9ae/6a19b3eb76c2032736e5c0d7_171e3a673da35daeab39e4bd23564790_homepage-og.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.prod.website-files.com/69eb208431be71c3a2eed9ae/6a09a90b02ca2e6f83e10992_webclip.png"
     },
     {
       "id": "resource-07d9b88ef5af",
@@ -2889,7 +2897,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://open-foundry.com/apple-touch-icon-180x180.png"
     },
     {
       "id": "resource-bfe4ba65c95b",
@@ -2931,7 +2940,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://fontpair.co/lovable-uploads/6d6d6d0f-fa61-4507-8417-e70f209f5be1.png"
     },
     {
       "id": "resource-ebb8f5b293dd",
@@ -2973,7 +2983,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://fontmojo.com/OG.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://fontmojo.com/apple-touch-icon.png"
     },
     {
       "id": "resource-62ae0ff6a769",
@@ -3001,7 +3014,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://og.fontalternatives.com/og/home.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://fontalternatives.com/apple-touch-icon.png"
     },
     {
       "id": "resource-9a194f839857",
@@ -3015,7 +3031,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://sweetfont.com/og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-628391285dd8",
@@ -3029,7 +3047,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://tinkerfont.com/og.webp",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://tinkerfont.com/apple-touch-icon.png"
     },
     {
       "id": "resource-40e0c2050ea6",
@@ -3043,7 +3064,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://fontsource.org/og-image.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://fontsource.org/apple-touch-icon.png"
     },
     {
       "id": "resource-1557d6500f28",
@@ -3085,7 +3109,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://color.adobe.com/media_12ba9e5d49a6c9de7b856f08eea1bf21bfb90b4de.png?width=1200&#x26;format=pjpg&#x26;optimize=medium",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-c13e9c547a60",

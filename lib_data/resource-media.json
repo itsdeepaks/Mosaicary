@@ -1413,6 +1413,162 @@
       }
     },
     {
+      "resourceId": "resource-7ff8dc33fe5e",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.typewolf.com/assets/img/typewolf-og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.typewolf.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-e50e8d1ec69c",
+      "status": "approved",
+      "preview": {
+        "url": "https://cards.fontsinuse.com/cardshot?s=twitter&t=gallery&url=https://fontsinuse.com/&k=fea3b3b2f54abc640c7705b62dd465bd&v=5e95ed98",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fontsinuse.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://assets.fontsinuse.com/images/icons/apple-touch-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-3b9d710cd447",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/69eb208431be71c3a2eed9ae/6a19b3eb76c2032736e5c0d7_171e3a673da35daeab39e4bd23564790_homepage-og.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.freefaces.gallery",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/69eb208431be71c3a2eed9ae/6a09a90b02ca2e6f83e10992_webclip.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-07d9b88ef5af",
+      "status": "approved",
+      "favicon": {
+        "url": "https://open-foundry.com/apple-touch-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-42936db47b6a",
+      "status": "approved",
+      "favicon": {
+        "url": "https://fontpair.co/lovable-uploads/6d6d6d0f-fa61-4507-8417-e70f209f5be1.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a3de99297c3f",
+      "status": "approved",
+      "preview": {
+        "url": "https://fontmojo.com/OG.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fontmojo.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://fontmojo.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-4b6676338efd",
+      "status": "approved",
+      "preview": {
+        "url": "https://og.fontalternatives.com/og/home.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fontalternatives.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://fontalternatives.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9a194f839857",
+      "status": "approved",
+      "preview": {
+        "url": "https://sweetfont.com/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://sweetfont.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-628391285dd8",
+      "status": "approved",
+      "preview": {
+        "url": "https://tinkerfont.com/og.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://tinkerfont.com/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://tinkerfont.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-40e0c2050ea6",
+      "status": "approved",
+      "preview": {
+        "url": "https://fontsource.org/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fontsource.org",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://fontsource.org/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a2f7775b8c79",
+      "status": "approved",
+      "preview": {
+        "url": "https://color.adobe.com/media_12ba9e5d49a6c9de7b856f08eea1bf21bfb90b4de.png?width=1200&#x26;format=pjpg&#x26;optimize=medium",
+        "source": "open-graph",
+        "sourcePageUrl": "https://color.adobe.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {

@@ -1146,83 +1146,130 @@
     },
     {
       "resourceId": "resource-7ff8dc33fe5e",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e50e8d1ec69c",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-098d155d3888",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Font Squirrel page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-1e6b6fad041e",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official Fontesk image was a narrow 480×135 signature-font banner rather than a representative preview of the font catalogue; no raster favicon fallback was declared."
+      ]
     },
     {
       "resourceId": "resource-3b9d710cd447",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-07d9b88ef5af",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-bfe4ba65c95b",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Velvetyne source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-51cf9c6399c6",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Lost Type page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-42936db47b6a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-ebb8f5b293dd",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Fontjoy page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-b7677565a4ff",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical FontGen source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-a3de99297c3f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-62ae0ff6a769",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Variable Fonts page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-4b6676338efd",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9a194f839857",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-628391285dd8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-40e0c2050ea6",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-1557d6500f28",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Coolors source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-6897bacf002e",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Color Hunt source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-a2f7775b8c79",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c13e9c547a60",
