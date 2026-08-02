@@ -829,6 +829,230 @@
       }
     },
     {
+      "resourceId": "resource-4eba5c99801f",
+      "status": "approved",
+      "preview": {
+        "url": "https://evergreen.segment.com/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://evergreen.segment.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://evergreen.segment.com/favicon-32x32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-0146920ab9c3",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.tremor.so/opengraph-image.png?f5bbf8e00be369e2",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.tremor.so",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-e704e009b79a",
+      "status": "approved",
+      "preview": {
+        "url": "https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/meta/primereact-meta.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://primereact.dev/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-9a10e0f94d6a",
+      "status": "approved",
+      "preview": {
+        "url": "https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/meta/primevue-meta.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://primevue.dev/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-b6eecac2578f",
+      "status": "approved",
+      "preview": {
+        "url": "https://vuetifyjs.com/og/index.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://vuetifyjs.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-0d7e0a3bc997",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.quasar.dev/logo-v2/social-cover.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://quasar.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.quasar.dev/logo-v2/favicon/apple-icon-180x180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-b47c9612d739",
+      "status": "approved",
+      "preview": {
+        "url": "https://element-plus.org/images/element-plus-og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://element-plus.org",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-7e8cb8d5ef89",
+      "status": "approved",
+      "preview": {
+        "url": "https://material.angular.dev/assets/img/site-preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://material.angular.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      },
+      "favicon": {
+        "url": "https://material.angular.dev/assets/img/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-69d742c27ffc",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.bits-ui.com/og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://bits-ui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-175cd488da6c",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.melt-ui.com/banner.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://melt-ui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://melt-ui.com/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-52e69e90943d",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.skeleton.dev/api/og-image?feature=Skeleton",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.skeleton.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      },
+      "favicon": {
+        "url": "https://www.skeleton.dev/_astro/favicon.oeNx7Nna.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a3911f1d6257",
+      "status": "approved",
+      "favicon": {
+        "url": "https://m3.material.io/static/assets/m3-favicon-apple-touch.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-ea00ff19bb49",
+      "status": "approved",
+      "preview": {
+        "url": "https://polaris-react.shopify.com/og-images/home.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://polaris-react.shopify.com/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://polaris-react.shopify.com/images/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-2a6274dc58f9",
+      "status": "approved",
+      "preview": {
+        "url": "https://atlassian.design/assets/8bd131ad85a3/static/0b4e62efc0d2c7d917e11f3860855c05/meta.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://atlassian.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://atlassian.design/assets/8bd131ad85a3/icons/icon-512x512.png?v=f3b457b5551bdc77176991812213b3c8",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-f9a5dce2d302",
+      "status": "approved",
+      "preview": {
+        "url": "https://spectrum.adobe.com/static/landscape.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://spectrum.adobe.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-5df16e75e20e",
+      "status": "approved",
+      "preview": {
+        "url": "https://fluent2websitecdn.azureedge.net/cdn/fluent-logo-metadata.Cwa-_8F7.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fluent2.microsoft.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {

@@ -792,83 +792,115 @@
     },
     {
       "resourceId": "resource-4eba5c99801f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-0146920ab9c3",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-e704e009b79a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9a10e0f94d6a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b6eecac2578f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-0d7e0a3bc997",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b35f39183c29",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; only a remote SVG favicon and a missing favicon endpoint were found."
+      ]
     },
     {
       "resourceId": "resource-b47c9612d739",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-7e8cb8d5ef89",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-69d742c27ffc",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-175cd488da6c",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-52e69e90943d",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-a3911f1d6257",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-d99ec836c0db",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official Open Graph image is a generic Apple Developer Documentation card rather than Human Interface Guidelines-specific media; the only favicon used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-da29edad8096",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Carbon source exceeded the bounded 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-ea00ff19bb49",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-2a6274dc58f9",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-f9a5dce2d302",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-5df16e75e20e",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-5c3090a40968",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; the site exposed only a remote SVG icon and an HTML favicon response."
+      ]
     },
     {
       "resourceId": "resource-f4a72bdfeb3a",

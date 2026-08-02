@@ -1883,7 +1883,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://evergreen.segment.com/og-image.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://evergreen.segment.com/favicon-32x32.png"
     },
     {
       "id": "resource-0146920ab9c3",
@@ -1897,7 +1900,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.tremor.so/opengraph-image.png?f5bbf8e00be369e2",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-e704e009b79a",
@@ -1911,7 +1916,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/meta/primereact-meta.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-9a10e0f94d6a",
@@ -1925,7 +1932,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/meta/primevue-meta.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-b6eecac2578f",
@@ -1939,7 +1948,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://vuetifyjs.com/og/index.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-0d7e0a3bc997",
@@ -1953,7 +1964,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.quasar.dev/logo-v2/social-cover.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://cdn.quasar.dev/logo-v2/favicon/apple-icon-180x180.png"
     },
     {
       "id": "resource-b35f39183c29",
@@ -1981,7 +1995,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://element-plus.org/images/element-plus-og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-7e8cb8d5ef89",
@@ -1995,7 +2011,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://material.angular.dev/assets/img/site-preview.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://material.angular.dev/assets/img/apple-touch-icon.png"
     },
     {
       "id": "resource-69d742c27ffc",
@@ -2009,7 +2028,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.bits-ui.com/og.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-175cd488da6c",
@@ -2023,7 +2044,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.melt-ui.com/banner.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://melt-ui.com/favicon.png"
     },
     {
       "id": "resource-52e69e90943d",
@@ -2037,7 +2061,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.skeleton.dev/api/og-image?feature=Skeleton",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://www.skeleton.dev/_astro/favicon.oeNx7Nna.png"
     },
     {
       "id": "resource-a3911f1d6257",
@@ -2051,7 +2078,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://m3.material.io/static/assets/m3-favicon-apple-touch.png"
     },
     {
       "id": "resource-d99ec836c0db",
@@ -2093,7 +2121,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://polaris-react.shopify.com/og-images/home.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://polaris-react.shopify.com/images/favicon.png"
     },
     {
       "id": "resource-2a6274dc58f9",
@@ -2107,7 +2138,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://atlassian.design/assets/8bd131ad85a3/static/0b4e62efc0d2c7d917e11f3860855c05/meta.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://atlassian.design/assets/8bd131ad85a3/icons/icon-512x512.png?v=f3b457b5551bdc77176991812213b3c8"
     },
     {
       "id": "resource-f9a5dce2d302",
@@ -2121,7 +2155,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://spectrum.adobe.com/static/landscape.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-5df16e75e20e",
@@ -2135,7 +2171,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://fluent2websitecdn.azureedge.net/cdn/fluent-logo-metadata.Cwa-_8F7.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-5c3090a40968",
