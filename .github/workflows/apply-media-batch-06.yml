@@ -52,12 +52,38 @@ jobs:
       - name: Apply reviewed decisions with exact assertions
         run: python .github/scripts/apply-media-batch-06.py
 
+      - name: Verify approved source before generation
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const source = JSON.parse(fs.readFileSync('lib_data/resource-media.json', 'utf8'));
+          const ids = new Set(source.resources.map((entry) => entry.resourceId));
+          const selected = JSON.parse(fs.readFileSync('artifacts/media-batch-06/selection.json', 'utf8')).resourceIds;
+          const approvedSelected = selected.filter((id) => ids.has(id));
+          console.log(JSON.stringify({ approvedCount: source.resources.length, approvedSelected }, null, 2));
+          if (source.resources.length !== 70 || approvedSelected.length !== 16) process.exit(1);
+          NODE
+
       - name: Regenerate deterministic outputs
         working-directory: web
         run: |
           npm run media:review:generate
           npm run media:coverage:generate
           npm run catalogue:generate
+
+      - name: Verify generated composition before formatting
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const catalogue = JSON.parse(fs.readFileSync('web/data/catalogue.json', 'utf8'));
+          const report = JSON.parse(fs.readFileSync('web/data/catalogue-validation.json', 'utf8'));
+          const enriched = catalogue.resources.filter((entry) => entry.previewImageUrl || entry.faviconUrl);
+          const mediaIssues = [...report.issues.errors, ...report.issues.warnings].filter((entry) => /media|preview|favicon/i.test(`${entry.code} ${entry.message}`));
+          console.log(JSON.stringify({ enrichedCount: enriched.length, mediaSummary: report.summary?.media, mediaIssues }, null, 2));
+          if (enriched.length !== 70 || mediaIssues.length !== 0) process.exit(1);
+          NODE
 
       - name: Format scoped files
         working-directory: web
