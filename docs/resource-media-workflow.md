@@ -140,7 +140,7 @@ A network discovery run is research, not publication.
 Before setting `reviewerStatus` to `approved-for-copy`:
 
 1. Open the canonical resource page manually.
-2. Confirm the source page declared the Open Graph URL or that a manual source is documented.
+2. Confirm the source page declared the Open Graph or Twitter URL, or that a manual source is documented.
 3. Confirm the final media URL is HTTPS, public, credential-free, and raster.
 4. Confirm the recorded `source` and exact `sourceProperty` match the canonical page declaration; do not label Twitter metadata as Open Graph.
 5. Confirm the actual response `Content-Type` matches the recorded value.

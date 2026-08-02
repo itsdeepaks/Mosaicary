@@ -6,23 +6,15 @@
   "additionalProperties": false,
   "required": ["version", "resources"],
   "properties": {
-    "version": {
-      "type": "integer",
-      "const": 1
-    },
+    "version": { "type": "integer", "const": 1 },
     "resources": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/resourceMedia"
-      }
+      "items": { "$ref": "#/$defs/resourceMedia" }
     }
   },
   "$defs": {
-    "date": {
-      "type": "string",
-      "format": "date"
-    },
+    "date": { "type": "string", "format": "date" },
     "rasterImage": {
       "type": "string",
       "enum": ["image/avif", "image/jpeg", "image/png", "image/webp"]
@@ -43,22 +35,11 @@
         "contentType"
       ],
       "properties": {
-        "url": {
-          "$ref": "#/$defs/httpsUrl"
-        },
-        "source": {
-          "type": "string",
-          "enum": ["manual", "open-graph", "twitter"]
-        },
-        "sourcePageUrl": {
-          "$ref": "#/$defs/httpsUrl"
-        },
-        "checkedAt": {
-          "$ref": "#/$defs/date"
-        },
-        "contentType": {
-          "$ref": "#/$defs/rasterImage"
-        },
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "source": { "type": "string", "enum": ["manual", "open-graph", "twitter"] },
+        "sourcePageUrl": { "$ref": "#/$defs/httpsUrl" },
+        "checkedAt": { "$ref": "#/$defs/date" },
+        "contentType": { "$ref": "#/$defs/rasterImage" },
         "sourceProperty": {
           "type": "string",
           "enum": [
@@ -75,15 +56,9 @@
       "additionalProperties": false,
       "required": ["url", "checkedAt", "contentType"],
       "properties": {
-        "url": {
-          "$ref": "#/$defs/httpsUrl"
-        },
-        "checkedAt": {
-          "$ref": "#/$defs/date"
-        },
-        "contentType": {
-          "$ref": "#/$defs/rasterImage"
-        }
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "checkedAt": { "$ref": "#/$defs/date" },
+        "contentType": { "$ref": "#/$defs/rasterImage" }
       }
     },
     "resourceMedia": {
@@ -95,25 +70,11 @@
           "type": "string",
           "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
         },
-        "status": {
-          "type": "string",
-          "const": "approved"
-        },
-        "preview": {
-          "$ref": "#/$defs/preview"
-        },
-        "favicon": {
-          "$ref": "#/$defs/favicon"
-        }
+        "status": { "type": "string", "const": "approved" },
+        "preview": { "$ref": "#/$defs/preview" },
+        "favicon": { "$ref": "#/$defs/favicon" }
       },
-      "anyOf": [
-        {
-          "required": ["preview"]
-        },
-        {
-          "required": ["favicon"]
-        }
-      ]
+      "anyOf": [{ "required": ["preview"] }, { "required": ["favicon"] }]
     }
   }
 }

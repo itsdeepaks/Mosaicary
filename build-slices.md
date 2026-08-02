@@ -52,62 +52,62 @@ Stop and fix before merge when any of these occur:
 
 ## 4. Slice status
 
-| ID     | Slice                                                                    | Status   | Depends on                            |
-| ------ | ------------------------------------------------------------------------ | -------- | ------------------------------------- |
-| 0.1    | Research, design contract, assets, brand preview                         | DONE     | —                                     |
-| 0.2    | Repository operating contract                                            | DONE     | 0.1                                   |
-| 0.3    | Supabase and media delivery realignment                                  | DONE     | 13.5                                  |
-| 1.1    | Next.js application scaffold and CI baseline                             | DONE     | 0.2                                   |
-| 1.2    | Fonts, tokens, grain, responsive layout lab                              | DONE     | 1.1                                   |
-| 2.1    | Global header and navigation shell                                       | DONE     | 1.2                                   |
-| 2.2    | Footer and launch route integrity                                        | DONE     | 2.1                                   |
-| 3.1    | Explore hero composition                                                 | DONE     | 2.2                                   |
-| 3.2    | Search interaction and truthful facts                                    | DONE     | 3.1                                   |
-| 4.1    | Catalogue CSV-to-JSON migration and validation                           | DONE     | 1.1                                   |
-| 4.2    | Discovery URL state, category, access, and sort controls                 | DONE     | 3.2, 4.1                              |
-| 5.1    | Resource-card pilot with media fallbacks                                 | DONE     | 4.1                                   |
-| 5.2    | Responsive resource grid and complete Explore composition                | DONE     | 4.2, 5.1                              |
-| 5.3a   | Approved resource-media source and rendering pilot                       | DONE     | 5.2                                   |
-| 5.3b   | Media discovery and review tooling                                       | DONE     | 5.3a                                  |
-| 5.3c   | Reviewed media discovery pilot                                           | DONE     | 5.3b                                  |
-| 5.3d   | Reviewed asset-generator media pilot                                     | DONE     | 5.3c                                  |
-| 5.4a   | Full-catalogue media disposition manifest and batch architecture         | DONE     | 5.3d, 0.3                             |
-| 5.4b-p | Open Graph and Twitter preview provenance                                | NEXT     | 5.4a                                  |
-| 5.4b   | Reviewed metadata-discovery batches                                      | PLANNED  | 5.4b-p                                |
-| 5.4c   | Screenshot fallback policy and feasibility                               | DEFERRED | 5.4b, explicit approval               |
-| 6.1    | Repository-maintained collection schema and launch data                  | DONE     | 4.1                                   |
-| 6.2    | Collections page and collection detail                                   | DONE     | 6.1                                   |
-| 7.1    | Full Reference desktop table/list                                        | DONE     | 4.1                                   |
-| 7.1a   | Visual realignment contract and canonical reference intake               | DONE     | 7.1                                   |
-| 7.1b   | Explore hero, search, and platform-neutral shortcut realignment          | DONE     | 7.1a                                  |
-| 7.1c   | Explore category rail containment and overflow affordance                | DONE     | 7.1b                                  |
-| 7.1d   | Explore resource-card grid density and shared-border layout              | DONE     | 7.1c                                  |
-| 7.1e   | UI realignment: grain opacity, mobile hero height & card border collapse | DONE     | 7.1d                                  |
-| 7.2    | Full Reference tablet/mobile filters and compact rows                    | DONE     | 7.1, 7.1d                             |
-| 7.2a   | Saved workspace toast notifications, confirmation modal & undo buffer    | DONE     | 7.1e, 8.2                             |
-| 7.2b   | Full Reference verification date metadata & date sorting                 | DONE     | 7.2, 7.2a                             |
-| 8.1    | Browser-local save store and legacy-key migration                        | DONE     | 5.1                                   |
-| 8.2    | Saved page, empty state, clear and undo                                  | DONE     | 8.1                                   |
-| 9.1    | About, curation, content policy, privacy, and terms                      | DONE     | 2.2                                   |
-| 9.2    | Phase 1 release hardening and deployment runbook                         | DONE     | 5.2, 6.2, 7.2, 8.2, 9.1               |
-| 9.2a   | Pause automatic Vercel Git deployments during local and CI development   | DONE     | 9.2                                   |
-| 9.3    | Production replacement and rollback verification                         | DONE     | 9.2                                   |
-| 10.1a  | Local Supabase SSR clients and environment contract                      | DONE     | Phase 1                               |
-| 10.1b  | Existing Supabase project link verification and client smoke test        | DONE     | 10.1a, 0.3, authorized project access |
-| 10.1c  | Credential-ready Supabase activation contract                            | DONE     | 10.1a                                 |
-| 10.2a  | Credential-ready auth shell and unavailable state                        | DONE     | 10.1c                                 |
-| 10.2b  | Password, OTP, and Google activation                                     | BLOCKED  | 10.1b, 10.2a                          |
-| 10.2c  | Repository cleanup, LF line-ending normalization & docs sitemap          | DONE     | 10.2a                                 |
-| 11.1   | User-data schema and RLS                                                 | DONE     | 10.1b                                 |
-| 11.2   | Cloud saves, private collections, notes, local import                    | PLANNED  | 10.2b, 11.1                           |
-| 12.1   | Submit, suggest, and report forms                                        | PLANNED  | 10.2b, 11.1                           |
-| 12.2   | Moderation state and transactional email                                 | PLANNED  | 12.1, Resend                          |
-| 13.0   | UI-intelligence roadmap, research, provider boundary, and schema         | DONE     | current main                          |
-| 13.1   | Capability-profile pilot for 20 high-value resources                     | DONE     | 13.0                                  |
-| 13.2   | Profile validation, evidence freshness, and review tooling               | DONE     | 13.1                                  |
-| 13.3   | Local context-engine provider & file-backed index                        | DONE     | 13.2                                  |
-| 13.4   | Research stack builder and Markdown reference-packet export              | DONE     | 13.3                                  |
-| 13.5   | Read-only Tessli MCP over native metadata                                | DONE     | 13.4                                  |
+| ID | Slice | Status | Depends on |
+|---|---|---|---|
+| 0.1 | Research, design contract, assets, brand preview | DONE | — |
+| 0.2 | Repository operating contract | DONE | 0.1 |
+| 0.3 | Supabase and media delivery realignment | DONE | 13.5 |
+| 1.1 | Next.js application scaffold and CI baseline | DONE | 0.2 |
+| 1.2 | Fonts, tokens, grain, responsive layout lab | DONE | 1.1 |
+| 2.1 | Global header and navigation shell | DONE | 1.2 |
+| 2.2 | Footer and launch route integrity | DONE | 2.1 |
+| 3.1 | Explore hero composition | DONE | 2.2 |
+| 3.2 | Search interaction and truthful facts | DONE | 3.1 |
+| 4.1 | Catalogue CSV-to-JSON migration and validation | DONE | 1.1 |
+| 4.2 | Discovery URL state, category, access, and sort controls | DONE | 3.2, 4.1 |
+| 5.1 | Resource-card pilot with media fallbacks | DONE | 4.1 |
+| 5.2 | Responsive resource grid and complete Explore composition | DONE | 4.2, 5.1 |
+| 5.3a | Approved resource-media source and rendering pilot | DONE | 5.2 |
+| 5.3b | Media discovery and review tooling | DONE | 5.3a |
+| 5.3c | Reviewed media discovery pilot | DONE | 5.3b |
+| 5.3d | Reviewed asset-generator media pilot | DONE | 5.3c |
+| 5.4a | Full-catalogue media disposition manifest and batch architecture | DONE | 5.3d, 0.3 |
+| 5.4b-p | Open Graph and Twitter preview provenance | NEXT | 5.4a |
+| 5.4b | Reviewed metadata-discovery batches | PLANNED | 5.4b-p |
+| 5.4c | Screenshot fallback policy and feasibility | DEFERRED | 5.4b, explicit approval |
+| 6.1 | Repository-maintained collection schema and launch data | DONE | 4.1 |
+| 6.2 | Collections page and collection detail | DONE | 6.1 |
+| 7.1 | Full Reference desktop table/list | DONE | 4.1 |
+| 7.1a | Visual realignment contract and canonical reference intake | DONE | 7.1 |
+| 7.1b | Explore hero, search, and platform-neutral shortcut realignment | DONE | 7.1a |
+| 7.1c | Explore category rail containment and overflow affordance | DONE | 7.1b |
+| 7.1d | Explore resource-card grid density and shared-border layout | DONE | 7.1c |
+| 7.1e | UI realignment: grain opacity, mobile hero height & card border collapse | DONE | 7.1d |
+| 7.2 | Full Reference tablet/mobile filters and compact rows | DONE | 7.1, 7.1d |
+| 7.2a | Saved workspace toast notifications, confirmation modal & undo buffer | DONE | 7.1e, 8.2 |
+| 7.2b | Full Reference verification date metadata & date sorting | DONE | 7.2, 7.2a |
+| 8.1 | Browser-local save store and legacy-key migration | DONE | 5.1 |
+| 8.2 | Saved page, empty state, clear and undo | DONE | 8.1 |
+| 9.1 | About, curation, content policy, privacy, and terms | DONE | 2.2 |
+| 9.2 | Phase 1 release hardening and deployment runbook | DONE | 5.2, 6.2, 7.2, 8.2, 9.1 |
+| 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
+| 9.3 | Production replacement and rollback verification | DONE | 9.2 |
+| 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
+| 10.1b | Existing Supabase project link verification and client smoke test | DONE | 10.1a, 0.3, authorized project access |
+| 10.1c | Credential-ready Supabase activation contract | DONE | 10.1a |
+| 10.2a | Credential-ready auth shell and unavailable state | DONE | 10.1c |
+| 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
+| 10.2c | Repository cleanup, LF line-ending normalization & docs sitemap | DONE | 10.2a |
+| 11.1 | User-data schema and RLS | DONE | 10.1b |
+| 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
+| 12.1 | Submit, suggest, and report forms | PLANNED | 10.2b, 11.1 |
+| 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
+| 13.0 | UI-intelligence roadmap, research, provider boundary, and schema | DONE | current main |
+| 13.1 | Capability-profile pilot for 20 high-value resources | DONE | 13.0 |
+| 13.2 | Profile validation, evidence freshness, and review tooling | DONE | 13.1 |
+| 13.3 | Local context-engine provider & file-backed index | DONE | 13.2 |
+| 13.4 | Research stack builder and Markdown reference-packet export | DONE | 13.3 |
+| 13.5 | Read-only Tessli MCP over native metadata | DONE | 13.4 |
 
 ## 5. Slice 0.2 — Repository operating contract
 
