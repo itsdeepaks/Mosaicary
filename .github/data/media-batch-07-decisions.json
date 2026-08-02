@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "checkedAt": "2026-08-02",
+  "sourceRunId": 30759880442,
+  "sourceArtifact": "tessli-media-batch-07-review",
+  "sourceArtifactId": 8837115178,
+  "sourceArtifactDigest": "sha256:d27ddf8d5c90a336b8a8fda5b093403f458d099ea301e48860733084381e4e59",
+  "selectedIds": [
+    "resource-4eba5c99801f",
+    "resource-0146920ab9c3",
+    "resource-e704e009b79a",
+    "resource-9a10e0f94d6a",
+    "resource-b6eecac2578f",
+    "resource-0d7e0a3bc997",
+    "resource-b35f39183c29",
+    "resource-b47c9612d739",
+    "resource-7e8cb8d5ef89",
+    "resource-69d742c27ffc",
+    "resource-175cd488da6c",
+    "resource-52e69e90943d",
+    "resource-a3911f1d6257",
+    "resource-d99ec836c0db",
+    "resource-da29edad8096",
+    "resource-ea00ff19bb49",
+    "resource-2a6274dc58f9",
+    "resource-f9a5dce2d302",
+    "resource-5df16e75e20e",
+    "resource-5c3090a40968"
+  ],
+  "approvals": {
+    "resource-4eba5c99801f": ["preview", "favicon"],
+    "resource-0146920ab9c3": ["preview"],
+    "resource-e704e009b79a": ["preview"],
+    "resource-9a10e0f94d6a": ["preview"],
+    "resource-b6eecac2578f": ["preview"],
+    "resource-0d7e0a3bc997": ["preview", "favicon"],
+    "resource-b47c9612d739": ["preview"],
+    "resource-7e8cb8d5ef89": ["preview", "favicon"],
+    "resource-69d742c27ffc": ["preview"],
+    "resource-175cd488da6c": ["preview", "favicon"],
+    "resource-52e69e90943d": ["preview", "favicon"],
+    "resource-a3911f1d6257": ["favicon"],
+    "resource-ea00ff19bb49": ["preview", "favicon"],
+    "resource-2a6274dc58f9": ["preview", "favicon"],
+    "resource-f9a5dce2d302": ["preview"],
+    "resource-5df16e75e20e": ["preview"]
+  },
+  "terminal": {
+    "resource-b35f39183c29": {
+      "disposition": "no-suitable-raster",
+      "note": "No accepted Open Graph or Twitter raster was declared; only a remote SVG favicon and a missing favicon endpoint were found."
+    },
+    "resource-d99ec836c0db": {
+      "disposition": "rejected",
+      "note": "The official Open Graph image is a generic Apple Developer Documentation card rather than Human Interface Guidelines-specific media; the only favicon used unsupported ICO media."
+    },
+    "resource-da29edad8096": {
+      "disposition": "blocked",
+      "note": "The canonical Carbon source exceeded the bounded 1 MiB HTML response limit; the limit was not bypassed."
+    },
+    "resource-5c3090a40968": {
+      "disposition": "no-suitable-raster",
+      "note": "No accepted Open Graph or Twitter raster was declared; the site exposed only a remote SVG icon and an HTML favicon response."
+    }
+  },
+  "notes": {
+    "resource-4eba5c99801f": "Approved the official Evergreen Open Graph preview and raster favicon after exact review.",
+    "resource-0146920ab9c3": "Approved the official Tremor product-dashboard Open Graph preview after exact review; unsupported favicon responses were not copied.",
+    "resource-e704e009b79a": "Approved the official PrimeReact component-library Open Graph preview after exact review.",
+    "resource-9a10e0f94d6a": "Approved the official PrimeVue component-library Open Graph preview after exact review.",
+    "resource-b6eecac2578f": "Approved the official Vuetify framework Open Graph preview after exact review; unsupported ICO favicon was not copied.",
+    "resource-0d7e0a3bc997": "Approved the official Quasar Open Graph preview and raster favicon after exact review.",
+    "resource-b47c9612d739": "Approved the official Element Plus product-specific Open Graph preview after exact review.",
+    "resource-7e8cb8d5ef89": "Approved the official Angular Material Open Graph preview and raster favicon after exact review.",
+    "resource-69d742c27ffc": "Approved the official Bits UI product-specific Open Graph preview after exact review.",
+    "resource-175cd488da6c": "Approved the official Melt UI Open Graph preview and raster favicon after exact review.",
+    "resource-52e69e90943d": "Approved the official Skeleton design-system Open Graph preview and raster favicon after exact review.",
+    "resource-a3911f1d6257": "Approved the official Material Design 3 raster favicon fallback. The 8553×4811 Open Graph image was rejected as an oversized high-dimension card asset.",
+    "resource-ea00ff19bb49": "Approved the official Shopify Polaris React Open Graph preview and raster favicon after exact review.",
+    "resource-2a6274dc58f9": "Approved the official Atlassian Design System Open Graph preview and raster favicon after exact review.",
+    "resource-f9a5dce2d302": "Approved the official Adobe Spectrum branded Open Graph preview after exact review.",
+    "resource-5df16e75e20e": "Approved the official Microsoft Fluent 2 metadata artwork after exact review."
+  },
+  "visualRejections": [
+    "Apple Human Interface Guidelines: rejected generic Apple Developer Documentation Open Graph card as not HIG-specific.",
+    "Material Design 3: rejected 8553×4811 Open Graph image as an oversized high-dimension card asset; approved favicon only."
+  ]
+}
