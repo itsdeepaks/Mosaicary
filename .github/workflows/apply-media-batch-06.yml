@@ -72,7 +72,7 @@ jobs:
           npm run media:coverage:generate
           npm run catalogue:generate
 
-      - name: Verify generated composition before formatting
+      - name: Verify generated composition
         shell: bash
         run: |
           node <<'NODE'
@@ -85,20 +85,15 @@ jobs:
           if (enriched.length !== 70 || mediaIssues.length !== 0) process.exit(1);
           NODE
 
-      - name: Format scoped files
+      - name: Format authored files only
         working-directory: web
         run: >-
           npx prettier --write
           ../docs/remaining-phase-plan.md
           ../docs/slices/5.4b-06-reviewed-media-discovery.md
-          ../lib_data/resource-media.json
-          ../lib_data/resource-media-coverage.json
-          ../docs/reports/resource-media-candidate-review.json
-          ../docs/reports/resource-media-candidate-review.md
-          data/catalogue.json
-          data/catalogue-validation.json
           tests/resource-media.test.mjs
           tests/resource-media-coverage.test.mjs
+          tests/resource-media-candidates.test.mjs
 
       - name: Run focused Batch 06 checks
         working-directory: web
@@ -134,6 +129,7 @@ jobs:
             web/data/catalogue.json \
             web/data/catalogue-validation.json \
             web/tests/resource-media.test.mjs \
-            web/tests/resource-media-coverage.test.mjs
+            web/tests/resource-media-coverage.test.mjs \
+            web/tests/resource-media-candidates.test.mjs
           git commit -m "feat: approve sixth reviewed media batch"
           git push origin HEAD:${{ github.head_ref }}
