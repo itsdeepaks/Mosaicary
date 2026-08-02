@@ -3440,7 +3440,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://icons.getbootstrap.com/assets/img/bootstrap-icons-social.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://icons.getbootstrap.com/assets/img/favicons/apple-touch-icon.png"
     },
     {
       "id": "resource-0726f9c1b661",
@@ -3468,7 +3471,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://tabler.io/icons/opengraph-image-1v9qf3.png?opengraph-image.0cho_qwy4g1dt.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-49786c86cd13",
@@ -3482,7 +3487,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://phosphoricons.com/phosphor-opengraph.png?v=2.0.2",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://phosphoricons.com/favicon-192.png"
     },
     {
       "id": "resource-5b1869603a20",
@@ -3496,7 +3504,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://iconoir.com/iconoir-brand.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-18bba87b577c",
@@ -3524,7 +3534,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://feathericons.com/feather-og.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://feathericons.com/favicon-32x32.png"
     },
     {
       "id": "resource-80dccdf3e0ee",
@@ -3538,7 +3551,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://ionic.io/ionicons/assets/img/meta/ionicons-og.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://ionic.io/ionicons/assets/img/meta/apple-icon-180x180.png"
     },
     {
       "id": "resource-c95103c09615",
@@ -3552,7 +3568,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://boxicons.com/opengraph-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-3f8a2a168dc0",
@@ -3580,7 +3598,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://akaricons.com/images/akar-opengraph.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://akaricons.com/images/favicon.png"
     },
     {
       "id": "resource-af1855253bff",
@@ -3594,7 +3615,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.radix-ui.com/icons/opengraph-image.png?opengraph-image.3ksnf9bqqwt8y.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-e3fa48ecc192",
@@ -3608,7 +3631,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://lf-iconpark-cdn-cn.bytetos.com/obj/iconpark-site/bydesign/iconparksite/logo192.png"
     },
     {
       "id": "resource-60a700cd8a9e",
@@ -3636,7 +3660,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://img.fortawesome.com/1ce05b4b/open-graph-general.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://fontawesome.com/images/favicon/apple-touch-icon.png"
     },
     {
       "id": "resource-55340c3df827",
@@ -3664,7 +3691,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://thenounproject.com/apple-touch-icon.png"
     },
     {
       "id": "resource-f151e19894dd",
@@ -3692,7 +3720,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://media.flaticon.com/share/flaticon-generic.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://media.flaticon.com/dist/min/img/apple-icon-180x180.png"
     },
     {
       "id": "resource-200891a7ca7e",

@@ -1784,6 +1784,191 @@
       }
     },
     {
+      "resourceId": "resource-d9660d77b336",
+      "status": "approved",
+      "preview": {
+        "url": "https://icons.getbootstrap.com/assets/img/bootstrap-icons-social.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://icons.getbootstrap.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://icons.getbootstrap.com/assets/img/favicons/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-c0300d9fcfe7",
+      "status": "approved",
+      "preview": {
+        "url": "https://tabler.io/icons/opengraph-image-1v9qf3.png?opengraph-image.0cho_qwy4g1dt.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://tabler.io/icons",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-49786c86cd13",
+      "status": "approved",
+      "preview": {
+        "url": "https://phosphoricons.com/phosphor-opengraph.png?v=2.0.2",
+        "source": "open-graph",
+        "sourcePageUrl": "https://phosphoricons.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://phosphoricons.com/favicon-192.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-5b1869603a20",
+      "status": "approved",
+      "preview": {
+        "url": "https://iconoir.com/iconoir-brand.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://iconoir.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-3ae8acba9f2a",
+      "status": "approved",
+      "preview": {
+        "url": "https://feathericons.com/feather-og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://feathericons.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://feathericons.com/favicon-32x32.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-80dccdf3e0ee",
+      "status": "approved",
+      "preview": {
+        "url": "https://ionic.io/ionicons/assets/img/meta/ionicons-og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://ionic.io/ionicons",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://ionic.io/ionicons/assets/img/meta/apple-icon-180x180.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-c95103c09615",
+      "status": "approved",
+      "preview": {
+        "url": "https://boxicons.com/opengraph-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://boxicons.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-3af730ea8de8",
+      "status": "approved",
+      "preview": {
+        "url": "https://akaricons.com/images/akar-opengraph.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://akaricons.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://akaricons.com/images/favicon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-af1855253bff",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.radix-ui.com/icons/opengraph-image.png?opengraph-image.3ksnf9bqqwt8y.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.radix-ui.com/icons",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-e3fa48ecc192",
+      "status": "approved",
+      "favicon": {
+        "url": "https://lf-iconpark-cdn-cn.bytetos.com/obj/iconpark-site/bydesign/iconparksite/logo192.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e9556bbef966",
+      "status": "approved",
+      "preview": {
+        "url": "https://img.fortawesome.com/1ce05b4b/open-graph-general.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://fontawesome.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://fontawesome.com/images/favicon/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-903c037f5110",
+      "status": "approved",
+      "favicon": {
+        "url": "https://thenounproject.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-d573ddeaa5d7",
+      "status": "approved",
+      "preview": {
+        "url": "https://media.flaticon.com/share/flaticon-generic.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.flaticon.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://media.flaticon.com/dist/min/img/apple-icon-180x180.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {
