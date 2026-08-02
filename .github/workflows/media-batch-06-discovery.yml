@@ -49,7 +49,7 @@ jobs:
           cd web
           node scripts/discover-resource-media.mjs \
             --checked-at 2026-08-02 \
-            --output ../artifacts/media-batch-06/candidates.json \
+            --output artifacts/media-batch-06/candidates.json \
             "${ARGS[@]}"
 
       - name: Validate candidate evidence
