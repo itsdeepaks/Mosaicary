@@ -8,10 +8,15 @@ This handoff records execution boundaries, not credentials or permanent truth.
 Current `main`, repository contracts, code, tests, CI, deployments, and the
 authorized external-project state always outrank it.
 
-## Immediate next slice
+## Current account-slice status
 
-The next account slice is **10.1b — existing Supabase project link verification
-and client smoke test**.
+Slice **10.1b — existing Supabase project link verification and client smoke
+test** is complete through the local-only checkpoint recorded in
+`docs/slices/10.1b-existing-project-link-verification.md`.
+
+The next account slice is **10.2b — password, six-digit OTP, and Google
+activation**, and it remains blocked until its provider, redirect, SMTP, and
+live-auth approvals are made separately.
 
 A dedicated Tessli Supabase project already exists and its public URL and
 publishable key are present in ignored local environment configuration. Do not
@@ -54,22 +59,24 @@ branch deletion, and refreshed `main` before the next slice.
 
 1. Identify the existing Tessli project without exposing its configuration.
 2. Establish authenticated management access to that exact project.
-3. Record the project organization, region, plan, and health without billing or
-   credential material.
-4. Verify local browser and server/cookie-aware clients reach the selected
-   project using publishable configuration only.
+3. Record the project region and health without billing or credential material.
+4. Construct local browser and server/cookie-aware factories using publishable
+   configuration only, and pair that construction evidence with a separate
+   harmless endpoint-reachability check.
 5. Verify the `/auth` shell reports configured-but-not-activated and leaves its
    controls disabled.
-6. Inspect current Auth settings, allowed URLs, and Supabase security and
-   performance advisors through authorized tooling.
-7. Verify required public environment-variable names exist in local, Vercel
-   preview, and Vercel production scopes without printing their values.
+6. Inspect current Auth settings and Supabase security and performance advisors
+   through authorized tooling. Redirect and provider activation checks belong to
+   Slice 10.2b.
+7. Verify required public environment-variable names exist in ignored local
+   configuration without printing their values. Hosting environment scopes are
+   outside this local-only slice.
 8. Inventory existing provider-created objects without treating them as Tessli
    application schema.
 9. Add truthful Slice 10.1b evidence, focused tests, rollback instructions, and
    ledger status.
-10. Run focused checks, all repository checks, browser smoke, exact-head CI, and
-    a preview deployment when available.
+10. Run focused checks, all repository checks, and local browser/factory smoke;
+    do not make Vercel or preview evidence a 10.1b prerequisite.
 
 ### Exclusions
 
@@ -88,9 +95,8 @@ Stop Slice 10.1b at a truthful checkpoint when:
 
 - authenticated tooling cannot prove it targets the existing Tessli project;
 - only public configuration is available for a management-only check;
-- Vercel environment placement cannot be inspected safely;
-- provider settings, advisors, CI, browser smoke, or deployment cannot be
-  verified honestly;
+- provider settings, advisors, local browser/factory smoke, or repository checks
+  cannot be verified honestly;
 - any credential appears in tracked content or output.
 
 ## Account dependency order
@@ -98,10 +104,11 @@ Stop Slice 10.1b at a truthful checkpoint when:
 ```text
 10.1b existing-project verification
   ├─ 10.2b password, six-digit OTP, and Google activation
-  └─ 11.1 user-data schema and RLS
-       ├─ 11.2 cloud saves, private collections, notes, local import
-       └─ 12.1 submit, suggest, and report forms
-            └─ 12.2 moderation state and transactional email
+  └─ security-advisor remediation decision
+       └─ 11.1 user-data schema and RLS
+            ├─ 11.2 cloud saves, private collections, notes, local import
+            └─ 12.1 submit, suggest, and report forms
+                 └─ 12.2 moderation state and transactional email
 ```
 
 ### 10.2b — live authentication
@@ -113,6 +120,9 @@ and recovery behavior; session refresh; sign-out; and rollback. Do not combine
 authentication with database schema work.
 
 ### 11.1 — user schema and RLS
+
+Start only after Slice 10.1b and its security-advisor remediation gate are
+complete.
 
 Use reviewed migrations. All user-owned exposed tables require RLS. Test as
 anonymous, authenticated owner, and authenticated non-owner. UPDATE policies
