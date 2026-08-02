@@ -1053,6 +1053,148 @@
       }
     },
     {
+      "resourceId": "resource-d3111f212292",
+      "status": "approved",
+      "preview": {
+        "url": "https://design-system.service.gov.uk/assets/images/govuk-opengraph-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://design-system.service.gov.uk",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://design-system.service.gov.uk/assets/images/govuk-icon-180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-d4ea74da16b8",
+      "status": "approved",
+      "favicon": {
+        "url": "https://designsystem.digital.gov/assets/img/favicons/favicon-192.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e3dd23ba936f",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.sap.com/design-system/media_1ee9b153315b474fc847766c10a4f9ca4c99904d7.png?width=1200&#x26;format=pjpg&#x26;optimize=medium",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.sap.com/design-system/fiori-design-web",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      }
+    },
+    {
+      "resourceId": "resource-2779e0c3a14a",
+      "status": "approved",
+      "favicon": {
+        "url": "https://baseweb.design/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-946f1b1790d0",
+      "status": "approved",
+      "preview": {
+        "url": "https://garden.zendesk.com/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://garden.zendesk.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://garden.zendesk.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-8cc85fbfcfc8",
+      "status": "approved",
+      "favicon": {
+        "url": "https://design.gitlab.com//favicon-32x32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-19d73841f2dc",
+      "status": "approved",
+      "favicon": {
+        "url": "https://wise.design/_assets/v11/919f75a1f6fff5df651d33de80fd822fe89c1d5d.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/avif"
+      }
+    },
+    {
+      "resourceId": "resource-0032132a8747",
+      "status": "approved",
+      "favicon": {
+        "url": "https://assets.ubuntu.com/v1/f1464d22-vanilla_favicon_48px.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-086a3588fd20",
+      "status": "approved",
+      "preview": {
+        "url": "https://designsystemsrepo.com/social-media.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://designsystemsrepo.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://designsystemsrepo.com/assets/static/favicon.7b22250.0a422b3a157029ec129dcb261a8ff377.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-374543d4f72b",
+      "status": "approved",
+      "preview": {
+        "url": "https://images.motion.dev/og/fresh/v1/site/home-3jhn8b0abpu66.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://motion.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://motion.dev/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9042d48e084f",
+      "status": "approved",
+      "preview": {
+        "url": "https://gsap.com/GSAP-share-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://gsap.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://gsap.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {

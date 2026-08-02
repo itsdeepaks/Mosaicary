@@ -904,83 +904,130 @@
     },
     {
       "resourceId": "resource-f4a72bdfeb3a",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The official preview returned binary/octet-stream and all discovered favicons used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-d3111f212292",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-d4ea74da16b8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c4e8e585fa22",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical AWS Cloudscape source exceeded the bounded 1 MiB HTML response limit; the limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-e3dd23ba936f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-2779e0c3a14a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-5a53b49a7497",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-946f1b1790d0",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-851b62e33a7a",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-8cc85fbfcfc8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-26b459ed0f65",
-      "disposition": "pending"
+      "disposition": "failed",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Mailchimp Pattern Library source returned HTTP 503."
+      ]
     },
     {
       "resourceId": "resource-001e294941b1",
-      "disposition": "pending"
+      "disposition": "failed",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Audi UI source returned HTTP 404; no alternate page was substituted."
+      ]
     },
     {
       "resourceId": "resource-cc130ededb3a",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph, Twitter, or raster favicon candidate was available from the canonical Porsche Design System page."
+      ]
     },
     {
       "resourceId": "resource-19d73841f2dc",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-0032132a8747",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-3c40dab9c595",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical Workday Canvas source returned HTTP 403; no restriction was bypassed."
+      ]
     },
     {
       "resourceId": "resource-086a3588fd20",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-374543d4f72b",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9042d48e084f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-eae789634e34",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical LottieFiles source returned HTTP 403; no restriction was bypassed."
+      ]
     },
     {
       "resourceId": "resource-a69034dde468",
