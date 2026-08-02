@@ -118,6 +118,17 @@ test("approved media is merged deterministically into only its linked resources"
       "atlassian-design-system",
       "adobe-spectrum",
       "microsoft-fluent-2",
+      "gov-uk-design-system",
+      "u-s-web-design-system",
+      "sap-fiori",
+      "base-web",
+      "zendesk-garden",
+      "gitlab-pajamas",
+      "wise-design",
+      "vanilla-framework",
+      "design-systems-repo",
+      "motion",
+      "gsap",
       "undraw",
       "storyset",
       "drawkit",
@@ -133,8 +144,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 86);
-  assert.equal(result.report.summary.approvedMedia, 86);
+  assert.equal(result.report.mediaSource.approvedCount, 97);
+  assert.equal(result.report.summary.approvedMedia, 97);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
