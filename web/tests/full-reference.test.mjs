@@ -111,6 +111,8 @@ test("responsive contract replaces the desktop table with compact rows and a nat
     /grid-template-columns:\s*minmax\(220px,\s*0\.78fr\)\s*minmax\(0,\s*2\.5fr\)\s*minmax\(\s*210px,\s*0\.72fr\s*\)/,
   );
   assert.match(css, /\.table\s*\{[\s\S]*?min-width: 720px/);
+  assert.match(css, /\.table th:nth-child\(4\)[\s\S]*?width: 13%/);
+  assert.match(css, /\.table td:nth-child\(4\)[\s\S]*?white-space: nowrap/);
   assert.match(css, /@media \(max-width: 1099px\)/);
   assert.match(
     css,

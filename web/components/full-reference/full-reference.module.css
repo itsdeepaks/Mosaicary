@@ -279,15 +279,19 @@
 }
 
 .table th:first-child {
-  width: 54%;
+  width: 45%;
 }
 
 .table th:nth-child(2) {
-  width: 21%;
+  width: 20%;
 }
 
 .table th:nth-child(3) {
-  width: 17%;
+  width: 14%;
+}
+
+.table th:nth-child(4) {
+  width: 13%;
 }
 
 .table th:last-child {
@@ -301,6 +305,10 @@
   padding: 14px var(--space-4);
   font-size: var(--text-label);
   vertical-align: top;
+}
+
+.table td:nth-child(4) {
+  white-space: nowrap;
 }
 
 .table tbody tr:last-child td {
@@ -763,15 +771,19 @@
   }
 
   .table th:first-child {
-    width: 50%;
+    width: 44%;
   }
 
   .table th:nth-child(2) {
-    width: 23%;
+    width: 20%;
   }
 
   .table th:nth-child(3) {
-    width: 18%;
+    width: 14%;
+  }
+
+  .table th:nth-child(4) {
+    width: 14%;
   }
 }
 

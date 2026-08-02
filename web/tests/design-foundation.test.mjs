@@ -46,10 +46,14 @@ test("grain and responsive grid safeguards are present", async () => {
   const css = await read("app/globals.css");
 
   assert.match(css, /html\[data-grain="on"\] body/);
+  assert.match(css, /background-attachment: fixed/);
   assert.match(css, /@media \(forced-colors: active\)/);
   assert.match(css, /grid-template-columns: repeat\(12/);
   assert.match(css, /grid-template-columns: repeat\(8/);
-  assert.match(css, /grid-template-columns: repeat\(4/);
+  assert.match(
+    css,
+    /@media \(max-width: 767px\)[\s\S]*grid-template-columns: repeat\(4/,
+  );
 });
 
 test("foundation lab contains all required specimen sections", async () => {

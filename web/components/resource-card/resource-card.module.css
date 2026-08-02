@@ -236,6 +236,12 @@
   white-space: nowrap;
 }
 
+.tags .intelligenceBadge {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--line));
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
 .footer {
   display: flex;
   align-items: center;

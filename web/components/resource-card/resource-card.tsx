@@ -240,8 +240,8 @@ export function ResourceCard({
           <div aria-label="Resource attributes" className={styles.tags}>
             {badgeText && (
               <span
+                className={styles.intelligenceBadge}
                 data-intelligence-badge="true"
-                style={{ fontWeight: 600, color: "var(--accent)" }}
               >
                 {badgeText}
               </span>

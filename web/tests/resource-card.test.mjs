@@ -57,6 +57,7 @@ test("resource media follows the safe preview, favicon, generated fallback chain
 });
 
 test("resource card geometry survives long copy and restores restrained hover motion", async () => {
+  const component = await read("components/resource-card/resource-card.tsx");
   const css = await read("components/resource-card/resource-card.module.css");
 
   assert.match(css, /aspect-ratio: 16 \/ 10/);
@@ -84,6 +85,12 @@ test("resource card geometry survives long copy and restores restrained hover mo
   );
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
   assert.match(css, /@media \(forced-colors: active\)/);
+  assert.match(component, /className=\{styles\.intelligenceBadge\}/);
+  assert.doesNotMatch(component, /style=\{\{/);
+  assert.match(
+    css,
+    /\.tags \.intelligenceBadge[\s\S]*color: var\(--accent-text\)/,
+  );
   assert.doesNotMatch(css, /border-radius: 1[2-9]px|backdrop-filter/);
 });
 
