@@ -7,10 +7,10 @@
   },
   "approvedSource": {
     "path": "lib_data/resource-media.json",
-    "approvedCount": 54
+    "approvedCount": 70
   },
   "summary": {
-    "approvedProduction": 54,
+    "approvedProduction": 70,
     "reviewTargets": 8,
     "discoveredCandidates": 5,
     "readyForCopy": 5,

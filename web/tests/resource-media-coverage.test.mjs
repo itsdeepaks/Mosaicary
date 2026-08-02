@@ -39,9 +39,9 @@ test("coverage manifest represents all catalogue resources deterministically", a
     [],
   );
   assert.equal(repositoryCoverage.summary.total, 295);
-  assert.equal(repositoryCoverage.summary.approvedMedia, 54);
-  assert.equal(repositoryCoverage.summary.pending, 187);
-  assert.equal(repositoryCoverage.summary.terminalWithoutMedia, 54);
+  assert.equal(repositoryCoverage.summary.approvedMedia, 70);
+  assert.equal(repositoryCoverage.summary.pending, 167);
+  assert.equal(repositoryCoverage.summary.terminalWithoutMedia, 58);
   assert.equal(
     serializeMediaCoverage(repositoryCoverage.coverage),
     await readFile(path.join(repoRoot, COVERAGE_SOURCE_PATH), "utf8"),
@@ -80,7 +80,7 @@ test("coverage composition preserves terminal research and reconciles approved m
     composed.resources.filter(
       (record) => record.disposition === "approved-media",
     ).length,
-    54,
+    70,
   );
 });
 
