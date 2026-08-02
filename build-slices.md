@@ -92,12 +92,12 @@ Stop and fix before merge when any of these occur:
 | 9.2a | Pause automatic Vercel Git deployments during local and CI development | DONE | 9.2 |
 | 9.3 | Production replacement and rollback verification | DONE | 9.2 |
 | 10.1a | Local Supabase SSR clients and environment contract | DONE | Phase 1 |
-| 10.1b | Existing Supabase project link verification and client smoke test | NEXT | 10.1a, 0.3, authorized project access |
+| 10.1b | Existing Supabase project link verification and client smoke test | DONE | 10.1a, 0.3, authorized project access |
 | 10.1c | Credential-ready Supabase activation contract | DONE | 10.1a |
 | 10.2a | Credential-ready auth shell and unavailable state | DONE | 10.1c |
 | 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
 | 10.2c | Repository cleanup, LF line-ending normalization & docs sitemap | DONE | 10.2a |
-| 11.1 | User-data schema and RLS | PLANNED | 10.1b |
+| 11.1 | User-data schema and RLS | BLOCKED | 10.1b, security advisor remediation decision |
 | 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
 | 12.1 | Submit, suggest, and report forms | PLANNED | 10.2b, 11.1 |
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |
