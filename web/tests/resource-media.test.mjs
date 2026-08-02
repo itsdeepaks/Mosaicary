@@ -144,6 +144,17 @@ test("approved media is merged deterministically into only its linked resources"
       "google-fonts",
       "fontshare",
       "adobe-fonts",
+      "typewolf",
+      "fonts-in-use",
+      "free-faces",
+      "open-foundry",
+      "fontpair",
+      "font-mojo",
+      "font-alternatives",
+      "sweetfont",
+      "tinkerfont",
+      "fontsource",
+      "adobe-color",
       "undraw",
       "storyset",
       "drawkit",
@@ -159,8 +170,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 112);
-  assert.equal(result.report.summary.approvedMedia, 112);
+  assert.equal(result.report.mediaSource.approvedCount, 123);
+  assert.equal(result.report.summary.approvedMedia, 123);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
