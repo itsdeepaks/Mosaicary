@@ -1,0 +1,43 @@
+name: Media Batch 11 discovery
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  discover:
+    if: github.head_ref == 'codex/media-batch-11-reviewed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: "${{ github.head_ref }}"}
+      - uses: actions/setup-node@v7
+        with: {node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json}
+      - working-directory: web
+        run: npm ci
+      - name: Select and discover
+        shell: bash
+        run: |
+          mkdir -p artifacts/media-batch-11
+          cd web
+          node scripts/select-resource-media-batch.mjs --limit 20 > ../artifacts/media-batch-11/selection.json
+          cd ..
+          mapfile -t IDS < <(node -e 'const x=require("./artifacts/media-batch-11/selection.json"); for (const id of x.resourceIds) console.log(id)')
+          ARGS=(); for id in "${IDS[@]}"; do ARGS+=(--resource-id "$id"); done
+          cd web
+          node scripts/discover-resource-media.mjs --checked-at 2026-08-02 --output artifacts/media-batch-11/candidates.json "${ARGS[@]}"
+      - name: Validate candidates
+        working-directory: web
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs'; import {validateCandidateSource} from './scripts/resource-media-review-lib.mjs';
+          const c=JSON.parse(fs.readFileSync('../artifacts/media-batch-11/candidates.json')); const cat=JSON.parse(fs.readFileSync('./data/catalogue.json'));
+          const r=validateCandidateSource(c,cat.resources); if(r.errors.length){console.error(r.errors);process.exit(1)} console.log(`Validated ${c.resources.length} records.`);
+          NODE
+      - name: Package exact rasters
+        run: node .github/scripts/package-media-review.mjs artifacts/media-batch-11/candidates.json artifacts/media-batch-11/review-media
+      - uses: actions/upload-artifact@v4
+        with: {name: tessli-media-batch-11-review, path: artifacts/media-batch-11, if-no-files-found: error, retention-days: 7}
