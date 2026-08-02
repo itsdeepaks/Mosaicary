@@ -1,4 +1,4 @@
-name: Media Batch 14 discovery
+name: Remaining media discovery
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -9,7 +9,7 @@ jobs:
   discover:
     if: github.head_ref == 'codex/media-batch-14-reviewed'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with: {ref: "${{ github.head_ref }}"}
@@ -17,27 +17,55 @@ jobs:
         with: {node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json}
       - working-directory: web
         run: npm ci
-      - name: Select and discover
+      - name: Select all remaining resources
         shell: bash
         run: |
-          mkdir -p artifacts/media-batch-14
+          mkdir -p artifacts/remaining-media
           cd web
-          node scripts/select-resource-media-batch.mjs --limit 20 > ../artifacts/media-batch-14/selection.json
+          node scripts/select-resource-media-batch.mjs --limit 20 > ../artifacts/remaining-media/selection-first.json
+          FIRST_LAST="$(node -e 'const x=require("../artifacts/remaining-media/selection-first.json"); process.stdout.write(x.resourceIds.at(-1) ?? "")')"
+          test -n "$FIRST_LAST"
+          node scripts/select-resource-media-batch.mjs --after "$FIRST_LAST" --limit 20 > ../artifacts/remaining-media/selection-final.json
           cd ..
-          mapfile -t IDS < <(node -e 'const x=require("./artifacts/media-batch-14/selection.json"); for (const id of x.resourceIds) console.log(id)')
+          node <<'NODE'
+          const fs = require('node:fs');
+          const first = require('./artifacts/remaining-media/selection-first.json');
+          const final = require('./artifacts/remaining-media/selection-final.json');
+          const resourceIds = [...first.resourceIds, ...final.resourceIds];
+          if (resourceIds.length !== 27) throw new Error(`Expected 27 remaining IDs, received ${resourceIds.length}.`);
+          if (new Set(resourceIds).size !== resourceIds.length) throw new Error('Remaining selections contain duplicate IDs.');
+          fs.writeFileSync('./artifacts/remaining-media/selection.json', `${JSON.stringify({version: 1, batches: [first, final], resourceIds}, null, 2)}\n`);
+          NODE
+      - name: Discover canonical metadata
+        shell: bash
+        run: |
+          mapfile -t IDS < <(node -e 'const x=require("./artifacts/remaining-media/selection.json"); for (const id of x.resourceIds) console.log(id)')
+          test "${#IDS[@]}" -eq 27
           ARGS=(); for id in "${IDS[@]}"; do ARGS+=(--resource-id "$id"); done
           cd web
-          node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output artifacts/media-batch-14/candidates.json "${ARGS[@]}"
+          node scripts/discover-resource-media.mjs --checked-at 2026-08-03 --output ../artifacts/remaining-media/candidates.json "${ARGS[@]}"
       - name: Validate candidates
         working-directory: web
         shell: bash
         run: |
           node --input-type=module <<'NODE'
-          import fs from 'node:fs'; import {validateCandidateSource} from './scripts/resource-media-review-lib.mjs';
-          const c=JSON.parse(fs.readFileSync('../artifacts/media-batch-14/candidates.json')); const cat=JSON.parse(fs.readFileSync('./data/catalogue.json'));
-          const r=validateCandidateSource(c,cat.resources); if(r.errors.length){console.error(r.errors);process.exit(1)} console.log(`Validated ${c.resources.length} records.`);
+          import fs from 'node:fs';
+          import { validateCandidateSource } from './scripts/resource-media-review-lib.mjs';
+          const candidates = JSON.parse(fs.readFileSync('../artifacts/remaining-media/candidates.json'));
+          const catalogue = JSON.parse(fs.readFileSync('./data/catalogue.json'));
+          if (candidates.resources.length !== 27) throw new Error(`Expected 27 candidate records, received ${candidates.resources.length}.`);
+          const result = validateCandidateSource(candidates, catalogue.resources);
+          if (result.errors.length) {
+            console.error(result.errors);
+            process.exit(1);
+          }
+          console.log(`Validated ${candidates.resources.length} remaining records.`);
           NODE
       - name: Package exact rasters
-        run: node .github/scripts/package-media-review.mjs artifacts/media-batch-14/candidates.json artifacts/media-batch-14/review-media
+        run: node .github/scripts/package-media-review.mjs artifacts/remaining-media/candidates.json artifacts/remaining-media/review-media
       - uses: actions/upload-artifact@v4
-        with: {name: tessli-media-batch-14-review, path: artifacts/media-batch-14, if-no-files-found: error, retention-days: 7}
+        with:
+          name: tessli-remaining-media-review
+          path: artifacts/remaining-media
+          if-no-files-found: error
+          retention-days: 7
