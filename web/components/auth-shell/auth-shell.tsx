@@ -1,8 +1,11 @@
 import Link from "next/link";
 
+import type { AuthCallbackStatus } from "@/lib/supabase/auth-callback";
+
 import styles from "./auth-shell.module.css";
 
 type AuthShellProps = Readonly<{
+  callbackStatus?: AuthCallbackStatus;
   configurationState: "configured" | "unconfigured";
 }>;
 
@@ -12,7 +15,10 @@ const accountBenefits = [
   "Cloud sync activates only after secure setup and review.",
 ] as const;
 
-export function AuthShell({ configurationState }: AuthShellProps) {
+export function AuthShell({
+  callbackStatus,
+  configurationState,
+}: AuthShellProps) {
   const isConfigured = configurationState === "configured";
   const statusLabel = isConfigured
     ? "Configuration detected"
@@ -20,6 +26,12 @@ export function AuthShell({ configurationState }: AuthShellProps) {
   const statusDescription = isConfigured
     ? "The public Supabase client configuration is present. Password, email-code, and Google sign-in remain inactive until provider setup and live validation are reviewed."
     : "The account shell is ready, but this environment does not have the public Supabase project details required to begin sign-in.";
+  const callbackNotice =
+    callbackStatus === "link-invalid"
+      ? "This sign-in link is invalid or has expired. No account change was made."
+      : callbackStatus === "unavailable"
+        ? "Account access is not available in this environment. No sign-in request was completed."
+        : undefined;
 
   return (
     <main
@@ -117,8 +129,8 @@ export function AuthShell({ configurationState }: AuthShellProps) {
           </form>
 
           <p className={styles.availabilityNote} id="auth-availability-note">
-            No sign-in request is sent from this page yet. Your browser-local
-            saves remain available while account activation is deferred.
+            {callbackNotice ??
+              "No sign-in request is sent from this page yet. Your browser-local saves remain available while account activation is deferred."}
           </p>
 
           <Link className={styles.backLink} href="/">

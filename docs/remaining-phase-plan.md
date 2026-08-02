@@ -56,13 +56,13 @@ managed in Supabase Auth and cannot currently be changed through the connected
 database plugin, so they remain a small dashboard prerequisite rather than a
 repository change.
 
-Once Google OAuth credentials are intentionally created and entered in the
-Supabase provider dashboard, implement **10.2b-Google** as the first live-auth
-vertical slice: callback exchange, session refresh, sign-in, sign-out, account
-state, error handling, and local/preview/temporary-production verification.
-It must use the existing cookie-aware clients and no private browser key.
+**10.2b-1** may establish the cookie-aware server transport and a safe callback
+boundary without activating any sign-in method. It uses only the existing
+public Supabase configuration, keeps the `/auth` shell disabled, and makes no
+Supabase dashboard change.
 
-Password and six-digit email OTP are intentionally deferred behind the final
+Google is intentionally deferred; it is not a prerequisite for the next
+account-data work. Password and six-digit email OTP remain behind the final
 email sender work. The Supabase default sender is suitable only for restricted
 development validation, not public Tessli authentication. No public invitation
 or broad email testing happens before custom SMTP is configured.
@@ -70,19 +70,20 @@ or broad email testing happens before custom SMTP is configured.
 ## Dependent product order
 
 1. **5.4b-06 and later media batches** — continue in parallel while accounts
-   are unavailable.
-2. **10.2b-Google** — only after the URL allowlist and Google provider are
-   configured; verify local, preview, and `tessli.vercel.app` session flow.
-3. **11.2 cloud saves, private collections, notes, and import** — only after a
+   are unavailable. GPT owns the current Open Graph/Twitter media run.
+2. **10.2b-1 session transport** — establish the safe cookie/callback boundary
+   without enabling a provider.
+3. **Password and email-code activation** — only after the URL allowlist,
+   custom SMTP, and restricted end-to-end testing are ready; Google stays
+   deferred.
+4. **11.2 cloud saves, private collections, notes, and import** — only after a
    real authenticated session is proven. Keep Phase 1 browser-local saves until
    an import completes successfully.
-4. **12.1 submit, suggest, and report forms** — add server validation,
+5. **12.1 submit, suggest, and report forms** — add server validation,
    normalization, duplicate detection, honeypot, rate limits, safe errors, and
    moderation status on the existing RLS foundation.
-5. **12.2 moderation state and transactional email** — follows the forms and
+6. **12.2 moderation state and transactional email** — follows the forms and
    requires Resend for user-facing email.
-6. **Password and OTP activation** — couple this with the final sender setup
-   below rather than exposing it with a temporary sender.
 
 ## Final custom-domain and email slice
 
@@ -114,5 +115,6 @@ Do this only after the application flows above are otherwise ready:
 ## Revisit trigger
 
 Update this plan when one of these external facts changes: a custom domain is
-available, a verified Resend sender exists, Google OAuth credentials are ready,
-or the Supabase plugin gains Auth URL/provider configuration capabilities.
+available, a verified Resend sender exists, password/email-code activation is
+approved, Google OAuth credentials are deliberately revisited, or the Supabase
+plugin gains Auth URL/provider configuration capabilities.

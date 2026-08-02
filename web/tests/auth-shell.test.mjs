@@ -15,7 +15,8 @@ test("auth route renders from the non-throwing Supabase readiness contract", asy
   const page = await readWebFile("app/auth/page.tsx");
 
   assert.match(page, /inspectSupabasePublicConfig\(\)/);
-  assert.match(page, /<AuthShell configurationState=\{configuration\.state\}/);
+  assert.match(page, /configurationState=\{configuration\.state\}/);
+  assert.match(page, /readAuthCallbackStatus/);
   assert.match(page, /title: "Sign in"/);
   assert.match(page, /index: false/);
   assert.match(page, /follow: false/);

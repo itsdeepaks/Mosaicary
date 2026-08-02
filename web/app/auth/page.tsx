@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AuthShell } from "@/components/auth-shell/auth-shell";
+import { readAuthCallbackStatus } from "@/lib/supabase/auth-callback";
 import { inspectSupabasePublicConfig } from "@/lib/supabase/config";
 
 export const metadata: Metadata = {
@@ -13,8 +14,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AuthPage() {
-  const configuration = inspectSupabasePublicConfig();
+type AuthPageProps = Readonly<{
+  searchParams: Promise<{
+    auth?: string | string[];
+  }>;
+}>;
 
-  return <AuthShell configurationState={configuration.state} />;
+export default async function AuthPage({ searchParams }: AuthPageProps) {
+  const configuration = inspectSupabasePublicConfig();
+  const callbackStatus = readAuthCallbackStatus((await searchParams).auth);
+
+  return (
+    <AuthShell
+      callbackStatus={callbackStatus}
+      configurationState={configuration.state}
+    />
+  );
 }
