@@ -39,9 +39,9 @@ test("coverage manifest represents all catalogue resources deterministically", a
     [],
   );
   assert.equal(repositoryCoverage.summary.total, 295);
-  assert.equal(repositoryCoverage.summary.approvedMedia, 152);
-  assert.equal(repositoryCoverage.summary.pending, 47);
-  assert.equal(repositoryCoverage.summary.terminalWithoutMedia, 96);
+  assert.equal(repositoryCoverage.summary.approvedMedia, 165);
+  assert.equal(repositoryCoverage.summary.pending, 27);
+  assert.equal(repositoryCoverage.summary.terminalWithoutMedia, 103);
   assert.equal(
     serializeMediaCoverage(repositoryCoverage.coverage),
     await readFile(path.join(repoRoot, COVERAGE_SOURCE_PATH), "utf8"),
@@ -80,7 +80,7 @@ test("coverage composition preserves terminal research and reconciles approved m
     composed.resources.filter(
       (record) => record.disposition === "approved-media",
     ).length,
-    152,
+    165,
   );
 });
 
@@ -133,16 +133,20 @@ test("pending batch selection is catalogue ordered, resumable, and capped at twe
     after: first.at(-1).resourceId,
     limit: 20,
   });
+  const expectedAfterFirst = Math.min(
+    20,
+    repositoryCoverage.summary.pending - first.length,
+  );
 
   assert.equal(first.length, 20);
-  assert.equal(afterFirst.length, 20);
+  assert.equal(afterFirst.length, expectedAfterFirst);
   assert.equal(
     first.some((record) => record.disposition !== "pending"),
     false,
   );
   assert.equal(
     new Set([...first, ...afterFirst].map((record) => record.resourceId)).size,
-    40,
+    first.length + afterFirst.length,
   );
   assert.throws(
     () => selectPendingMediaBatch(repositoryCoverage.coverage, { limit: 21 }),

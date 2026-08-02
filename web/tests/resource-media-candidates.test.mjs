@@ -89,7 +89,7 @@ test("candidate source and reports remain deterministic and review-only", async 
       path.join(repoRoot, CANDIDATE_SOURCE_PATH),
     ),
   });
-  assert.equal(repositoryReview.report.summary.approvedProduction, 152);
+  assert.equal(repositoryReview.report.summary.approvedProduction, 165);
   assert.equal(repositoryReview.report.summary.reviewTargets, 8);
   assert.equal(repositoryReview.report.summary.discoveredCandidates, 5);
   assert.equal(repositoryReview.report.summary.readyForCopy, 5);

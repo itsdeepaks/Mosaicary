@@ -23,7 +23,7 @@
     },
     "collections": 6,
     "collectionItems": 60,
-    "approvedMedia": 152
+    "approvedMedia": 165
   },
   "categoryCounts": [
     {
@@ -281,8 +281,8 @@
   },
   "mediaSource": {
     "path": "lib_data/resource-media.json",
-    "sha256": "9aea622a2c6a46732813b699dbe0c19cbcdfc7f1ef596f649389d4da8b52941a",
-    "approvedCount": 152
+    "sha256": "2017da90515c3f37b6841ac0e26601dcc228cad64aed79248a5f5e65f824704e",
+    "approvedCount": 165
   },
   "collections": [
     {

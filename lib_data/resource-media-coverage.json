@@ -1506,31 +1506,44 @@
     },
     {
       "resourceId": "resource-5ef8124a8f89",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Lineicons source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-e338ae3b4f41",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-42ec6bd7c929",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-a54e66ac3b81",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-9a3213274725",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-1881f2f7bca1",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Icônes page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-619b899efec6",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-73d75733406d",
@@ -1549,47 +1562,70 @@
     },
     {
       "resourceId": "resource-1423085a332a",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical IRA Design source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-ecbd825ee3b6",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-a40e83b545d8",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Ouch source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-5b575f3ee3b5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-24f188ac75f8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-06d3e17295e5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-cbded4b3947c",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-7fa1bd0c2c19",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Delesign Illustrations source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-26a2e04e37d0",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Reshot source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-559b9456dc31",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-bae59802a7f9",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-7fa85ad18d65",
@@ -1603,11 +1639,16 @@
     },
     {
       "resourceId": "resource-7a8f527e423f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-b79c0850bbff",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Figma Community source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-076ade306587",

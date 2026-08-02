@@ -1969,6 +1969,78 @@
       }
     },
     {
+      "resourceId": "resource-e338ae3b4f41",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.iconshock.com/img/iconshock_og.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.iconshock.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image:secure_url"
+      }
+    },
+    {
+      "resourceId": "resource-42ec6bd7c929",
+      "status": "approved",
+      "preview": {
+        "url": "https://nucleoapp.com/assets/img/open-graph-home.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://nucleoapp.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://nucleoapp.com/assets/img/favicons/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a54e66ac3b81",
+      "status": "approved",
+      "favicon": {
+        "url": "https://lordicon.com/media/assets/favicon/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-9a3213274725",
+      "status": "approved",
+      "preview": {
+        "url": "https://useanimations.com/images/OGuseAnimationsImage.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://useanimations.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://useanimations.com/images/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-619b899efec6",
+      "status": "approved",
+      "preview": {
+        "url": "https://iconify.design/assets/og/iconify.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://iconify.design",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://iconify.design/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
       "resourceId": "resource-73d75733406d",
       "status": "approved",
       "preview": {
@@ -2010,6 +2082,109 @@
       }
     },
     {
+      "resourceId": "resource-ecbd825ee3b6",
+      "status": "approved",
+      "preview": {
+        "url": "https://blush.design/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://blush.design",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://blush.design/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-5b575f3ee3b5",
+      "status": "approved",
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/63a9cb71c629474d4ae334b9/64a5f701714b5fe13a08253f_favicons%201%20(2).png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-24f188ac75f8",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5bff8886c3964a992e90d465/5c050a75fc73fba30bf816f1_seo-rectangle.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.humaaans.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5bff8886c3964a992e90d465/5c00a0ce59aa851331d34687_favicon-256.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-06d3e17295e5",
+      "status": "approved",
+      "preview": {
+        "url": "https://absurd.design/img/social.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://absurd.design",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image:secure_url"
+      },
+      "favicon": {
+        "url": "https://absurd.design/img/favicon/favicon-196x196.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-cbded4b3947c",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5d5d5904f8a21bfe5ff69367/5da4cb5454976755fcac7930_seo-doodles.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.opendoodles.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5d5d5904f8a21bfe5ff69367/5da4e9a454896ed80730e86b_icon-256w.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-559b9456dc31",
+      "status": "approved",
+      "favicon": {
+        "url": "https://assets.mixkit.co/build/favicons/apple-icon-180x180-bd3d5e368063b793b955fa228a1d9311b54a29ac871f53c2e0c69e81d5fa0d48.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-bae59802a7f9",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/5f0a234d1293a2f4eb599bb5/6663071f6326830dc7376926_Open%20graph%20image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.blackillustrations.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/5f0a234d1293a2f4eb599bb5/5f4550325567b37a486e00eb_black%20illustrations%20logo.png",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png"
+      }
+    },
+    {
       "resourceId": "resource-7fa85ad18d65",
       "status": "approved",
       "preview": {
@@ -2028,6 +2203,23 @@
         "source": "open-graph",
         "sourcePageUrl": "https://haikei.app",
         "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-7a8f527e423f",
+      "status": "approved",
+      "preview": {
+        "url": "https://patternpad.com/images/patternpad-banner.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://patternpad.com",
+        "checkedAt": "2026-08-03",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://patternpad.com/images/apple-touch-icon.png",
+        "checkedAt": "2026-08-03",
         "contentType": "image/png"
       }
     }
