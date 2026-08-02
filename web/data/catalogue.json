@@ -1000,7 +1000,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://cdn.craft.cloud/983dd56a-1291-4f1f-ba2b-57c60e14c22a/assets/images/rootOG.jpg?width=1200&height=630&quality=82&fit=contain&s=JE_0V_IWMSrCXr_xGIzHYWtmY4QPTLRdfBzs_myuE7I",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-c6ead4379d56",
@@ -1014,7 +1016,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.landingfolio.com/og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-068a498e5c53",
@@ -1042,7 +1046,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://saaspages.xyz/assets/img/cover.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-f52b14528531",
@@ -1056,7 +1062,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://saaslandingpage.com/wp-content/uploads/2023/12/Link-Share-Img@2x.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-3028e7238961",
@@ -1070,7 +1078,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://www.pagesthatprint.com/opengraph-image?7f8f5d1a86d4d3fd",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-385af8e671b2",
@@ -1098,7 +1108,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://saaswebsites.s3.amazonaws.com/wp-content/uploads/2021/10/12224853/twitter-share.jpg",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-8071ca23bfc4",
