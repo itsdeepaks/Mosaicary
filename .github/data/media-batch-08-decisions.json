@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "batch": "08",
+  "checkedAt": "2026-08-02",
+  "sourceRunId": 30760504044,
+  "sourceArtifact": "tessli-media-batch-08-review",
+  "sourceArtifactId": 8837295663,
+  "sourceArtifactDigest": "sha256:39eb3351af8f2f406a38c269ce5a95468d97c76f4ce641d977df5642c5da898d",
+  "selectedIds": ["resource-f4a72bdfeb3a","resource-d3111f212292","resource-d4ea74da16b8","resource-c4e8e585fa22","resource-e3dd23ba936f","resource-2779e0c3a14a","resource-5a53b49a7497","resource-946f1b1790d0","resource-851b62e33a7a","resource-8cc85fbfcfc8","resource-26b459ed0f65","resource-001e294941b1","resource-cc130ededb3a","resource-19d73841f2dc","resource-0032132a8747","resource-3c40dab9c595","resource-086a3588fd20","resource-374543d4f72b","resource-9042d48e084f","resource-eae789634e34"],
+  "approvals": {
+    "resource-d3111f212292": ["preview","favicon"],
+    "resource-d4ea74da16b8": ["favicon"],
+    "resource-e3dd23ba936f": ["preview"],
+    "resource-2779e0c3a14a": ["favicon"],
+    "resource-946f1b1790d0": ["preview","favicon"],
+    "resource-8cc85fbfcfc8": ["favicon"],
+    "resource-19d73841f2dc": ["favicon"],
+    "resource-0032132a8747": ["favicon"],
+    "resource-086a3588fd20": ["preview","favicon"],
+    "resource-374543d4f72b": ["preview","favicon"],
+    "resource-9042d48e084f": ["preview","favicon"]
+  },
+  "terminal": {
+    "resource-f4a72bdfeb3a": {"disposition":"no-suitable-raster","note":"The official preview returned binary/octet-stream and all discovered favicons used unsupported ICO media."},
+    "resource-c4e8e585fa22": {"disposition":"blocked","note":"The canonical AWS Cloudscape source exceeded the bounded 1 MiB HTML response limit; the limit was not bypassed."},
+    "resource-5a53b49a7497": {"disposition":"no-suitable-raster","note":"No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."},
+    "resource-851b62e33a7a": {"disposition":"no-suitable-raster","note":"No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."},
+    "resource-26b459ed0f65": {"disposition":"failed","note":"The canonical Mailchimp Pattern Library source returned HTTP 503."},
+    "resource-001e294941b1": {"disposition":"failed","note":"The canonical Audi UI source returned HTTP 404; no alternate page was substituted."},
+    "resource-cc130ededb3a": {"disposition":"no-suitable-raster","note":"No accepted Open Graph, Twitter, or raster favicon candidate was available from the canonical Porsche Design System page."},
+    "resource-3c40dab9c595": {"disposition":"blocked","note":"The canonical Workday Canvas source returned HTTP 403; no restriction was bypassed."},
+    "resource-eae789634e34": {"disposition":"blocked","note":"The canonical LottieFiles source returned HTTP 403; no restriction was bypassed."}
+  },
+  "notes": {
+    "resource-d3111f212292":"Approved the official GOV.UK Design System Open Graph preview and raster favicon after exact review.",
+    "resource-d4ea74da16b8":"Approved the official U.S. Web Design System raster favicon fallback. The 200×200 Open Graph logo was rejected as a low-information card preview.",
+    "resource-e3dd23ba936f":"Approved the official SAP Fiori design-system Open Graph preview after exact review; SVG and ICO favicon candidates were rejected.",
+    "resource-2779e0c3a14a":"No suitable preview was declared; approved the official Base Web raster favicon fallback.",
+    "resource-946f1b1790d0":"Approved the official Zendesk Garden Open Graph preview and raster favicon after exact review.",
+    "resource-8cc85fbfcfc8":"Approved the official GitLab Pajamas raster favicon fallback. The sparse logo-only Open Graph card was rejected as low-information.",
+    "resource-19d73841f2dc":"Approved the official Wise Design raster favicon fallback. The Open Graph collage was rejected as campaign-style marketing imagery rather than a neutral design-system card.",
+    "resource-0032132a8747":"No suitable preview was declared; approved the official Vanilla Framework raster favicon fallback.",
+    "resource-086a3588fd20":"Approved the official Design Systems Repo Open Graph preview and raster favicon after exact review.",
+    "resource-374543d4f72b":"Approved the official Motion Open Graph preview and raster favicon after exact review.",
+    "resource-9042d48e084f":"Approved the official GSAP Open Graph preview and raster favicon after exact review."
+  },
+  "nextBatch": "09",
+  "rasterReviewCount": 19
+}
