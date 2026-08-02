@@ -133,16 +133,20 @@ test("pending batch selection is catalogue ordered, resumable, and capped at twe
     after: first.at(-1).resourceId,
     limit: 20,
   });
+  const expectedAfterFirst = Math.min(
+    20,
+    repositoryCoverage.summary.pending - first.length,
+  );
 
   assert.equal(first.length, 20);
-  assert.equal(afterFirst.length, 20);
+  assert.equal(afterFirst.length, expectedAfterFirst);
   assert.equal(
     first.some((record) => record.disposition !== "pending"),
     false,
   );
   assert.equal(
     new Set([...first, ...afterFirst].map((record) => record.resourceId)).size,
-    40,
+    first.length + afterFirst.length,
   );
   assert.throws(
     () => selectPendingMediaBatch(repositoryCoverage.coverage, { limit: 21 }),
