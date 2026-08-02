@@ -20,11 +20,12 @@ commit history.
 | ---------- | -------------------------------------------------- | ----------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-08-02 | 10.1b existing Supabase project link verification  | `8be0a91`         | integrated                  | Dedicated project smoke test and documentation complete. Auth/database activation remains blocked by provider, SMTP, and security-advisor decisions.                                                                                                                                                                                                                                      |
 | 2026-08-02 | 5.4b-04 reviewed landing and email media discovery | this integration commit | integrated | Six reviewed previews added; all 20 selected records now have a terminal coverage result. Format, typecheck, lint, 126 Node tests, deterministic data checks, and the 22-route build passed. In-app browser confirmed the local Explore shell and 295-resource count. The reused CDP host stalled at the legacy-save migration fixture before media assertions; no product change was made to hide it. |
+| 2026-08-02 | 5.4b-05 reviewed email and UI media discovery      | this slice commit      | complete   | Six manually inspected previews approved; fourteen selected resources were safely blocked or rejected. Coverage now records 54 approved, 187 pending, and 54 terminal-without-media outcomes. |
 | 2026-08-02 | 11.1 user-data schema and RLS                      | this slice commit | complete                    | Eight RLS-protected tables and generated types are in place. Security advisors are clear; transactional two-user isolation passed and persisted no fixture data. Format, typecheck, lint, 126 Node tests, and the 22-route production build passed.                                                                                                                                       |
 
 ## Paused media slice
 
-**5.4b-05 — reviewed metadata discovery batch** remains the next media item,
+**5.4b-06 — reviewed metadata discovery batch** remains the next media item,
 but the owner explicitly prioritized the Supabase phase first.
 
 Resume from refreshed local `main`, select the next deterministic set of at

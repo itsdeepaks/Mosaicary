@@ -80,6 +80,12 @@ test("approved media is merged deterministically into only its linked resources"
       "saas-landing-page",
       "pages-that-print",
       "saas-websites",
+      "marketing-examples",
+      "21st-dev",
+      "shadcn-ui",
+      "aceternity-ui",
+      "animata",
+      "eldora-ui",
       "undraw",
       "storyset",
       "drawkit",
@@ -95,8 +101,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 48);
-  assert.equal(result.report.summary.approvedMedia, 48);
+  assert.equal(result.report.mediaSource.approvedCount, 54);
+  assert.equal(result.report.summary.approvedMedia, 54);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {

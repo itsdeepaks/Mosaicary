@@ -617,6 +617,72 @@
         "checkedAt": "2026-08-02",
         "contentType": "image/jpeg"
       }
+    },
+    {
+      "resourceId": "resource-d9ae8b6a37c9",
+      "status": "approved",
+      "preview": {
+        "url": "https://s3.amazonaws.com/harrydry/gdmarketing/cards/main.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://marketingexamples.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg"
+      }
+    },
+    {
+      "resourceId": "resource-28acba4a9d55",
+      "status": "approved",
+      "preview": {
+        "url": "https://21st.dev/opengraph-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://21st.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-affc29967a7c",
+      "status": "approved",
+      "preview": {
+        "url": "https://ui.shadcn.com/og?title=The%20Foundation%20for%20your%20Design%20System&description=A%20set%20of%20beautifully%20designed%20components%20that%20you%20can%20customize%2C%20extend%2C%20and%20build%20on.%20Start%20here%20then%20make%20it%20your%20own.%20Open%20Source.%20Open%20Code.",
+        "source": "open-graph",
+        "sourcePageUrl": "https://ui.shadcn.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-e62d060a27d1",
+      "status": "approved",
+      "preview": {
+        "url": "https://ui.aceternity.com/banner.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://ui.aceternity.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-ad0f35ed5155",
+      "status": "approved",
+      "preview": {
+        "url": "https://assets.animata.design/og/animata-og-2026.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://animata.design",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-71e0aa0115cb",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.eldoraui.site/og",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.eldoraui.site",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
     }
   ]
 }

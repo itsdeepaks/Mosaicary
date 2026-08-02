@@ -538,83 +538,145 @@
     },
     {
       "resourceId": "resource-8dc314976241",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-e723df9157ce",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source response exceeded the discovery size limit; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-649678169c05",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The Open Graph response was a blank placeholder image and was unsuitable for a resource card."
+      ]
     },
     {
       "resourceId": "resource-d9ae8b6a37c9",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-7ca60a12d4fe",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-2ca28274835a",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-fc953b0fb713",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The browser safety policy prevented image review; the candidate was not published."
+      ]
     },
     {
       "resourceId": "resource-28acba4a9d55",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-affc29967a7c",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b2c26900098f",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical page could not be confirmed as Magic UI during manual review, so its preview was not published."
+      ]
     },
     {
       "resourceId": "resource-e62d060a27d1",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-fd6228fd8e88",
-      "disposition": "pending"
+      "disposition": "rejected",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Origin UI redirected to Coss; the mismatched preview was not published."
+      ]
     },
     {
       "resourceId": "resource-2210207ad328",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 403; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-d94d49dfe5a3",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical page did not complete manual review before the browser navigation timeout; the candidate was not published."
+      ]
     },
     {
       "resourceId": "resource-ad0f35ed5155",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-1f691e6fcca8",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 429; the rate limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-1d30ade89c50",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The canonical source returned HTTP 429; the rate limit was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-71e0aa0115cb",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-1cd898a493ab",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The preview image did not complete manual review before browser screenshot timeout; it was not published."
+      ]
     },
     {
       "resourceId": "resource-efc9a91db0cb",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "The preview image did not complete manual review before browser screenshot timeout; it was not published."
+      ]
     },
     {
       "resourceId": "resource-ba14759de401",
