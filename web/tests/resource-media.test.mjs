@@ -171,6 +171,19 @@ test("approved media is merged deterministically into only its linked resources"
       "material-symbols",
       "heroicons",
       "lucide",
+      "bootstrap-icons",
+      "tabler-icons",
+      "phosphor-icons",
+      "iconoir",
+      "feather",
+      "ionicons",
+      "boxicons",
+      "akar-icons",
+      "radix-icons",
+      "iconpark",
+      "font-awesome",
+      "noun-project",
+      "flaticon",
       "undraw",
       "storyset",
       "drawkit",
@@ -186,8 +199,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 139);
-  assert.equal(result.report.summary.approvedMedia, 139);
+  assert.equal(result.report.mediaSource.approvedCount, 152);
+  assert.equal(result.report.summary.approvedMedia, 152);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {

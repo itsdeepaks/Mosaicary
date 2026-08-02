@@ -1385,83 +1385,124 @@
     },
     {
       "resourceId": "resource-d9660d77b336",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-0726f9c1b661",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Eva Icons page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-c0300d9fcfe7",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-49786c86cd13",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-5b1869603a20",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-18bba87b577c",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Remix Icon page declared no accepted Open Graph, Twitter, or raster favicon candidate."
+      ]
     },
     {
       "resourceId": "resource-3ae8acba9f2a",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-80dccdf3e0ee",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-c95103c09615",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-3f8a2a168dc0",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical MingCute source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-3af730ea8de8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-af1855253bff",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-e3fa48ecc192",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-60a700cd8a9e",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical SVG Repo source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-e9556bbef966",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-55340c3df827",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Icons8 source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-903c037f5110",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-f151e19894dd",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Iconscout source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-d573ddeaa5d7",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-03"
     },
     {
       "resourceId": "resource-200891a7ca7e",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-03",
+      "notes": [
+        "The canonical Streamline source was blocked during bounded discovery; the restriction was not bypassed."
+      ]
     },
     {
       "resourceId": "resource-5ef8124a8f89",
