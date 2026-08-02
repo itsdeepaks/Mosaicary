@@ -1,0 +1,61 @@
+name: Minimize preview provenance diff
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    if: github.head_ref == 'codex/media-batch-06' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Restore compact source formatting and reapply exact edits
+        shell: bash
+        run: |
+          git show origin/main:build-slices.md > build-slices.md
+          git show origin/main:schemas/catalogue.schema.json > schemas/catalogue.schema.json
+          git show origin/main:schemas/resource-media.schema.json > schemas/resource-media.schema.json
+          git show origin/main:schemas/resource-media-candidates.schema.json > schemas/resource-media-candidates.schema.json
+          python .github/scripts/minimize-preview-provenance-diff.py
+
+      - name: Verify focused contracts
+        working-directory: web
+        run: |
+          npm ci
+          npx prettier --check \
+            ../PRD.md \
+            ../AGENTS.md \
+            ../docs/data-and-media-contract.md \
+            ../docs/resource-media-workflow.md \
+            ../docs/slices/5.4b-p-preview-provenance.md \
+            scripts/resource-media-discovery-lib.mjs \
+            scripts/resource-media-review-lib.mjs \
+            scripts/release-catalogue-lib.mjs \
+            tests/resource-media-candidates.test.mjs \
+            tests/resource-media.test.mjs
+          node --test tests/resource-media-candidates.test.mjs tests/resource-media.test.mjs
+          npm run media:review:check
+          npm run media:coverage:check
+          npm run catalogue:check
+
+      - name: Commit cleanup and remove helper
+        shell: bash
+        run: |
+          git rm .github/workflows/minimize-preview-provenance-diff.yml
+          git rm .github/scripts/minimize-preview-provenance-diff.py
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md docs schemas
+          git commit -m "chore: minimize preview provenance diff"
+          git push origin HEAD:${{ github.head_ref }}
