@@ -102,6 +102,22 @@ test("approved media is merged deterministically into only its linked resources"
       "ant-design",
       "blueprint",
       "grommet",
+      "evergreen",
+      "tremor",
+      "primereact",
+      "primevue",
+      "vuetify",
+      "quasar",
+      "element-plus",
+      "angular-material",
+      "bits-ui",
+      "melt-ui",
+      "skeleton",
+      "material-design-3",
+      "shopify-polaris",
+      "atlassian-design-system",
+      "adobe-spectrum",
+      "microsoft-fluent-2",
       "undraw",
       "storyset",
       "drawkit",
@@ -117,8 +133,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 70);
-  assert.equal(result.report.summary.approvedMedia, 70);
+  assert.equal(result.report.mediaSource.approvedCount, 86);
+  assert.equal(result.report.summary.approvedMedia, 86);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
