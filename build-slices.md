@@ -97,7 +97,7 @@ Stop and fix before merge when any of these occur:
 | 10.2a | Credential-ready auth shell and unavailable state | DONE | 10.1c |
 | 10.2b | Password, OTP, and Google activation | BLOCKED | 10.1b, 10.2a |
 | 10.2c | Repository cleanup, LF line-ending normalization & docs sitemap | DONE | 10.2a |
-| 11.1 | User-data schema and RLS | BLOCKED | 10.1b, security advisor remediation decision |
+| 11.1 | User-data schema and RLS | DONE | 10.1b |
 | 11.2 | Cloud saves, private collections, notes, local import | PLANNED | 10.2b, 11.1 |
 | 12.1 | Submit, suggest, and report forms | PLANNED | 10.2b, 11.1 |
 | 12.2 | Moderation state and transactional email | PLANNED | 12.1, Resend |

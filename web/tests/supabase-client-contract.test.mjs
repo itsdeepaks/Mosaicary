@@ -14,6 +14,10 @@ async function readWebFile(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
+async function readRepoFile(relativePath) {
+  return readFile(path.join(webRoot, "..", relativePath), "utf8");
+}
+
 async function loadConfigModule() {
   const source = await readWebFile("lib/supabase/config.ts");
   const { outputText } = ts.transpileModule(source, {
@@ -144,14 +148,60 @@ test("Supabase dependencies and Node runtime are intentionally pinned", async ()
   }
 });
 
-test("empty database types remain explicit until the schema slice", async () => {
+test("generated database types expose the reviewed user-data schema", async () => {
   const databaseTypes = await readWebFile("lib/supabase/database.types.ts");
 
-  assert.match(databaseTypes, /Tables: \{ \[_ in never\]: never \}/);
+  for (const table of [
+    "profiles",
+    "saved_resources",
+    "user_collections",
+    "user_collection_items",
+    "resource_notes",
+    "submissions",
+    "feature_suggestions",
+    "resource_reports",
+  ]) {
+    assert.match(databaseTypes, new RegExp(`\\n      ${table}: \\{`));
+  }
+  assert.match(databaseTypes, /PostgrestVersion: "14\.15"/);
+  assert.doesNotMatch(databaseTypes, /service_role/i);
+});
+
+test("database migrations preserve the RLS and privilege boundary", async () => {
+  const [schemaMigration, indexMigration] = await Promise.all([
+    readRepoFile(
+      "supabase/migrations/20260802152436_create_tessli_user_schema_and_rls.sql",
+    ),
+    readRepoFile(
+      "supabase/migrations/20260802152526_index_collection_item_owner_fk.sql",
+    ),
+  ]);
+
   assert.match(
-    databaseTypes,
-    /Replace this file with `supabase gen types typescript`/,
+    schemaMigration,
+    /revoke execute on function public\.rls_auto_enable\(\)/,
   );
-  assert.doesNotMatch(databaseTypes, /profiles:/);
-  assert.doesNotMatch(databaseTypes, /saved_resources:/);
+  assert.match(schemaMigration, /create schema if not exists private/);
+  assert.match(
+    schemaMigration,
+    /security definer\s+set search_path = ''[\s\S]+insert into public\.profiles/,
+  );
+  assert.equal(
+    (schemaMigration.match(/enable row level security/g) ?? []).length,
+    8,
+  );
+  assert.equal(
+    (schemaMigration.match(/\(select auth\.uid\(\)\)/g) ?? []).length > 20,
+    true,
+  );
+  assert.doesNotMatch(schemaMigration, /grant .+ to anon/i);
+  assert.match(
+    schemaMigration,
+    /grant select, insert on public\.submissions to authenticated/,
+  );
+  assert.match(
+    indexMigration,
+    /\(collection_id, user_id\)/,
+    "The composite collection-owner foreign key needs a covering index.",
+  );
 });
