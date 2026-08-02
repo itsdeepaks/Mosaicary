@@ -1,0 +1,121 @@
+name: Apply media Batch 07
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'codex/media-batch-07-reviewed' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Download immutable reviewed evidence
+        shell: bash
+        run: |
+          mkdir -p artifacts/media-batch-07
+          test "$(gh api repos/${{ github.repository }}/actions/artifacts/8837115178 --jq .digest)" = "sha256:d27ddf8d5c90a336b8a8fda5b093403f458d099ea301e48860733084381e4e59"
+          gh run download 30759880442 \
+            --name tessli-media-batch-07-review \
+            --dir artifacts/media-batch-07
+          test -s artifacts/media-batch-07/selection.json
+          test -s artifacts/media-batch-07/candidates.json
+
+      - name: Apply reviewed decisions
+        run: python .github/scripts/apply-media-batch-07.py
+
+      - name: Regenerate deterministic outputs
+        working-directory: web
+        run: |
+          npm run media:review:generate
+          npm run media:coverage:generate
+          npm run catalogue:generate
+
+      - name: Verify composition
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const media = JSON.parse(fs.readFileSync('lib_data/resource-media.json', 'utf8'));
+          const coverage = JSON.parse(fs.readFileSync('lib_data/resource-media-coverage.json', 'utf8'));
+          const catalogue = JSON.parse(fs.readFileSync('web/data/catalogue.json', 'utf8'));
+          const dispositions = coverage.resources.reduce((out, item) => {
+            out[item.disposition] = (out[item.disposition] || 0) + 1;
+            return out;
+          }, {});
+          const enriched = catalogue.resources.filter((item) => item.previewImageUrl || item.faviconUrl);
+          console.log(JSON.stringify({approved: media.resources.length, enriched: enriched.length, dispositions}, null, 2));
+          if (media.resources.length !== 86 || enriched.length !== 86 || dispositions.pending !== 147) process.exit(1);
+          NODE
+
+      - name: Format authored files only
+        working-directory: web
+        run: >-
+          npx prettier --write
+          ../docs/remaining-phase-plan.md
+          ../docs/slices/5.4b-07-reviewed-media-discovery.md
+          tests/resource-media.test.mjs
+          tests/resource-media-coverage.test.mjs
+          tests/resource-media-candidates.test.mjs
+
+      - name: Run focused checks
+        working-directory: web
+        run: |
+          node --test \
+            tests/resource-media.test.mjs \
+            tests/resource-media-coverage.test.mjs \
+            tests/resource-media-candidates.test.mjs
+          npm run media:review:check
+          npm run media:coverage:check
+          npm run catalogue:check
+          npm run typecheck
+          npm run lint
+
+      - name: Remove temporary files and commit reviewed data
+        shell: bash
+        run: |
+          rm -rf artifacts
+          git rm .github/workflows/media-batch-07-discovery.yml
+          git rm .github/workflows/apply-media-batch-07.yml
+          git rm .github/scripts/package-media-review.mjs
+          git rm .github/scripts/apply-media-batch-07.py
+          git rm .github/data/media-batch-07-decisions.json
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            docs/remaining-phase-plan.md \
+            docs/slices/5.4b-07-reviewed-media-discovery.md \
+            docs/reports/resource-media-candidate-review.json \
+            docs/reports/resource-media-candidate-review.md \
+            lib_data/resource-media.json \
+            lib_data/resource-media-coverage.json \
+            web/data/catalogue.json \
+            web/data/catalogue-validation.json \
+            web/tests/resource-media.test.mjs \
+            web/tests/resource-media-coverage.test.mjs \
+            web/tests/resource-media-candidates.test.mjs
+          git commit -m "feat: approve seventh reviewed media batch"
+          git push origin HEAD:${{ github.head_ref }}
