@@ -1,0 +1,113 @@
+name: Apply media Batch 06
+
+on:
+  pull_request:
+    types: [synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'codex/media-batch-06-reviewed' && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Recreate deterministic selection and discovery evidence
+        shell: bash
+        run: |
+          mkdir -p artifacts/media-batch-06
+          cd web
+          node scripts/select-resource-media-batch.mjs --limit 20 > ../artifacts/media-batch-06/selection.json
+          cd ..
+          mapfile -t IDS < <(node -e 'const x=require("./artifacts/media-batch-06/selection.json"); for (const id of x.resourceIds) console.log(id)')
+          ARGS=()
+          for id in "${IDS[@]}"; do
+            ARGS+=(--resource-id "$id")
+          done
+          cd web
+          node scripts/discover-resource-media.mjs \
+            --checked-at 2026-08-02 \
+            --output artifacts/media-batch-06/candidates.json \
+            "${ARGS[@]}"
+
+      - name: Apply reviewed decisions with exact assertions
+        run: python .github/scripts/apply-media-batch-06.py
+
+      - name: Regenerate deterministic outputs
+        working-directory: web
+        run: |
+          npm run media:review:generate
+          npm run media:coverage:generate
+          npm run catalogue:generate
+
+      - name: Format scoped files
+        working-directory: web
+        run: >-
+          npx prettier --write
+          ../docs/remaining-phase-plan.md
+          ../docs/slices/5.4b-06-reviewed-media-discovery.md
+          ../lib_data/resource-media.json
+          ../lib_data/resource-media-coverage.json
+          ../docs/reports/resource-media-candidate-review.json
+          ../docs/reports/resource-media-candidate-review.md
+          data/catalogue.json
+          data/catalogue-validation.json
+          tests/resource-media.test.mjs
+          tests/resource-media-coverage.test.mjs
+
+      - name: Run focused Batch 06 checks
+        working-directory: web
+        run: |
+          node --test \
+            tests/resource-media.test.mjs \
+            tests/resource-media-coverage.test.mjs \
+            tests/resource-media-candidates.test.mjs
+          npm run media:review:check
+          npm run media:coverage:check
+          npm run catalogue:check
+          npm run typecheck
+          npm run lint
+
+      - name: Remove temporary discovery/apply files and commit product changes
+        shell: bash
+        run: |
+          rm -rf artifacts
+          git rm .github/workflows/media-batch-06-discovery.yml
+          git rm .github/workflows/apply-media-batch-06.yml
+          git rm .github/scripts/package-media-review.mjs
+          git rm .github/scripts/apply-media-batch-06.py
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            docs/remaining-phase-plan.md \
+            docs/slices/5.4b-06-reviewed-media-discovery.md \
+            docs/reports/resource-media-candidate-review.json \
+            docs/reports/resource-media-candidate-review.md \
+            lib_data/resource-media.json \
+            lib_data/resource-media-coverage.json \
+            web/data/catalogue.json \
+            web/data/catalogue-validation.json \
+            web/tests/resource-media.test.mjs \
+            web/tests/resource-media-coverage.test.mjs
+          git commit -m "feat: approve sixth reviewed media batch"
+          git push origin HEAD:${{ github.head_ref }}
