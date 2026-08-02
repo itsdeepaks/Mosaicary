@@ -680,83 +680,115 @@
     },
     {
       "resourceId": "resource-ba14759de401",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-76580f25ed93",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-ea2802bd8265",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-1173adaab852",
-      "disposition": "pending"
+      "disposition": "blocked",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Canonical source returned HTTP 403; no restriction was bypassed."
+      ]
     },
     {
       "resourceId": "resource-fbf8ed806c9d",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-ff2d5139380c",
-      "disposition": "pending"
+      "disposition": "no-suitable-raster",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "No accepted Open Graph or Twitter raster was declared; the discovered favicon used unsupported ICO media."
+      ]
     },
     {
       "resourceId": "resource-1ad6e1869ba2",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-b76b3dbf3494",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-0ac283fee50f",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-3bfbe7e95242",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-01db82f90e23",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-4b829d9e48f8",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-9ad947201ac6",
-      "disposition": "pending"
+      "disposition": "failed",
+      "checkedAt": "2026-08-02",
+      "notes": [
+        "Canonical source returned HTTP 404; no alternate or unofficial page was substituted."
+      ]
     },
     {
       "resourceId": "resource-513680f6b723",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-c0cab3389cc0",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-3ea4382bc91e",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-a76da7af7625",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-51c9a91512df",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-31696885b4e5",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-f85c83306720",
-      "disposition": "pending"
+      "disposition": "approved-media",
+      "checkedAt": "2026-08-02"
     },
     {
       "resourceId": "resource-4eba5c99801f",

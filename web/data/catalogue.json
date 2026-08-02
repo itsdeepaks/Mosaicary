@@ -1570,7 +1570,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://kokonutui.com/opengraph-image.png?opengraph-image.219_wqxzyc65n.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://kokonutui.com/icon.png?icon.2ek27zfaz6hz0.png"
     },
     {
       "id": "resource-76580f25ed93",
@@ -1598,7 +1601,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://floatui.com/thumbnail.png?v2",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-1173adaab852",
@@ -1626,7 +1631,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://merakiui.com/images/thumbnail.webp",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-ff2d5139380c",
@@ -1654,7 +1661,9 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://preline.co/assets/img/og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-b76b3dbf3494",
@@ -1668,7 +1677,8 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://img.daisyui.com/images/daisyui/daisyui-logo-180.png"
     },
     {
       "id": "resource-0ac283fee50f",
@@ -1682,7 +1692,10 @@
       "subscriptionRequired": "yes",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://tailwindcss.com/plus-assets/img/og/default.png",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://tailwindcss.com/plus-assets/img/favicon/favicon-32x32.png"
     },
     {
       "id": "resource-3bfbe7e95242",
@@ -1696,7 +1709,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://headlessui.com/_next/static/media/social-card.46834755.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://headlessui.com/apple-touch-icon.png"
     },
     {
       "id": "resource-01db82f90e23",
@@ -1710,7 +1726,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://www.radix-ui.com/favicon.png"
     },
     {
       "id": "resource-4b829d9e48f8",
@@ -1724,7 +1741,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://base-ui.com/opengraph-image-j8qpfc.png?b1b9e0366e512854",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://base-ui.com/static/apple-touch-icon.png"
     },
     {
       "id": "resource-9ad947201ac6",
@@ -1752,7 +1772,10 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://heroui.com/images/twitter-card.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://heroui.com/icons/apple-touch-icon.png"
     },
     {
       "id": "resource-c0cab3389cc0",
@@ -1766,7 +1789,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/social-preview.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-3ea4382bc91e",
@@ -1780,7 +1805,10 @@
       "subscriptionRequired": "optional",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://mui.com/static/social-previews/home-preview.jpg",
+      "previewSource": "open-graph",
+      "faviconUrl": "https://mui.com/static/apple-touch-icon.png"
     },
     {
       "id": "resource-a76da7af7625",
@@ -1794,7 +1822,9 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "previewImageUrl": "https://next.chakra-ui.com/og-image.png",
+      "previewSource": "open-graph"
     },
     {
       "id": "resource-51c9a91512df",
@@ -1808,7 +1838,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://gw.alipayobjects.com/zos/rmsportal/rlpTLlbMzTNYuZGGCVYM.png"
     },
     {
       "id": "resource-31696885b4e5",
@@ -1822,7 +1853,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://blueprintjs.com/assets/favicon.png"
     },
     {
       "id": "resource-f85c83306720",
@@ -1836,7 +1868,8 @@
       "subscriptionRequired": "no",
       "usefulFor": [],
       "tags": [],
-      "status": "active"
+      "status": "active",
+      "faviconUrl": "https://v2.grommet.io/img/mobile-app-icon.png"
     },
     {
       "id": "resource-4eba5c99801f",

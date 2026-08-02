@@ -45,69 +45,6 @@
       }
     },
     {
-      "resourceId": "resource-73d75733406d",
-      "status": "approved",
-      "preview": {
-        "url": "https://cdn.undraw.co/static/ud24ogimage.png",
-        "source": "open-graph",
-        "sourcePageUrl": "https://undraw.co",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      },
-      "favicon": {
-        "url": "https://undraw.co/apple-touch-icon.png",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      }
-    },
-    {
-      "resourceId": "resource-92baaed92865",
-      "status": "approved",
-      "favicon": {
-        "url": "https://storyset.com/apple-touch-icon.png",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      }
-    },
-    {
-      "resourceId": "resource-08a9f0e0bd50",
-      "status": "approved",
-      "preview": {
-        "url": "https://cdn.prod.website-files.com/626f5d0ae6c15c780f2dd5c4/6336572b684b9428785ccd40_DrawKit%20Website%20preview.png",
-        "source": "open-graph",
-        "sourcePageUrl": "https://www.drawkit.com",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      },
-      "favicon": {
-        "url": "https://cdn.prod.website-files.com/682d1c6b3c16bb956eafd69b/682d1c6b3c16bb956eafd82f_DrawKit-Webclip.png",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      }
-    },
-    {
-      "resourceId": "resource-7fa85ad18d65",
-      "status": "approved",
-      "preview": {
-        "url": "https://www.fffuel.co/images/cover.png",
-        "source": "open-graph",
-        "sourcePageUrl": "https://www.fffuel.co/",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      }
-    },
-    {
-      "resourceId": "resource-6887c11205e8",
-      "status": "approved",
-      "preview": {
-        "url": "https://haikei.app/haikei-cover.png",
-        "source": "open-graph",
-        "sourcePageUrl": "https://haikei.app",
-        "checkedAt": "2026-08-01",
-        "contentType": "image/png"
-      }
-    },
-    {
       "resourceId": "resource-def4db859619",
       "status": "approved",
       "favicon": {
@@ -681,6 +618,276 @@
         "source": "open-graph",
         "sourcePageUrl": "https://www.eldoraui.site",
         "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-ba14759de401",
+      "status": "approved",
+      "preview": {
+        "url": "https://kokonutui.com/opengraph-image.png?opengraph-image.219_wqxzyc65n.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://kokonutui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://kokonutui.com/icon.png?icon.2ek27zfaz6hz0.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-ea2802bd8265",
+      "status": "approved",
+      "preview": {
+        "url": "https://floatui.com/thumbnail.png?v2",
+        "source": "open-graph",
+        "sourcePageUrl": "https://floatui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-fbf8ed806c9d",
+      "status": "approved",
+      "preview": {
+        "url": "https://merakiui.com/images/thumbnail.webp",
+        "source": "open-graph",
+        "sourcePageUrl": "https://merakiui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/webp",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-1ad6e1869ba2",
+      "status": "approved",
+      "preview": {
+        "url": "https://preline.co/assets/img/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://preline.co",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-b76b3dbf3494",
+      "status": "approved",
+      "favicon": {
+        "url": "https://img.daisyui.com/images/daisyui/daisyui-logo-180.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-0ac283fee50f",
+      "status": "approved",
+      "preview": {
+        "url": "https://tailwindcss.com/plus-assets/img/og/default.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://tailwindcss.com/plus",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://tailwindcss.com/plus-assets/img/favicon/favicon-32x32.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-3bfbe7e95242",
+      "status": "approved",
+      "preview": {
+        "url": "https://headlessui.com/_next/static/media/social-card.46834755.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://headlessui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://headlessui.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-01db82f90e23",
+      "status": "approved",
+      "favicon": {
+        "url": "https://www.radix-ui.com/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-4b829d9e48f8",
+      "status": "approved",
+      "preview": {
+        "url": "https://base-ui.com/opengraph-image-j8qpfc.png?b1b9e0366e512854",
+        "source": "open-graph",
+        "sourcePageUrl": "https://base-ui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://base-ui.com/static/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-513680f6b723",
+      "status": "approved",
+      "preview": {
+        "url": "https://heroui.com/images/twitter-card.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://heroui.com/",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://heroui.com/icons/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-c0cab3389cc0",
+      "status": "approved",
+      "preview": {
+        "url": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/social-preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://mantine.dev",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-3ea4382bc91e",
+      "status": "approved",
+      "preview": {
+        "url": "https://mui.com/static/social-previews/home-preview.jpg",
+        "source": "open-graph",
+        "sourcePageUrl": "https://mui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/jpeg",
+        "sourceProperty": "og:image"
+      },
+      "favicon": {
+        "url": "https://mui.com/static/apple-touch-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-a76da7af7625",
+      "status": "approved",
+      "preview": {
+        "url": "https://next.chakra-ui.com/og-image.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://chakra-ui.com",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png",
+        "sourceProperty": "og:image"
+      }
+    },
+    {
+      "resourceId": "resource-51c9a91512df",
+      "status": "approved",
+      "favicon": {
+        "url": "https://gw.alipayobjects.com/zos/rmsportal/rlpTLlbMzTNYuZGGCVYM.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-31696885b4e5",
+      "status": "approved",
+      "favicon": {
+        "url": "https://blueprintjs.com/assets/favicon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-f85c83306720",
+      "status": "approved",
+      "favicon": {
+        "url": "https://v2.grommet.io/img/mobile-app-icon.png",
+        "checkedAt": "2026-08-02",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-73d75733406d",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.undraw.co/static/ud24ogimage.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://undraw.co",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://undraw.co/apple-touch-icon.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-92baaed92865",
+      "status": "approved",
+      "favicon": {
+        "url": "https://storyset.com/apple-touch-icon.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-08a9f0e0bd50",
+      "status": "approved",
+      "preview": {
+        "url": "https://cdn.prod.website-files.com/626f5d0ae6c15c780f2dd5c4/6336572b684b9428785ccd40_DrawKit%20Website%20preview.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.drawkit.com",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      },
+      "favicon": {
+        "url": "https://cdn.prod.website-files.com/682d1c6b3c16bb956eafd69b/682d1c6b3c16bb956eafd82f_DrawKit-Webclip.png",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-7fa85ad18d65",
+      "status": "approved",
+      "preview": {
+        "url": "https://www.fffuel.co/images/cover.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://www.fffuel.co/",
+        "checkedAt": "2026-08-01",
+        "contentType": "image/png"
+      }
+    },
+    {
+      "resourceId": "resource-6887c11205e8",
+      "status": "approved",
+      "preview": {
+        "url": "https://haikei.app/haikei-cover.png",
+        "source": "open-graph",
+        "sourcePageUrl": "https://haikei.app",
+        "checkedAt": "2026-08-01",
         "contentType": "image/png"
       }
     }

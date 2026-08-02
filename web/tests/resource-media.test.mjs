@@ -86,6 +86,22 @@ test("approved media is merged deterministically into only its linked resources"
       "aceternity-ui",
       "animata",
       "eldora-ui",
+      "kokonut-ui",
+      "float-ui",
+      "meraki-ui",
+      "preline-ui",
+      "daisyui",
+      "tailwind-plus",
+      "headless-ui",
+      "radix-ui",
+      "base-ui",
+      "heroui",
+      "mantine",
+      "mui",
+      "chakra-ui",
+      "ant-design",
+      "blueprint",
+      "grommet",
       "undraw",
       "storyset",
       "drawkit",
@@ -101,8 +117,8 @@ test("approved media is merged deterministically into only its linked resources"
       await readFile(path.join(repoRoot, MEDIA_SOURCE_PATH)),
     ),
   );
-  assert.equal(result.report.mediaSource.approvedCount, 54);
-  assert.equal(result.report.summary.approvedMedia, 54);
+  assert.equal(result.report.mediaSource.approvedCount, 70);
+  assert.equal(result.report.summary.approvedMedia, 70);
 });
 
 test("media validation rejects unknown, duplicate, and unsafe resource metadata", async () => {
