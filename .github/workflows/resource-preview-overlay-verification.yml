@@ -8,8 +8,10 @@ on:
       - ".github/workflows/resource-preview-overlay-verification.yml"
       - "web/scripts/capture-resource-preview-overlay-verification.mjs"
       - "web/scripts/capture-resource-preview-overlay-edge-cases.mjs"
+      - "web/scripts/capture-resource-preview-pixelbuddha-final.mjs"
       - "web/tests/resource-preview-overlay-verification.test.mjs"
       - "web/tests/resource-preview-overlay-edge-cases.test.mjs"
+      - "web/tests/resource-preview-pixelbuddha-final.test.mjs"
       - "web/package.json"
       - "docs/slices/5.4c-03-overlay-verification-recapture.md"
   workflow_dispatch:
@@ -50,67 +52,74 @@ jobs:
           agent-browser --version | tee agent-browser-version.txt
           cwebp -version
 
-      - name: Canonically format recapture files
+      - name: Canonically format final recapture files
         working-directory: web
         run: |
           npx prettier --write \
             scripts/capture-resource-preview-overlay-verification.mjs \
             scripts/capture-resource-preview-overlay-edge-cases.mjs \
+            scripts/capture-resource-preview-pixelbuddha-final.mjs \
             tests/resource-preview-overlay-verification.test.mjs \
             tests/resource-preview-overlay-edge-cases.test.mjs \
+            tests/resource-preview-pixelbuddha-final.test.mjs \
             package.json \
             ../docs/slices/5.4c-03-overlay-verification-recapture.md
 
-          mkdir -p ../artifacts/resource-preview-overlay-edge-cases/formatted-source
+          mkdir -p ../artifacts/resource-preview-pixelbuddha-final/formatted-source
           cp scripts/capture-resource-preview-overlay-verification.mjs \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp scripts/capture-resource-preview-overlay-edge-cases.mjs \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
+          cp scripts/capture-resource-preview-pixelbuddha-final.mjs \
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp tests/resource-preview-overlay-verification.test.mjs \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp tests/resource-preview-overlay-edge-cases.test.mjs \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
+          cp tests/resource-preview-pixelbuddha-final.test.mjs \
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp package.json \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp ../docs/slices/5.4c-03-overlay-verification-recapture.md \
-            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+            ../artifacts/resource-preview-pixelbuddha-final/formatted-source/
           cp ../agent-browser-version.txt \
-            ../artifacts/resource-preview-overlay-edge-cases/
+            ../artifacts/resource-preview-pixelbuddha-final/
 
-      - name: Verify overlay interaction contracts
+      - name: Verify final Pixelbuddha interaction contract
         working-directory: web
         run: |
           node --test tests/resource-preview-overlay-verification.test.mjs
           node --test tests/resource-preview-overlay-edge-cases.test.mjs
+          node --test tests/resource-preview-pixelbuddha-final.test.mjs
 
-      - name: Recapture the two remaining overlay edge cases
+      - name: Recapture Pixelbuddha in proven necessary-only state
         shell: bash
         run: |
-          node web/scripts/capture-resource-preview-overlay-edge-cases.mjs \
-            --output artifacts/resource-preview-overlay-edge-cases \
-            | tee artifacts/resource-preview-overlay-edge-cases/run.log
+          node web/scripts/capture-resource-preview-pixelbuddha-final.mjs \
+            --output artifacts/resource-preview-pixelbuddha-final \
+            | tee artifacts/resource-preview-pixelbuddha-final/run.log
 
       - name: Build review contact sheet
         if: always()
         shell: bash
         run: |
           shopt -s nullglob
-          images=(artifacts/resource-preview-overlay-edge-cases/optimized/*.webp)
+          images=(artifacts/resource-preview-pixelbuddha-final/optimized/*.webp)
           if (( ${#images[@]} > 0 )); then
             montage "${images[@]}" \
               -thumbnail 480x252 \
-              -tile 2x \
+              -tile 1x \
               -geometry +12+28 \
               -background white \
               -set label '%f' \
-              artifacts/resource-preview-overlay-edge-cases/contact-sheet.jpg
+              artifacts/resource-preview-pixelbuddha-final/contact-sheet.jpg
           fi
 
       - name: Upload review artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: resource-preview-overlay-edge-cases
-          path: artifacts/resource-preview-overlay-edge-cases
+          name: resource-preview-pixelbuddha-final
+          path: artifacts/resource-preview-pixelbuddha-final
           if-no-files-found: error
           retention-days: 14
