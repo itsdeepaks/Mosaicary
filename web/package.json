@@ -19,6 +19,7 @@
     "media:coverage:check": "node scripts/check-resource-media-coverage.mjs",
     "media:batch:select": "node scripts/select-resource-media-batch.mjs",
     "media:discover": "node scripts/discover-resource-media.mjs",
+    "media:preview:pilot": "node scripts/capture-resource-preview-pilot.mjs",
     "mcp": "node mcp/server.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
