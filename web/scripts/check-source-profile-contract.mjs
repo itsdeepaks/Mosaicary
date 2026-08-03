@@ -32,6 +32,14 @@ function validIsoDate(value) {
   );
 }
 
+function sameValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function expectedSourceStatus(status) {
+  return status === "active" || status === "inactive" ? status : "unknown";
+}
+
 export function validateSourceProfileContract() {
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
   const profiles = [...getAllSourceProfiles()];
@@ -105,16 +113,7 @@ export function validateSourceProfileContract() {
     ids.add(profile.id);
     slugs.add(profile.slug);
 
-    for (const key of [
-      "slug",
-      "name",
-      "url",
-      "domain",
-      "description",
-      "category",
-      "access",
-      "subscriptionRequired",
-    ]) {
+    for (const key of ["slug", "name", "url", "domain", "category"]) {
       if (profile[key] !== catalogueResource[key]) {
         errors.push(
           issue(
@@ -123,6 +122,35 @@ export function validateSourceProfileContract() {
           ),
         );
       }
+    }
+
+    if (profile.summary !== catalogueResource.description) {
+      errors.push(
+        issue(
+          "summary-drift",
+          `${profile.id} does not preserve its catalogue description as summary.`,
+        ),
+      );
+    }
+    if (
+      profile.accessModel.access !== catalogueResource.access ||
+      profile.accessModel.subscriptionRequired !==
+        catalogueResource.subscriptionRequired
+    ) {
+      errors.push(
+        issue(
+          "access-model",
+          `${profile.id} does not preserve its catalogue access model.`,
+        ),
+      );
+    }
+    if (profile.status !== expectedSourceStatus(catalogueResource.status)) {
+      errors.push(
+        issue(
+          "source-status",
+          `${profile.id} does not preserve its catalogue availability status.`,
+        ),
+      );
     }
 
     if (!allowedSourceTypes.has(profile.sourceType)) {
@@ -141,8 +169,16 @@ export function validateSourceProfileContract() {
         ),
       );
     }
+    if (profile.profileLevel !== profile.coverage.level) {
+      errors.push(
+        issue(
+          "profile-level",
+          `${profile.id} profile level does not match its coverage record.`,
+        ),
+      );
+    }
 
-    if (profile.coverage.level === "listed" && profile.intelligence !== null) {
+    if (profile.profileLevel === "listed" && profile.intelligence !== null) {
       errors.push(
         issue(
           "listed-has-intelligence",
@@ -150,38 +186,51 @@ export function validateSourceProfileContract() {
         ),
       );
     }
-    if (profile.coverage.level !== "listed" && profile.intelligence === null) {
+    if (profile.profileLevel !== "listed" && profile.intelligence === null) {
       errors.push(
         issue(
           "profile-missing-intelligence",
-          `${profile.id} has ${profile.coverage.level} coverage without intelligence data.`,
+          `${profile.id} has ${profile.profileLevel} coverage without intelligence data.`,
         ),
       );
     }
 
     if (profile.intelligence) {
+      const intelligence = profile.intelligence;
       if (
-        profile.intelligence.resourceId !== profile.id &&
-        profile.intelligence.resourceId !== profile.slug
+        intelligence.resourceId !== profile.id &&
+        intelligence.resourceId !== profile.slug
       ) {
         errors.push(
           issue(
             "intelligence-link",
-            `${profile.id} is linked to unrelated intelligence ID ${profile.intelligence.resourceId}.`,
+            `${profile.id} is linked to unrelated intelligence ID ${intelligence.resourceId}.`,
           ),
         );
       }
-      if (
-        profile.coverage.evidenceCount !== profile.intelligence.evidence.length
-      ) {
-        errors.push(
-          issue(
-            "evidence-count",
-            `${profile.id} evidence count does not match its intelligence profile.`,
-          ),
-        );
+
+      const normalizedFields = [
+        ["bestFor", intelligence.workflowFit],
+        ["capabilities", intelligence.capabilities],
+        ["contentObjects", intelligence.contentObjects],
+        ["platforms", intelligence.platforms],
+        ["frameworks", intelligence.frameworks],
+        ["integrationMethods", intelligence.integrationMethods],
+        ["limitations", intelligence.limitations],
+        ["evidence", intelligence.evidence],
+      ];
+      for (const [field, expected] of normalizedFields) {
+        if (!sameValue(profile[field], expected)) {
+          errors.push(
+            issue(
+              "intelligence-normalization",
+              `${profile.id} does not preserve intelligence field ${field}.`,
+            ),
+          );
+        }
       }
-      if (profile.coverage.lastVerifiedAt !== profile.intelligence.verifiedAt) {
+
+      if (profile.verifiedAt !== intelligence.verifiedAt) {
         errors.push(
           issue(
             "verification-date",
@@ -189,8 +238,24 @@ export function validateSourceProfileContract() {
           ),
         );
       }
+      if (profile.coverage.evidenceCount !== intelligence.evidence.length) {
+        errors.push(
+          issue(
+            "evidence-count",
+            `${profile.id} evidence count does not match its intelligence profile.`,
+          ),
+        );
+      }
+      if (profile.coverage.lastVerifiedAt !== intelligence.verifiedAt) {
+        errors.push(
+          issue(
+            "coverage-verification-date",
+            `${profile.id} coverage date does not match its intelligence profile.`,
+          ),
+        );
+      }
       if (
-        profile.coverage.level === "verified" &&
+        profile.profileLevel === "verified" &&
         profile.coverage.humanReviewStatus !== "completed"
       ) {
         errors.push(
@@ -200,19 +265,41 @@ export function validateSourceProfileContract() {
           ),
         );
       }
-    } else if (
-      profile.coverage.evidenceCount !== 0 ||
-      profile.coverage.lastVerifiedAt !== null ||
-      profile.coverage.confidence !== "unknown" ||
-      profile.coverage.freshnessStatus !== "unknown" ||
-      profile.coverage.humanReviewStatus !== "not-recorded"
-    ) {
-      errors.push(
-        issue(
-          "listed-evidence",
-          `${profile.id} exposes verification claims without an intelligence profile.`,
-        ),
-      );
+    } else {
+      for (const field of [
+        "bestFor",
+        "capabilities",
+        "contentObjects",
+        "platforms",
+        "frameworks",
+        "integrationMethods",
+        "limitations",
+        "evidence",
+      ]) {
+        if (!Array.isArray(profile[field]) || profile[field].length !== 0) {
+          errors.push(
+            issue(
+              "listed-intelligence",
+              `${profile.id} invents ${field} without an intelligence profile.`,
+            ),
+          );
+        }
+      }
+      if (
+        profile.verifiedAt !== null ||
+        profile.coverage.evidenceCount !== 0 ||
+        profile.coverage.lastVerifiedAt !== null ||
+        profile.coverage.confidence !== "unknown" ||
+        profile.coverage.freshnessStatus !== "unknown" ||
+        profile.coverage.humanReviewStatus !== "not-recorded"
+      ) {
+        errors.push(
+          issue(
+            "listed-evidence",
+            `${profile.id} exposes verification claims without an intelligence profile.`,
+          ),
+        );
+      }
     }
 
     if (getSourceProfile(profile.id)?.slug !== profile.slug) {
