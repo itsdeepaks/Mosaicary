@@ -67,7 +67,7 @@ test("necessary-only plan requires a locked necessary control and exact save act
     OPTIONAL_SWITCH_NAMES,
   );
   assert.equal(plan.save.ref, "@e5");
-  assert.deepEqual(NECESSARY_ONLY_SAVE_ACTIONS, ["allow selection"]);
+  assert.deepEqual(NECESSARY_ONLY_SAVE_ACTIONS, ["allow selection", "deny"]);
   assert.equal(
     findNecessaryOnlyPlan(
       stateFreeRefs,
