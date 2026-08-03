@@ -272,7 +272,10 @@ function auditPage(session) {
   };
 }
 
-export function listSafeSnapshotCandidates(refs, { allowNavigation = false } = {}) {
+export function listSafeSnapshotCandidates(
+  refs,
+  { allowNavigation = false } = {},
+) {
   const actions = allowNavigation
     ? [...SAFE_FINAL_ACTIONS, ...SAFE_NAVIGATION_ACTIONS]
     : SAFE_FINAL_ACTIONS;
@@ -309,7 +312,8 @@ export function verifyInteractionCleared({
   );
   const beforeCount = Number(beforeAudit?.consentOverlayCount ?? 0);
   const afterCount = Number(afterAudit?.consentOverlayCount ?? 0);
-  const overlayCountImproved = beforeCount > 0 ? afterCount < beforeCount : null;
+  const overlayCountImproved =
+    beforeCount > 0 ? afterCount < beforeCount : null;
   const snapshotImproved = afterCandidates.length < beforeCandidates.length;
   return {
     sameActionStillVisible,
@@ -317,7 +321,9 @@ export function verifyInteractionCleared({
     snapshotImproved,
     cleared:
       !sameActionStillVisible &&
-      (overlayCountImproved === true || snapshotImproved || afterCandidates.length === 0),
+      (overlayCountImproved === true ||
+        snapshotImproved ||
+        afterCandidates.length === 0),
   };
 }
 
