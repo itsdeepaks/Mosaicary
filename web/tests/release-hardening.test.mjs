@@ -12,28 +12,35 @@ async function readRepositoryFile(relativePath) {
   return readFile(path.join(repositoryRoot, relativePath), "utf8");
 }
 
-test("release history remains preserved after the product direction reset", async () => {
+test("release history remains preserved under Product Plan v2", async () => {
   const slices = await readRepositoryFile("build-slices.md");
+  const plan = await readRepositoryFile("docs/product-plan-v2.md");
   const cutover = await readRepositoryFile(
     "docs/slices/9.3-production-replacement.md",
   );
 
   assert.match(
     slices,
-    /previous detailed Phase 1 ledger remains available in Git history/i,
+    /previous detailed Phase 1 ledger and legacy slice numbers remain available in Git history/i,
   );
   assert.match(
     slices,
-    /\| 14\.0 \| Product direction, PRD, operating, architecture, and delivery reset \| DONE \| current `main` \|/,
+    /\| 0\.1 \| Product direction and operating reset \| DONE \| previous baseline \| legacy `14\.0`, PR #74 \|/,
   );
   assert.match(
     slices,
-    /\| 14\.1 \| Minimum source-profile and coverage-level data contract \| DONE \| 14\.0 \|/,
+    /\| 1\.1 \| Canonical source-profile contract \| DONE \| 0\.1 \| legacy `14\.1` \|/,
   );
   assert.match(
     slices,
-    /\| 14\.2 \| Canonical Browse architecture and pagination contract \| NEXT \| 14\.1 \|/,
+    /\| 2\.1 \| Canonical Browse architecture and pagination contract \| DONE \| 1\.2 \| legacy `14\.2`, PR #77 \|/,
   );
+  assert.match(
+    slices,
+    /\| 2\.2 \| Canonical `\/resources` implementation \| NEXT \| 2\.1 \| — \|/,
+  );
+  assert.match(plan, /Phases 1–10 are the ten development phases/i);
+  assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
   assert.match(cutover, /no grouped runtime errors/i);
