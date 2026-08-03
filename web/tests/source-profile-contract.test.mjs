@@ -58,7 +58,10 @@ test("source profile schema defines the complete canonical v1 contract", () => {
     SOURCE_PROFILE_CONTRACT_VERSION,
   );
   for (const field of requiredSourceFields) {
-    assert.ok(schema.required.includes(field), `Missing required field ${field}`);
+    assert.ok(
+      schema.required.includes(field),
+      `Missing required field ${field}`,
+    );
     assert.ok(schema.properties[field], `Missing property schema ${field}`);
   }
   assert.deepEqual(schema.properties.profileLevel.enum, [
