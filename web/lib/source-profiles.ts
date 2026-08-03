@@ -113,7 +113,9 @@ export function deriveEvidenceConfidence(
   if (!profile || profile.evidence.length === 0) return "unknown";
 
   const confidenceValues = profile.evidence.map((item) => item.confidence);
-  if (confidenceValues.some((value) => value !== "certain" && value !== "likely")) {
+  if (
+    confidenceValues.some((value) => value !== "certain" && value !== "likely")
+  ) {
     return "unknown";
   }
   if (confidenceValues.some((value) => value === "likely")) return "likely";
@@ -123,7 +125,8 @@ export function deriveEvidenceConfidence(
 function deriveHumanReviewStatus(
   profile: ResourceIntelligenceProfile | null,
 ): HumanReviewStatus {
-  const review = (profile as ReviewAwareIntelligenceProfile | null)?.humanReview;
+  const review = (profile as ReviewAwareIntelligenceProfile | null)
+    ?.humanReview;
   return review?.status === "completed" && isIsoDate(review.reviewedAt)
     ? "completed"
     : "not-recorded";
@@ -212,9 +215,7 @@ function buildSourceProfile(resource: CatalogueResource): SourceProfile {
       lastVerifiedAt: intelligence?.verifiedAt ?? null,
       confidence: deriveEvidenceConfidence(intelligence),
       humanReviewStatus,
-      freshnessStatus: deriveFreshnessStatus(
-        intelligence?.verifiedAt ?? null,
-      ),
+      freshnessStatus: deriveFreshnessStatus(intelligence?.verifiedAt ?? null),
       evidenceCount: intelligence?.evidence.length ?? 0,
     },
     intelligence,
