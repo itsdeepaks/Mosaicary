@@ -3,7 +3,7 @@
 Status: **active delivery plan after the 2026-08-04 product-direction reset**  
 Rule: one independently reviewable vertical slice per branch and pull request.
 
-The previous detailed Phase 1 ledger remains available in Git history and the individual files under `docs/slices/`. This file now defines the active work after the directory-to-research-product reset.
+The previous detailed Phase 1 ledger remains available in Git history and the individual evidence files under `docs/slices/`. This file defines the active work after the directory-to-research-product reset.
 
 ## 1. Mandatory read order
 
@@ -14,8 +14,8 @@ Before changing Tessli, read:
 3. `PRD.md`;
 4. this file;
 5. `AGENTS.md`;
-6. `design.md` for visible UI work;
-7. the relevant contracts, schemas, and completed slice evidence.
+6. `design.md` for visible work;
+7. relevant contracts, schemas, code, tests, and completed slice evidence.
 
 When documents conflict, stop and resolve the conflict in a documentation slice.
 
@@ -23,15 +23,15 @@ When documents conflict, stop and resolve the conflict in a documentation slice.
 
 Every slice follows this order:
 
-1. Refresh from current `main`.
+1. Refresh current `main`.
 2. Read the mandatory documents and current implementation.
 3. Create one branch from current `main`.
-4. Define exact goal, acceptance criteria, exclusions, and expected files.
+4. Define goal, acceptance criteria, exclusions, and expected files.
 5. Implement one vertical slice.
 6. Run focused validation.
 7. Review the complete diff.
 8. Fix findings.
-9. Run all applicable repository and browser gates.
+9. Run applicable repository and browser gates.
 10. Open a draft PR.
 11. Review PR output, CI, accessibility, security, responsive behaviour, and scope.
 12. Fix final findings.
@@ -46,11 +46,11 @@ A later slice must not start from an unmerged feature branch.
 Stop before merge when any of these occur:
 
 - the implementation follows the superseded Explore/Full Reference split;
-- a source card remains only an outbound-link decision surface where the slice requires profiles;
+- a source card remains only an outbound-link decision surface where profiles are required;
 - unfinished Sign in, Submit, Suggest, cloud, or moderation actions are publicly promoted;
 - profile level or verification is overstated;
-- a recommendation is presented as universally best without contextual reasons;
-- sourced facts, curator judgment, and project decisions are mixed without distinction;
+- a recommendation is described as universally best without contextual reasons;
+- sourced facts, curator judgment, project decisions, and open questions are mixed;
 - all 295 resources are rendered in one unpaginated result document;
 - complete mobile and desktop result sets are duplicated in the same tree;
 - fake verification sorting or other mislabeled functionality remains;
@@ -64,16 +64,16 @@ Stop before merge when any of these occur:
 ## 4. Status legend
 
 - `DONE` — squash-merged to `main`.
-- `NEXT` — approved next slice after the direction-reset documentation merges.
+- `NEXT` — approved next slice.
 - `PLANNED` — defined but not started.
 - `PROOF` — requires evidence from a real OSS workflow.
 - `BLOCKED` — requires an external dependency, decision, or credential.
 - `DEFERRED` — intentionally outside the current proof stages.
-- `SUPERSEDED` — prior implementation remains in code/history but its product decision is no longer authoritative.
+- `SUPERSEDED` — old product decision remains in history/code until replaced.
 
 ## 5. Completed baseline
 
-The following capabilities already exist and remain reusable unless a new slice explicitly changes them:
+The following capabilities remain reusable unless an approved slice changes them:
 
 - Next.js App Router application and CI/release gates;
 - warm editorial design foundation;
@@ -84,34 +84,34 @@ The following capabilities already exist and remain reusable unless a new slice 
 - six repository-maintained collections;
 - browser-local Saved;
 - public policy and curation pages;
-- Supabase SSR/client groundwork and user-data schema groundwork;
+- Supabase SSR/client and user-data schema groundwork;
 - 20 enriched intelligence profiles;
-- profile validation/evidence tooling;
+- profile validation and evidence tooling;
 - local context-engine provider;
 - deterministic research-plan/reference-packet builders;
 - seven read-only native MCP tools;
 - reviewed media provenance and coverage tooling.
 
-Completed code is not automatically approved as the future product model. Explore, Full Reference, optional details, public auth placeholders, and contribution placeholders are specifically subject to the reset below.
+Completed code is not automatically approved as the future product model. Explore, Full Reference, optional details, public auth placeholders, and contribution placeholders are subject to the reset below.
 
 ## 6. Active status
 
 | ID | Slice | Status | Depends on |
 |---|---|---|---|
-| 14.0 | Product direction, PRD, operating, architecture, and delivery reset | IN REVIEW | current `main` |
+| 14.0 | Product direction, PRD, operating, architecture, and delivery reset | DONE | current `main` |
 | 14.1 | Minimum source-profile and coverage-level data contract | NEXT | 14.0 |
 | 14.2 | Canonical Browse architecture and pagination contract | PLANNED | 14.1 |
 | 14.3 | Canonical `/resources` implementation: cards/list/table and pagination | PLANNED | 14.2 |
 | 14.4 | Source Detail foundation for all 295 sources | PLANNED | 14.1, 14.3 |
-| 14.5 | Verified intelligence sections for enriched profiles | PLANNED | 14.4, existing profile tooling |
+| 14.5 | Verified intelligence sections for enriched profiles | PLANNED | 14.4, profile tooling |
 | 14.6 | Universal browser-local Save across Browse, Detail, and Playbooks | PLANNED | 14.3, 14.4 |
 | 14.7 | Local project Boards and notes | PLANNED | 14.6 |
-| 14.8 | Deterministic Board research-pack export | PLANNED | 14.7, existing packet tooling |
+| 14.8 | Deterministic Board research-pack export | PLANNED | 14.7, packet tooling |
 | 14.9 | First OSS proof project and evidence report | PROOF | 14.8 |
 | 15.0 | Homepage and global navigation redesign around proven loop | PLANNED | 14.9 |
 | 15.1 | Collections-to-playbooks content and page conversion | PLANNED | 14.4, 14.8 |
 | 15.2 | Saved workspace search/filter and mixed-object support | PLANNED | 14.7 |
-| 15.3 | For AI product page and public machine-readable exports | PLANNED | 14.5, 14.8 |
+| 15.3 | For AI page and public machine-readable exports | PLANNED | 14.5, 14.8 |
 | 16.0 | Pattern Candidate schema and first 5–10 reviewed candidates | PLANNED | 14.9 |
 | 16.1 | Pattern retrieval in website/export/MCP | PLANNED | 16.0 |
 | 17.0 | Authentication UX/security contract refresh | DEFERRED | local Boards proof |
@@ -131,6 +131,7 @@ Make the human-research and machine-readable UI-taste direction the repository s
 ### Deliverables
 
 - `docs/product-direction.md`;
+- updated `README.md`;
 - updated `PRD.md`;
 - updated `build-slices.md`;
 - updated `AGENTS.md`;
@@ -141,7 +142,7 @@ Make the human-research and machine-readable UI-taste direction the repository s
 
 - the product is no longer defined as only a resource index;
 - DesignIndex is recorded as inspiration for the directory layer, not the final blueprint;
-- Source Index, Research Intelligence, and UI Judgment layers are explicit;
+- Source Index, Research Intelligence, and UI Judgment are explicit;
 - website, exports, and MCP share one canonical truth;
 - `/resources` is the future canonical browser;
 - Source Detail is required rather than optional;
@@ -149,7 +150,7 @@ Make the human-research and machine-readable UI-taste direction the repository s
 - local Boards and export precede auth/cloud work;
 - signup verification and standard sign-in flows are distinguished;
 - pattern work begins with reviewed candidates after a real proof project;
-- the previous detailed ledger is preserved through Git history and slice evidence;
+- old detailed slice history remains available through Git history and evidence files;
 - no runtime, schema, data, dependency, Supabase, or deployment state changes.
 
 ### Exclusions
@@ -197,10 +198,10 @@ evidence:
 
 - all 295 entries remain represented;
 - every entry resolves to Listed, Profiled, or Verified;
-- existing 20 intelligence profiles map without losing evidence;
+- existing intelligence profiles map without losing evidence;
 - missing optional intelligence does not produce invented facts;
-- profile level is deterministically derived or explicitly recorded;
-- source schema and MCP output stay compatible;
+- profile level is deterministic or explicitly reviewed;
+- source schema, website, and MCP remain compatible;
 - generated data remains network-free and deterministic;
 - focused and full data checks pass.
 
@@ -216,21 +217,21 @@ evidence:
 
 ### Goal
 
-Specify the one `/resources` browser before modifying current Explore and Full Reference code.
+Specify the one `/resources` browser before changing Explore and Full Reference code.
 
 ### Decisions to freeze
 
-- supported query/filter/sort/view/page URL fields;
-- 24-card and 50-row initial page sizes;
+- query/filter/sort/view/page URL fields;
+- 24-card and 50-row page sizes;
 - card/list/table responsibilities;
 - one responsive result rendering strategy;
 - source profile as primary navigation;
 - separate Visit source, Save, and conditional Compare actions;
 - Similar Sources behaviour;
 - back/forward and scroll/position restoration;
-- handling of legacy `/` and `/resources` URLs;
-- removal plan for mislabeled verification sorting;
-- loading, empty, error, and inaccessible-source states.
+- legacy URL and query-state handling;
+- removal of mislabeled verification sorting;
+- loading, empty, error, and unavailable-source states.
 
 ### Deliverables
 
@@ -241,12 +242,7 @@ Specify the one `/resources` browser before modifying current Explore and Full R
 - browser test matrix;
 - explicit exclusions.
 
-### Exclusions
-
-- no implementation;
-- no homepage redesign;
-- no Source Detail implementation;
-- no auth/cloud work.
+No runtime implementation belongs in 14.2.
 
 ## 10. Slice 14.3 — Canonical Browse implementation
 
@@ -256,144 +252,109 @@ Replace competing catalogue browsers with a paginated, shareable, responsive `/r
 
 ### Acceptance criteria
 
-- no route renders all 295 result objects at once by default;
+- no default route renders all 295 result objects;
 - no duplicate full mobile/desktop result mapping;
 - URL state restores query, filters, sort, view, and page;
-- genuine verification sort only;
-- cards/list/table each serve a clear task;
+- verification sorting uses genuine dates only;
+- cards/list/table serve distinct tasks;
+- internal Detail navigation is primary;
 - Save remains functional;
-- internal detail navigation is prepared;
 - legacy URLs preserve useful query state;
-- required browser, accessibility, performance, and regression gates pass.
+- browser, accessibility, performance, and regression gates pass.
 
 ## 11. Slice 14.4 — Source Detail foundation
 
 ### Goal
 
-Create `/resources/[slug]` for every catalogue source using truthful coverage levels.
+Create `/resources/[slug]` for every catalogue source with truthful progressive coverage.
 
 ### Acceptance criteria
 
 - all 295 stable slugs resolve;
 - Listed pages remain useful without pretending to be enriched;
-- Profiled/Verified pages reveal additional supported fields;
-- primary actions are Save/Add to board when available and Visit source;
+- Profiled/Verified pages progressively reveal supported fields;
+- actions include Save, future Add to board, and Visit source;
 - limitations and freshness are visible;
 - Similar Sources uses defensible peer/category logic;
-- structured metadata and sitemap behaviour are defined;
+- metadata and sitemap behaviour are defined;
 - external-source failure does not break the Tessli profile;
 - responsive and accessibility gates pass.
 
 ## 12. Slice 14.5 — Intelligence profile detail
 
-### Goal
-
 Expose capabilities, discovery model, integrations, agent access, workflow fit, governance, evidence, and verification for enriched profiles.
 
-### Acceptance criteria
+Requirements:
 
-- UI data is the same truth returned by native MCP tools;
+- same truth as MCP;
 - evidence claims retain source URLs and dates;
-- repository verification is not described as live provider verification;
+- repository verification is not live-provider verification;
 - credentials and persistence rules are explicit;
 - missing fields degrade honestly;
 - no paid/private content is copied into Tessli.
 
 ## 13. Slice 14.6 — Universal local Save
 
-### Goal
-
-Make Save a product-wide action rather than an Explore-only action.
-
-### Surfaces
+Make Save available in:
 
 - Browse cards/list/table;
 - Source Detail;
 - collection/playbook items;
 - Saved workspace.
 
-### Acceptance criteria
-
-- one local storage contract;
-- no duplicate or lost IDs;
-- accessible announcements;
-- cross-tab synchronisation;
-- legacy migration preserved;
-- source unavailable/removal behaviour defined;
-- no account required.
+Use one versioned local contract, preserve legacy migration, provide accessible announcements, synchronise tabs where practical, and require no account.
 
 ## 14. Slice 14.7 — Local project Boards
 
-### Goal
+Minimum capabilities:
 
-Prove project-oriented research before cloud persistence.
-
-### Minimum capabilities
-
-- create/rename/delete local board;
+- create, rename, and delete local Board;
 - project goal and constraints;
-- add/remove saved sources;
+- add/remove sources;
 - per-item notes;
 - selected/rejected state;
 - unresolved questions;
-- deterministic local persistence;
+- versioned local persistence;
 - clear local-only explanation.
 
-### Exclusions
-
-- no authentication;
-- no sharing;
-- no collaboration;
-- no cloud sync;
-- no rich-text editor.
+No auth, cloud sync, sharing, collaboration, or rich-text editor.
 
 ## 15. Slice 14.8 — Research-pack export
 
-### Goal
+Export compact deterministic Markdown from one Board.
 
-Export a compact, model-independent Markdown research pack from one Board.
+Requirements:
 
-### Acceptance criteria
-
-- sourced facts, curator/project judgment, and open questions remain distinct;
-- source URLs and evidence links are retained;
+- sourced facts, project judgment, and open questions remain distinct;
+- source/evidence URLs are retained;
 - selected and rejected directions are represented;
-- output is deterministic for the same Board state;
-- output is compact enough for model context;
+- output is deterministic and compact enough for model context;
 - export works without an account;
-- existing packet-builder logic is reused where appropriate rather than duplicated.
+- existing packet-builder logic is reused where appropriate.
 
 ## 16. Slice 14.9 — First OSS proof project
 
-### Goal
+Recommended project: Online Scope Studio homepage.
 
-Use Tessli to research and guide one real OSS page, then compare the process and result with the existing workflow.
-
-### Recommended project
-
-Online Scope Studio homepage.
-
-### Required evidence
+Required evidence:
 
 - brief and constraints;
 - 8–12 selected sources;
 - rejected directions;
 - exported research pack;
-- Codex implementation handoff;
+- Codex handoff;
 - browser screenshots/checks;
 - twelve-dimension human review;
 - time and iteration comparison;
-- findings that update source profiles or pattern candidates.
+- findings that update profiles or Pattern Candidates.
 
-### Exit criterion
+Exit criterion: state whether Tessli produced a smaller/better context pack, fewer rebuild loops, or improved review outcomes. Do not claim UI taste.
 
-Do not claim UI taste. State whether Tessli produced a smaller/better context pack, fewer rebuild loops, and improved review outcomes.
+## 17. Homepage and navigation boundary
 
-## 17. Slice 15.0 — Homepage and navigation redesign
+Homepage redesign begins only after the research loop works.
 
-This slice begins only after the research loop works.
-
-The homepage should then contain:
+Future homepage content:
 
 - task-based hero search;
 - real coverage facts;
@@ -418,9 +379,9 @@ Search | Saved
 
 Sign in remains withheld until cloud workspace value exists.
 
-## 18. Authentication deferral and future contract
+## 18. Authentication boundary
 
-Authentication work resumes only after local Boards/export prove repeated value.
+Authentication resumes only after local Boards/export prove repeated value.
 
 Future signup:
 
@@ -442,7 +403,7 @@ email + password
 
 Do not require email OTP after every normal password sign-in. Optional MFA uses authenticator TOTP.
 
-## 19. Explicit product deferrals
+## 19. Explicit deferrals
 
 Until proof stages justify them, do not implement:
 
