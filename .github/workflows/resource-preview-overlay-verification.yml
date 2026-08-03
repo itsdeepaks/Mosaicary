@@ -7,7 +7,9 @@ on:
     paths:
       - ".github/workflows/resource-preview-overlay-verification.yml"
       - "web/scripts/capture-resource-preview-overlay-verification.mjs"
+      - "web/scripts/capture-resource-preview-overlay-edge-cases.mjs"
       - "web/tests/resource-preview-overlay-verification.test.mjs"
+      - "web/tests/resource-preview-overlay-edge-cases.test.mjs"
       - "web/package.json"
       - "docs/slices/5.4c-03-overlay-verification-recapture.md"
   workflow_dispatch:
@@ -53,39 +55,47 @@ jobs:
         run: |
           npx prettier --write \
             scripts/capture-resource-preview-overlay-verification.mjs \
+            scripts/capture-resource-preview-overlay-edge-cases.mjs \
             tests/resource-preview-overlay-verification.test.mjs \
+            tests/resource-preview-overlay-edge-cases.test.mjs \
             package.json \
             ../docs/slices/5.4c-03-overlay-verification-recapture.md
 
-          mkdir -p ../artifacts/resource-preview-overlay-verification/formatted-source
+          mkdir -p ../artifacts/resource-preview-overlay-edge-cases/formatted-source
           cp scripts/capture-resource-preview-overlay-verification.mjs \
-            ../artifacts/resource-preview-overlay-verification/formatted-source/
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+          cp scripts/capture-resource-preview-overlay-edge-cases.mjs \
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
           cp tests/resource-preview-overlay-verification.test.mjs \
-            ../artifacts/resource-preview-overlay-verification/formatted-source/
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
+          cp tests/resource-preview-overlay-edge-cases.test.mjs \
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
           cp package.json \
-            ../artifacts/resource-preview-overlay-verification/formatted-source/
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
           cp ../docs/slices/5.4c-03-overlay-verification-recapture.md \
-            ../artifacts/resource-preview-overlay-verification/formatted-source/
+            ../artifacts/resource-preview-overlay-edge-cases/formatted-source/
           cp ../agent-browser-version.txt \
-            ../artifacts/resource-preview-overlay-verification/
+            ../artifacts/resource-preview-overlay-edge-cases/
 
-      - name: Verify overlay interaction contract
+      - name: Verify overlay interaction contracts
         working-directory: web
-        run: node --test tests/resource-preview-overlay-verification.test.mjs
+        run: |
+          node --test tests/resource-preview-overlay-verification.test.mjs
+          node --test tests/resource-preview-overlay-edge-cases.test.mjs
 
-      - name: Capture and verify five prior overlay failures
+      - name: Recapture the two remaining overlay edge cases
         shell: bash
         run: |
-          node web/scripts/capture-resource-preview-overlay-verification.mjs \
-            --output artifacts/resource-preview-overlay-verification \
-            | tee artifacts/resource-preview-overlay-verification/run.log
+          node web/scripts/capture-resource-preview-overlay-edge-cases.mjs \
+            --output artifacts/resource-preview-overlay-edge-cases \
+            | tee artifacts/resource-preview-overlay-edge-cases/run.log
 
       - name: Build review contact sheet
         if: always()
         shell: bash
         run: |
           shopt -s nullglob
-          images=(artifacts/resource-preview-overlay-verification/optimized/*.webp)
+          images=(artifacts/resource-preview-overlay-edge-cases/optimized/*.webp)
           if (( ${#images[@]} > 0 )); then
             montage "${images[@]}" \
               -thumbnail 480x252 \
@@ -93,14 +103,14 @@ jobs:
               -geometry +12+28 \
               -background white \
               -set label '%f' \
-              artifacts/resource-preview-overlay-verification/contact-sheet.jpg
+              artifacts/resource-preview-overlay-edge-cases/contact-sheet.jpg
           fi
 
       - name: Upload review artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: resource-preview-overlay-verification
-          path: artifacts/resource-preview-overlay-verification
+          name: resource-preview-overlay-edge-cases
+          path: artifacts/resource-preview-overlay-edge-cases
           if-no-files-found: error
           retention-days: 14
