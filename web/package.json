@@ -20,6 +20,7 @@
     "media:batch:select": "node scripts/select-resource-media-batch.mjs",
     "media:discover": "node scripts/discover-resource-media.mjs",
     "media:preview:pilot": "node scripts/capture-resource-preview-pilot.mjs",
+    "media:preview:interaction-pilot": "node scripts/capture-resource-preview-interaction-pilot.mjs",
     "mcp": "node mcp/server.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
