@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://tessli.dev/schemas/source-profile.schema.json",
   "title": "Tessli Source Profile",
-  "description": "Canonical source identity, catalogue metadata, coverage level, evidence state, and optional intelligence profile consumed by Tessli website and MCP surfaces.",
+  "description": "Canonical source identity, normalized research fields, coverage level, evidence state, and optional intelligence profile consumed by Tessli website and MCP surfaces.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -12,13 +12,22 @@
     "name",
     "url",
     "domain",
-    "description",
+    "summary",
     "category",
     "sourceType",
     "sourceTypeBasis",
-    "access",
-    "subscriptionRequired",
-    "availabilityStatus",
+    "accessModel",
+    "bestFor",
+    "capabilities",
+    "contentObjects",
+    "platforms",
+    "frameworks",
+    "integrationMethods",
+    "limitations",
+    "profileLevel",
+    "status",
+    "verifiedAt",
+    "evidence",
     "coverage",
     "intelligence"
   ],
@@ -46,9 +55,10 @@
       "type": "string",
       "minLength": 1
     },
-    "description": {
+    "summary": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "maxLength": 1200
     },
     "category": {
       "$ref": "#/$defs/identifier"
@@ -73,17 +83,47 @@
       "type": "string",
       "const": "category-classification"
     },
-    "access": {
-      "type": "string",
-      "enum": ["free", "freemium", "paid", "open-source", "free-trial"]
+    "accessModel": {
+      "$ref": "#/$defs/accessModel"
     },
-    "subscriptionRequired": {
-      "type": "string",
-      "enum": ["no", "optional", "yes", "after-trial"]
+    "bestFor": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/workflowFit"
     },
-    "availabilityStatus": {
+    "capabilities": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/capabilities"
+    },
+    "contentObjects": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/contentObjects"
+    },
+    "platforms": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/platforms"
+    },
+    "frameworks": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/frameworks"
+    },
+    "integrationMethods": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/integrationMethods"
+    },
+    "limitations": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/limitations"
+    },
+    "profileLevel": {
+      "type": "string",
+      "enum": ["listed", "profiled", "verified"]
+    },
+    "status": {
       "type": "string",
       "enum": ["active", "inactive", "unknown"]
+    },
+    "verifiedAt": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/$defs/evidence"
+      }
     },
     "coverage": {
       "$ref": "#/$defs/coverage"
@@ -103,6 +143,21 @@
       "minLength": 1,
       "maxLength": 120,
       "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "accessModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["access", "subscriptionRequired"],
+      "properties": {
+        "access": {
+          "type": "string",
+          "enum": ["free", "freemium", "paid", "open-source", "free-trial"]
+        },
+        "subscriptionRequired": {
+          "type": "string",
+          "enum": ["no", "optional", "yes", "after-trial"]
+        }
+      }
     },
     "coverage": {
       "type": "object",
