@@ -1,0 +1,123 @@
+name: Resource preview interaction pilot
+
+on:
+  push:
+    branches:
+      - agent/resource-preview-interaction-pilot
+    paths:
+      - ".github/workflows/resource-preview-interaction-pilot.yml"
+      - "web/scripts/capture-resource-preview-interaction-pilot.mjs"
+      - "web/tests/resource-preview-interaction-pilot.test.mjs"
+      - "web/package.json"
+      - "docs/slices/5.4c-02-interaction-aware-screenshot-pilot.md"
+      - "docs/reports/resource-preview-interaction-pilot.md"
+      - "docs/reports/resource-preview-interaction-pilot.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: resource-preview-interaction-pilot-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      INTERACTION_UPLOAD_URL: https://jckrtcqzpxywuejlprud.supabase.co/functions/v1/resource-preview-interaction-upload
+      INTERACTION_PUBLIC_BUCKET_BASE: https://jckrtcqzpxywuejlprud.supabase.co/storage/v1/object/public/resource-previews
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked application dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Install capture tools
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp
+          npm install --global agent-browser
+          agent-browser install
+          agent-browser --version | tee agent-browser-version.txt
+          cwebp -version
+
+      - name: Canonically format pilot files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            scripts/capture-resource-preview-interaction-pilot.mjs \
+            tests/resource-preview-interaction-pilot.test.mjs \
+            package.json \
+            ../docs/slices/5.4c-02-interaction-aware-screenshot-pilot.md \
+            ../docs/reports/resource-preview-interaction-pilot.md \
+            ../docs/reports/resource-preview-interaction-pilot.json
+
+      - name: Verify interaction policy contract
+        working-directory: web
+        run: node --test tests/resource-preview-interaction-pilot.test.mjs
+
+      - name: Request GitHub OIDC upload identity
+        shell: bash
+        run: |
+          response="$(curl --silent --show-error --fail \
+            --header "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=tessli-resource-preview-upload")"
+          token="$(printf '%s' "$response" | jq --raw-output '.value')"
+          test -n "$token"
+          test "$token" != "null"
+          echo "::add-mask::$token"
+          echo "INTERACTION_UPLOAD_JWT=$token" >> "$GITHUB_ENV"
+
+      - name: Capture, interact, compress, and upload
+        shell: bash
+        run: |
+          mkdir -p artifacts/resource-preview-interaction-pilot/formatted-source
+          cp web/scripts/capture-resource-preview-interaction-pilot.mjs \
+            artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp web/tests/resource-preview-interaction-pilot.test.mjs \
+            artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp web/package.json \
+            artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp agent-browser-version.txt \
+            artifacts/resource-preview-interaction-pilot/
+          node web/scripts/capture-resource-preview-interaction-pilot.mjs \
+            --output artifacts/resource-preview-interaction-pilot \
+            | tee artifacts/resource-preview-interaction-pilot/run.log
+
+      - name: Build review contact sheet
+        if: always()
+        shell: bash
+        run: |
+          shopt -s nullglob
+          images=(artifacts/resource-preview-interaction-pilot/optimized/*.webp)
+          if (( ${#images[@]} > 0 )); then
+            montage "${images[@]}" \
+              -thumbnail 480x252 \
+              -tile 3x \
+              -geometry +12+28 \
+              -background white \
+              -set label '%f' \
+              artifacts/resource-preview-interaction-pilot/contact-sheet.jpg
+          fi
+
+      - name: Upload review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resource-preview-interaction-pilot
+          path: artifacts/resource-preview-interaction-pilot
+          if-no-files-found: error
+          retention-days: 14
