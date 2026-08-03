@@ -21,7 +21,10 @@ test("canonical Browse derives one paginated result set from source profiles", a
   assert.match(page, /parseBrowseState\(/);
   assert.match(page, /deriveBrowseResults\(/);
   assert.match(page, /<BrowseResults resources=\{resources\}/);
-  assert.match(page, /redirect\(withState\(state, \{ page: result\.page \}\)\)/);
+  assert.match(
+    page,
+    /redirect\(withState\(state, \{ page: result\.page \}\)\)/,
+  );
   assert.match(browse, /state\.view === "cards" \? 24 : 50/);
   assert.match(browse, /filtered\.slice\(start, start \+ pageSize\)/);
   assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
@@ -43,8 +46,14 @@ test("Browse state is allowlisted, serializable, and rejects fake verification s
     assert.match(browse, new RegExp(`"${field}"`));
   }
 
-  assert.match(browse, /browseSortValues = \["curated", "name-asc", "name-desc"\]/);
-  assert.match(browse, /Legacy sort=verified intentionally normalizes to curated/);
+  assert.match(
+    browse,
+    /browseSortValues = \["curated", "name-asc", "name-desc"\]/,
+  );
+  assert.match(
+    browse,
+    /Legacy sort=verified intentionally normalizes to curated/,
+  );
   assert.doesNotMatch(browse, /browseSortValues[^\n]*verified/);
   assert.match(browse, /Number\.isSafeInteger\(number\) && number > 0/);
   assert.match(browse, /slice\(0, 160\)/);
@@ -77,7 +86,10 @@ test("canonical Browse renders one responsive result tree without duplicate desk
   ]);
 
   assert.equal((page.match(/<BrowseResults/g) ?? []).length, 1);
-  assert.doesNotMatch(results, /desktopResources|mobileResources|desktopReference|mobileReference/);
+  assert.doesNotMatch(
+    results,
+    /desktopResources|mobileResources|desktopReference|mobileReference/,
+  );
   assert.match(css, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 1100px\)/);
   assert.match(css, /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
