@@ -12,12 +12,15 @@ Tessli's active direction connects:
 
 The website, model-independent research packs, and native MCP are intended to use the same canonical source/profile truth.
 
-Read the authoritative direction first:
+Read the authoritative direction and execution plan first:
 
 - [`docs/product-direction.md`](docs/product-direction.md)
+- [`docs/product-plan-v2.md`](docs/product-plan-v2.md)
 - [`PRD.md`](PRD.md)
 - [`build-slices.md`](build-slices.md)
 - [`AGENTS.md`](AGENTS.md)
+
+Product Plan v2 records Phase 0 as the completed direction reset and Phases 1–10 as the ten development phases. Legacy slice numbers remain only as historical aliases for already merged work.
 
 ## Current Phase 1 application
 
@@ -32,7 +35,7 @@ The current production application is the completed Phase 1 directory experience
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
 
-Some current product decisions are now explicitly superseded and will be replaced in future slices:
+Some current product decisions are now explicitly superseded and will be replaced through Product Plan v2:
 
 - separate Explore and Full Reference catalogue products;
 - an unpaginated complete reference view;
@@ -59,15 +62,41 @@ Search
 
 The first proof project is expected to use a real Online Scope Studio page and compare research time, context quality, rebuild loops, responsive quality, coherence, accessibility, restraint, and ship readiness.
 
+## Product Plan v2 status
+
+```text
+Phase 0  Direction Reset                         DONE
+Phase 1  Source Intelligence Foundation          DONE
+Phase 2  Browse and Source Detail                ACTIVE
+Phase 3  Local Saved and Project Boards          PLANNED
+Phase 4  Research-Pack Export                    PLANNED
+Phase 5  Real OSS Proof Project                  PROOF
+Phase 6  Homepage, Navigation, Playbooks, For AI PLANNED
+Phase 7  Reviewed Pattern Candidates             PLANNED
+Phase 8  Authentication and Cloud Workspace      DEFERRED
+Phase 9  Community and Moderation                DEFERRED
+Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
+```
+
+The approved next slice is **Phase 2 / Slice 2.2 — canonical `/resources` implementation**.
+
 ## Source coverage levels
 
-Tessli will distinguish research depth honestly:
+Tessli distinguishes research depth honestly:
 
 - **Listed** — source identity, type, access, description, and status;
 - **Profiled** — capabilities, best use cases, content objects, platforms/frameworks, integrations, workflow fit, and limitations;
 - **Verified** — evidence, dates, agent-interface details, credential/persistence/redistribution rules, human review, and freshness.
 
-All 295 sources should not imply equal intelligence depth.
+Current canonical baseline:
+
+```text
+275 Listed
+20 Profiled
+0 Verified
+```
+
+All 295 sources must not imply equal intelligence depth.
 
 ## Model access
 
@@ -168,10 +197,11 @@ Every implementation slice follows:
 
 1. current `main`;
 2. `docs/product-direction.md`;
-3. `PRD.md`;
-4. `build-slices.md`;
-5. `AGENTS.md`;
-6. `design.md` for visible UI work;
-7. relevant contracts, schemas, code, tests, and slice evidence.
+3. `docs/product-plan-v2.md`;
+4. `PRD.md`;
+5. `build-slices.md`;
+6. `AGENTS.md`;
+7. `design.md` for visible UI work;
+8. relevant contracts, schemas, code, tests, and slice evidence.
 
 One independently reviewable slice is implemented per branch and pull request.
