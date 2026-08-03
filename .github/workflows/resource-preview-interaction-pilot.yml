@@ -76,6 +76,16 @@ jobs:
             ../docs/reports/resource-preview-interaction-pilot.md \
             ../docs/reports/resource-preview-interaction-pilot.json
 
+          mkdir -p ../artifacts/resource-preview-interaction-pilot/formatted-source
+          cp scripts/capture-resource-preview-interaction-pilot.mjs \
+            ../artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp tests/resource-preview-interaction-pilot.test.mjs \
+            ../artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp package.json \
+            ../artifacts/resource-preview-interaction-pilot/formatted-source/
+          cp ../agent-browser-version.txt \
+            ../artifacts/resource-preview-interaction-pilot/
+
       - name: Verify interaction policy contract
         working-directory: web
         run: node --test tests/resource-preview-interaction-pilot.test.mjs
@@ -95,15 +105,6 @@ jobs:
       - name: Capture, interact, compress, and upload
         shell: bash
         run: |
-          mkdir -p artifacts/resource-preview-interaction-pilot/formatted-source
-          cp web/scripts/capture-resource-preview-interaction-pilot.mjs \
-            artifacts/resource-preview-interaction-pilot/formatted-source/
-          cp web/tests/resource-preview-interaction-pilot.test.mjs \
-            artifacts/resource-preview-interaction-pilot/formatted-source/
-          cp web/package.json \
-            artifacts/resource-preview-interaction-pilot/formatted-source/
-          cp agent-browser-version.txt \
-            artifacts/resource-preview-interaction-pilot/
           node web/scripts/capture-resource-preview-interaction-pilot.mjs \
             --output artifacts/resource-preview-interaction-pilot \
             | tee artifacts/resource-preview-interaction-pilot/run.log
