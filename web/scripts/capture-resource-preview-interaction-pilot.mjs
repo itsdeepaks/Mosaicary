@@ -359,7 +359,9 @@ async function uploadPreview(resourceId, filePath) {
     };
   }
   if (!response.ok) {
-    throw new Error(`Upload failed: HTTP ${response.status} ${text.slice(0, 500)}`);
+    throw new Error(
+      `Upload failed: HTTP ${response.status} ${text.slice(0, 500)}`,
+    );
   }
   const publicUrl = body.publicUrl;
   const head = publicUrl
@@ -414,8 +416,12 @@ async function captureSite(site, rawPath) {
   };
 
   try {
-    const blank = record("open-blank", runAgent(session, ["open", "about:blank"]));
-    if (blank.status !== 0) throw new Error(`agent-browser could not start: ${blank.stderr}`);
+    const blank = record(
+      "open-blank",
+      runAgent(session, ["open", "about:blank"]),
+    );
+    if (blank.status !== 0)
+      throw new Error(`agent-browser could not start: ${blank.stderr}`);
     record(
       "set-viewport",
       runAgent(session, [
@@ -427,7 +433,8 @@ async function captureSite(site, rawPath) {
     );
     record("set-light-media", runAgent(session, ["set", "media", "light"]));
     const opened = record("open-site", runAgent(session, ["open", site.url]));
-    if (opened.status !== 0) throw new Error(`navigation failed: ${opened.stderr}`);
+    if (opened.status !== 0)
+      throw new Error(`navigation failed: ${opened.stderr}`);
     record("initial-wait", runAgent(session, ["wait", "7000"]));
 
     const beforeAudit = auditPage(session);
@@ -436,7 +443,10 @@ async function captureSite(site, rawPath) {
       const interaction = interactionAttempt(session);
       interactions.push(interaction);
       if (!interaction.result?.clicked) break;
-      record(`post-interaction-wait-${attempt + 1}`, runAgent(session, ["wait", "1200"]));
+      record(
+        `post-interaction-wait-${attempt + 1}`,
+        runAgent(session, ["wait", "1200"]),
+      );
     }
 
     if (!interactions.some((interaction) => interaction.result?.clicked)) {
@@ -461,8 +471,15 @@ async function captureSite(site, rawPath) {
     }
 
     const afterAudit = auditPage(session);
-    const screenshot = record("screenshot", runAgent(session, ["screenshot", rawPath]));
-    if (screenshot.status !== 0 || !existsSync(rawPath) || statSync(rawPath).size === 0) {
+    const screenshot = record(
+      "screenshot",
+      runAgent(session, ["screenshot", rawPath]),
+    );
+    if (
+      screenshot.status !== 0 ||
+      !existsSync(rawPath) ||
+      statSync(rawPath).size === 0
+    ) {
       throw new Error(`screenshot failed: ${screenshot.stderr}`);
     }
 
@@ -541,7 +558,10 @@ export async function runInteractionPilot({ outputDirectory } = {}) {
     maxBytes: INTERACTION_MAX_BYTES,
     captureCount: captured.length,
     failureCount: results.length - captured.length,
-    rawTotalBytes: captured.reduce((total, result) => total + result.rawBytes, 0),
+    rawTotalBytes: captured.reduce(
+      (total, result) => total + result.rawBytes,
+      0,
+    ),
     optimizedTotalBytes: captured.reduce(
       (total, result) => total + result.optimizedBytes,
       0,
