@@ -1,5 +1,12 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -291,7 +298,9 @@ export async function runPilot({ outputDirectory } = {}) {
   return manifest;
 }
 
-const invokedPath = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+const invokedPath = process.argv[1]
+  ? pathToFileURL(process.argv[1]).href
+  : null;
 if (invokedPath === import.meta.url) {
   await runPilot();
 }
