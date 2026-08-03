@@ -241,8 +241,15 @@ for (const [width, height] of viewports) {
         saveButtons: document.querySelectorAll('[data-browse-view=cards] button[aria-pressed]').length,
       }))()`);
       assert.equal(browseAudit.cards, 24, `Browse card page size at ${width}`);
-      assert.equal(browseAudit.internalLinks, true, `Browse primary links at ${width}`);
-      assert.ok(browseAudit.providerLinks > 0, `Browse provider links at ${width}`);
+      assert.equal(
+        browseAudit.internalLinks,
+        true,
+        `Browse primary links at ${width}`,
+      );
+      assert.ok(
+        browseAudit.providerLinks > 0,
+        `Browse provider links at ${width}`,
+      );
       assert.equal(browseAudit.saveButtons, 24, `Browse saves at ${width}`);
     }
 

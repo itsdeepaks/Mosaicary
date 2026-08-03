@@ -115,7 +115,11 @@ test("Explore page passes the validated catalogue into the integrated experience
   const page = await read("app/page.tsx");
 
   assert.match(page, /import catalogue from "@\/data\/catalogue\.json"/);
-  assert.match(page, /catalogue\.resources\.map/);
+  assert.match(
+    page,
+    /catalogue\.resources[\s\S]*?\.slice\(0, homepagePreviewLimit\)[\s\S]*?\.map/,
+  );
+  assert.match(page, /const homepagePreviewLimit = 12/);
   assert.match(page, /catalogue\.categories\.map/);
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<ExploreExperience/);
@@ -137,6 +141,8 @@ test("search supports controlled URL state and live result counts", async () => 
   assert.match(search, /const query = value \?\? uncontrolledQuery/);
   assert.match(search, /onValueChange\?\.\(nextQuery\)/);
   assert.match(search, /element instanceof HTMLDialogElement/);
+  assert.match(search, /action="\/resources"/);
+  assert.match(search, /name="q"/);
   assert.match(hero, /resultCount=\{resultCount\}/);
 });
 
