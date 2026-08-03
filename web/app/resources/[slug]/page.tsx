@@ -20,7 +20,9 @@ export async function generateMetadata({ params }: SourceProfilePageProps) {
   };
 }
 
-export default async function SourceProfilePage({ params }: SourceProfilePageProps) {
+export default async function SourceProfilePage({
+  params,
+}: SourceProfilePageProps) {
   const profile = getSourceProfile((await params).slug);
   if (!profile) notFound();
 
@@ -28,7 +30,10 @@ export default async function SourceProfilePage({ params }: SourceProfilePagePro
 
   return (
     <main id="main-content">
-      <article className="tessli-container" style={{ paddingBlock: "3rem 5rem" }}>
+      <article
+        className="tessli-container"
+        style={{ paddingBlock: "3rem 5rem" }}
+      >
         <nav aria-label="Breadcrumb">
           <Link href="/resources">Browse</Link> / {profile.name}
         </nav>
