@@ -45,6 +45,10 @@ export const SETTINGS_ACTIONS = Object.freeze([
   "manage preferences",
   "manage cookie preferences",
 ]);
+export const EDGE_FINAL_ACTIONS = Object.freeze([
+  ...SAFE_FINAL_ACTIONS,
+  "reject all cookies",
+]);
 
 const QUALITY_STEPS = Object.freeze([78, 70, 62, 54]);
 const CONSENT_TERMS = ["cookie", "cookies", "consent", "privacy preferences"];
@@ -139,14 +143,27 @@ function audit(session) {
   };
 }
 
-function controls(refs) {
-  return Object.entries(refs ?? {}).map(([ref, descriptor]) => ({
-    ref: ref.startsWith("@") ? ref : `@${ref}`,
-    role: normalize(descriptor?.role),
-    name: normalize(descriptor?.name),
-    checked: descriptor?.checked === true,
-    disabled: descriptor?.disabled === true,
-  }));
+function snapshotLineForRef(snapshotText, ref) {
+  const bareRef = ref.startsWith("@") ? ref.slice(1) : ref;
+  return String(snapshotText ?? "")
+    .split("\n")
+    .find((line) => line.includes(`ref=${bareRef}`));
+}
+
+function controls(refs, snapshotText = "") {
+  return Object.entries(refs ?? {}).map(([ref, descriptor]) => {
+    const snapshotLine = snapshotLineForRef(snapshotText, ref) ?? "";
+    return {
+      ref: ref.startsWith("@") ? ref : `@${ref}`,
+      role: normalize(descriptor?.role),
+      name: normalize(descriptor?.name),
+      checked:
+        descriptor?.checked === true || snapshotLine.includes("checked=true"),
+      disabled:
+        descriptor?.disabled === true ||
+        /(?:^|[\s,])disabled(?:[=,\]])/.test(snapshotLine),
+    };
+  });
 }
 
 export function chooseSettingsButton(refs) {
@@ -161,7 +178,7 @@ export function chooseSettingsButton(refs) {
 
 export function chooseFinalRejection(refs) {
   const priorities = new Map(
-    SAFE_FINAL_ACTIONS.map((action, index) => [action, index]),
+    EDGE_FINAL_ACTIONS.map((action, index) => [action, index]),
   );
   return controls(refs)
     .filter((control) => control.role === "button" || control.role === "link")
@@ -173,8 +190,8 @@ export function chooseFinalRejection(refs) {
     )[0];
 }
 
-export function findNecessaryOnlyPlan(refs) {
-  const available = controls(refs);
+export function findNecessaryOnlyPlan(refs, snapshotText = "") {
+  const available = controls(refs, snapshotText);
   const necessary = available.find(
     (control) =>
       (control.role === "checkbox" || control.role === "switch") &&
@@ -208,7 +225,10 @@ function verifyOverlayCleared(beforeAudit, afterAudit) {
 function executeNecessaryOnly(session, record) {
   const beforeSnapshot = snapshot(session);
   const beforeAudit = audit(session);
-  const initialPlan = findNecessaryOnlyPlan(beforeSnapshot.refs);
+  const initialPlan = findNecessaryOnlyPlan(
+    beforeSnapshot.refs,
+    beforeSnapshot.snapshot,
+  );
   if (!initialPlan) {
     return { status: "no-necessary-only-plan", beforeSnapshot, beforeAudit };
   }
@@ -216,23 +236,28 @@ function executeNecessaryOnly(session, record) {
   const toggles = [];
   for (const optional of initialPlan.optional) {
     const fresh = snapshot(session);
-    const current = controls(fresh.refs).find(
+    const current = controls(fresh.refs, fresh.snapshot).find(
       (control) =>
-        control.name === optional.name &&
-        control.checked &&
-        !control.disabled,
+        control.name === optional.name && control.checked && !control.disabled,
     );
     if (!current) continue;
     const clicked = record(
       `disable-${current.name}`,
       runAgent(session, ["click", current.ref]),
     );
-    toggles.push({ name: current.name, ref: current.ref, status: clicked.status });
+    toggles.push({
+      name: current.name,
+      ref: current.ref,
+      status: clicked.status,
+    });
     record(`wait-disable-${current.name}`, runAgent(session, ["wait", "400"]));
   }
 
   const selectionSnapshot = snapshot(session);
-  const available = controls(selectionSnapshot.refs);
+  const available = controls(
+    selectionSnapshot.refs,
+    selectionSnapshot.snapshot,
+  );
   const necessaryStillLocked = available.some(
     (control) =>
       control.name === "necessary" &&
@@ -264,11 +289,17 @@ function executeNecessaryOnly(session, record) {
     };
   }
 
-  const saved = record("save-necessary-only", runAgent(session, ["click", save.ref]));
+  const saved = record(
+    "save-necessary-only",
+    runAgent(session, ["click", save.ref]),
+  );
   record("wait-save-necessary-only", runAgent(session, ["wait", "1600"]));
   const afterSnapshot = snapshot(session);
   const afterAudit = audit(session);
-  const saveStillVisible = controls(afterSnapshot.refs).some(
+  const saveStillVisible = controls(
+    afterSnapshot.refs,
+    afterSnapshot.snapshot,
+  ).some(
     (control) =>
       control.role === "button" &&
       NECESSARY_ONLY_SAVE_ACTIONS.includes(control.name),
@@ -298,8 +329,12 @@ function executeSettingsThenReject(session, record) {
   const beforeSnapshot = snapshot(session);
   const beforeAudit = audit(session);
   const settings = chooseSettingsButton(beforeSnapshot.refs);
-  if (!settings) return { status: "no-settings-button", beforeSnapshot, beforeAudit };
-  const opened = record("open-cookie-settings", runAgent(session, ["click", settings.ref]));
+  if (!settings)
+    return { status: "no-settings-button", beforeSnapshot, beforeAudit };
+  const opened = record(
+    "open-cookie-settings",
+    runAgent(session, ["click", settings.ref]),
+  );
   record("wait-cookie-settings", runAgent(session, ["wait", "1200"]));
   const settingsSnapshot = snapshot(session);
   const rejection = chooseFinalRejection(settingsSnapshot.refs);
@@ -385,8 +420,12 @@ async function capture(site, rawPath) {
     return result;
   };
   try {
-    const blank = record("open-blank", runAgent(session, ["open", "about:blank"]));
-    if (blank.status !== 0) throw new Error(blank.stderr || "browser failed to start");
+    const blank = record(
+      "open-blank",
+      runAgent(session, ["open", "about:blank"]),
+    );
+    if (blank.status !== 0)
+      throw new Error(blank.stderr || "browser failed to start");
     record(
       "set-viewport",
       runAgent(session, [
@@ -398,7 +437,8 @@ async function capture(site, rawPath) {
     );
     record("set-light-media", runAgent(session, ["set", "media", "light"]));
     const opened = record("open-site", runAgent(session, ["open", site.url]));
-    if (opened.status !== 0) throw new Error(opened.stderr || "navigation failed");
+    if (opened.status !== 0)
+      throw new Error(opened.stderr || "navigation failed");
     record("initial-wait", runAgent(session, ["wait", "7000"]));
     const interaction =
       site.strategy === "necessary-only-selection"
@@ -406,8 +446,15 @@ async function capture(site, rawPath) {
         : executeSettingsThenReject(session, record);
     const finalSnapshot = snapshot(session);
     const finalAudit = audit(session);
-    const screenshot = record("screenshot", runAgent(session, ["screenshot", rawPath]));
-    if (screenshot.status !== 0 || !existsSync(rawPath) || statSync(rawPath).size === 0) {
+    const screenshot = record(
+      "screenshot",
+      runAgent(session, ["screenshot", rawPath]),
+    );
+    if (
+      screenshot.status !== 0 ||
+      !existsSync(rawPath) ||
+      statSync(rawPath).size === 0
+    ) {
       throw new Error(screenshot.stderr || "screenshot failed");
     }
     return {
@@ -502,6 +549,7 @@ const invokedPath = process.argv[1]
   : null;
 if (invokedPath === import.meta.url) {
   const outputIndex = process.argv.indexOf("--output");
-  const outputDirectory = outputIndex >= 0 ? process.argv[outputIndex + 1] : null;
+  const outputDirectory =
+    outputIndex >= 0 ? process.argv[outputIndex + 1] : null;
   await runEdgeCases({ outputDirectory });
 }
