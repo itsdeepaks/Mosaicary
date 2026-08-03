@@ -1,9 +1,12 @@
 # Resource preview interaction pilot results
 
-Status: **capture workflow pending**
+Status: **capture retry running after OIDC authorization fix**
 
-The fifteen-site interaction-aware screenshot pilot has not yet produced reviewed
-capture evidence. This report will be replaced with exact workflow, compression,
-interaction, Storage, challenge-page, and visual-review results.
+The first fifteen-site browser pass produced all raw and optimized screenshots,
+but the redundant GitHub OIDC subject check rejected every final Storage upload.
+The issuer, audience, repository, and exact PR ref checks remain enforced; the
+redundant subject condition has been removed for the retry.
 
-Production approval remains false.
+This report will be replaced with exact workflow, compression, interaction,
+Storage, challenge-page, and visual-review results. Production approval remains
+false.
