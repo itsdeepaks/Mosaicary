@@ -121,10 +121,11 @@ export function ExploreSearch({
   return (
     <div className={styles.wrapper}>
       <form
+        action="/resources"
         aria-label="Search Tessli resources"
         className={styles.form}
         data-search-state={normalizedQuery ? "query" : "empty"}
-        onSubmit={(event) => event.preventDefault()}
+        method="get"
         role="search"
       >
         <span className={styles.searchIcon}>
@@ -140,6 +141,7 @@ export function ExploreSearch({
           data-explore-search-input
           enterKeyHint="search"
           id={inputId}
+          name="q"
           onChange={(event) => updateQuery(event.target.value)}
           onKeyDown={(event) => {
             if (event.key !== "Escape") {
