@@ -21,6 +21,7 @@
     "media:discover": "node scripts/discover-resource-media.mjs",
     "media:preview:pilot": "node scripts/capture-resource-preview-pilot.mjs",
     "media:preview:interaction-pilot": "node scripts/capture-resource-preview-interaction-pilot.mjs",
+    "media:preview:overlay-verification": "node scripts/capture-resource-preview-overlay-verification.mjs",
     "mcp": "node mcp/server.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
