@@ -67,7 +67,9 @@ const catalogueById = new Map(
 function cardForProfile(profile: SourceProfile): ResourceCardData {
   const resource = catalogueById.get(profile.id);
   if (!resource) {
-    throw new Error(`Missing catalogue record for source profile ${profile.id}.`);
+    throw new Error(
+      `Missing catalogue record for source profile ${profile.id}.`,
+    );
   }
   return {
     id: resource.id,
@@ -95,7 +97,9 @@ type ResourcesPageProps = Readonly<{
   searchParams: Promise<BrowseSearchParams>;
 }>;
 
-export default async function ResourcesPage({ searchParams }: ResourcesPageProps) {
+export default async function ResourcesPage({
+  searchParams,
+}: ResourcesPageProps) {
   const rawSearchParams = await searchParams;
   const state = parseBrowseState(rawSearchParams, categoryIds, sourceTypeIds);
   const result = deriveBrowseResults(getAllSourceProfiles(), state);
@@ -122,7 +126,7 @@ export default async function ResourcesPage({ searchParams }: ResourcesPageProps
           </p>
         </header>
 
-        <form className={styles.controls} method="get" action="/resources">
+        <form action="/resources" className={styles.controls} method="get">
           <label>
             Search
             <input
