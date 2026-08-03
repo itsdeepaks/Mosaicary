@@ -27,7 +27,7 @@ export type SourceCoverageLevel = "listed" | "profiled" | "verified";
 export type SourceConfidence = "certain" | "likely" | "unknown";
 export type HumanReviewStatus = "not-recorded" | "completed";
 export type FreshnessStatus = "current" | "aging" | "stale" | "unknown";
-export type AvailabilityStatus = "active" | "inactive" | "unknown";
+export type SourceStatus = "active" | "inactive" | "unknown";
 
 type CatalogueResource = (typeof catalogue.resources)[number];
 
@@ -37,6 +37,11 @@ type ReviewAwareIntelligenceProfile = ResourceIntelligenceProfile & {
     reviewedAt?: string;
   };
 };
+
+export interface SourceAccessModel {
+  access: string;
+  subscriptionRequired: string;
+}
 
 export interface SourceCoverage {
   level: SourceCoverageLevel;
@@ -56,13 +61,22 @@ export interface SourceProfile {
   name: string;
   url: string;
   domain: string;
-  description: string;
+  summary: string;
   category: string;
   sourceType: SourceType;
   sourceTypeBasis: "category-classification";
-  access: string;
-  subscriptionRequired: string;
-  availabilityStatus: AvailabilityStatus;
+  accessModel: SourceAccessModel;
+  bestFor: ResourceIntelligenceProfile["workflowFit"];
+  capabilities: ResourceIntelligenceProfile["capabilities"];
+  contentObjects: ResourceIntelligenceProfile["contentObjects"];
+  platforms: ResourceIntelligenceProfile["platforms"];
+  frameworks: ResourceIntelligenceProfile["frameworks"];
+  integrationMethods: ResourceIntelligenceProfile["integrationMethods"];
+  limitations: ResourceIntelligenceProfile["limitations"];
+  profileLevel: SourceCoverageLevel;
+  status: SourceStatus;
+  verifiedAt: string | null;
+  evidence: ResourceIntelligenceProfile["evidence"];
   coverage: SourceCoverage;
   intelligence: ResourceIntelligenceProfile | null;
 }
@@ -171,7 +185,7 @@ function coverageReason(
   return "Structured intelligence is present but the full Verified coverage contract is incomplete.";
 }
 
-function availabilityStatus(status: string): AvailabilityStatus {
+function sourceStatus(status: string): SourceStatus {
   if (status === "active" || status === "inactive") return status;
   return "unknown";
 }
@@ -187,7 +201,7 @@ function intelligenceForResource(
 function buildSourceProfile(resource: CatalogueResource): SourceProfile {
   const intelligence = intelligenceForResource(resource);
   const humanReviewStatus = deriveHumanReviewStatus(intelligence);
-  const level = deriveCoverageLevel(intelligence, humanReviewStatus);
+  const profileLevel = deriveCoverageLevel(intelligence, humanReviewStatus);
   const sourceType = SOURCE_TYPE_BY_CATEGORY[resource.category];
 
   if (!sourceType) {
@@ -201,16 +215,28 @@ function buildSourceProfile(resource: CatalogueResource): SourceProfile {
     name: resource.name,
     url: resource.url,
     domain: resource.domain,
-    description: resource.description,
+    summary: resource.description,
     category: resource.category,
     sourceType,
     sourceTypeBasis: "category-classification",
-    access: resource.access,
-    subscriptionRequired: resource.subscriptionRequired,
-    availabilityStatus: availabilityStatus(resource.status),
+    accessModel: {
+      access: resource.access,
+      subscriptionRequired: resource.subscriptionRequired,
+    },
+    bestFor: intelligence?.workflowFit ?? [],
+    capabilities: intelligence?.capabilities ?? [],
+    contentObjects: intelligence?.contentObjects ?? [],
+    platforms: intelligence?.platforms ?? [],
+    frameworks: intelligence?.frameworks ?? [],
+    integrationMethods: intelligence?.integrationMethods ?? [],
+    limitations: intelligence?.limitations ?? [],
+    profileLevel,
+    status: sourceStatus(resource.status),
+    verifiedAt: intelligence?.verifiedAt ?? null,
+    evidence: intelligence?.evidence ?? [],
     coverage: {
-      level,
-      reason: coverageReason(level, humanReviewStatus),
+      level: profileLevel,
+      reason: coverageReason(profileLevel, humanReviewStatus),
       profileStatus: intelligence?.status ?? null,
       lastVerifiedAt: intelligence?.verifiedAt ?? null,
       confidence: deriveEvidenceConfidence(intelligence),
@@ -248,7 +274,7 @@ export function getSourceCoverageCounts(): Readonly<
   };
 
   for (const profile of sourceProfiles) {
-    counts[profile.coverage.level] += 1;
+    counts[profile.profileLevel] += 1;
   }
 
   return counts;
