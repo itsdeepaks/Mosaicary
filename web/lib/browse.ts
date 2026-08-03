@@ -153,7 +153,8 @@ export function deriveBrowseResults(
       !state.access.includes(profile.accessModel.access as BrowseAccess)
     )
       return false;
-    if (state.sourceType && profile.sourceType !== state.sourceType) return false;
+    if (state.sourceType && profile.sourceType !== state.sourceType)
+      return false;
     if (state.profileLevel && profile.profileLevel !== state.profileLevel)
       return false;
     return true;

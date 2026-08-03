@@ -172,10 +172,7 @@ export default async function ResourcesPage({
           </label>
           <label>
             Coverage
-            <select
-              defaultValue={state.profileLevel ?? ""}
-              name="profileLevel"
-            >
+            <select defaultValue={state.profileLevel ?? ""} name="profileLevel">
               <option value="">All coverage</option>
               {browseProfileLevelValues.map((level) => (
                 <option key={level} value={level}>

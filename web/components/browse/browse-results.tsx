@@ -132,7 +132,10 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
                       <button
                         aria-pressed={savedIds.includes(card.id)}
                         onClick={() =>
-                          handleSavedChange(card.id, !savedIds.includes(card.id))
+                          handleSavedChange(
+                            card.id,
+                            !savedIds.includes(card.id),
+                          )
                         }
                         type="button"
                       >
@@ -161,9 +164,7 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
             <div>
               <p className={styles.domain}>{profile.domain}</p>
               <h2>
-                <Link href={`/resources/${profile.slug}`}>
-                  {profile.name}
-                </Link>
+                <Link href={`/resources/${profile.slug}`}>{profile.name}</Link>
               </h2>
               <p>{profile.summary}</p>
               <p className={styles.meta}>
