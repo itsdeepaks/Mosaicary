@@ -1,0 +1,66 @@
+name: Finalize canonical Browse files
+
+on:
+  push:
+    branches:
+      - feat/canonical-browse
+    paths:
+      - ".github/workflows/finalize-canonical-browse.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/canonical-browse
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      - name: Align homepage integration assertion
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('web/tests/discovery-controls.test.mjs')
+          text = path.read_text()
+          text = text.replace(
+              'assert.match(page, /catalogue\\.resources\\.map/);',
+              'assert.match(page, /catalogue\\.resources[\\s\\S]*?\\.slice\\(0, homepagePreviewLimit\\)[\\s\\S]*?\\.map/);\n  assert.match(page, /const homepagePreviewLimit = 12/);',
+          )
+          text = text.replace(
+              'assert.match(search, /element instanceof HTMLDialogElement/);',
+              'assert.match(search, /element instanceof HTMLDialogElement/);\n  assert.match(search, /action="\\/resources"/);\n  assert.match(search, /name="q"/);',
+          )
+          path.write_text(text)
+          PY
+      - name: Format changed files
+        working-directory: web
+        run: >-
+          npx prettier --write
+          app/page.tsx
+          app/resources/page.tsx
+          'app/resources/[slug]/page.tsx'
+          components/browse/browse-results.tsx
+          components/browse/browse.module.css
+          components/explore-search/explore-search.tsx
+          lib/browse.ts
+          tests/discovery-controls.test.mjs
+          tests/full-reference.test.mjs
+          tests/release-gate-browser.mjs
+      - name: Commit finalization
+        shell: bash
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web
+          git commit -m "style: finalize canonical Browse files"
+          git push origin HEAD:feat/canonical-browse
