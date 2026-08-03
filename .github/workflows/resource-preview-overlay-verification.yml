@@ -1,9 +1,9 @@
 name: Resource preview overlay verification
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/resource-preview-overlay-verification
+      - main
     paths:
       - ".github/workflows/resource-preview-overlay-verification.yml"
       - "web/scripts/capture-resource-preview-overlay-verification.mjs"
