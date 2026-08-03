@@ -14,6 +14,8 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const schemaPath = path.join(__dirname, "../../schemas/source-profile.schema.json");
+const SOURCE_PROFILE_SCHEMA_ID =
+  "https://tessli.dev/schemas/source-profile.schema.json";
 
 function issue(code, message, details = {}) {
   return { code, message, ...details };
@@ -33,7 +35,7 @@ export function validateSourceProfileContract() {
   const summary = getSourceContractSummary();
   const errors = [];
 
-  if (schema.$id !== "urn:tessli:schema:source-profile:v1") {
+  if (schema.$id !== SOURCE_PROFILE_SCHEMA_ID) {
     errors.push(issue("schema-id", "Source profile schema ID is not canonical."));
   }
   if (schema.properties?.contractVersion?.const !== SOURCE_PROFILE_CONTRACT_VERSION) {
