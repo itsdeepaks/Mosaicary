@@ -103,7 +103,9 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
         </p>
         <div className={styles.tableScroller} data-browse-view="table">
           <table className={styles.table}>
-            <caption className={styles.srOnly}>Current Tessli source results</caption>
+            <caption className={styles.srOnly}>
+              Current Tessli source results
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Source</th>
@@ -117,7 +119,9 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
               {resources.map(({ profile, card }) => (
                 <tr key={profile.id}>
                   <th scope="row">
-                    <Link href={`/resources/${profile.slug}`}>{profile.name}</Link>
+                    <Link href={`/resources/${profile.slug}`}>
+                      {profile.name}
+                    </Link>
                     <small>{profile.domain}</small>
                   </th>
                   <td>{profile.sourceType.replaceAll("-", " ")}</td>
@@ -157,11 +161,14 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
             <div>
               <p className={styles.domain}>{profile.domain}</p>
               <h2>
-                <Link href={`/resources/${profile.slug}`}>{profile.name}</Link>
+                <Link href={`/resources/${profile.slug}`}>
+                  {profile.name}
+                </Link>
               </h2>
               <p>{profile.summary}</p>
               <p className={styles.meta}>
-                {categoryLabel} · {accessLabels[card.access]} · {profile.profileLevel}
+                {categoryLabel} · {accessLabels[card.access]} ·{" "}
+                {profile.profileLevel}
               </p>
             </div>
             <div className={styles.rowActions}>
