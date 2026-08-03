@@ -26,7 +26,10 @@ const schemaPath = path.join(
 
 test("source profile schema defines the canonical v1 coverage contract", () => {
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-  assert.equal(schema.$id, "urn:tessli:schema:source-profile:v1");
+  assert.equal(
+    schema.$id,
+    "https://tessli.dev/schemas/source-profile.schema.json",
+  );
   assert.equal(
     schema.properties.contractVersion.const,
     SOURCE_PROFILE_CONTRACT_VERSION,
