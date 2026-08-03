@@ -19,7 +19,7 @@ Read the authoritative direction first:
 - [`build-slices.md`](build-slices.md)
 - [`AGENTS.md`](AGENTS.md)
 
-## Current implementation
+## Current Phase 1 application
 
 The current production application is the completed Phase 1 directory experience. It includes:
 
@@ -152,13 +152,15 @@ Normal build and test remain network-free. Generated output records source prove
 
 The catalogue and profiles may become outdated as providers change pricing, access, availability, integrations, licensing, and terms. Verify important current claims with original sources and retain evidence dates.
 
-## Deployment
+## Deployment and rollback
 
 The root `vercel.json` targets `web/package.json` with Vercel's Next.js builder.
 
-Every deployment must be verified against the relevant route and browser matrix. A READY badge alone is not evidence that the correct application is serving.
+Every deployment must be verified against the relevant route and browser matrix. A READY badge alone is not evidence that the correct application is serving. At minimum, probe `/`, `/collections`, `/resources`, `/saved`, `/about`, and expected not-found behaviour.
 
-Current release and rollback evidence remains under `docs/slices/`.
+The previous repository-root static production deployment remains recorded as the historical rollback target for the Phase 1 cutover. Current release evidence, known-good deployment identifiers, production preconditions, and rollback procedure remain under `docs/slices/9.2-phase-1-release-hardening.md` and `docs/slices/9.3-production-replacement.md`.
+
+The new product direction does not rewrite or erase the verified Phase 1 deployment history. Future route replacement must define its own rollout and rollback evidence.
 
 ## Delivery rules
 
