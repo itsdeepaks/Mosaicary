@@ -11,132 +11,91 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("Full Reference route passes the validated catalogue into shared discovery state", async () => {
-  const page = await read("app/resources/page.tsx");
+test("canonical Browse derives one paginated result set from source profiles", async () => {
+  const [page, browse] = await Promise.all([
+    read("app/resources/page.tsx"),
+    read("lib/browse.ts"),
+  ]);
 
-  assert.match(page, /import catalogue from "@\/data\/catalogue\.json"/);
-  assert.match(page, /catalogue\.resources\.map/);
-  assert.match(page, /catalogue\.categories\.map/);
-  assert.match(page, /parseDiscoveryState\(await searchParams/);
-  assert.match(page, /<FullReferenceExperience/);
-  assert.match(page, /resources=\{resources\}/);
-  assert.match(page, /previewImageUrl: resource\.previewImageUrl/);
-  assert.match(page, /faviconUrl: resource\.faviconUrl/);
-  assert.doesNotMatch(page, /RoutePlaceholder|fetch\(/);
+  assert.match(page, /getAllSourceProfiles\(\)/);
+  assert.match(page, /parseBrowseState\(/);
+  assert.match(page, /deriveBrowseResults\(/);
+  assert.match(page, /<BrowseResults resources=\{resources\}/);
+  assert.match(page, /redirect\(withState\(state, \{ page: result\.page \}\)\)/);
+  assert.match(browse, /state\.view === "cards" \? 24 : 50/);
+  assert.match(browse, /filtered\.slice\(start, start \+ pageSize\)/);
+  assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
 });
 
-test("desktop reference state reuses canonical discovery derivation and browser history", async () => {
-  const experience = await read(
-    "components/full-reference/full-reference-experience.tsx",
-  );
+test("Browse state is allowlisted, serializable, and rejects fake verification sorting", async () => {
+  const browse = await read("lib/browse.ts");
 
-  assert.match(experience, /^"use client";/);
-  assert.match(
-    experience,
-    /deriveExploreResults\(resources, categoryLabels, state\)/,
-  );
-  assert.match(experience, /discoveryHref\("\/resources", state\)/);
-  assert.match(experience, /window\.history\.state \?\? \{\}/);
-  assert.match(experience, /window\.history\[mode\]/);
-  assert.match(experience, /writeHistory\(nextState, "replaceState"\)/);
-  assert.match(experience, /addEventListener\("popstate"/);
-  assert.match(experience, /parseDiscoveryState\(/);
-  assert.match(experience, /discoveryAccessValues\.filter/);
-  assert.match(experience, /applyState\(defaultDiscoveryState\)/);
-  assert.doesNotMatch(experience, /localStorage|sessionStorage|fetch\(/);
+  for (const field of [
+    "q",
+    "category",
+    "access",
+    "sourceType",
+    "profileLevel",
+    "sort",
+    "view",
+    "page",
+  ]) {
+    assert.match(browse, new RegExp(`"${field}"`));
+  }
+
+  assert.match(browse, /browseSortValues = \["curated", "name-asc", "name-desc"\]/);
+  assert.match(browse, /Legacy sort=verified intentionally normalizes to curated/);
+  assert.doesNotMatch(browse, /browseSortValues[^\n]*verified/);
+  assert.match(browse, /Number\.isSafeInteger\(number\) && number > 0/);
+  assert.match(browse, /slice\(0, 160\)/);
 });
 
-test("Full Reference uses native controls, a semantic desktop table, and compact external rows", async () => {
-  const experience = await read(
-    "components/full-reference/full-reference-experience.tsx",
-  );
+test("cards, list, and table expose internal profiles plus independent save and provider actions", async () => {
+  const results = await read("components/browse/browse-results.tsx");
 
-  assert.match(experience, /type="search"/);
-  assert.match(experience, /type="radio"/);
-  assert.match(experience, /type="checkbox"/);
-  assert.match(experience, /<select/);
-  assert.match(
-    experience,
-    /<table className=\{styles\.table\} data-reference-table>/,
-  );
-  assert.match(experience, /<caption>/);
-  assert.match(experience, /<thead>/);
-  assert.match(experience, /<tbody>/);
-  assert.match(experience, /resultSet\.resources\.map/);
-  assert.match(experience, /target="_blank"/);
-  assert.match(experience, /rel="noopener noreferrer"/);
-  assert.match(experience, /aria-live="polite"/);
-  assert.match(experience, /data-reference-state="empty"/);
-  assert.match(experience, /data-reference-state="error"/);
-  assert.match(experience, /data-mobile-reference-rows/);
-  assert.match(experience, /data-mobile-reference-row/);
-  assert.match(experience, /<th scope="col">Last verified<\/th>/);
-  assert.match(experience, /data-reference-verified="true"/);
-  assert.match(experience, /value: "verified", label: "Verification date"/);
-  assert.match(experience, /<dialog/);
-  assert.doesNotMatch(
-    experience,
-    /data-resource-save|onSavedChange|saved=\{|load more|virtual/i,
-  );
+  assert.match(results, /if \(view === "cards"\)/);
+  assert.match(results, /if \(view === "table"\)/);
+  assert.match(results, /data-browse-view="cards"/);
+  assert.match(results, /data-browse-view="table"/);
+  assert.match(results, /data-browse-view="list"/);
+  assert.match(results, /href=\{`\/resources\/\$\{profile\.slug\}`\}/);
+  assert.match(results, /Visit source ↗/);
+  assert.match(results, /target="_blank"/);
+  assert.match(results, /rel="noopener noreferrer"/);
+  assert.match(results, /aria-pressed=\{savedIds\.includes\(card\.id\)\}/);
+  assert.match(results, /aria-live="polite"/);
+  assert.match(results, /<table className=\{styles\.table\}>/);
+  assert.match(results, /<caption className=\{styles\.srOnly\}>/);
+  assert.doesNotMatch(results, /fetch\(|sessionStorage/);
 });
 
-test("supporting panel is factual and omits unsupported ranking signals", async () => {
-  const experience = await read(
-    "components/full-reference/full-reference-experience.tsx",
-  );
+test("canonical Browse renders one responsive result tree without duplicate desktop and mobile catalogues", async () => {
+  const [page, results, css] = await Promise.all([
+    read("app/resources/page.tsx"),
+    read("components/browse/browse-results.tsx"),
+    read("components/browse/browse.module.css"),
+  ]);
 
-  assert.match(experience, /Source-backed, not ranked/);
-  assert.match(experience, /Curated order follows repository data/);
-  assert.match(
-    experience,
-    /does not infer\s+popularity, quality scores, sponsorship, or trends/,
-  );
-  assert.match(experience, /href="\/curation"/);
-  assert.match(experience, /href="\/submit"/);
-  assert.match(experience, /href="\/suggest"/);
-  assert.doesNotMatch(
-    experience,
-    /data-(?:quality-score|rating|popularity|trend)|popular tags|trending tags/i,
-  );
+  assert.equal((page.match(/<BrowseResults/g) ?? []).length, 1);
+  assert.doesNotMatch(results, /desktopResources|mobileResources|desktopReference|mobileReference/);
+  assert.match(css, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 1100px\)/);
+  assert.match(css, /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 700px\)/);
+  assert.match(css, /grid-template-columns:\s*1fr/);
+  assert.match(css, /overflow-x:\s*auto/);
 });
 
-test("responsive contract replaces the desktop table with compact rows and a native filter sheet", async () => {
-  const css = await read("components/full-reference/full-reference.module.css");
-  const experience = await read(
-    "components/full-reference/full-reference-experience.tsx",
-  );
+test("minimum source profile routes cover all source slugs without overstating enrichment", async () => {
+  const detail = await read("app/resources/[slug]/page.tsx");
 
-  assert.match(
-    css,
-    /grid-template-columns:\s*minmax\(220px,\s*0\.78fr\)\s*minmax\(0,\s*2\.5fr\)\s*minmax\(\s*210px,\s*0\.72fr\s*\)/,
-  );
-  assert.match(css, /\.table\s*\{[\s\S]*?min-width: 720px/);
-  assert.match(css, /\.table th:nth-child\(4\)[\s\S]*?width: 13%/);
-  assert.match(css, /\.table td:nth-child\(4\)[\s\S]*?white-space: nowrap/);
-  assert.match(css, /@media \(max-width: 1099px\)/);
-  assert.match(
-    css,
-    /@media \(max-width: 1099px\)[\s\S]*?\.desktopReference\s*\{[\s\S]*?display: none/,
-  );
-  assert.match(
-    css,
-    /@media \(max-width: 1099px\)[\s\S]*?\.mobileReference\s*\{[\s\S]*?display: block/,
-  );
-  assert.match(css, /@media \(forced-colors: active\)/);
-  assert.match(experience, /data-full-reference-mobile/);
-  assert.match(experience, /data-mobile-reference-search/);
-  assert.match(experience, /data-mobile-reference-rows/);
-  assert.match(experience, /data-mobile-reference-row/);
-  assert.match(experience, /<dialog/);
-  assert.match(experience, /data-reference-filter-dialog/);
-  assert.match(experience, /showModal\(\)/);
-  assert.match(experience, /onCancel=\{\(event\) => \{/);
-  assert.match(experience, /onClose=\{restoreFilterFocus\}/);
-  assert.match(experience, /<details className=\{styles\.mobileSupport\}>/);
-  assert.match(experience, /data-mobile-reference-category/);
-  assert.match(experience, /data-mobile-reference-access/);
-  assert.doesNotMatch(
-    experience,
-    /localStorage|sessionStorage|data-resource-save/,
-  );
+  assert.match(detail, /generateStaticParams/);
+  assert.match(detail, /getAllSourceProfiles\(\)\.map/);
+  assert.match(detail, /getSourceProfile/);
+  assert.match(detail, /if \(!profile\) notFound\(\)/);
+  assert.match(detail, /profile\.profileLevel/);
+  assert.match(detail, /profile\.coverage\.reason/);
+  assert.match(detail, /Visit source ↗/);
+  assert.match(detail, /minimum truthful profile boundary/i);
+  assert.doesNotMatch(detail, /rating|popularity|quality score|trend/i);
 });
