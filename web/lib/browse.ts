@@ -13,7 +13,11 @@ export const browseAccessValues = [
 ] as const;
 export const browseSortValues = ["curated", "name-asc", "name-desc"] as const;
 export const browseViewValues = ["cards", "list", "table"] as const;
-export const browseProfileLevelValues = ["listed", "profiled", "verified"] as const;
+export const browseProfileLevelValues = [
+  "listed",
+  "profiled",
+  "verified",
+] as const;
 
 export type BrowseAccess = (typeof browseAccessValues)[number];
 export type BrowseSort = (typeof browseSortValues)[number];
