@@ -56,8 +56,10 @@ const accessOptions: readonly DiscoveryAccessOption[] =
     count: accessCounts.get(value) ?? 0,
   }));
 
-const resources: readonly ResourceCardData[] = catalogue.resources.map(
-  (resource) => ({
+const homepagePreviewLimit = 12;
+const resources: readonly ResourceCardData[] = catalogue.resources
+  .slice(0, homepagePreviewLimit)
+  .map((resource) => ({
     id: resource.id,
     slug: resource.slug,
     name: resource.name,
@@ -72,8 +74,7 @@ const resources: readonly ResourceCardData[] = catalogue.resources.map(
     faviconUrl: resource.faviconUrl,
     previewImageUrl: resource.previewImageUrl,
     previewSource: resource.previewSource as ResourceCardData["previewSource"],
-  }),
-);
+  }));
 
 const categoryIds = new Set(categoryOptions.map((category) => category.id));
 
