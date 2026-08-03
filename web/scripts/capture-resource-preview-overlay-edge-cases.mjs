@@ -39,7 +39,10 @@ export const OPTIONAL_SWITCH_NAMES = Object.freeze([
   "statistics",
   "marketing",
 ]);
-export const NECESSARY_ONLY_SAVE_ACTIONS = Object.freeze(["allow selection"]);
+export const NECESSARY_ONLY_SAVE_ACTIONS = Object.freeze([
+  "allow selection",
+  "deny",
+]);
 export const SETTINGS_ACTIONS = Object.freeze([
   "cookie settings",
   "manage preferences",
