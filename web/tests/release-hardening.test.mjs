@@ -39,7 +39,10 @@ test("release history remains preserved under Product Plan v2", async () => {
     slices,
     /\| 2\.2 \| Canonical `\/resources` implementation \| NEXT \| 2\.1 \| — \|/,
   );
-  assert.match(plan, /Phases 1–10 are the ten development phases/i);
+  assert.match(
+    plan,
+    /(?:\*\*)?Phases 1–10(?:\*\*)? are the ten development phases/i,
+  );
   assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
