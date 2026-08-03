@@ -12,7 +12,10 @@ import {
 
 test("interaction preview pilot is fixed to fifteen distinct resources", () => {
   assert.equal(INTERACTION_SITES.length, 15);
-  assert.equal(new Set(INTERACTION_SITES.map((site) => site.resourceId)).size, 15);
+  assert.equal(
+    new Set(INTERACTION_SITES.map((site) => site.resourceId)).size,
+    15,
+  );
   assert.equal(new Set(INTERACTION_SITES.map((site) => site.url)).size, 15);
   assert.equal(INTERACTION_BATCH, "interaction-v1-20260803");
 
@@ -27,7 +30,10 @@ test("interaction preview pilot is fixed to fifteen distinct resources", () => {
 test("interaction pilot preserves the reviewed card-media boundary", () => {
   assert.deepEqual(INTERACTION_VIEWPORT, { width: 1440, height: 756 });
   assert.deepEqual(INTERACTION_OUTPUT, { width: 960, height: 504 });
-  assert.equal(INTERACTION_VIEWPORT.width / INTERACTION_VIEWPORT.height, 40 / 21);
+  assert.equal(
+    INTERACTION_VIEWPORT.width / INTERACTION_VIEWPORT.height,
+    40 / 21,
+  );
   assert.equal(INTERACTION_OUTPUT.width / INTERACTION_OUTPUT.height, 40 / 21);
   assert.equal(INTERACTION_MAX_BYTES, 307_200);
 });
