@@ -45,7 +45,10 @@ test("safe action lists contain no affirmative consent action", () => {
     "consent",
     "save and accept",
   ]);
-  assert.equal(allActions.some((action) => forbidden.has(action)), false);
+  assert.equal(
+    allActions.some((action) => forbidden.has(action)),
+    false,
+  );
   assert.ok(SAFE_FINAL_ACTIONS.includes("reject"));
   assert.ok(SAFE_FINAL_ACTIONS.includes("reject non-essential cookies"));
   assert.ok(SAFE_NAVIGATION_ACTIONS.includes("manage preferences"));
@@ -60,7 +63,10 @@ test("snapshot candidate selection is exact, role bounded, and prioritized", () 
     e5: { role: "button", name: "Reject analytics" },
   };
   const finalOnly = listSafeSnapshotCandidates(refs);
-  assert.deepEqual(finalOnly.map((candidate) => candidate.ref), ["@e3"]);
+  assert.deepEqual(
+    finalOnly.map((candidate) => candidate.ref),
+    ["@e3"],
+  );
   const withNavigation = listSafeSnapshotCandidates(refs, {
     allowNavigation: true,
   });
