@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:tessli:schema:source-profile:v1",
+  "$id": "https://tessli.dev/schemas/source-profile.schema.json",
   "title": "Tessli Source Profile",
   "description": "Canonical source identity, catalogue metadata, coverage level, evidence state, and optional intelligence profile consumed by Tessli website and MCP surfaces.",
   "type": "object",
@@ -91,7 +91,9 @@
     "intelligence": {
       "anyOf": [
         { "type": "null" },
-        { "$ref": "resource-intelligence-profile.schema.json" }
+        {
+          "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json"
+        }
       ]
     }
   },
