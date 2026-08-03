@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  ResourceCard,
-  type ResourceCardAccess,
-  type ResourceCardData,
+import type {
+  ResourceCardAccess,
+  ResourceCardData,
 } from "@/components/resource-card/resource-card";
 import {
   readSavedResourceIds,
@@ -81,14 +80,36 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
           {announcement}
         </p>
         <div className={styles.cardGrid} data-browse-view="cards">
-          {resources.map(({ card, categoryLabel }) => (
-            <ResourceCard
-              categoryLabel={categoryLabel}
-              key={card.id}
-              onSavedChange={handleSavedChange}
-              resource={card}
-              saved={savedIds.includes(card.id)}
-            />
+          {resources.map(({ profile, categoryLabel, card }) => (
+            <article className={styles.browseCard} key={profile.id}>
+              <Link
+                className={styles.browseCardPrimary}
+                href={`/resources/${profile.slug}`}
+              >
+                <p className={styles.domain}>{profile.domain}</p>
+                <h2>{profile.name}</h2>
+                <p>{profile.summary}</p>
+                <p className={styles.meta}>
+                  {categoryLabel} · {accessLabels[card.access]} ·{" "}
+                  {profile.profileLevel}
+                </p>
+                <span className={styles.inspectAction}>
+                  Inspect Tessli profile →
+                </span>
+              </Link>
+              <footer className={styles.browseCardActions}>
+                <button
+                  aria-pressed={savedIds.includes(card.id)}
+                  onClick={() =>
+                    handleSavedChange(card.id, !savedIds.includes(card.id))
+                  }
+                  type="button"
+                >
+                  {savedIds.includes(card.id) ? "Saved" : "Save"}
+                </button>
+                <ExternalLink resource={card} />
+              </footer>
+            </article>
           ))}
         </div>
       </>
