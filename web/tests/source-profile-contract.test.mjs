@@ -24,7 +24,30 @@ const schemaPath = path.join(
   "../../schemas/source-profile.schema.json",
 );
 
-test("source profile schema defines the canonical v1 coverage contract", () => {
+const requiredSourceFields = [
+  "id",
+  "slug",
+  "name",
+  "url",
+  "domain",
+  "summary",
+  "category",
+  "sourceType",
+  "accessModel",
+  "bestFor",
+  "capabilities",
+  "contentObjects",
+  "platforms",
+  "frameworks",
+  "integrationMethods",
+  "limitations",
+  "profileLevel",
+  "status",
+  "verifiedAt",
+  "evidence",
+];
+
+test("source profile schema defines the complete canonical v1 contract", () => {
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
   assert.equal(
     schema.$id,
@@ -34,7 +57,11 @@ test("source profile schema defines the canonical v1 coverage contract", () => {
     schema.properties.contractVersion.const,
     SOURCE_PROFILE_CONTRACT_VERSION,
   );
-  assert.deepEqual(schema.$defs.coverage.properties.level.enum, [
+  for (const field of requiredSourceFields) {
+    assert.ok(schema.required.includes(field), `Missing required field ${field}`);
+    assert.ok(schema.properties[field], `Missing property schema ${field}`);
+  }
+  assert.deepEqual(schema.properties.profileLevel.enum, [
     "listed",
     "profiled",
     "verified",
@@ -56,7 +83,13 @@ test("all 295 catalogue resources have one deterministic source profile", () => 
     assert.equal(getSourceProfile(resource.slug)?.id, resource.id);
     assert.equal(profile.name, resource.name);
     assert.equal(profile.url, resource.url);
+    assert.equal(profile.domain, resource.domain);
+    assert.equal(profile.summary, resource.description);
     assert.equal(profile.category, resource.category);
+    assert.deepEqual(profile.accessModel, {
+      access: resource.access,
+      subscriptionRequired: resource.subscriptionRequired,
+    });
   }
 });
 
@@ -79,28 +112,49 @@ test("coverage baseline is truthful: 275 Listed, 20 Profiled, 0 Verified", () =>
   });
 });
 
-test("legacy verified status does not silently claim Verified coverage", () => {
+test("Profiled records expose normalized intelligence without losing evidence", () => {
   const relume = getSourceProfile("relume");
   assert.ok(relume?.intelligence);
   assert.equal(relume.intelligence.status, "verified");
+  assert.equal(relume.profileLevel, "profiled");
   assert.equal(relume.coverage.level, "profiled");
   assert.equal(relume.coverage.humanReviewStatus, "not-recorded");
-  assert.equal(relume.coverage.lastVerifiedAt, "2026-07-31");
+  assert.equal(relume.verifiedAt, "2026-07-31");
   assert.equal(relume.coverage.freshnessStatus, "current");
   assert.equal(relume.coverage.confidence, "certain");
+  assert.deepEqual(relume.bestFor, relume.intelligence.workflowFit);
+  assert.deepEqual(relume.capabilities, relume.intelligence.capabilities);
+  assert.deepEqual(relume.contentObjects, relume.intelligence.contentObjects);
+  assert.deepEqual(relume.platforms, relume.intelligence.platforms);
+  assert.deepEqual(relume.frameworks, relume.intelligence.frameworks);
+  assert.deepEqual(
+    relume.integrationMethods,
+    relume.intelligence.integrationMethods,
+  );
+  assert.deepEqual(relume.limitations, relume.intelligence.limitations);
+  assert.deepEqual(relume.evidence, relume.intelligence.evidence);
   assert.equal(
     deriveCoverageLevel(relume.intelligence, "completed"),
     "verified",
   );
 });
 
-test("Listed records expose no invented evidence, confidence, or timestamps", () => {
+test("Listed records expose no invented intelligence, evidence, or timestamps", () => {
   const listed = getAllSourceProfiles().filter(
-    (profile) => profile.coverage.level === "listed",
+    (profile) => profile.profileLevel === "listed",
   );
   assert.equal(listed.length, 275);
   for (const profile of listed) {
     assert.equal(profile.intelligence, null);
+    assert.deepEqual(profile.bestFor, []);
+    assert.deepEqual(profile.capabilities, []);
+    assert.deepEqual(profile.contentObjects, []);
+    assert.deepEqual(profile.platforms, []);
+    assert.deepEqual(profile.frameworks, []);
+    assert.deepEqual(profile.integrationMethods, []);
+    assert.deepEqual(profile.limitations, []);
+    assert.deepEqual(profile.evidence, []);
+    assert.equal(profile.verifiedAt, null);
     assert.equal(profile.coverage.profileStatus, null);
     assert.equal(profile.coverage.lastVerifiedAt, null);
     assert.equal(profile.coverage.confidence, "unknown");
