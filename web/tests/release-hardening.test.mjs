@@ -28,7 +28,11 @@ test("release history remains preserved after the product direction reset", asyn
   );
   assert.match(
     slices,
-    /\| 14\.1 \| Minimum source-profile and coverage-level data contract \| NEXT \| 14\.0 \|/,
+    /\| 14\.1 \| Minimum source-profile and coverage-level data contract \| DONE \| 14\.0 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 14\.2 \| Canonical Browse architecture and pagination contract \| NEXT \| 14\.1 \|/,
   );
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
