@@ -7,6 +7,12 @@ on:
     paths:
       - ".github/workflows/resource-preview-pilot-format-helper.yml"
       - "web/scripts/capture-resource-preview-pilot.mjs"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/resource-preview-pilot-format-helper.yml"
+      - "web/scripts/capture-resource-preview-pilot.mjs"
 
 permissions:
   contents: read
