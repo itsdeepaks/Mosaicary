@@ -1,0 +1,117 @@
+name: Resource preview controlled batch 20
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/resource-preview-controlled-batch-20.yml"
+      - "web/scripts/capture-resource-preview-controlled-batch-20.mjs"
+      - "web/scripts/capture-resource-preview-overlay-verification.mjs"
+      - "web/scripts/capture-resource-preview-overlay-edge-cases.mjs"
+      - "web/tests/resource-preview-controlled-batch-20.test.mjs"
+      - "web/tests/resource-preview-overlay-verification.test.mjs"
+      - "web/tests/resource-preview-overlay-edge-cases.test.mjs"
+      - "web/package.json"
+      - "docs/slices/5.4c-04-controlled-twenty-site-batch.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: resource-preview-controlled-batch-20-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked application dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Install capture tools
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp
+          npm install --global agent-browser
+          agent-browser install
+          agent-browser --version | tee agent-browser-version.txt
+          cwebp -version
+
+      - name: Canonically format batch files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            scripts/capture-resource-preview-controlled-batch-20.mjs \
+            tests/resource-preview-controlled-batch-20.test.mjs \
+            package.json \
+            ../docs/slices/5.4c-04-controlled-twenty-site-batch.md
+
+          mkdir -p ../artifacts/resource-preview-controlled-batch-20/formatted-source
+          cp scripts/capture-resource-preview-controlled-batch-20.mjs \
+            ../artifacts/resource-preview-controlled-batch-20/formatted-source/
+          cp tests/resource-preview-controlled-batch-20.test.mjs \
+            ../artifacts/resource-preview-controlled-batch-20/formatted-source/
+          cp package.json \
+            ../artifacts/resource-preview-controlled-batch-20/formatted-source/
+          cp ../docs/slices/5.4c-04-controlled-twenty-site-batch.md \
+            ../artifacts/resource-preview-controlled-batch-20/formatted-source/
+          cp ../agent-browser-version.txt \
+            ../artifacts/resource-preview-controlled-batch-20/
+
+      - name: Verify controlled batch contracts
+        working-directory: web
+        run: |
+          node --test tests/resource-preview-controlled-batch-20.test.mjs
+          node --test tests/resource-preview-overlay-verification.test.mjs
+          node --test tests/resource-preview-overlay-edge-cases.test.mjs
+
+      - name: Capture controlled twenty-site batch
+        shell: bash
+        run: |
+          node web/scripts/capture-resource-preview-controlled-batch-20.mjs \
+            --output artifacts/resource-preview-controlled-batch-20 \
+            | tee artifacts/resource-preview-controlled-batch-20/run.log
+
+      - name: Build review contact sheet
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p artifacts/resource-preview-controlled-batch-20/review
+          shopt -s nullglob
+          images=(
+            artifacts/resource-preview-controlled-batch-20/generic/optimized/*.webp
+            artifacts/resource-preview-controlled-batch-20/edge/optimized/*.webp
+          )
+          if (( ${#images[@]} > 0 )); then
+            montage "${images[@]}" \
+              -thumbnail 480x252 \
+              -tile 4x \
+              -geometry +12+28 \
+              -background white \
+              -set label '%f' \
+              artifacts/resource-preview-controlled-batch-20/review/contact-sheet.jpg
+          fi
+
+      - name: Upload review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resource-preview-controlled-batch-20
+          path: artifacts/resource-preview-controlled-batch-20
+          if-no-files-found: error
+          retention-days: 14
