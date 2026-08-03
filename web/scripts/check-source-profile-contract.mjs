@@ -13,7 +13,10 @@ import {
 } from "../lib/source-profiles.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const schemaPath = path.join(__dirname, "../../schemas/source-profile.schema.json");
+const schemaPath = path.join(
+  __dirname,
+  "../../schemas/source-profile.schema.json",
+);
 const SOURCE_PROFILE_SCHEMA_ID =
   "https://tessli.dev/schemas/source-profile.schema.json";
 
@@ -36,9 +39,14 @@ export function validateSourceProfileContract() {
   const errors = [];
 
   if (schema.$id !== SOURCE_PROFILE_SCHEMA_ID) {
-    errors.push(issue("schema-id", "Source profile schema ID is not canonical."));
+    errors.push(
+      issue("schema-id", "Source profile schema ID is not canonical."),
+    );
   }
-  if (schema.properties?.contractVersion?.const !== SOURCE_PROFILE_CONTRACT_VERSION) {
+  if (
+    schema.properties?.contractVersion?.const !==
+    SOURCE_PROFILE_CONTRACT_VERSION
+  ) {
     errors.push(
       issue(
         "schema-version",
@@ -73,17 +81,25 @@ export function validateSourceProfileContract() {
     const catalogueResource = catalogueById.get(profile.id);
     if (!catalogueResource) {
       errors.push(
-        issue("unknown-resource", `Unknown source profile resource: ${profile.id}.`),
+        issue(
+          "unknown-resource",
+          `Unknown source profile resource: ${profile.id}.`,
+        ),
       );
       continue;
     }
 
     if (ids.has(profile.id)) {
-      errors.push(issue("duplicate-id", `Duplicate source profile ID: ${profile.id}.`));
+      errors.push(
+        issue("duplicate-id", `Duplicate source profile ID: ${profile.id}.`),
+      );
     }
     if (slugs.has(profile.slug)) {
       errors.push(
-        issue("duplicate-slug", `Duplicate source profile slug: ${profile.slug}.`),
+        issue(
+          "duplicate-slug",
+          `Duplicate source profile slug: ${profile.slug}.`,
+        ),
       );
     }
     ids.add(profile.id);
@@ -155,7 +171,9 @@ export function validateSourceProfileContract() {
           ),
         );
       }
-      if (profile.coverage.evidenceCount !== profile.intelligence.evidence.length) {
+      if (
+        profile.coverage.evidenceCount !== profile.intelligence.evidence.length
+      ) {
         errors.push(
           issue(
             "evidence-count",
