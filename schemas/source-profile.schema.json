@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tessli.dev/schemas/source-profile.schema.json",
+  "title": "Tessli Source Profile",
+  "description": "Canonical source identity, normalized research fields, coverage level, evidence state, and optional intelligence profile consumed by Tessli website and MCP surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "id",
+    "slug",
+    "name",
+    "url",
+    "domain",
+    "summary",
+    "category",
+    "sourceType",
+    "sourceTypeBasis",
+    "accessModel",
+    "bestFor",
+    "capabilities",
+    "contentObjects",
+    "platforms",
+    "frameworks",
+    "integrationMethods",
+    "limitations",
+    "profileLevel",
+    "status",
+    "verifiedAt",
+    "evidence",
+    "coverage",
+    "intelligence"
+  ],
+  "properties": {
+    "contractVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "slug": {
+      "$ref": "#/$defs/identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1200
+    },
+    "category": {
+      "$ref": "#/$defs/identifier"
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "inspiration-directory",
+        "product-reference-library",
+        "marketing-reference-library",
+        "implementation-library",
+        "design-system",
+        "creative-technology-resource",
+        "typography-resource",
+        "color-accessibility-resource",
+        "icon-library",
+        "visual-asset-library",
+        "design-ai-tool"
+      ]
+    },
+    "sourceTypeBasis": {
+      "type": "string",
+      "const": "category-classification"
+    },
+    "accessModel": {
+      "$ref": "#/$defs/accessModel"
+    },
+    "bestFor": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/workflowFit"
+    },
+    "capabilities": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/capabilities"
+    },
+    "contentObjects": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/contentObjects"
+    },
+    "platforms": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/platforms"
+    },
+    "frameworks": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/frameworks"
+    },
+    "integrationMethods": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/integrationMethods"
+    },
+    "limitations": {
+      "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/properties/limitations"
+    },
+    "profileLevel": {
+      "type": "string",
+      "enum": ["listed", "profiled", "verified"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "unknown"]
+    },
+    "verifiedAt": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json#/$defs/evidence"
+      }
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "intelligence": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "$ref": "https://tessli.dev/schemas/resource-intelligence-profile.schema.json"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "accessModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["access", "subscriptionRequired"],
+      "properties": {
+        "access": {
+          "type": "string",
+          "enum": ["free", "freemium", "paid", "open-source", "free-trial"]
+        },
+        "subscriptionRequired": {
+          "type": "string",
+          "enum": ["no", "optional", "yes", "after-trial"]
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "reason",
+        "profileStatus",
+        "lastVerifiedAt",
+        "confidence",
+        "humanReviewStatus",
+        "freshnessStatus",
+        "evidenceCount"
+      ],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["listed", "profiled", "verified"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profileStatus": {
+          "type": ["string", "null"],
+          "enum": ["draft", "verified", "needs-review", "archived", null]
+        },
+        "lastVerifiedAt": {
+          "type": ["string", "null"],
+          "format": "date"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["certain", "likely", "unknown"]
+        },
+        "humanReviewStatus": {
+          "type": "string",
+          "enum": ["not-recorded", "completed"]
+        },
+        "freshnessStatus": {
+          "type": "string",
+          "enum": ["current", "aging", "stale", "unknown"]
+        },
+        "evidenceCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Tessli Build Slices
 
-Status: **active delivery plan after the 2026-08-04 product-direction reset**  
+Status: **active delivery plan after the 2026-08-04 product-direction reset — Slice 14.2 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.
 
 The previous detailed Phase 1 ledger remains available in Git history and the individual evidence files under `docs/slices/`. This file defines the active work after the directory-to-research-product reset.
@@ -90,7 +90,8 @@ The following capabilities remain reusable unless an approved slice changes them
 - local context-engine provider;
 - deterministic research-plan/reference-packet builders;
 - seven read-only native MCP tools;
-- reviewed media provenance and coverage tooling.
+- reviewed media provenance and coverage tooling;
+- canonical 295-record Source contract with truthful Listed/Profiled/Verified coverage.
 
 Completed code is not automatically approved as the future product model. Explore, Full Reference, optional details, public auth placeholders, and contribution placeholders are subject to the reset below.
 
@@ -99,8 +100,8 @@ Completed code is not automatically approved as the future product model. Explor
 | ID | Slice | Status | Depends on |
 |---|---|---|---|
 | 14.0 | Product direction, PRD, operating, architecture, and delivery reset | DONE | current `main` |
-| 14.1 | Minimum source-profile and coverage-level data contract | NEXT | 14.0 |
-| 14.2 | Canonical Browse architecture and pagination contract | PLANNED | 14.1 |
+| 14.1 | Minimum source-profile and coverage-level data contract | DONE | 14.0 |
+| 14.2 | Canonical Browse architecture and pagination contract | NEXT | 14.1 |
 | 14.3 | Canonical `/resources` implementation: cards/list/table and pagination | PLANNED | 14.2 |
 | 14.4 | Source Detail foundation for all 295 sources | PLANNED | 14.1, 14.3 |
 | 14.5 | Verified intelligence sections for enriched profiles | PLANNED | 14.4, profile tooling |
@@ -204,6 +205,20 @@ evidence:
 - source schema, website, and MCP remain compatible;
 - generated data remains network-free and deterministic;
 - focused and full data checks pass.
+
+### Completion evidence
+
+- canonical schema: `schemas/source-profile.schema.json`;
+- shared adapter: `web/lib/source-profiles.ts`;
+- validator: `web/scripts/check-source-profile-contract.mjs`;
+- truthful baseline: **275 Listed / 20 Profiled / 0 Verified**;
+- existing `status: verified` intelligence records remain Profiled until explicit
+  completed human-review provenance exists;
+- every required field is directly exposed while missing intelligence maps to
+  empty arrays and `null`, not invented claims;
+- Web CI `30847382524`: passed;
+- Phase 1 Release Gate `30847382631`: passed;
+- detailed handoff: `docs/slices/14.1-source-profile-contract.md`.
 
 ### Exclusions
 
