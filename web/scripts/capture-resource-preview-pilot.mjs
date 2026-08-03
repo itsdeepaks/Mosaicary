@@ -282,7 +282,8 @@ export async function runPilot({ outputDirectory } = {}) {
     viewport: PILOT_VIEWPORT,
     output: PILOT_OUTPUT,
     maxBytes: PILOT_MAX_BYTES,
-    captureCount: results.filter((result) => result.status === "captured").length,
+    captureCount: results.filter((result) => result.status === "captured")
+      .length,
     failureCount: results.filter((result) => result.status === "failed").length,
     resources: results,
   };
