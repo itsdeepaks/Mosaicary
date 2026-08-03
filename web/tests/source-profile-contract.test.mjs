@@ -113,10 +113,7 @@ test("Listed records expose no invented evidence, confidence, or timestamps", ()
 test("source type is a deterministic category classification, not provider fact", () => {
   assert.equal(Object.keys(SOURCE_TYPE_BY_CATEGORY).length, 11);
   for (const profile of getAllSourceProfiles()) {
-    assert.equal(
-      profile.sourceType,
-      SOURCE_TYPE_BY_CATEGORY[profile.category],
-    );
+    assert.equal(profile.sourceType, SOURCE_TYPE_BY_CATEGORY[profile.category]);
     assert.equal(profile.sourceTypeBasis, "category-classification");
   }
 });
