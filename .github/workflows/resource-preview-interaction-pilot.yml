@@ -12,6 +12,17 @@ on:
       - "docs/slices/5.4c-02-interaction-aware-screenshot-pilot.md"
       - "docs/reports/resource-preview-interaction-pilot.md"
       - "docs/reports/resource-preview-interaction-pilot.json"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/resource-preview-interaction-pilot.yml"
+      - "web/scripts/capture-resource-preview-interaction-pilot.mjs"
+      - "web/tests/resource-preview-interaction-pilot.test.mjs"
+      - "web/package.json"
+      - "docs/slices/5.4c-02-interaction-aware-screenshot-pilot.md"
+      - "docs/reports/resource-preview-interaction-pilot.md"
+      - "docs/reports/resource-preview-interaction-pilot.json"
   workflow_dispatch:
 
 permissions:
