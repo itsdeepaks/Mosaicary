@@ -1,0 +1,106 @@
+name: Resource preview overlay verification
+
+on:
+  push:
+    branches:
+      - agent/resource-preview-overlay-verification
+    paths:
+      - ".github/workflows/resource-preview-overlay-verification.yml"
+      - "web/scripts/capture-resource-preview-overlay-verification.mjs"
+      - "web/tests/resource-preview-overlay-verification.test.mjs"
+      - "web/package.json"
+      - "docs/slices/5.4c-03-overlay-verification-recapture.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: resource-preview-overlay-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked application dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Install capture tools
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp
+          npm install --global agent-browser
+          agent-browser install
+          agent-browser --version | tee agent-browser-version.txt
+          cwebp -version
+
+      - name: Canonically format recapture files
+        working-directory: web
+        run: |
+          npx prettier --write \
+            scripts/capture-resource-preview-overlay-verification.mjs \
+            tests/resource-preview-overlay-verification.test.mjs \
+            package.json \
+            ../docs/slices/5.4c-03-overlay-verification-recapture.md
+
+          mkdir -p ../artifacts/resource-preview-overlay-verification/formatted-source
+          cp scripts/capture-resource-preview-overlay-verification.mjs \
+            ../artifacts/resource-preview-overlay-verification/formatted-source/
+          cp tests/resource-preview-overlay-verification.test.mjs \
+            ../artifacts/resource-preview-overlay-verification/formatted-source/
+          cp package.json \
+            ../artifacts/resource-preview-overlay-verification/formatted-source/
+          cp ../docs/slices/5.4c-03-overlay-verification-recapture.md \
+            ../artifacts/resource-preview-overlay-verification/formatted-source/
+          cp ../agent-browser-version.txt \
+            ../artifacts/resource-preview-overlay-verification/
+
+      - name: Verify overlay interaction contract
+        working-directory: web
+        run: node --test tests/resource-preview-overlay-verification.test.mjs
+
+      - name: Capture and verify five prior overlay failures
+        shell: bash
+        run: |
+          node web/scripts/capture-resource-preview-overlay-verification.mjs \
+            --output artifacts/resource-preview-overlay-verification \
+            | tee artifacts/resource-preview-overlay-verification/run.log
+
+      - name: Build review contact sheet
+        if: always()
+        shell: bash
+        run: |
+          shopt -s nullglob
+          images=(artifacts/resource-preview-overlay-verification/optimized/*.webp)
+          if (( ${#images[@]} > 0 )); then
+            montage "${images[@]}" \
+              -thumbnail 480x252 \
+              -tile 2x \
+              -geometry +12+28 \
+              -background white \
+              -set label '%f' \
+              artifacts/resource-preview-overlay-verification/contact-sheet.jpg
+          fi
+
+      - name: Upload review artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: resource-preview-overlay-verification
+          path: artifacts/resource-preview-overlay-verification
+          if-no-files-found: error
+          retention-days: 14
