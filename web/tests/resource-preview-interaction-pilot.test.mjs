@@ -32,12 +32,21 @@ test("interaction pilot preserves the reviewed card-media boundary", () => {
   assert.equal(INTERACTION_MAX_BYTES, 307_200);
 });
 
-test("dismiss actions exclude consent acceptance", () => {
+test("dismiss actions exclude affirmative consent controls", () => {
   assert.ok(SAFE_DISMISS_TEXTS.includes("reject all"));
   assert.ok(SAFE_DISMISS_TEXTS.includes("only necessary"));
   assert.ok(SAFE_DISMISS_TEXTS.includes("continue without accepting"));
+
+  const forbiddenActions = new Set([
+    "accept",
+    "accept all",
+    "allow all",
+    "agree",
+    "i agree",
+    "consent",
+  ]);
   assert.equal(
-    SAFE_DISMISS_TEXTS.some((text) => /accept|allow all|agree/i.test(text)),
+    SAFE_DISMISS_TEXTS.some((text) => forbiddenActions.has(text)),
     false,
   );
 });
