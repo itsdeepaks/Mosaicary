@@ -1,12 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 
 const endpoint = process.env.CDP_ENDPOINT ?? "http://127.0.0.1:9222";
 const origin = process.env.TESSLI_ORIGIN ?? "http://127.0.0.1:3000";
-const catalogue = JSON.parse(
-  await readFile(new URL("../data/catalogue.json", import.meta.url), "utf8"),
-);
-const curatedNames = catalogue.resources.map((resource) => resource.name);
 const pending = new Map();
 let messageId = 0;
 
@@ -16,27 +11,22 @@ async function delay(milliseconds) {
 
 async function findPageTarget() {
   const deadline = Date.now() + 10_000;
-
   while (Date.now() < deadline) {
     try {
       const response = await fetch(`${endpoint}/json/list`);
       const targets = await response.json();
       const page = targets.find((target) => target.type === "page");
-      if (page?.webSocketDebuggerUrl) {
-        return page;
-      }
+      if (page?.webSocketDebuggerUrl) return page;
     } catch {
       // Chrome may still be starting.
     }
     await delay(100);
   }
-
   throw new Error("Chrome DevTools endpoint did not become ready.");
 }
 
 const page = await findPageTarget();
 const socket = new WebSocket(page.webSocketDebuggerUrl);
-
 await new Promise((resolve, reject) => {
   socket.addEventListener("open", resolve, { once: true });
   socket.addEventListener("error", reject, { once: true });
@@ -45,24 +35,16 @@ await new Promise((resolve, reject) => {
 socket.addEventListener("message", (event) => {
   const message = JSON.parse(event.data);
   const request = pending.get(message.id);
-
-  if (!request) {
-    return;
-  }
-
+  if (!request) return;
   pending.delete(message.id);
-  if (message.error) {
-    request.reject(new Error(message.error.message));
-  } else {
-    request.resolve(message.result);
-  }
+  if (message.error) request.reject(new Error(message.error.message));
+  else request.resolve(message.result);
 });
 
 function send(method, params = {}) {
   const id = ++messageId;
-
   return new Promise((resolve, reject) => {
-    pending.set(id, { reject, resolve });
+    pending.set(id, { resolve, reject });
     socket.send(JSON.stringify({ id, method, params }));
   });
 }
@@ -73,375 +55,104 @@ async function evaluate(expression) {
     expression,
     returnByValue: true,
   });
-
   if (response.exceptionDetails) {
-    throw new Error(
-      response.exceptionDetails.exception?.description ??
-        response.exceptionDetails.text ??
-        "Browser evaluation failed.",
-    );
+    throw new Error(response.exceptionDetails.text);
   }
-
   return response.result.value;
 }
 
-async function waitFor(expression, label, timeout = 7_500) {
+async function waitFor(expression, label, timeout = 10_000) {
   const deadline = Date.now() + timeout;
-
   while (Date.now() < deadline) {
-    if (await evaluate(expression)) {
-      return;
-    }
-    await delay(50);
+    if (await evaluate(expression)) return;
+    await delay(75);
   }
-
   throw new Error(`Timed out waiting for ${label}.`);
 }
 
-async function setViewport(width, height) {
-  await send("Emulation.setDeviceMetricsOverride", {
-    width,
-    height,
-    deviceScaleFactor: 1,
-    mobile: false,
-  });
-}
-
-async function navigate(pathname, readyExpression) {
+async function navigate(pathname) {
   await send("Page.navigate", { url: `${origin}${pathname}` });
   await waitFor(
-    `document.readyState === "complete" && (${readyExpression})`,
+    `document.readyState === "complete" && Boolean(document.querySelector('[data-browse-view]'))`,
     pathname,
   );
 }
 
-function rowCountExpression(count) {
-  return `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length === ${count}`;
-}
-
 await send("Page.enable");
 await send("Runtime.enable");
-await setViewport(1440, 1200);
-await navigate("/resources", rowCountExpression(295));
-
-assert.equal(
-  await evaluate(
-    `getComputedStyle(document.querySelector('[data-full-reference-desktop]')).display !== 'none'`,
-  ),
-  true,
-);
-assert.equal(
-  await evaluate(
-    `getComputedStyle(document.querySelector('[data-full-reference-mobile]')).display === 'none'`,
-  ),
-  true,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length`,
-  ),
-  295,
-);
-assert.deepEqual(
-  await evaluate(
-    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
-  ),
-  curatedNames,
-  "Curated order should match the deterministic repository catalogue.",
-);
-assert.equal(
-  await evaluate(
-    `document.querySelectorAll('[data-reference-table] [data-resource-save]').length`,
-  ),
-  0,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelectorAll('[data-reference-table] a[target="_blank"][rel="noopener noreferrer"]').length`,
-  ),
-  295,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
-  ),
-  "Resources",
-);
-assert.equal(
-  await evaluate(
-    "document.documentElement.scrollWidth <= document.documentElement.clientWidth",
-  ),
-  true,
-  "The desktop reference must not overflow horizontally.",
-);
-assert.equal(
-  await evaluate(
-    `document.querySelectorAll('[data-quality-score], [data-rating], [data-popularity], [data-trend]').length`,
-  ),
-  0,
-  "The reference must not expose invented ranking data.",
-);
-
-const initialHistoryLength = await evaluate("window.history.length");
-await evaluate(`(() => {
-  const input = document.querySelector('[data-full-reference-search]');
-  const setter = Object.getOwnPropertyDescriptor(
-    HTMLInputElement.prototype,
-    'value',
-  ).set;
-  setter.call(input, 'motion');
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-})()`);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('q') === 'motion'`,
-  "search URL state",
-);
-await waitFor(
-  `Number(document.querySelector('[data-reference-announcement]')?.textContent.match(/^\\d+/)?.[0]) > 0 && document.querySelector('[data-reference-announcement]')?.textContent.includes('match “motion”')`,
-  "search result announcement",
-);
-assert.equal(
-  await evaluate("window.history.length"),
-  initialHistoryLength,
-  "Search should replace the current history entry.",
-);
-const motionCount = await evaluate(
-  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length`,
-);
-assert.equal(motionCount > 0 && motionCount < 295, true);
-
-await evaluate(
-  `document.querySelector('[data-reference-category="motion-3d"]')?.click()`,
-);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('category') === 'motion-3d'`,
-  "category URL state",
-);
-await waitFor(
-  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
-  "non-empty exact-category result set",
-);
-assert.equal(
-  await evaluate("window.history.length"),
-  initialHistoryLength + 1,
-  "Category changes should push a history entry.",
-);
-assert.equal(
-  await evaluate(
-    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-row]')).every((row) => row.getAttribute('data-reference-category') === 'motion-3d')`,
-  ),
-  true,
-);
-
-await evaluate(
-  `document.querySelector('[data-reference-access="free"]')?.click()`,
-);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('access') === 'free'`,
-  "access URL state",
-);
-await waitFor(
-  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
-  "non-empty free-access result set",
-);
-assert.equal(
-  await evaluate(
-    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-row]')).every((row) => row.getAttribute('data-reference-access') === 'free')`,
-  ),
-  true,
-);
-
-await evaluate(
-  `document.querySelector('[data-reference-access="open-source"]')?.click()`,
-);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('access') === 'free,open-source'`,
-  "multi-access URL state",
-);
-await waitFor(
-  `document.querySelectorAll('[data-reference-table] tbody [data-reference-row]').length > 0`,
-  "non-empty multi-access result set",
-);
-const multiAccessValues = await evaluate(
-  `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-row]')).map((row) => row.getAttribute('data-reference-access'))`,
-);
-assert.equal(
-  multiAccessValues.every((access) => ["free", "open-source"].includes(access)),
-  true,
-);
-assert.equal(multiAccessValues.includes("free"), true);
-assert.equal(multiAccessValues.includes("open-source"), true);
-
-await evaluate(`(() => {
-  const select = document.querySelector('[data-reference-sort]');
-  select.value = 'name-asc';
-  select.dispatchEvent(new Event('change', { bubbles: true }));
-})()`);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('sort') === 'name-asc'`,
-  "ascending sort URL state",
-);
-const ascendingNames = await evaluate(
-  `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
-);
-assert.deepEqual(
-  ascendingNames,
-  [...ascendingNames].sort((left, right) =>
-    left.localeCompare(right, "en", { numeric: true, sensitivity: "base" }),
-  ),
-);
-
-await evaluate(`(() => {
-  const select = document.querySelector('[data-reference-sort]');
-  select.value = 'name-desc';
-  select.dispatchEvent(new Event('change', { bubbles: true }));
-})()`);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('sort') === 'name-desc'`,
-  "descending sort URL state",
-);
-const descendingNames = await evaluate(
-  `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
-);
-assert.deepEqual(
-  descendingNames,
-  [...descendingNames].sort((left, right) =>
-    right.localeCompare(left, "en", { numeric: true, sensitivity: "base" }),
-  ),
-);
-
-await evaluate("window.history.back()");
-await waitFor(
-  `new URLSearchParams(window.location.search).get('sort') === 'name-asc' && document.querySelector('[data-reference-sort]')?.value === 'name-asc'`,
-  "Back restored ascending sort",
-);
-assert.deepEqual(
-  await evaluate(
-    `Array.from(document.querySelectorAll('[data-reference-table] tbody [data-reference-name]')).map((row) => row.getAttribute('data-reference-name'))`,
-  ),
-  ascendingNames,
-  "Back should restore the matching rows and order.",
-);
-await evaluate("window.history.forward()");
-await waitFor(
-  `new URLSearchParams(window.location.search).get('sort') === 'name-desc' && document.querySelector('[data-reference-sort]')?.value === 'name-desc'`,
-  "Forward restored descending sort",
-);
-
-await navigate(
-  "/resources?q=zzzz-no-reference-match",
-  `document.querySelector('[data-reference-state="empty"]') !== null`,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelector('[data-reference-empty-reset]')?.textContent?.trim()`,
-  ),
-  "Reset reference view",
-);
-await evaluate(
-  `document.querySelector('[data-reference-empty-reset]')?.click()`,
-);
-await waitFor(rowCountExpression(295), "empty-state reset");
-assert.equal(
-  await evaluate("window.location.pathname + window.location.search"),
-  "/resources",
-);
-
-for (const width of [1024, 768, 390, 320]) {
-  await setViewport(width, 1200);
-  await navigate(
-    "/resources?q=type&category=typography&access=free&sort=name-asc",
-    `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
-  );
-  assert.equal(await evaluate("window.innerWidth"), width);
-  assert.equal(
-    await evaluate(
-      `getComputedStyle(document.querySelector('[data-full-reference-desktop]')).display === 'none'`,
-    ),
-    true,
-  );
-  assert.equal(
-    await evaluate(
-      `getComputedStyle(document.querySelector('[data-full-reference-mobile]')).display !== 'none'`,
-    ),
-    true,
-  );
-  assert.equal(
-    await evaluate(
-      `document.querySelector('[data-mobile-reference-search]')?.value`,
-    ),
-    "type",
-  );
-  assert.equal(
-    await evaluate(
-      "document.documentElement.scrollWidth <= document.documentElement.clientWidth",
-    ),
-    true,
-    `The ${width}px handoff must not overflow horizontally.`,
-  );
-  assert.equal(
-    await evaluate(
-      `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
-    ),
-    true,
-    "The compact view must retain matching resource rows.",
-  );
-}
-
-await setViewport(390, 844);
-await navigate(
-  "/resources?q=motion",
-  `document.querySelectorAll('[data-mobile-reference-row]').length > 0`,
-);
-await evaluate(
-  `document.querySelector('[data-reference-filter-trigger]')?.click()`,
-);
-await waitFor(
-  `document.querySelector('[data-reference-filter-dialog]')?.open === true`,
-  "mobile filter sheet",
-);
-await evaluate(
-  `document.querySelector('input[data-mobile-reference-category="motion-3d"]')?.click()`,
-);
-await waitFor(
-  `new URLSearchParams(window.location.search).get('category') === 'motion-3d'`,
-  "mobile category URL state",
-);
-assert.equal(
-  await evaluate(
-    `Array.from(document.querySelectorAll('[data-mobile-reference-row]')).every((row) => row.getAttribute('data-mobile-row-category') === 'motion-3d')`,
-  ),
-  true,
-);
-await send("Input.dispatchKeyEvent", {
-  type: "keyDown",
-  key: "Escape",
-  code: "Escape",
-  windowsVirtualKeyCode: 27,
+await send("Emulation.setDeviceMetricsOverride", {
+  width: 1440,
+  height: 1000,
+  deviceScaleFactor: 1,
+  mobile: false,
 });
-await send("Input.dispatchKeyEvent", {
-  type: "keyUp",
-  key: "Escape",
-  code: "Escape",
-  windowsVirtualKeyCode: 27,
-});
-await waitFor(
-  `document.querySelector('[data-reference-filter-dialog]')?.open === false`,
-  "Escape closes mobile filter sheet",
-);
-await waitFor(
-  `document.activeElement === document.querySelector('[data-reference-filter-trigger]')`,
-  "mobile filter focus return",
+
+await navigate("/resources");
+const cardAudit = await evaluate(`(() => ({
+  cards: document.querySelectorAll('[data-browse-view=cards] article').length,
+  internalLinks: [...document.querySelectorAll('[data-browse-view=cards] article > a')]
+    .every((link) => link.getAttribute('href')?.startsWith('/resources/')),
+  providerLinks: document.querySelectorAll('[data-browse-view=cards] a[target=_blank][rel="noopener noreferrer"]').length,
+  saves: document.querySelectorAll('[data-browse-view=cards] button[aria-pressed]').length,
+  nextHref: [...document.querySelectorAll('nav[aria-label="Browse pages"] a')]
+    .find((link) => link.textContent.trim() === 'Next')?.getAttribute('href'),
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+}))()`);
+assert.equal(cardAudit.cards, 24);
+assert.equal(cardAudit.internalLinks, true);
+assert.ok(cardAudit.providerLinks > 0);
+assert.equal(cardAudit.saves, 24);
+assert.match(cardAudit.nextHref, /page=2/);
+assert.equal(cardAudit.overflow, false);
+
+await navigate("/resources?view=list&page=2");
+assert.equal(
+  await evaluate(
+    `document.querySelectorAll('[data-browse-view=list] > li').length`,
+  ),
+  50,
 );
 assert.equal(
   await evaluate(
-    `document.activeElement === document.querySelector('[data-reference-filter-trigger]')`,
+    `document.querySelector('[data-browse-view=list] a')?.getAttribute('href')?.startsWith('/resources/')`,
   ),
   true,
-  "Closing the filter sheet should restore focus to its trigger.",
+);
+
+await navigate("/resources?view=table&profileLevel=profiled");
+const tableAudit = await evaluate(`(() => ({
+  rows: document.querySelectorAll('[data-browse-view=table] tbody tr').length,
+  caption: Boolean(document.querySelector('[data-browse-view=table] caption')),
+  levels: [...document.querySelectorAll('[data-browse-view=table] tbody tr td:nth-child(4)')]
+    .every((cell) => cell.textContent.trim() === 'profiled'),
+}))()`);
+assert.equal(tableAudit.rows, 20);
+assert.equal(tableAudit.caption, true);
+assert.equal(tableAudit.levels, true);
+
+await send("Page.navigate", { url: `${origin}/resources?sort=verified` });
+await waitFor(
+  `document.readyState === "complete" && Boolean(document.querySelector('[data-browse-view=cards]'))`,
+  "legacy verification sort",
+);
+assert.equal(
+  await evaluate(`new URLSearchParams(window.location.search).get('sort')`),
+  "verified",
+);
+assert.equal(
+  await evaluate(`document.querySelector('select[name=sort]')?.value`),
+  "curated",
+);
+
+await send("Page.navigate", { url: `${origin}/resources/designindex` });
+await waitFor(
+  `document.readyState === "complete" && document.body.textContent.includes('minimum truthful profile boundary')`,
+  "internal source profile",
+);
+assert.equal(
+  await evaluate(`document.querySelector('h1')?.textContent.trim()`),
+  "DesignIndex",
 );
 
 socket.close();
-console.log(
-  "Full Reference desktop state and responsive handoff checks passed.",
-);
+console.log("Canonical Browse browser checks passed.");
