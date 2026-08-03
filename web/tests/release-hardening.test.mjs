@@ -12,7 +12,7 @@ async function readRepositoryFile(relativePath) {
   return readFile(path.join(repositoryRoot, relativePath), "utf8");
 }
 
-test("release ledger records the verified production cutover", async () => {
+test("release history remains preserved after the product direction reset", async () => {
   const slices = await readRepositoryFile("build-slices.md");
   const cutover = await readRepositoryFile(
     "docs/slices/9.3-production-replacement.md",
@@ -20,15 +20,15 @@ test("release ledger records the verified production cutover", async () => {
 
   assert.match(
     slices,
-    /\| 9\.1 \| About, curation, content policy, privacy, and terms \| DONE \| 2\.2 \|/,
+    /previous detailed Phase 1 ledger remains available in Git history/i,
   );
   assert.match(
     slices,
-    /\| 9\.2 \| Phase 1 release hardening and deployment runbook \| DONE \| 5\.2, 6\.2, 7\.2, 8\.2, 9\.1 \|/,
+    /\| 14\.0 \| Product direction, PRD, operating, architecture, and delivery reset \| DONE \| current `main` \|/,
   );
   assert.match(
     slices,
-    /\| 9\.3 \| Production replacement and rollback verification \| DONE \| 9\.2 \|/,
+    /\| 14\.1 \| Minimum source-profile and coverage-level data contract \| NEXT \| 14\.0 \|/,
   );
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);

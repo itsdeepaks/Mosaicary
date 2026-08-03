@@ -1,185 +1,445 @@
 # Tessli Architecture and Authentication Plan
 
-## 1. Recommended stack
+Status: **active architecture direction after the 2026-08-04 reset**  
+Authoritative product direction: `docs/product-direction.md`
+
+## 1. Architecture principle
+
+Tessli uses one canonical structured truth across:
+
+- the public website;
+- generated JSON;
+- Markdown research packs;
+- the existing native MCP;
+- future API surfaces;
+- future project/evaluation tooling.
+
+Do not create parallel website and MCP taxonomies.
+
+## 2. Current stack
 
 - Next.js App Router
 - TypeScript
-- Tailwind CSS with CSS-variable design tokens
-- Radix primitives or selectively restyled shadcn components
-- Supabase Auth and Postgres
-- Postgres Row Level Security
-- Resend as production SMTP/email provider
-- Vercel deployment
-- repository-managed catalogue data for Phase 1
+- Tailwind CSS with Tessli CSS-variable tokens
+- selectively restyled platform/Radix/shadcn primitives
+- repository-managed public source catalogue
+- repository-managed intelligence profiles and evidence
+- local browser storage for initial Saved and Boards
+- Supabase Auth/Postgres for later cloud persistence
+- Row Level Security for all future user-owned cloud data
+- Resend/custom SMTP for production auth and transactional email
+- Vercel for preview and production deployment
 
-Do not import a prebuilt theme. Components must consume Tessli tokens and match the approved reference.
+Do not import a prebuilt visual theme.
 
-## 2. Why Next.js now
+## 3. Canonical data layers
 
-The current static HTML is enough for the catalogue, but Tessli's approved direction includes:
+### 3.1 Source catalogue
 
-- multiple routes;
-- authentication;
-- server-side form validation;
-- account state;
-- synced saves;
-- submissions;
-- moderation;
-- metadata enrichment;
-- protected user data.
+The 295-source catalogue preserves stable IDs, slugs, URLs, categories, access, and descriptions.
 
-Moving to Next.js before building the new component system avoids rebuilding the UI twice.
+Normal build/test remains deterministic and network-free.
 
-## 3. Font architecture
+### 3.2 Intelligence profiles
 
-Use `next/font`:
+Profiles enrich catalogue sources with:
 
-- self-host at build time;
-- variable-font loading;
-- CSS variables;
-- `display: swap`;
-- automatic fallback adjustment;
-- load font definitions once in a shared file.
+- capabilities;
+- content objects;
+- platforms/frameworks;
+- discovery methods;
+- workflow fit;
+- integrations and agent interfaces;
+- limitations;
+- governance;
+- evidence;
+- verification dates.
 
-Planned variables:
+Profile fields are optional unless required by the coverage level. Missing data must not be invented.
+
+### 3.3 Coverage levels
+
+- Listed
+- Profiled
+- Verified
+
+Coverage level must be deterministically derived or explicitly reviewed and exposed consistently to website and MCP consumers.
+
+### 3.4 Project research
+
+Initial project data remains browser-local:
+
+- Boards;
+- items;
+- notes;
+- selected/rejected state;
+- constraints;
+- unresolved questions;
+- export settings.
+
+Cloud persistence is deferred until this local workflow proves value.
+
+### 3.5 Pattern/evaluation data
+
+Pattern Candidates and evaluation records remain separate from source catalogue truth.
+
+A generated observation does not become a curated pattern or approved precedent without human review.
+
+## 4. Public rendering architecture
+
+### Canonical Browse
+
+`/resources` becomes the only catalogue browser.
+
+Requirements:
+
+- URL-backed query, filters, sort, view, and page;
+- pagination;
+- no default render of all 295 sources;
+- no duplicate complete mobile/desktop result trees;
+- card/list/table views backed by the same state and data;
+- source profile as primary navigation;
+- separate external Visit source action.
+
+### Source Detail
+
+`/resources/[slug]` is generated for every stable source slug.
+
+Listed pages render minimum truthful metadata. Profiled and Verified pages progressively expose richer sections.
+
+### Machine-readable output
+
+Future approved outputs may include:
 
 ```text
---font-display
---font-ui
+/resources/[slug].json
+/resources/[slug].md
+/collections/[slug].json
+/collections/[slug].md
+/boards/[id]/export.md
 ```
 
-## 4. Catalogue architecture
+These outputs must share source/profile truth and must not expose private local/cloud Board data without explicit user action and authorization.
 
-Phase 1:
+## 5. Search architecture
 
-- CSV migration script;
-- typed JSON source;
-- static/server-rendered public pages;
-- client-side search and filtering;
-- repository PRs for accepted catalogue changes.
+Initial search remains deterministic over the local catalogue/profile index.
 
-Supabase does not duplicate the public catalogue in Phase 1.
+Search should support task intent through structured fields, not only raw substring matching.
 
-## 5. Authentication architecture
+Potential fields:
 
-Supabase Auth supports the required methods:
+- name/domain/summary;
+- category/source type;
+- best-for/workflow fit;
+- capabilities/content objects;
+- platforms/frameworks;
+- integrations/agent interfaces;
+- limitations/access.
 
-- email and password;
-- six-digit email OTP;
-- Google OAuth.
+A vector/semantic index may be evaluated later, but it does not replace curated metadata, evidence, access constraints, or deterministic fallback search.
 
-Use server-side/cookie-aware integration for Next.js.
+## 6. MCP architecture
 
-### UX sequence
+The existing MCP remains read-only and repository-backed.
 
-1. Google button.
-2. Email field.
-3. Continue.
-4. User chooses or is routed to:
-   - password;
-   - one-time code.
-5. Account is created only through a clearly explained flow.
+Requirements:
 
-### Production email
+- same profile truth as the website;
+- bounded result counts;
+- deterministic output where possible;
+- explicit freshness and verification state;
+- evidence-linked claims;
+- explicit limitations/governance;
+- no live website verification unless a future tool is explicitly designed and approved;
+- no provider credentials stored by Tessli;
+- no proxying or persistence of paid/private content.
 
-Supabase's default SMTP is development-only and rate-limited. Connect Resend as custom SMTP before public auth testing outside the team.
+Future MCP tools require stable underlying data objects and real user tasks before implementation.
 
-Required email templates:
+## 7. Local Boards architecture
 
-- confirmation;
-- OTP;
-- password reset;
-- email change;
-- optional submission confirmation.
+Initial Boards use a versioned browser-local schema.
 
-## 6. Authorization
+Minimum entities:
 
-All exposed user-data tables enable RLS.
+```text
+Board
+Board item
+Item note
+Project constraints
+Selected/rejected state
+Open question
+Export metadata
+```
+
+Requirements:
+
+- deterministic IDs;
+- migration/version strategy;
+- corrupted-state fallback;
+- cross-tab synchronisation where practical;
+- no silent deletion;
+- clear local-only copy;
+- deterministic Markdown export;
+- no auth dependency.
+
+## 8. Authentication timing
+
+Authentication does not block Browse, Source Detail, Saved, local Boards, or research-pack export.
+
+Public Sign in remains withheld until:
+
+- one complete authentication flow works;
+- cloud Saved/Boards provide a real benefit;
+- local-to-cloud merge is defined;
+- production SMTP works;
+- RLS and session boundaries pass review;
+- recovery, export, and deletion are defined.
+
+The existing disabled auth shell is implementation groundwork, not a public feature.
+
+## 9. Authentication methods
+
+Supabase Auth may support:
+
+- Google OAuth;
+- email/password;
+- signup email verification OTP;
+- password recovery;
+- optional passwordless email OTP only if deliberately offered;
+- authenticator-app TOTP MFA later.
+
+Do not combine every method into one unclear flow.
+
+## 10. Signup flow
+
+### Google
+
+```text
+Continue with Google
+→ OAuth callback
+→ create/resolve profile
+→ prompt only for missing profile data if needed
+→ optional local-data merge
+```
+
+Google-authenticated users do not receive an additional Tessli signup OTP merely to repeat identity verification.
+
+### Email/password
+
+```text
+First name
+Last name
+Email
+Password
+Terms and Privacy acceptance
+→ create pending account
+→ send six-digit verification OTP
+→ verify email
+→ create/resolve profile
+→ optional local-data merge
+```
+
+Requirements:
+
+- accessible password visibility control;
+- password requirements shown clearly;
+- generic duplicate-account/error responses where security requires;
+- rate limiting and abuse controls;
+- verification expiry and resend handling;
+- no account workspace access before required verification succeeds.
+
+## 11. Standard sign-in flow
+
+```text
+Continue with Google
+or
+Email + password
+→ authenticated session
+```
+
+Do not require emailed OTP after every normal password sign-in.
+
+An additional factor is requested only when:
+
+- the user enabled MFA;
+- a sensitive action requires reauthentication;
+- a future approved risk system requires it.
+
+Optional MFA should use authenticator TOTP rather than treating email OTP as strong second-factor security.
+
+## 12. Verification page
+
+Signup verification requires:
+
+- masked email;
+- accessible single input presented as six visual slots if desired;
+- paste support;
+- automatic submission on complete code;
+- resend countdown;
+- change-email path;
+- wrong/expired-code state;
+- rate-limit state;
+- delivery-delay guidance;
+- offline/network error handling;
+- focus and screen-reader support.
+
+## 13. Sign-in page composition
+
+Recommended hierarchy:
+
+1. Tessli identity;
+2. concise value statement;
+3. Continue with Google;
+4. divider: or continue with email;
+5. email;
+6. password with visibility control;
+7. Forgot password;
+8. Sign in;
+9. Create account link;
+10. Terms/Privacy microcopy.
+
+Do not show separate Password and Six-digit-code method buttons when the form already communicates the method.
+
+Do not show Remember me unless it genuinely changes session persistence.
+
+## 14. Password recovery
+
+```text
+Enter email
+→ generic confirmation
+→ recovery email/link or approved code flow
+→ set new password
+→ revoke/rotate sessions where appropriate
+→ security confirmation
+```
+
+Do not reveal whether an account exists through detailed public errors.
+
+## 15. User profile
+
+The future profile may contain:
+
+- first name;
+- last name;
+- display/avatar information;
+- role/product interests where genuinely useful;
+- timestamps.
+
+Store user-owned profile data in an RLS-protected table. Provider metadata may seed missing fields but is not the sole durable profile model.
+
+## 16. Local-to-cloud migration
+
+After first successful sign-in with cloud Boards approved:
+
+1. detect browser-local Saved/Boards;
+2. display exact counts;
+3. ask whether to merge;
+4. upsert without duplicates;
+5. retain local data until confirmed;
+6. never overwrite cloud data silently;
+7. provide a clear local cleanup choice;
+8. make migration idempotent.
+
+## 17. Authorization and RLS
+
+All future user-owned tables enable RLS.
 
 Examples:
 
-- user can select/insert/delete their own saves;
-- user can manage their own private collections;
-- user can see their own submissions;
-- public cannot read private notes;
-- moderation actions require server-side role checks;
-- service-role keys never appear in browser code.
+- users manage only their own Saved records;
+- users manage only their own Boards/items/notes/constraints;
+- private research packs are not publicly readable;
+- users see only their own submissions/reports unless published;
+- moderation requires explicit server-side authorization;
+- service-role keys never appear in browser code, logs, screenshots, fixtures, or GitHub.
 
-## 7. Local-to-cloud saves
+RLS must be tested as anonymous, authenticated owner, authenticated non-owner, and privileged server where applicable.
 
-After first successful sign-in:
+## 18. Session and security requirements
 
-1. detect browser-local saved URLs;
-2. compare with cloud saves;
-3. show one import prompt;
-4. upsert without duplicates;
-5. retain local copy until confirmed;
-6. offer clear-local option;
-7. record import completion per user/device only when necessary.
-
-## 8. Forms and abuse protection
-
-Server-side validation required for:
-
-- submit resource;
-- suggest improvement;
-- report resource.
-
-Protections:
-
+- cookie-aware Supabase SSR clients;
+- PKCE/OAuth callback validation;
+- safe redirect allowlist;
+- CSRF/session review for sensitive mutations;
+- secure cookie configuration;
+- generic auth errors;
 - rate limits;
-- hidden honeypot;
-- optional Turnstile after abuse appears;
+- custom SMTP;
+- account email/password-change notifications;
+- active-session management where supported;
+- sign out current/all sessions;
+- account export and deletion;
+- no public launch with disabled or partially wired controls.
+
+## 19. Production email
+
+Supabase default SMTP is not suitable for public production use.
+
+Connect Resend/custom SMTP before public auth email testing.
+
+Required templates when auth resumes:
+
+- signup confirmation/verification;
+- password recovery;
+- email change;
+- security notification;
+- optional passwordless OTP only if approved.
+
+Application transactional email remains separate from auth email where appropriate.
+
+## 20. Forms and abuse protection
+
+Future Submit/Report workflows require:
+
+- server-side validation;
 - URL normalization;
 - duplicate detection;
-- input length limits;
-- safe error messages;
-- audit timestamps;
-- moderation status.
+- length limits;
+- rate limits;
+- honeypot;
+- Turnstile/CAPTCHA only when justified;
+- contextual source IDs;
+- safe errors;
+- evidence/provenance fields;
+- moderation status and ownership;
+- audit timestamps.
 
-Do not add CAPTCHA by default if rate limiting and honeypots are sufficient.
+Do not expose placeholder forms as working product actions.
 
-## 9. Email responsibilities
+## 21. External-source and media security
 
-Supabase/Resend:
+- validate protocols and hosts;
+- block private/local networks;
+- bound redirects, response size, and time;
+- allow only reviewed MIME/content types;
+- do not inject remote HTML/SVG;
+- do not bypass login, consent, paywall, CAPTCHA, or anti-bot controls;
+- do not persist/redistribute proprietary screenshots without permission;
+- keep fetch/capture as explicit operator workflows, not normal build/runtime behaviour.
 
-- auth emails.
-
-Application transactional emails through Resend API or Supabase Edge Function:
-
-- submission received;
-- submission accepted/rejected;
-- important account notifications.
-
-Do not launch a newsletter inside the product shell until consent, unsubscribe, and sending ownership are defined.
-
-## 10. Security boundaries
-
-- strict URL validation for metadata fetching;
-- prevent SSRF;
-- no arbitrary HTML from catalogue descriptions;
-- sanitise any future rich text;
-- external links use `noopener noreferrer`;
-- Content Security Policy defined during scaffold;
-- no secrets in client bundles;
-- no service keys in GitHub;
-- RLS tested with authenticated and anonymous roles.
-
-## 11. Deployment environments
+## 22. Deployment environments
 
 - local;
 - preview per pull request;
 - production.
 
-Separate Supabase projects or careful environment separation before real users. OAuth redirect URLs must include local, preview strategy, and production destinations.
+Future real-user auth/cloud rollout requires deliberate Supabase environment separation or an approved safe equivalent.
 
-## 12. Deferred decisions
+OAuth redirects must account for local, preview strategy, and production.
 
-- admin/moderation UI;
-- public user profiles;
-- shared collections;
+## 23. Deferred architecture decisions
+
+- cloud Board collaboration;
+- public/shareable Boards;
+- public profiles;
+- semantic/vector search infrastructure;
+- private source ingestion;
+- pattern/evaluation database placement;
 - screenshot service;
-- object-storage image cache;
-- newsletter;
-- paid plans;
-- recommendation ranking.
+- object-storage image cache beyond approved media workflows;
+- team workspaces;
+- payments;
+- analytics/consent;
+- recommendation learning/ranking.

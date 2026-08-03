@@ -4,28 +4,40 @@ This file is mandatory reading for every agent, contributor, and automated codin
 
 ## 1. Active repository direction
 
-The active delivery track is **Tessli**, a curated design-resource index evolving from the current static catalogue into a phased Next.js product.
+Tessli is a human-facing design-research product and a machine-readable foundation for future UI-taste workflows.
 
-The repository also contains older `ui-intelligence` research, evaluation, Skill/plugin, and Source Hub MCP material. Preserve that work, but do not treat it as the active product direction unless a future slice explicitly targets that research track.
+The 295-source catalogue is the Source Index layer. It is not the complete product and must not be treated as proof of design taste.
 
-Do not delete or rewrite unrelated research artifacts during Tessli product slices.
+The active direction has three layers:
 
-## 2. Read before changing code
+1. **Source Index** — where to research;
+2. **Research Intelligence** — which source fits, why, and with what limitations;
+3. **UI Judgment** — reviewed patterns, project constraints, selected/rejected precedents, and evaluated outcomes.
+
+Website pages, exports, and MCP must use the same canonical data.
+
+Older UI-intelligence research is no longer an unrelated dormant track. Relevant profile, packet, MCP, and evaluation work is part of the active Tessli direction when an approved slice explicitly uses it. Preserve all historical research and provenance.
+
+## 2. Mandatory read order
 
 Always read, in order:
 
 1. current `main` state;
-2. `PRD.md`;
-3. `build-slices.md`;
-4. this `AGENTS.md`;
-5. `design.md` for any visible UI work;
-6. the relevant files under `docs/`;
-7. the relevant file under `schemas/`;
-8. existing code and tests in the area being changed.
+2. `docs/product-direction.md`;
+3. `PRD.md`;
+4. `build-slices.md`;
+5. this `AGENTS.md`;
+6. `design.md` for visible UI work;
+7. `docs/product-scope.md`;
+8. `docs/architecture-and-auth.md` where applicable;
+9. relevant contracts under `docs/`;
+10. relevant schemas;
+11. existing code and tests in the affected area;
+12. completed slice evidence where the new work depends on it.
 
-For an explicitly approved UI-intelligence research slice, also read the older research/program documents named by that slice.
+Do not rely on a previous chat summary instead of repository truth.
 
-Do not rely on a previous session summary instead of rereading repository truth.
+When documents conflict, stop and resolve them in a dedicated documentation slice.
 
 ## 3. One-slice rule
 
@@ -33,53 +45,51 @@ Implement exactly one vertical slice per branch and pull request.
 
 Do not mix:
 
-- framework setup with page redesign;
-- catalogue migration with card implementation;
-- header work with hero work;
-- public discovery work with authentication;
+- data-contract work with visible page redesign;
+- Browse consolidation with homepage redesign;
+- Source Detail foundation with Boards;
+- local Boards with authentication/cloud sync;
+- source-profile work with unrelated media enrichment;
+- pattern research with mass pattern-page generation;
 - schema changes with unrelated visual polish;
-- Tessli product delivery with UI-intelligence experiments;
+- screenshot research with production publication;
 - refactors not required by the slice.
 
-When a useful improvement belongs to a later slice, record it and leave it out.
+Record later improvements and leave them out.
 
 ## 4. Required slice loop
 
-Every slice follows this sequence:
-
-1. Read current `main`.
-2. Read `PRD.md`, `build-slices.md`, `AGENTS.md`, and relevant schema/contracts.
-3. Create a branch from current `main`.
-4. Define exact acceptance criteria and exclusions.
+1. Refresh current `main`.
+2. Read the mandatory documents.
+3. Create one branch from current `main`.
+4. Define goal, acceptance criteria, exclusions, and expected files.
 5. Implement one vertical slice.
-6. Run focused tests.
+6. Run focused tests/checks.
 7. Review the complete diff.
 8. Fix findings.
-9. Run all available CI checks.
+9. Run all applicable repository/browser gates.
 10. Commit intentionally.
 11. Open a draft PR.
-12. Review PR diff, browser output, and CI.
-13. Fix final issues.
+12. Review diff, UI, CI, accessibility, security, and scope.
+13. Fix final findings.
 14. Squash-merge.
 15. Delete the branch.
-16. Refresh from updated `main`.
-17. Start the next slice.
+16. Refresh `main` before the next slice.
 
 Never start a later slice from an unmerged feature branch.
 
 ## 5. Branch and commit conventions
 
-Branch examples:
+Examples:
 
 ```text
-chore/app-scaffold
-feat/design-foundation
-feat/global-header
-feat/explore-hero
-feat/catalogue-migration
-feat/resource-card-pilot
+docs/product-direction-reset
+feat/source-profile-contract
+feat/canonical-browse
+feat/source-detail
+feat/local-boards
+feat/research-pack-export
 fix/mobile-filter-overflow
-docs/repository-operating-contract
 ```
 
 Commit prefixes:
@@ -93,68 +103,203 @@ docs:
 refactor:
 ```
 
-Commits should describe an intentional unit of work. Do not use messages such as `update`, `changes`, `fix stuff`, or generated timestamps.
-
-Squash-merge PRs unless a future repository policy explicitly changes this.
+Use intentional messages. Squash-merge unless repository policy changes.
 
 ## 6. Pull request contract
 
-Every PR must state:
+Every PR states:
 
 - slice ID and goal;
 - exact acceptance criteria;
 - exclusions;
-- files expected to change;
-- focused tests run;
-- full CI checks run;
-- browser sizes checked;
+- expected and actual changed files;
+- focused checks;
+- full checks;
+- browser widths checked;
 - accessibility notes;
-- security notes when applicable;
-- complete-diff review findings;
+- security/governance notes;
+- data/provenance notes;
+- complete-diff findings;
 - intentional deviations;
-- whether credentials or external setup remain blocked.
+- external setup or credentials still blocked;
+- rollback plan.
 
-Open as draft until implementation, focused tests, and first diff review are complete.
+Open as draft until implementation, focused validation, and first diff review are complete.
 
-## 7. Tessli design rules
+## 7. Product truth rules
 
-`design.md` is the visual source of truth.
+Non-negotiable:
 
-Non-negotiable rules:
+- do not describe Tessli as only a directory;
+- do not claim that catalogue size creates AI taste;
+- do not claim a source is universally best;
+- explain contextual fit and limitations;
+- distinguish sourced facts, curator judgment, project decisions, and unresolved questions;
+- do not overstate Listed entries as Profiled or Verified;
+- repository verification is not live provider verification;
+- do not show fake ratings, popularity, trends, users, curators, or activity;
+- do not expose unfinished public actions;
+- public navigation contains only working destinations;
+- do not claim outcome improvement without recorded evidence.
 
-- Newsreader Variable is the wordmark/display family.
-- Instrument Sans Variable is the interface family.
-- Multi-word display headings use approximately `letter-spacing: -0.015em`.
-- Section-level `h2` uses approximately `letter-spacing: -0.025em`.
-- The single-word Tessli wordmark may remain tighter.
-- Page canvas is warm off-white, not pure white.
-- Text is charcoal, not large pure-black surfaces.
-- Orange is a restrained signal, not a background theme.
-- Cards, panels, grouped grids, and reference frames are sharp/square.
-- Buttons, inputs, menus, and small controls may use approved 4–8px radii.
-- Avatars and true pills may be circular.
-- Borders carry hierarchy; shadows are reserved for elevation.
-- Grain applies only to the page atmosphere and stays subtle.
-- No glassmorphism, blue/purple glow gradients, cursor-follow effects, scroll-jacking, or continuous floating hero animation.
-- Do not import a prebuilt shadcn theme.
-- Do not use generic AI filler copy, fake metrics, fake curators, fake trends, or fake social proof.
+## 8. Canonical product decisions
 
-A visually plausible implementation that ignores these rules is not acceptable.
+Unless a later approved documentation slice changes them:
 
-## 8. Visual implementation workflow
+- `/resources` becomes the one canonical source browser;
+- pagination replaces a complete 295-result document;
+- mobile and desktop must not render duplicate complete result sets;
+- `/resources/[slug]` is required for every source;
+- internal profile navigation is primary; Visit source is a separate action;
+- Save must work across Browse, Source Detail, and playbooks;
+- comparison is limited to meaningful peer groups;
+- Similar Sources is the default alternative-discovery mechanism;
+- Listed/Profiled/Verified levels are explicit;
+- local Boards and export precede authentication;
+- Pattern Candidates begin only after a real OSS proof workflow;
+- homepage redesign follows, not precedes, the core research loop.
+
+## 9. Source-profile and evidence rules
+
+Source records must preserve stable IDs and slugs.
+
+Coverage levels:
+
+### Listed
+
+Minimum source identity, type, access, concise sourced description, and status.
+
+### Profiled
+
+Adds capabilities, best-for, content objects, platforms/frameworks, discovery, integrations, workflow fit, and limitations.
+
+### Verified
+
+Adds evidence, dates, confidence, agent-interface details, credential rules, persistence/redistribution rules, human review, and freshness.
+
+Requirements:
+
+- no invented optional fields;
+- evidence claims retain source URL and verification date;
+- exact source boundaries and limitations remain visible;
+- profile generation remains deterministic;
+- website and MCP consume the same canonical profile truth;
+- missing enrichment degrades honestly;
+- paid/private content is never copied merely because a source is indexed.
+
+## 10. Research-pack rules
+
+Research packs must remain model-independent and human-readable.
+
+They distinguish:
+
+- sourced facts;
+- curator/project judgment;
+- selected decisions;
+- rejected directions;
+- unresolved questions.
+
+They retain:
+
+- task and audience;
+- project constraints;
+- source IDs/names/URLs;
+- selection rationale;
+- capabilities;
+- limitations;
+- evidence links;
+- implementation reminders;
+- open decisions.
+
+Do not dump every available profile field into model context. Prefer compact relevance.
+
+## 11. Pattern rules
+
+Do not mass-generate published patterns.
+
+Initial pattern work is a manually reviewed candidate set.
+
+A candidate requires:
+
+- problem;
+- when to use;
+- when not to use;
+- key rules;
+- common failures;
+- multiple example sources where possible;
+- project usage/evaluation;
+- review state and date.
+
+Promote only after real use and human review.
+
+## 12. Evaluation rules
+
+The future UI-taste claim requires an evidence loop:
+
+```text
+brief
+→ retrieval
+→ research pack
+→ agent build
+→ browser verification
+→ human review
+→ approved/rejected decisions
+```
+
+Use the approved review dimensions:
+
+- task fit;
+- hierarchy;
+- mobile usability;
+- discoverability;
+- density;
+- coherence;
+- consistency;
+- component reuse;
+- accessibility;
+- restraint;
+- regression risk;
+- ship readiness.
+
+Do not invent human scores. Preserve blind-review conditions where used.
+
+## 13. Tessli design rules
+
+`design.md` remains the visual source of truth.
+
+Non-negotiable:
+
+- Newsreader Variable for wordmark/display;
+- Instrument Sans Variable for interface;
+- warm off-white canvas;
+- charcoal text;
+- restrained orange signal;
+- subtle page grain;
+- borders carry hierarchy;
+- restrained elevation and motion;
+- real Tessli product UI is preferred marketing imagery;
+- research/database surfaces may be denser than marketing surfaces;
+- no generic AI-purple branding;
+- no glassmorphism, glow gradients, cursor-follow effects, scroll-jacking, or meaningless floating 3D;
+- no oversized rounded wrappers used as a substitute for hierarchy;
+- no prebuilt theme that overrides Tessli tokens;
+- no generic AI filler copy.
+
+## 14. Visual implementation workflow
 
 For every visible slice:
 
-1. identify the canonical reference image and relevant component/page contract;
-2. list allowed visible copy;
+1. identify the page/component contract and approved references;
+2. list allowed visible copy and facts;
 3. implement only the selected slice;
 4. render in a real browser;
-5. check at required widths;
-6. compare layout, typography, colour, asset treatment, borders, spacing, and interaction states;
-7. record mismatches and fixes;
-8. repeat until no material design-review issue remains.
+5. check required widths;
+6. compare layout, hierarchy, typography, spacing, media, borders, and states;
+7. verify keyboard, focus, and touch behaviour;
+8. record mismatches and fixes;
+9. repeat until no material review issue remains.
 
-Required widths unless the slice says otherwise:
+Default widths:
 
 ```text
 1440px
@@ -163,171 +308,190 @@ Required widths unless the slice says otherwise:
 390px
 ```
 
+Also run a 320px overflow gate where the affected surface can compress that far.
+
 Mobile is a recomposition, not a shrunken desktop page.
 
-## 9. Accessibility rules
+## 15. Accessibility rules
 
 Required:
 
 - semantic landmarks and heading order;
 - keyboard-complete interaction;
 - visible `:focus-visible` states;
-- Escape closes menus, sheets, and dialogs where expected;
-- focus returns to the invoking control;
+- Escape and focus restoration for dialogs/sheets/menus;
 - appropriate touch targets;
 - reduced-motion support;
 - no hover-only information;
-- no nested buttons/links or invalid interactive markup;
-- screen-reader announcements for dynamic result and save states;
-- meaningful labels and error messages;
-- WCAG 2.2 AA contrast targets.
+- no invalid nested interactive markup;
+- accessible result, save, and export announcements;
+- meaningful labels, errors, empty states, and image fallbacks;
+- WCAG 2.2 AA contrast targets;
+- accessible OTP input if auth is later implemented.
 
-Do not treat an automated accessibility scan as the only accessibility review.
+Automated scans do not replace manual review.
 
-## 10. Data rules
+## 16. Catalogue and generated-data rules
 
-Phase 1 public catalogue truth remains repository-managed.
+- preserve all 295 source rows;
+- never silently drop invalid rows;
+- stable IDs/slugs do not change accidentally;
+- generated data is deterministic and network-free during normal build/test;
+- public catalogue remains repository-managed during the proof stages;
+- do not duplicate the catalogue in Supabase merely for browsing;
+- do not invent media, pricing, status, capability, integration, or verification facts;
+- every schema/data-source change is documented and tested.
 
-- Preserve all source rows during migration.
-- Never silently drop invalid rows.
-- Generate a validation report for invalid URLs, missing descriptions, unknown labels, and duplicates.
-- Generated data must be deterministic.
-- Stable IDs and slugs must not change accidentally.
-- Do not duplicate the public catalogue in Supabase during Phase 1.
-- Do not invent missing media, pricing, status, or curation facts.
+## 17. External media and screenshot rules
 
-Relevant schema: `schemas/catalogue.schema.json`.
-
-## 11. External media rules
-
-Fallback order:
-
-1. approved manual preview;
-2. official Open Graph image;
-3. official Twitter image;
-4. favicon in a designed tile;
-5. generated letter mark.
+Current media fallback order remains governed by the media contracts.
 
 Requirements:
 
-- fixed aspect-ratio media containers;
-- layout remains complete when all media fails;
+- fixed aspect ratios;
+- complete fallback when all media fails;
 - lazy loading below the fold;
-- arbitrary external images use safe referrer behaviour;
-- never inject remote SVG markup;
-- do not add an unrestricted image proxy or wildcard optimizer;
-- future metadata fetching must block private networks, unsafe protocols, excessive redirects, and oversized responses.
+- safe referrer behaviour;
+- no remote SVG injection;
+- no unrestricted proxy or wildcard optimiser;
+- operator fetchers block private networks, unsafe protocols, excessive redirects, oversized responses, and unsupported MIME;
+- anti-bot, login, consent, paywall, or challenge controls are not bypassed;
+- screenshots require explicit bounded approval and human review;
+- screenshot research does not authorize a screenshot-first product or mass publication;
+- proprietary/paid screenshots are not persisted or redistributed without permission.
 
-## 12. Authentication and database rules
+## 18. Authentication and database rules
 
-Authentication begins only in its approved slice.
+Authentication is deferred until local Boards and research-pack export demonstrate value.
 
-- Supabase Auth handles password, six-digit email OTP, and Google OAuth.
-- Use server/cookie-aware Next.js clients.
-- User-owned tables require Row Level Security.
-- Test RLS as anonymous and authenticated users.
-- Service-role keys never appear in browser code, logs, screenshots, fixtures, or GitHub.
-- Resend/custom SMTP is required before public auth email testing.
-- Do not create fake auth state solely to make screenshots look complete.
+Future approved flow:
 
-## 13. Forms and security
+### Signup
 
-Community forms require:
+- Google OAuth; or
+- first name, last name, email, password;
+- Terms/Privacy acceptance;
+- email verification OTP;
+- optional local-data merge.
+
+### Standard sign in
+
+- Google OAuth; or
+- email and password.
+
+Do not require email OTP after every normal password sign-in.
+
+Optional MFA uses authenticator TOTP.
+
+When auth resumes:
+
+- use cookie-aware Supabase SSR clients;
+- use custom SMTP before public email testing;
+- all user-owned tables require RLS;
+- test anonymous/authenticated/service boundaries;
+- never expose service-role keys;
+- include recovery, security notifications, session handling, export, and deletion;
+- do not enable public Sign in until one complete flow and cloud-workspace benefit work.
+
+## 19. Forms and moderation rules
+
+Submission/reporting begins only in its approved later slice.
+
+Required:
 
 - server-side validation;
 - URL normalization;
 - duplicate detection;
-- input length limits;
+- input limits;
 - rate limiting;
-- honeypot before adding CAPTCHA;
-- safe error messages;
-- moderation status;
-- audit timestamps.
+- honeypot and later CAPTCHA only if justified;
+- safe generic errors;
+- moderation owner and status;
+- audit timestamps;
+- contextual source IDs;
+- evidence/provenance retention.
 
-Any metadata-fetching feature requires an explicit SSRF review.
+Until then, do not promote nonfunctional public forms. Use a real GitHub issue template or remove the action.
 
-## 14. Testing expectations
+## 20. Testing expectations
 
-Use repository scripts once they exist:
+Use repository scripts:
 
 ```bash
+npm run format:check
 npm run typecheck
 npm run lint
 npm test
+npm run catalogue:check
 npm run build
 ```
 
-Focused tests should run before full checks.
+Run relevant media/profile/coverage checks when affected.
+
+Focused tests precede full checks.
 
 Examples:
 
-- schema parse and fixture validation for data work;
-- component interaction tests for controls;
-- route tests for navigation;
+- schema and deterministic-generation tests;
+- URL-state and pagination tests;
+- interaction tests for Save/Boards/export;
+- route and metadata tests for profiles;
 - browser checks for responsive UI;
-- RLS policy tests for database work;
-- migration count/determinism tests for catalogue work.
+- MCP/profile parity tests;
+- RLS tests only in approved cloud slices.
 
-Do not claim CI passed when no CI workflow exists. State exactly what was and was not available.
+State exactly which checks were available and run.
 
-## 15. Diff review checklist
+## 21. Complete-diff review checklist
 
-Before opening or merging a PR, review the full diff for:
+Review for:
 
 - scope creep;
-- copied or duplicated implementation;
-- accidental generated files;
-- secrets and personal data;
-- incorrect product claims;
-- dead routes or links;
-- unhandled loading/error/empty states;
+- conflicting product decisions;
+- duplicate implementations;
+- accidental generated/binary files;
+- secrets or personal data;
+- overstated profile/verification claims;
+- dead routes/actions;
+- unhandled states;
 - mobile overflow;
 - invalid interactive HTML;
-- missing tests;
 - accessibility regressions;
-- schema drift;
+- schema/data drift;
 - unnecessary dependencies;
-- unsafe external URL or image handling;
-- visual drift from Tessli's contract.
+- unsafe external URL/media handling;
+- paid/private content misuse;
+- divergence between website and MCP truth;
+- visual drift from `design.md`.
 
-Fix findings before requesting merge.
+Fix findings before merge.
 
-## 16. Dependency policy
+## 22. Dependency policy
 
-- Prefer platform and existing dependency capabilities.
-- Add a dependency only when it materially reduces risk or complexity.
-- Use official documentation for current APIs.
-- Commit a lockfile.
-- Avoid abandoned packages and broad component/theme kits.
-- Do not add analytics, cookies, tracking, auth, or email dependencies before their approved slice.
+- prefer platform and existing capabilities;
+- add a dependency only when it materially reduces risk/complexity;
+- use current official documentation;
+- commit lockfile changes intentionally;
+- avoid abandoned packages and broad theme kits;
+- do not add auth, analytics, tracking, email, vector, screenshot, or AI dependencies before their approved slice;
+- a vector database never replaces curated metadata and evidence.
 
-## 17. Generated and binary files
+## 23. Generated and binary files
 
-- Keep approved visual references and production assets in documented locations.
-- Optimize assets without overwriting original approved sources.
-- Record dimensions and intended usage.
-- Do not commit temporary screenshots, QA traces, browser profiles, build directories, environment files, or downloaded font binaries.
-- Never share or commit font files unless licensing and repository policy explicitly require it.
+- keep approved references/assets in documented locations;
+- preserve provenance, dimensions, and intended use;
+- do not commit temporary screenshots, traces, browser profiles, build output, env files, or downloaded fonts;
+- never share font binaries without an explicit licensing/repository decision;
+- generated research/evaluation artifacts stay separate from curated source truth unless explicitly promoted through review.
 
-## 18. UI-intelligence research preservation
+## 24. Current source documents
 
-For a future explicitly approved UI-intelligence research slice:
+Always reconcile work with:
 
-- preserve baseline artifacts and evaluation conditions;
-- keep planning and implementation phases distinct;
-- retain provenance when importing source material;
-- do not proxy or cache paid/private source content without licensed authorization;
-- keep generated evaluation artifacts separate from curated catalogue data;
-- record model/agent, tools, timing, and comparison conditions where required.
-
-These rules do not override the active Tessli PRD for normal product-delivery slices.
-
-## 19. Current source documents
-
-Always reconcile Tessli work with:
-
+- `docs/product-direction.md`
 - `PRD.md`
 - `build-slices.md`
+- `AGENTS.md`
 - `design.md`
 - `docs/product-scope.md`
 - `docs/component-contracts.md`
@@ -335,6 +499,6 @@ Always reconcile Tessli work with:
 - `docs/data-and-media-contract.md`
 - `docs/architecture-and-auth.md`
 - `docs/quality-gates.md`
-- `schemas/catalogue.schema.json`
+- relevant schemas and slice evidence
 
-When documents conflict, stop and resolve the conflict in a dedicated documentation slice instead of guessing.
+The product-direction document wins when older historical text conflicts, but the conflict should still be corrected rather than ignored.
