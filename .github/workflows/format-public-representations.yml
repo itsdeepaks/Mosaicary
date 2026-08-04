@@ -1,0 +1,44 @@
+name: Format public representation files
+
+on:
+  push:
+    branches:
+      - feat/public-machine-readable-representations
+    paths:
+      - ".github/workflows/format-public-representations.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/public-machine-readable-representations
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Format intended files
+        working-directory: web
+        run: npx prettier --write "app/collections/[slug]/[representation]/route.ts" "app/resources/[slug]/[representation]/route.ts" "lib/public-representations.d.mts" "lib/public-representations.mjs" "tests/public-representations.test.mjs"
+
+      - name: Commit formatting
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/app/collections/'[slug]'/'[representation]'/route.ts web/app/resources/'[slug]'/'[representation]'/route.ts web/lib/public-representations.d.mts web/lib/public-representations.mjs web/tests/public-representations.test.mjs
+          git commit -m "style: format public representation files"
+          git push origin HEAD:feat/public-machine-readable-representations
