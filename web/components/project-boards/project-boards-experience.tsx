@@ -169,8 +169,8 @@ export function ProjectBoardsExperience({ resources }: Props) {
   const updateQuestion = (index: number, question: string) => {
     if (!activeBoard) return;
     patchActiveBoard({
-      unresolvedQuestions: activeBoard.unresolvedQuestions.map((current, itemIndex) =>
-        itemIndex === index ? question : current,
+      unresolvedQuestions: activeBoard.unresolvedQuestions.map(
+        (current, itemIndex) => (itemIndex === index ? question : current),
       ),
     });
   };
@@ -305,23 +305,28 @@ export function ProjectBoardsExperience({ resources }: Props) {
                   </div>
                   {activeBoard.unresolvedQuestions.length > 0 ? (
                     <ol className={styles.questions}>
-                      {activeBoard.unresolvedQuestions.map((question, index) => (
-                        <li key={`${index}-${question}`}>
-                          <label>
-                            <span>Question {index + 1}</span>
-                            <textarea
-                              maxLength={1000}
-                              onChange={(event) =>
-                                updateQuestion(index, event.target.value)
-                              }
-                              value={question}
-                            />
-                          </label>
-                          <button onClick={() => removeQuestion(index)} type="button">
-                            Remove question
-                          </button>
-                        </li>
-                      ))}
+                      {activeBoard.unresolvedQuestions.map(
+                        (question, index) => (
+                          <li key={`${index}-${question}`}>
+                            <label>
+                              <span>Question {index + 1}</span>
+                              <textarea
+                                maxLength={1000}
+                                onChange={(event) =>
+                                  updateQuestion(index, event.target.value)
+                                }
+                                value={question}
+                              />
+                            </label>
+                            <button
+                              onClick={() => removeQuestion(index)}
+                              type="button"
+                            >
+                              Remove question
+                            </button>
+                          </li>
+                        ),
+                      )}
                     </ol>
                   ) : (
                     <p className={styles.inlineEmpty}>
