@@ -25,5 +25,23 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
       - run: npm ci
-      - name: Isolate human-review contract
-        run: node --test --test-reporter=spec tests/oss-human-review-contract.test.mjs
+      - name: Capture isolated human-review contract output
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          set +e
+          node --test --test-reporter=spec tests/oss-human-review-contract.test.mjs > artifacts/oss-human-review-contract.log 2>&1
+          status=$?
+          cat artifacts/oss-human-review-contract.log
+          echo "$status" > artifacts/oss-human-review-contract.status
+          exit "$status"
+      - name: Upload isolated contract output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: oss-human-review-contract-log
+          path: |
+            web/artifacts/oss-human-review-contract.log
+            web/artifacts/oss-human-review-contract.status
+          if-no-files-found: error
+          retention-days: 1
