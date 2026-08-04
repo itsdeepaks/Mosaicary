@@ -1,0 +1,298 @@
+.page {
+  min-width: 0;
+  padding: 3rem 0 5rem;
+}
+
+.header {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-family: var(--font-newsreader), serif;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 0.95;
+}
+
+.lede {
+  max-width: 48rem;
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(15rem, 2fr) repeat(5, minmax(8rem, 1fr));
+  min-width: 0;
+  gap: 0.75rem;
+  align-items: end;
+  padding: 1rem 0;
+  border-block: 1px solid var(--color-border);
+}
+
+.controls > * {
+  min-width: 0;
+}
+
+.controls label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.controls input,
+.controls select,
+.controls button {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface, #fffdf8);
+  color: inherit;
+  padding: 0 0.75rem;
+  font: inherit;
+}
+
+.controls button {
+  cursor: pointer;
+  background: var(--color-text, #20201e);
+  color: #fff;
+}
+
+.summary {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.viewLinks,
+.pagination,
+.rowActions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.viewLinks a[aria-current="page"] {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.25rem;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
+  gap: 1rem;
+}
+
+.browseCard {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface, #fffdf8);
+}
+
+.browseCardPrimary {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 18rem;
+  padding: 1.25rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.browseCardPrimary h2,
+.browseCardPrimary p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.browseCardPrimary h2 {
+  font-size: 1.35rem;
+}
+
+.browseCardPrimary:focus-visible,
+.browseCardPrimary:hover {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.inspectAction {
+  margin-top: auto;
+  font-weight: 650;
+}
+
+.browseCardActions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  min-height: 3.25rem;
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.browseCardActions button,
+.rowActions button {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+
+.compactList {
+  display: grid;
+  min-width: 0;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.compactList li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.compactList li > * {
+  min-width: 0;
+}
+
+.compactList h2,
+.compactList p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.compactList h2 {
+  margin-block: 0.2rem 0.4rem;
+  font-size: 1.15rem;
+}
+
+.domain,
+.meta,
+.unavailable {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.tableScroller {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.table th small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.empty {
+  padding: 4rem 0;
+  text-align: center;
+  border-block: 1px solid var(--color-border);
+}
+
+.pagination {
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagination a,
+.pagination span {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 1100px) {
+  .controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding-top: 2rem;
+  }
+
+  .controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cardGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compactList li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

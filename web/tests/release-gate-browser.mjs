@@ -34,7 +34,8 @@ const routeChecks = [
     200,
     "Design systems worth studying",
   ],
-  ["/resources", 200, "Source-backed, not ranked"],
+  ["/resources", 200, "Browse design sources"],
+  ["/resources/designindex", 200, "minimum truthful profile boundary"],
   ["/saved", 200, "Your saves stay in this browser"],
   ["/about", 200, "Keep reading"],
   ["/curation", 200, "Keep reading"],
@@ -68,9 +69,10 @@ const visualCases = [
     selector: "[data-collection-detail=saas-landing-pages]",
   },
   {
-    name: "full-reference",
+    name: "browse",
     path: "/resources",
-    selector: "[data-full-reference-page=true]",
+    selector: "[data-browse-view=cards]",
+    browse: true,
   },
   {
     name: "saved",
@@ -229,6 +231,27 @@ for (const [width, height] of viewports) {
       `${visualCase.name} overflow at ${width}`,
     );
     assert.ok(audit.title.length > 0, `${visualCase.name} title at ${width}`);
+
+    if (visualCase.browse) {
+      const browseAudit = await evaluate(`(() => ({
+        cards: document.querySelectorAll('[data-browse-view=cards] article').length,
+        internalLinks: [...document.querySelectorAll('[data-browse-view=cards] article > a')]
+          .every((link) => link.getAttribute('href')?.startsWith('/resources/')),
+        providerLinks: document.querySelectorAll('[data-browse-view=cards] a[target=_blank]').length,
+        saveButtons: document.querySelectorAll('[data-browse-view=cards] button[aria-pressed]').length,
+      }))()`);
+      assert.equal(browseAudit.cards, 24, `Browse card page size at ${width}`);
+      assert.equal(
+        browseAudit.internalLinks,
+        true,
+        `Browse primary links at ${width}`,
+      );
+      assert.ok(
+        browseAudit.providerLinks > 0,
+        `Browse provider links at ${width}`,
+      );
+      assert.equal(browseAudit.saveButtons, 24, `Browse saves at ${width}`);
+    }
 
     if (visualCase.auth) {
       const authAudit = await evaluate(`(() => {

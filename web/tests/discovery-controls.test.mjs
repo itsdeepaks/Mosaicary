@@ -115,7 +115,11 @@ test("Explore page passes the validated catalogue into the integrated experience
   const page = await read("app/page.tsx");
 
   assert.match(page, /import catalogue from "@\/data\/catalogue\.json"/);
-  assert.match(page, /catalogue\.resources\.map/);
+  assert.match(
+    page,
+    /catalogue\.resources[\s\S]*?\.slice\(0, homepagePreviewLimit\)[\s\S]*?\.map/,
+  );
+  assert.match(page, /const homepagePreviewLimit = 12/);
   assert.match(page, /catalogue\.categories\.map/);
   assert.match(page, /parseDiscoveryState\(await searchParams/);
   assert.match(page, /<ExploreExperience/);
@@ -137,10 +141,12 @@ test("search supports controlled URL state and live result counts", async () => 
   assert.match(search, /const query = value \?\? uncontrolledQuery/);
   assert.match(search, /onValueChange\?\.\(nextQuery\)/);
   assert.match(search, /element instanceof HTMLDialogElement/);
+  assert.match(search, /action="\/resources"/);
+  assert.match(search, /name="q"/);
   assert.match(hero, /resultCount=\{resultCount\}/);
 });
 
-test("Saved and Full Reference use validated catalogue data without remote state", async () => {
+test("Saved and canonical Browse use repository data without remote state", async () => {
   const [saved, resources, navigation] = await Promise.all([
     read("app/saved/page.tsx"),
     read("app/resources/page.tsx"),
@@ -151,7 +157,10 @@ test("Saved and Full Reference use validated catalogue data without remote state
   assert.match(saved, /<SavedResourcesExperience/);
   assert.doesNotMatch(saved, /RoutePlaceholder|localStorage|fetch\(/);
   assert.match(resources, /import catalogue from "@\/data\/catalogue\.json"/);
-  assert.match(resources, /<FullReferenceExperience/);
+  assert.match(resources, /getAllSourceProfiles\(\)/);
+  assert.match(resources, /parseBrowseState/);
+  assert.match(resources, /deriveBrowseResults/);
+  assert.match(resources, /<BrowseResults resources=\{resources\}/);
   assert.doesNotMatch(resources, /RoutePlaceholder|localStorage|fetch\(/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Resources"[\s\S]*?available: true/);
