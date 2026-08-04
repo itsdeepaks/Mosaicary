@@ -28,7 +28,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -46,6 +46,59 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-human-review
+
+      - name: Complete Slice 5.3 ledger once
+        working-directory: .
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("build-slices.md")
+          text = path.read_text(encoding="utf-8")
+          replacements = {
+              "Status: **active delivery plan — Phase 5 / Slice 5.3 NEXT**":
+                  "Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.1 NEXT**",
+              "|     5 | Real OSS Proof Project                      | ACTIVE   | 5.3 NEXT                   |":
+                  "|     5 | Real OSS Proof Project                      | BLOCKED  | 5.3 human review           |",
+              "|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | 6.1                        |":
+                  "|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.1 NEXT                   |",
+              "| 5.3  | Browser and human review                              | NEXT     | 5.2                     | —                                                                    |":
+                  "| 5.3  | Browser and human review                              | BLOCKED  | 5.2                     | `docs/slices/5.3-oss-homepage-human-review.md`, PR #91                |",
+              "| 5.4  | Outcome/evidence report                               | PROOF    | 5.3                     | —                                                                    |":
+                  "| 5.4  | Outcome/evidence report                               | BLOCKED  | 5.3 human artifact      | —                                                                    |",
+              "| 6.1  | Global navigation and naming cleanup                  | PLANNED  | 2.2                     | —                                                                    |":
+                  "| 6.1  | Global navigation and naming cleanup                  | NEXT     | 2.2                     | —                                                                    |",
+              "Slice 5.3 is next: preserve the candidate and browser evidence, prepare the approved twelve-dimension review packet, collect genuine human scores and notes, and record review-driven corrections without inventing judgment. Missing human review is a blocker, not permission to fabricate evidence.":
+                  "Slice 5.3 now has a safe browser-local review workspace, versioned JSON contract, empty reviewer packet/template, focused validation, and five-viewport browser evidence. It is BLOCKED on a genuine completed human-review artifact. Slice 5.4 remains blocked on that artifact and any approved review-driven corrections. Evidence: `docs/slices/5.3-oss-homepage-human-review.md`, PR #91.",
+              "After Slice 5.2 merges, refresh `main` and begin Phase 5 / Slice 5.3 on a new branch in this conversation.":
+                  "After Slice 5.3 merges, refresh `main` and begin Phase 6 / Slice 6.1 on a new branch. Slice 5.4 and Slice 6.2 remain blocked until a genuine completed human-review artifact is returned."
+          }
+
+          changed = False
+          for old, new in replacements.items():
+              if old in text:
+                  if text.count(old) != 1:
+                      raise SystemExit(f"Expected one match for {old!r}")
+                  text = text.replace(old, new)
+                  changed = True
+              elif new not in text:
+                  raise SystemExit(f"Neither old nor new ledger text found for {old!r}")
+
+          if changed:
+              path.write_text(text, encoding="utf-8", newline="\n")
+          PY
+
+          if ! git diff --quiet -- build-slices.md; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add build-slices.md
+            git diff --cached --check
+            git commit -m "docs: advance ledger past blocked human review"
+            git push origin HEAD:proof/oss-homepage-human-review
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
