@@ -340,11 +340,7 @@ for (const [width, height] of viewports) {
         true,
         `Board local-only copy at ${width}`,
       );
-      assert.equal(
-        boardAudit.readyCopy,
-        true,
-        `Board ready state at ${width}`,
-      );
+      assert.equal(boardAudit.readyCopy, true, `Board ready state at ${width}`);
     }
 
     if (visualCase.auth) {
