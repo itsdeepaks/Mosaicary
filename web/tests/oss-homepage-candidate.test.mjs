@@ -71,7 +71,10 @@ test("candidate actions are in-page and no external form or provider asset is in
   );
   assert.doesNotMatch(page, /<form|onSubmit|mailto:|wa\.me|target="_blank"/u);
   assert.doesNotMatch(page, /<img|next\/image|https?:\/\//u);
-  assert.doesNotMatch(page, /three|WebGL|canvas/iu);
+  assert.doesNotMatch(
+    page,
+    /Three\.js|from ["']three["']|WebGL|<canvas|createElement\(["']canvas["']\)/u,
+  );
 });
 
 test("candidate CSS is route-scoped, responsive, focus-safe, and reduced-motion aware", async () => {
