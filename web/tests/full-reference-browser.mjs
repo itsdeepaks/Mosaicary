@@ -1,57 +1,48 @@
 import assert from "node:assert/strict";
-import http from "node:http";
-import { WebSocket } from "ws";
 
-const origin = "http://127.0.0.1:3000";
-const cdpOrigin = "http://127.0.0.1:9222";
+const endpoint = process.env.CDP_ENDPOINT ?? "http://127.0.0.1:9222";
+const origin = process.env.TESSLI_ORIGIN ?? "http://127.0.0.1:3000";
+const pending = new Map();
+let messageId = 0;
 
-function requestJson(url) {
-  return new Promise((resolve, reject) => {
-    http
-      .get(url, (response) => {
-        let body = "";
-        response.setEncoding("utf8");
-        response.on("data", (chunk) => {
-          body += chunk;
-        });
-        response.on("end", () => {
-          if (response.statusCode !== 200) {
-            reject(new Error(`Request failed: ${response.statusCode} ${body}`));
-            return;
-          }
-          resolve(JSON.parse(body));
-        });
-      })
-      .on("error", reject);
-  });
+async function delay(milliseconds) {
+  await new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-const targets = await requestJson(`${cdpOrigin}/json/list`);
-const page = targets.find((target) => target.type === "page");
-if (!page?.webSocketDebuggerUrl) {
-  throw new Error("No Chrome page target found.");
+async function findPageTarget() {
+  const deadline = Date.now() + 10_000;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(`${endpoint}/json/list`);
+      const targets = await response.json();
+      const page = targets.find((target) => target.type === "page");
+      if (page?.webSocketDebuggerUrl) return page;
+    } catch {
+      // Chrome may still be starting.
+    }
+    await delay(100);
+  }
+  throw new Error("Chrome DevTools endpoint did not become ready.");
 }
 
+const page = await findPageTarget();
 const socket = new WebSocket(page.webSocketDebuggerUrl);
 await new Promise((resolve, reject) => {
-  socket.once("open", resolve);
-  socket.once("error", reject);
+  socket.addEventListener("open", resolve, { once: true });
+  socket.addEventListener("error", reject, { once: true });
 });
 
-let messageId = 0;
-const pending = new Map();
-socket.on("message", (data) => {
-  const message = JSON.parse(data.toString());
-  if (!message.id || !pending.has(message.id)) return;
-  const { resolve, reject } = pending.get(message.id);
+socket.addEventListener("message", (event) => {
+  const message = JSON.parse(event.data);
+  const request = pending.get(message.id);
+  if (!request) return;
   pending.delete(message.id);
-  if (message.error) reject(new Error(message.error.message));
-  else resolve(message.result);
+  if (message.error) request.reject(new Error(message.error.message));
+  else request.resolve(message.result);
 });
 
 function send(method, params = {}) {
-  messageId += 1;
-  const id = messageId;
+  const id = ++messageId;
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject });
     socket.send(JSON.stringify({ id, method, params }));
@@ -59,49 +50,62 @@ function send(method, params = {}) {
 }
 
 async function evaluate(expression) {
-  const result = await send("Runtime.evaluate", {
+  const response = await send("Runtime.evaluate", {
+    awaitPromise: true,
     expression,
     returnByValue: true,
-    awaitPromise: true,
   });
-  return result.result.value;
+  if (response.exceptionDetails) {
+    throw new Error(response.exceptionDetails.text);
+  }
+  return response.result.value;
 }
 
-async function waitFor(expression, label, timeoutMs = 10_000) {
-  const started = Date.now();
-  while (Date.now() - started < timeoutMs) {
+async function waitFor(expression, label, timeout = 10_000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
     if (await evaluate(expression)) return;
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await delay(75);
   }
   throw new Error(`Timed out waiting for ${label}.`);
 }
 
-async function navigate(path) {
-  await send("Page.navigate", { url: `${origin}${path}` });
+async function navigate(pathname) {
+  await send("Page.navigate", { url: `${origin}${pathname}` });
   await waitFor(
-    `document.readyState === "complete" && Boolean(document.querySelector('[data-browse-page=true]'))`,
-    path,
+    `document.readyState === "complete" && Boolean(document.querySelector('[data-browse-view]'))`,
+    pathname,
   );
 }
 
 await send("Page.enable");
 await send("Runtime.enable");
+await send("Emulation.setDeviceMetricsOverride", {
+  width: 1440,
+  height: 1000,
+  deviceScaleFactor: 1,
+  mobile: false,
+});
 
 await navigate("/resources");
-assert.equal(
-  await evaluate(
-    `document.querySelectorAll('[data-browse-view=cards] > article').length`,
-  ),
-  24,
-);
-assert.equal(
-  await evaluate(
-    `document.querySelector('[data-browse-view=cards] a')?.getAttribute('href')?.startsWith('/resources/')`,
-  ),
-  true,
-);
+const cardAudit = await evaluate(`(() => ({
+  cards: document.querySelectorAll('[data-browse-view=cards] article').length,
+  internalLinks: [...document.querySelectorAll('[data-browse-view=cards] article > a')]
+    .every((link) => link.getAttribute('href')?.startsWith('/resources/')),
+  providerLinks: document.querySelectorAll('[data-browse-view=cards] a[target=_blank][rel="noopener noreferrer"]').length,
+  saves: document.querySelectorAll('[data-browse-view=cards] button[aria-pressed]').length,
+  nextHref: [...document.querySelectorAll('nav[aria-label="Browse pages"] a')]
+    .find((link) => link.textContent.trim() === 'Next')?.getAttribute('href'),
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+}))()`);
+assert.equal(cardAudit.cards, 24);
+assert.equal(cardAudit.internalLinks, true);
+assert.ok(cardAudit.providerLinks > 0);
+assert.equal(cardAudit.saves, 24);
+assert.match(cardAudit.nextHref, /page=2/);
+assert.equal(cardAudit.overflow, false);
 
-await navigate("/resources?view=list");
+await navigate("/resources?view=list&page=2");
 assert.equal(
   await evaluate(
     `document.querySelectorAll('[data-browse-view=list] > li').length`,
