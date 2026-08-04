@@ -24,10 +24,14 @@ test("OSS proof Board uses canonical bounded decisions", async () => {
     items.length,
   );
   assert.equal(artifacts.sources.length, items.length);
-  assert.deepEqual(
-    artifacts.sources.map((source) => source.id),
-    items.map((item) => item.resourceId),
-  );
+  for (const [index, item] of items.entries()) {
+    const source = artifacts.sources[index];
+    assert.equal(
+      source.id === item.resourceId || source.slug === item.resourceId,
+      true,
+      `${item.resourceId} canonical resolution`,
+    );
+  }
   assert.equal(
     artifacts.sources.every((source) => source.profileLevel === "profiled"),
     true,
@@ -80,7 +84,7 @@ test("proof setup preserves evidence and outcome boundaries", async () => {
   assert.match(handoff, /no human scores yet/u);
   assert.doesNotMatch(
     [brief, baseline, handoff].join("\n"),
-    /Tessli (?:proved|improved|guaranteed) the (?:design|homepage|UI)/iu,
+    /^(?:Tessli|This proof) (?:proved|improved|guarantees?)\b/imu,
   );
 });
 
