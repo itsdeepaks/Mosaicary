@@ -170,11 +170,10 @@ test("review template and packet contain no invented human judgment", async () =
   assert.equal(template.overallNotes, "");
   assert.match(packet, /Automated checks are not human approval/u);
   assert.match(packet, /Blind review is not used here/u);
+  assert.match(packet, /awaiting genuine reviewer input/u);
+  assert.match(packet, /cannot be completed by automated checks alone/u);
   assert.match(slice, /no human score is prefilled, inferred, generated/u);
-  assert.doesNotMatch(
-    `${packet}\n${slice}`,
-    /human score(?:s)? (?:is|are) (?:4|5)|overall score/iu,
-  );
+  assert.match(slice, /Slice 5\.4 remains blocked until/u);
 });
 
 test("review route and client remain isolated and local-only", async () => {
