@@ -104,6 +104,19 @@ const listed = {
   intelligence: null,
 };
 
+function collectKeys(value, keys = new Set()) {
+  if (Array.isArray(value)) {
+    for (const item of value) collectKeys(item, keys);
+    return keys;
+  }
+  if (!value || typeof value !== "object") return keys;
+  for (const [key, child] of Object.entries(value)) {
+    keys.add(key);
+    collectKeys(child, keys);
+  }
+  return keys;
+}
+
 test("source JSON and Markdown are deterministic and truthful", () => {
   const first = createPublicSourceRepresentation(profiled);
   const second = createPublicSourceRepresentation(profiled);
@@ -123,7 +136,20 @@ test("source JSON and Markdown are deterministic and truthful", () => {
     /Repository intelligence is not live-provider verification/u,
   );
   assert.match(json, /"profileLevel": "profiled"/u);
-  assert.doesNotMatch(json, /localStorage|boardId|savedIds|cookie/u);
+  const publicKeys = collectKeys(first);
+  for (const forbiddenKey of [
+    "boardId",
+    "boardIds",
+    "savedIds",
+    "localStorage",
+    "cookie",
+    "cookies",
+    "account",
+    "credential",
+    "credentials",
+  ]) {
+    assert.equal(publicKeys.has(forbiddenKey), false, forbiddenKey);
+  }
 });
 
 test("Listed sources remain sparse without invented intelligence", () => {
