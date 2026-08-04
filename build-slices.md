@@ -213,7 +213,7 @@ Frozen decisions:
 
 Historical alias: `14.2`.
 
-## 11. NEXT — Phase 2 / Slice 2.2 Canonical Browse implementation
+## 11. Phase 2 / Slice 2.2 completion evidence
 
 ### Goal
 
@@ -253,6 +253,12 @@ Replace the competing catalogue browsers with one paginated, shareable, responsi
 - unit, component, route, and browser tests;
 - slice evidence document.
 
+### Completion evidence
+
+- implementation and final findings: `docs/slices/2.2-canonical-browse-implementation.md`;
+- pull request: PR #79;
+- exact-head CI and browser run IDs are recorded in the PR before squash merge.
+
 ### Exclusions
 
 - no mature Source Detail content beyond the minimum non-dead boundary;
@@ -266,9 +272,9 @@ Replace the competing catalogue browsers with one paginated, shareable, responsi
 - no mass screenshot work;
 - no unrelated refactor.
 
-## 12. Phase 2 remaining slices
+## 12. NEXT — Phase 2 / Slice 2.3 Source Detail foundation
 
-### 2.3 Source Detail foundation
+### Goal and acceptance boundary
 
 - 295 stable routes;
 - truthful Listed state;
