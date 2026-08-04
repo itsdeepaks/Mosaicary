@@ -1,0 +1,33 @@
+name: Generate OSS proof research pack
+
+on:
+  push:
+    branches:
+      - proof/oss-homepage-research-setup
+    paths:
+      - ".github/workflows/generate-oss-proof-pack.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out proof branch
+        uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-research-setup
+
+      - name: Generate exact formatter output
+        working-directory: web
+        run: node scripts/generate-oss-proof-research-setup.mjs
+
+      - name: Commit generated research pack
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/proofs/oss-homepage/research-pack.md
+          git commit -m "proof: commit deterministic OSS research pack"
+          git push origin HEAD:proof/oss-homepage-research-setup
