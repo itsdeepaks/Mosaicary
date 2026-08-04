@@ -30,11 +30,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes.map((route) => ({ url: `${origin}${route}` })),
-    ...getPublishedCollections().map((collection) => ({
-      url: `${origin}/collections/${collection.slug}`,
-    })),
-    ...getAllSourceProfiles().map((profile) => ({
-      url: `${origin}/resources/${profile.slug}`,
-    })),
+    ...getPublishedCollections().flatMap((collection) => [
+      { url: `${origin}/collections/${collection.slug}` },
+      { url: `${origin}/collections/${collection.slug}/collection.json` },
+      { url: `${origin}/collections/${collection.slug}/collection.md` },
+    ]),
+    ...getAllSourceProfiles().flatMap((profile) => [
+      { url: `${origin}/resources/${profile.slug}` },
+      { url: `${origin}/resources/${profile.slug}/profile.json` },
+      { url: `${origin}/resources/${profile.slug}/profile.md` },
+    ]),
   ];
 }

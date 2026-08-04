@@ -83,6 +83,56 @@ for (const [path, expectedStatus, expectedText] of routeChecks) {
   assert.match(body, new RegExp(expectedText, "i"), `${path} content`);
 }
 
+const machineRouteChecks = [
+  {
+    path: "/resources/designindex/profile.json",
+    contentType: "application/json",
+    expectedText: '"contract": "tessli.public-source.v1"',
+  },
+  {
+    path: "/resources/designindex/profile.md",
+    contentType: "text/markdown",
+    expectedText: "# Tessli Source Profile — DesignIndex",
+  },
+  {
+    path: "/collections/saas-landing-pages/collection.json",
+    contentType: "application/json",
+    expectedText: '"contract": "tessli.public-collection.v1"',
+  },
+  {
+    path: "/collections/saas-landing-pages/collection.md",
+    contentType: "text/markdown",
+    expectedText: "# Tessli Collection — SaaS landing-page references",
+  },
+];
+
+for (const check of machineRouteChecks) {
+  const response = await fetch(`${origin}${check.path}`);
+  const body = await response.text();
+  assert.equal(response.status, 200, `${check.path} status`);
+  assert.match(
+    response.headers.get("content-type") ?? "",
+    new RegExp(`^${check.contentType}`),
+    `${check.path} content type`,
+  );
+  assert.equal(
+    response.headers.get("access-control-allow-origin"),
+    "*",
+    `${check.path} CORS`,
+  );
+  assert.equal(
+    response.headers.get("x-content-type-options"),
+    "nosniff",
+    `${check.path} nosniff`,
+  );
+  assert.match(
+    response.headers.get("link") ?? "",
+    /rel="canonical"/u,
+    `${check.path} canonical link`,
+  );
+  assert.match(body, new RegExp(check.expectedText, "i"), `${check.path} body`);
+}
+
 const visualCases = [
   { name: "explore", path: "/", selector: "[data-explore-results=ready]" },
   {

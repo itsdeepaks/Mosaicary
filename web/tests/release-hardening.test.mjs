@@ -128,16 +128,17 @@ test("release history remains preserved under Product Plan v2", async () => {
     [
       "4.3",
       "Safe public machine-readable representations",
-      "NEXT",
+      "DONE",
       "2.4, 4.2",
-      "—",
+      "`docs/slices/4.3-public-machine-readable-representations.md`, PR #88",
     ],
+    ["5.1", "OSS proof brief and research Board", "NEXT", "4.3", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.3 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.1 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -154,7 +155,7 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /## 8\. Phase 4 — Research-Pack Export\n\nStatus: \*\*ACTIVE\*\*/,
+    /## 8\. Phase 4 — Research-Pack Export\n\nStatus: \*\*DONE\*\*/,
   );
   assert.match(
     plan,
@@ -162,8 +163,13 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /### 4\.3 Safe public machine-readable representations\n\nStatus: \*\*NEXT\*\*/,
+    /### 4\.3 Safe public machine-readable representations\n\nStatus: \*\*DONE\*\*/,
   );
+  assert.match(
+    plan,
+    /## 9\. Phase 5 — Real OSS Proof Project\n\nStatus: \*\*ACTIVE — PROOF REQUIRED\*\*/,
+  );
+  assert.match(plan, /### 5\.1 Research setup\n\nStatus: \*\*NEXT\*\*/);
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
   assert.match(cutover, /no grouped runtime errors/i);
