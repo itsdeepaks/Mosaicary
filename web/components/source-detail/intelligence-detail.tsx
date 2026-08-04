@@ -47,20 +47,35 @@ export function IntelligenceDetail({
           <List title="Content objects" items={profile.contentObjects} />
           <List title="Platforms" items={profile.platforms} />
           <List title="Frameworks" items={profile.frameworks} />
-          <List title="Integration methods" items={profile.integrationMethods} />
-          <List title="Delivery formats" items={intelligence.deliveryFormats} />
+          <List
+            title="Integration methods"
+            items={profile.integrationMethods}
+          />
+          <List
+            title="Delivery formats"
+            items={intelligence.deliveryFormats}
+          />
           <List title="Design tools" items={intelligence.designTools} />
           <section>
             <h3>Governance</h3>
             <ul>
-              <li>Persistence: {label(intelligence.governance.defaultPersistence)}</li>
-              <li>Redistribution: {label(intelligence.governance.assetRedistribution)}</li>
-              <li>Attribution: {label(intelligence.governance.sourceAttribution)}</li>
               <li>
-                User credential required: {intelligence.governance.userCredentialRequired ? "Yes" : "No"}
+                Persistence: {label(intelligence.governance.defaultPersistence)}
               </li>
               <li>
-                Terms review required: {intelligence.governance.termsReviewRequired ? "Yes" : "No"}
+                Redistribution:{" "}
+                {label(intelligence.governance.assetRedistribution)}
+              </li>
+              <li>
+                Attribution: {label(intelligence.governance.sourceAttribution)}
+              </li>
+              <li>
+                User credential required:{" "}
+                {intelligence.governance.userCredentialRequired ? "Yes" : "No"}
+              </li>
+              <li>
+                Terms review required:{" "}
+                {intelligence.governance.termsReviewRequired ? "Yes" : "No"}
               </li>
             </ul>
           </section>
