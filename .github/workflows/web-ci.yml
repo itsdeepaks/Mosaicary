@@ -30,7 +30,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -48,8 +48,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: feat/global-navigation-naming-cleanup
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -60,18 +58,6 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
-
-      - name: Commit exact Prettier output once
-        shell: bash
-        run: |
-          npx prettier --write tests/global-navigation-browser.mjs
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tests/global-navigation-browser.mjs
-          if ! git diff --cached --quiet; then
-            git commit -m "style: format global navigation browser test"
-            git push origin HEAD:feat/global-navigation-naming-cleanup
-          fi
 
       - name: Verify approved hero asset
         shell: bash
