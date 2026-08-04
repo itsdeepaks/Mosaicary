@@ -1,14 +1,14 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 2 / Slice 2.4 NEXT**  
+Status: **active delivery plan — Phase 3 / Slice 3.1 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
-The previous detailed Phase 1 ledger and legacy slice numbers remain available in Git history and under `docs/slices/`. Product Plan v2 does not rewrite history. It gives the direction-reset work a clean execution frame:
+The previous detailed Phase 1 ledger and legacy slice numbers remain available in Git history and under `docs/slices/`. Product Plan v2 does not rewrite history. It provides the active execution frame:
 
 - Phase 0 is the completed direction reset;
 - Phases 1–10 are the ten development phases;
-- completed legacy `14.x` work is mapped to its Product Plan v2 phase;
+- completed legacy `14.x` work is mapped to Product Plan v2;
 - new work uses Product Plan v2 phase/slice identifiers.
 
 ## 1. Mandatory read order
@@ -24,7 +24,7 @@ Before changing Tessli:
 7. read `design.md` for visible work;
 8. read relevant contracts, schemas, code, tests, and completed slice evidence.
 
-When documents conflict, stop and resolve the conflict in a dedicated documentation slice.
+When documents conflict, resolve the conflict in a dedicated documentation slice.
 
 ## 2. Required GitHub slice loop
 
@@ -84,18 +84,20 @@ Unless an approved slice changes them, Tessli already has:
 - warm editorial design foundation;
 - responsive public shell and legal/content pages;
 - validated 295-source catalogue across 11 categories;
+- one canonical paginated `/resources` browser;
+- internal source-detail routes for all 295 sources;
+- truthful 275 Listed / 20 Profiled / 0 Verified coverage;
+- enriched Profiled intelligence detail and explainable Similar Sources;
 - resource media fallbacks and provenance tooling;
 - six repository-maintained collections;
 - browser-local Saved;
 - Supabase SSR/client and user-data schema groundwork;
-- 20 enriched intelligence profiles;
 - evidence/profile validation tooling;
 - local context-engine provider;
 - deterministic research-plan/reference-packet builders;
-- seven read-only native MCP tools;
-- canonical Source contract with 275 Listed / 20 Profiled / 0 Verified.
+- seven read-only native MCP tools.
 
-Completed code is not automatically approved as the future product model. The Explore/Full Reference split, optional source details, hard-coded verification date, public disabled auth, and placeholder contribution actions remain superseded until replaced.
+Completed code is not automatically approval for later-phase functionality. Public auth, cloud workspaces, submissions, moderation, pattern claims, and UI-taste claims remain deferred until their prerequisites are met.
 
 ## 6. Phase status
 
@@ -103,8 +105,8 @@ Completed code is not automatically approved as the future product model. The Ex
 |---:|---|---|---|
 | 0 | Direction Reset | DONE | — |
 | 1 | Source Intelligence Foundation | DONE | — |
-| 2 | Browse and Source Detail | ACTIVE | 2.4 NEXT |
-| 3 | Local Saved and Project Boards | PLANNED | 3.1 |
+| 2 | Browse and Source Detail | DONE | — |
+| 3 | Local Saved and Project Boards | ACTIVE | 3.1 NEXT |
 | 4 | Research-Pack Export | PLANNED | 4.1 |
 | 5 | Real OSS Proof Project | PROOF | 5.1 |
 | 6 | Homepage, Navigation, Playbooks, and For AI | PLANNED | 6.1 |
@@ -123,8 +125,8 @@ Completed code is not automatically approved as the future product model. The Ex
 | 2.1 | Canonical Browse architecture and pagination contract | DONE | 1.2 | legacy `14.2`, PR #77 |
 | 2.2 | Canonical `/resources` implementation | DONE | 2.1 | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79 |
 | 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |
-| 2.4 | Enriched intelligence detail and Similar Sources | NEXT | 2.3 | — |
-| 3.1 | Universal browser-local Save | PLANNED | 2.2, 2.3 | — |
+| 2.4 | Enriched intelligence detail and Similar Sources | DONE | 2.3 | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81 |
+| 3.1 | Universal browser-local Save | NEXT | 2.2, 2.3 | — |
 | 3.2 | Saved workspace search/filter refinement | PLANNED | 3.1 | — |
 | 3.3 | Local project Boards and notes | PLANNED | 3.1 | — |
 | 3.4 | Selected/rejected decisions and unresolved questions | PLANNED | 3.3 | — |
@@ -155,33 +157,15 @@ Completed code is not automatically approved as the future product model. The Ex
 | 10.4 | Repeated outcome evaluation | DEFERRED | 10.1–10.3 | — |
 | 10.5 | Public UI-taste claim review | DEFERRED | 10.4 | — |
 
-## 8. Phase 0 completion evidence
+## 8. Completed phase evidence
 
-Phase 0 / Slice 0.1 established:
+### Phase 0 — Direction Reset
 
-- Source Index, Research Intelligence, and UI Judgment;
-- DesignIndex as directory inspiration, not final blueprint;
-- one canonical truth for website, exports, and MCP;
-- evidence before UI-taste claims;
-- local workspace value before authentication;
-- ten-phase Product Plan v2 direction.
+Established Source Index, Research Intelligence, UI Judgment, shared website/export/MCP truth, local value before authentication, and evidence before UI-taste claims.
 
-Historical alias: `14.0`.
+### Phase 1 — Source Intelligence Foundation
 
-## 9. Phase 1 completion evidence
-
-### Slice 1.1 — canonical source-profile contract
-
-Deliverables:
-
-- `schemas/source-profile.schema.json`;
-- shared adapter `web/lib/source-profiles.ts`;
-- validator `web/scripts/check-source-profile-contract.mjs`;
-- complete deterministic mapping of 295 sources.
-
-### Slice 1.2 — coverage mapping and adapter
-
-Truthful baseline:
+Delivered the canonical source-profile schema and deterministic adapter with the truthful baseline:
 
 ```text
 275 Listed
@@ -189,230 +173,92 @@ Truthful baseline:
 0 Verified
 ```
 
-Existing intelligence records remain Profiled until explicit completed human-review provenance supports Verified.
+### Phase 2 — Browse and Source Detail
 
-Historical alias: `14.1`.
+Delivered:
 
-## 10. Phase 2 / Slice 2.1 completion evidence
-
-Contract: `docs/slices/14.2-canonical-browse-contract.md`
-
-Frozen decisions:
-
-- `/resources` is the canonical browser;
-- canonical `q`, category, access, source type, profile level, sort, view, and page state;
-- 24 cards / 50 compact or table rows;
-- server-derived current page;
-- card/list/table responsibilities;
+- canonical Browse contract and implementation;
+- bounded server-derived pagination;
+- URL-restorable query, filters, sorting, view, and page;
 - one responsive result tree;
-- internal Source Detail as primary action;
-- separate Save and Visit source;
-- no universal Compare;
-- no hard-coded/fake verification date or sort;
-- history, focus, scroll, progressive enhancement, and test matrix.
+- internal source profiles as the primary destination;
+- truthful source-detail routes for all 295 sources;
+- progressive Listed/Profiled coverage;
+- enriched Profiled capabilities, objects, platforms, frameworks, integrations, formats, tools, governance, and evidence;
+- explicit repository-intelligence versus live-provider-verification messaging;
+- explainable Similar Sources using category, source type, and recorded metadata overlap;
+- no popularity, rating, trend, aesthetic, or universal-best scoring.
 
-Historical alias: `14.2`.
+Evidence:
 
-## 11. Phase 2 / Slice 2.2 completion evidence
+- `docs/slices/14.2-canonical-browse-contract.md`;
+- `docs/slices/2.2-canonical-browse-implementation.md`;
+- `docs/slices/2.3-source-detail-foundation.md`;
+- `docs/slices/2.4-enriched-intelligence-detail.md`;
+- PRs #77, #79, #80, and #81.
 
-### Goal
+## 9. Phase 3 — Local Saved and Project Boards
 
-Replace the competing catalogue browsers with one paginated, shareable, responsive `/resources` experience.
+### NEXT — Slice 3.1 Universal browser-local Save
 
-### Acceptance criteria
+Goal: one versioned local Save contract across Browse, Source Detail, collections/playbooks, and Saved.
 
-- server derives only the selected result page;
-- default cards render at most 24 results;
-- list/table render at most 50 rows;
-- no complete duplicate mobile/desktop result map;
-- URL restores query, category, access, source type, profile level, sort, view, and page;
-- old `sort=verified` no longer creates a fake verification order;
-- hard-coded verification dates are removed;
-- cards/list/table have distinct responsibilities;
-- internal `/resources/[slug]` navigation is primary;
-- Save remains functional;
-- provider destination is a separate safe action;
-- homepage search routes to `/resources`;
-- homepage complete catalogue is reduced to at most 12 compatibility-preview items;
-- legacy useful query state is preserved;
-- no-JavaScript search/pagination/navigation remains useful;
-- browser Back/Forward and pagination state work;
-- empty/error/unavailable states are truthful;
-- accessibility, responsive, performance, route, unit, full CI, and complete-diff gates pass.
+Required:
 
-### Expected areas
+- preserve current saved IDs through migration;
+- one shared storage key/version and deterministic parser;
+- Save/un-save from Browse and Source Detail;
+- collection/playbook item support where the surface exists;
+- accessible announcements;
+- cross-tab synchronization where practical;
+- truthful local-only/device-only messaging;
+- no account, cloud, or collaboration dependency.
 
-- canonical Browse state/parser/serializer;
-- server-side result derivation/pagination;
-- `/resources` page and metadata;
-- shared Browse controls;
-- card/list/table result renderers;
-- minimal non-dead internal profile route boundary if required;
-- homepage search/preview migration;
-- global navigation naming where required by the route;
-- unit, component, route, and browser tests;
-- slice evidence document.
+### Slice 3.2 Saved workspace refinement
 
-### Completion evidence
+Search, filter, sort, remove, and undo with accessible empty and dynamic states.
 
-- implementation and final findings: `docs/slices/2.2-canonical-browse-implementation.md`;
-- pull request: PR #79;
-- exact-head CI and browser run IDs are recorded in the PR before squash merge.
+### Slice 3.3 Local project Boards
 
-### Exclusions
+Create, rename, delete, project goal/constraints, source membership, and per-item notes.
 
-- no mature Source Detail content beyond the minimum non-dead boundary;
-- no universal Compare;
-- no semantic/vector search;
-- no new profiles to populate facets;
-- no live provider verification;
-- no Boards/export/auth/cloud/submission/moderation;
-- no mature homepage redesign;
-- no new MCP tools;
-- no mass screenshot work;
-- no unrelated refactor.
+### Slice 3.4 Decisions
 
-## 12. Phase 2 / Slice 2.3 completion and Slice 2.4 next
-
-### Slice 2.3 completion evidence
-
-- 295 stable routes;
-- truthful Listed state;
-- progressive Profiled/Verified sections;
-- Save/Add to Board when available/Visit source;
-- status, limitations, evidence, freshness;
-- collection membership;
-- metadata, sitemap, 404;
-- provider failure does not break Tessli profile.
-
-### NEXT — 2.4 Enriched intelligence and Similar Sources
-
-- capabilities and content objects;
-- platforms/frameworks;
-- discovery model;
-- integrations and agent access;
-- workflow fit;
-- governance and evidence;
-- defensible peers/alternatives;
-- same truth as MCP.
-
-## 13. Phase 3 slices
-
-### 3.1 Universal local Save
-
-One versioned local contract across Browse, Source Detail, playbooks, and Saved.
-
-### 3.2 Saved refinement
-
-Search/filter/sort/remove/undo with truthful local-only messaging.
-
-### 3.3 Local Boards
-
-Create/rename/delete, project goal/constraints, source membership, notes.
-
-### 3.4 Decisions
-
-Selected/rejected state, rationale, unresolved questions, stable local persistence.
+Selected/rejected status, rationale, unresolved questions, and stable local persistence.
 
 No authentication or cloud work belongs in Phase 3.
 
-## 14. Phase 4 slices
+## 10. Later phase boundaries
 
-### 4.1 Research-pack contract
+### Phase 4 — Research-Pack Export
 
-Freeze deterministic sections, ordering, provenance, relevance budget, and privacy boundary.
+Freeze the Board export contract, then implement deterministic model-independent Markdown and safe public source/collection representations. Never publish private local Board content.
 
-### 4.2 Markdown export
+### Phase 5 — Real OSS Proof Project
 
-Copy/download compact model-independent project context without an account.
+Use a real OSS brief, Board, exported pack, agent build, browser verification, and genuine human review. Missing human review is a blocker, not permission to invent scores.
 
-### 4.3 Public machine representations
+### Phase 6 — Homepage, Navigation, Playbooks, and For AI
 
-Safe source/collection Markdown or JSON plus semantic pages; never publish private local Board content.
+Only working routes enter public navigation. Homepage redesign follows the proven research loop. Collections become staged playbooks. For AI documents real tools, setup, coverage, governance, and exports.
 
-## 15. Phase 5 slices
+### Phase 7 — Reviewed Pattern Candidates
 
-### 5.1 Brief and Board
+Start with a schema, then 5–10 genuinely reviewed candidates from real evidence. Do not mass-generate published patterns.
 
-Use a real OSS project, recommended Online Scope Studio homepage.
+### Phase 8 — Authentication and Cloud Workspace
 
-### 5.2 Agent build
+Begins only after local Boards/export/proof demonstrate value. External credentials, SMTP, OAuth, environment separation, RLS, and security review are legitimate blockers.
 
-Use the exported pack with Codex and retain timing/iteration evidence.
+### Phase 9 — Community and Moderation
 
-### 5.3 Browser/human review
+Requires contextual forms, server validation, duplicate detection, rate limiting, moderation ownership, audit state, safe errors, and provider readiness.
 
-Use required widths and twelve review dimensions. Do not invent human scores.
+### Phase 10 — Evidence-Backed UI-Taste Layer
 
-### 5.4 Evidence report
+Requires multiple proof projects, permission-aware precedent retrieval, pattern promotion, repeated evaluation, and a final public-claim review. Catalogue size, screenshots, embeddings, or one successful page cannot complete this phase.
 
-Report improvement, non-improvement, or mixed outcome honestly.
-
-A missing human review is a blocker, not permission to fabricate completion.
-
-## 16. Phase 6 slices
-
-- 6.1 navigation/naming cleanup;
-- 6.2 curated homepage;
-- 6.3 collections become staged playbooks;
-- 6.4 For AI page with real tools, coverage, setup, governance, and exports.
-
-Public navigation contains only working destinations.
-
-## 17. Phase 7 slices
-
-- 7.1 Pattern Candidate schema;
-- 7.2 first 5–10 human-reviewed candidates from real evidence;
-- 7.3 website/export/MCP retrieval after data stabilizes.
-
-Do not mass-generate published patterns.
-
-## 18. Phase 8 slices
-
-Authentication begins only after local Boards/export/proof demonstrate value.
-
-Future flow:
-
-```text
-Google OAuth
-or
-first name + last name + email + password
-→ signup email-verification OTP
-→ optional local-data merge
-```
-
-Standard sign in:
-
-```text
-Google OAuth
-or
-email + password
-```
-
-Do not require emailed OTP after every password login. Optional MFA uses authenticator TOTP.
-
-External credentials, SMTP, OAuth, environment separation, RLS, and security review are legitimate blockers.
-
-## 19. Phase 9 slices
-
-- contextual submission/correction/report forms;
-- moderation states and audit history;
-- server validation, duplicate detection, rate limiting, safe errors;
-- transactional email only after provider/domain readiness.
-
-No submission bypasses moderation.
-
-## 20. Phase 10 slices
-
-- evaluation and approved-precedent model;
-- permission-aware precedent retrieval;
-- pattern promotion and project design packs;
-- repeated project evaluation;
-- final public claim review.
-
-Phase 10 cannot be completed from catalogue size, screenshots, embeddings, or one successful page.
-
-## 21. Autonomous execution boundary
+## 11. Autonomous execution boundary
 
 The autonomous goal is to advance through all ten development phases without asking for routine approval between safe slices.
 
@@ -427,4 +273,4 @@ Automation must stop and record a blocker rather than:
 - merge unsafe or unrelated work;
 - describe deferred work as complete.
 
-Each run completes at most one vertical slice, merges it when all gates pass, refreshes `main`, and then the following run continues the next eligible slice.
+Each run completes at most one vertical slice, merges it when all gates pass, refreshes `main`, and lets the following run continue the next eligible slice.
