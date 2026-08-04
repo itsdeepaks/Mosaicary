@@ -82,7 +82,7 @@ await mkdir(outputDirectory, { recursive: true });
 await send("Page.enable");
 await send("Page.navigate", { url: `${origin}/` });
 await waitFor(
-  "document.querySelector('[data-explore-results=ready]')",
+  "Boolean(document.querySelector('[data-explore-results=ready]'))",
   "Explore",
 );
 await evaluate(
