@@ -102,7 +102,7 @@ jobs:
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/phase-1-release artifacts/oss-proof-candidate
+          mkdir -p artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review
 
           "$chrome_bin" \
             --headless=new \
@@ -117,6 +117,7 @@ jobs:
 
           node tests/release-gate-browser.mjs 2>&1 | tee artifacts/phase-1-release/release-gate.log
           node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
+          node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
 
       - name: Upload Phase 1 release evidence
         if: always()
@@ -126,6 +127,7 @@ jobs:
           path: |
             web/artifacts/phase-1-release/*
             web/artifacts/oss-proof-candidate/*.png
+            web/artifacts/oss-human-review/*.png
             web/artifacts/oss-proof-metrics.json
           if-no-files-found: error
           retention-days: 14

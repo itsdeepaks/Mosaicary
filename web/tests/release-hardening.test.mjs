@@ -146,13 +146,21 @@ test("release history remains preserved under Product Plan v2", async () => {
       "5.1",
       "`docs/slices/5.2-oss-homepage-candidate.md`, PR #90",
     ],
-    ["5.3", "Browser and human review", "NEXT", "5.2", "—"],
+    [
+      "5.3",
+      "Browser and human review",
+      "BLOCKED",
+      "5.2",
+      "`docs/slices/5.3-oss-homepage-human-review.md`, PR #91",
+    ],
+    ["5.4", "Outcome/evidence report", "BLOCKED", "5.3 human artifact", "—"],
+    ["6.1", "Global navigation and naming cleanup", "NEXT", "2.2", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.3 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.1 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -181,13 +189,21 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /## 9\. Phase 5 — Real OSS Proof Project\n\nStatus: \*\*ACTIVE — PROOF REQUIRED\*\*/,
+    /## 9\. Phase 5 — Real OSS Proof Project\n\nStatus: \*\*BLOCKED — GENUINE HUMAN REVIEW REQUIRED\*\*/,
   );
   assert.match(plan, /### 5\.1 Research setup\n\nStatus: \*\*DONE\*\*/);
   assert.match(plan, /### 5\.2 Agent implementation\n\nStatus: \*\*DONE\*\*/);
   assert.match(
     plan,
-    /### 5\.3 Browser and human review\n\nStatus: \*\*NEXT\*\*/,
+    /### 5\.3 Browser and human review\n\nStatus: \*\*BLOCKED — SAFE REVIEW SETUP COMPLETE\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 5\.4 Outcome report\n\nStatus: \*\*BLOCKED — REQUIRES COMPLETED 5\.3 HUMAN ARTIFACT\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 6\.1 Global navigation and naming\n\nStatus: \*\*NEXT\*\*/,
   );
   assert.match(
     slices,
