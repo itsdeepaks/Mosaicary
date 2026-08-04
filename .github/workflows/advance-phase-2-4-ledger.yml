@@ -1,9 +1,7 @@
 name: Advance Phase 2.4 ledger
 
 on:
-  push:
-    branches:
-      - feat/enriched-source-intelligence
+  pull_request:
     paths:
       - ".github/workflows/advance-phase-2-4-ledger.yml"
 
