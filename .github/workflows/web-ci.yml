@@ -49,6 +49,30 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Upload temporary Playbooks source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-playbooks-source-snapshot
+          path: |
+            lib_data/tessli-launch-collections.json
+            schemas/collections.schema.json
+            web/app/collections/**
+            web/components/collection-card/**
+            web/components/collection-resources/**
+            web/components/site-header/**
+            web/components/site-footer/**
+            web/data/catalogue.json
+            web/lib/collections.ts
+            web/lib/public-representations.mjs
+            web/scripts/release-catalogue-lib.mjs
+            web/tests/collections*.mjs
+            web/tests/public-representations.test.mjs
+            web/tests/release-catalogue.test.mjs
+            web/tests/release-hardening.test.mjs
+            web/package.json
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
