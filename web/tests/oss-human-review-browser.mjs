@@ -116,12 +116,26 @@ async function querySelectorAll(documentNodeId, selector) {
   return result.nodeIds;
 }
 
+async function waitForSelector(documentNodeId, selector, timeout = 5_000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    const nodeId = await querySelector(documentNodeId, selector);
+    if (nodeId > 0) return nodeId;
+    await delay(75);
+  }
+  return 0;
+}
+
 async function computedDisplay(nodeId) {
   const result = await send("CSS.getComputedStyleForNode", { nodeId });
   return result.computedStyle.find((entry) => entry.name === "display")?.value;
 }
 
 async function clickAxNode(node) {
+  await send("DOM.scrollIntoViewIfNeeded", {
+    backendNodeId: node.backendDOMNodeId,
+  });
+  await delay(100);
   const box = await send("DOM.getBoxModel", {
     backendNodeId: node.backendDOMNodeId,
   });
@@ -262,12 +276,11 @@ for (const [index, [width, height]] of viewports.entries()) {
   if (index === 0) {
     const copyButton = findAxNode(accessibility.nodes, "button", "Copy JSON");
     await clickAxNode(copyButton);
-    await delay(250);
     const refreshed = await send("DOM.getDocument", {
       depth: -1,
       pierce: true,
     });
-    const alertNodeId = await querySelector(
+    const alertNodeId = await waitForSelector(
       refreshed.root.nodeId,
       '[role="alert"]',
     );
