@@ -6,9 +6,11 @@ import type {
   ResourceCardAccess,
   ResourceCardData,
 } from "@/components/resource-card/resource-card";
+import { IntelligenceDetail } from "@/components/source-detail/intelligence-detail";
 import { SourceActions } from "@/components/source-detail/source-actions";
 import catalogue from "@/data/catalogue.json";
 import { getPublishedCollections } from "@/lib/collections";
+import { getSimilarSourceProfiles } from "@/lib/similar-sources";
 import { getAllSourceProfiles, getSourceProfile } from "@/lib/source-profiles";
 
 import styles from "./source-detail.module.css";
@@ -80,6 +82,7 @@ export default async function SourceProfilePage({ params }: Props) {
   const memberships = getPublishedCollections().filter((collection) =>
     collection.resourceIds.includes(profile.id),
   );
+  const similar = getSimilarSourceProfiles(profile, 4);
 
   return (
     <main
@@ -188,10 +191,12 @@ export default async function SourceProfilePage({ params }: Props) {
                 }
               >
                 {profile.evidence.length > 0
-                  ? `${profile.evidence.length} evidence record${profile.evidence.length === 1 ? " is" : "s are"} linked. Detailed evidence is reserved for Slice 2.4.`
+                  ? `${profile.evidence.length} evidence record${profile.evidence.length === 1 ? " is" : "s are"} linked below.`
                   : "No structured evidence record is linked. This page does not imply live verification."}
               </p>
             </section>
+
+            <IntelligenceDetail profile={profile} similar={similar} />
           </div>
 
           <aside className={styles.aside} aria-labelledby="collections-title">
