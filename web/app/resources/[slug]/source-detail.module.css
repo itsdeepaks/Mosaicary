@@ -1,0 +1,144 @@
+.page {
+  padding-block: clamp(2rem, 5vw, 4.5rem) clamp(4rem, 8vw, 7rem);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 0.75fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  border-bottom: 1px solid var(--color-border, #c9c1b4);
+}
+
+.eyebrow,
+.kicker {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0.5rem 0 1rem;
+  max-width: 14ch;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.summary {
+  max-width: 46rem;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.sidebar {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border, #c9c1b4);
+}
+
+.facts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--color-border, #c9c1b4);
+}
+
+.facts div:last-child {
+  border-bottom: 0;
+}
+
+.facts dt {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #6f695f);
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  padding-top: clamp(3rem, 7vw, 6rem);
+}
+
+.sections {
+  display: grid;
+  gap: 3rem;
+}
+
+.section {
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--color-border, #c9c1b4);
+}
+
+.section h2,
+.aside h2 {
+  margin: 0.35rem 0 1rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  letter-spacing: -0.025em;
+}
+
+.list,
+.collectionList {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.list li,
+.collectionList li {
+  margin-block: 0.55rem;
+}
+
+.emptyNote {
+  max-width: 44rem;
+  color: var(--color-text-muted, #6f695f);
+}
+
+.aside {
+  align-self: start;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border, #c9c1b4);
+}
+
+@media (max-width: 820px) {
+  .hero,
+  .content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero h1 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .facts div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+}
