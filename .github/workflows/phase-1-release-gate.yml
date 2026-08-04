@@ -79,7 +79,7 @@ jobs:
         run: npm run build
 
       - name: Measure OSS proof handoff
-        run: node scripts/measure-oss-proof-handoff.mjs artifacts/oss-proof-metrics.json
+        run: node scripts/measure-oss-proof-handoff.mjs
 
       - name: Run browser release matrix
         shell: bash
