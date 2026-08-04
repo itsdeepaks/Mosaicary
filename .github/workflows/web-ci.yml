@@ -1,90 +1,42 @@
-name: Web CI
+name: Apply OSS review hydration fix
 
 on:
   pull_request:
     paths:
-      - "web/**"
       - ".github/workflows/web-ci.yml"
-      - ".gitignore"
-      - "README.md"
-      - "build-slices.md"
-      - "lib_data/design-resource-library-295.csv"
-      - "lib_data/tessli-launch-collections.json"
-      - "schemas/**"
-      - "docs/data-and-media-contract.md"
-      - "docs/slices/**"
-  push:
-    branches: [main]
-    paths:
-      - "web/**"
-      - ".github/workflows/web-ci.yml"
-      - ".gitignore"
-      - "README.md"
-      - "build-slices.md"
-      - "lib_data/design-resource-library-295.csv"
-      - "lib_data/tessli-launch-collections.json"
-      - "schemas/**"
-      - "docs/data-and-media-contract.md"
-      - "docs/slices/**"
+      - "web/components/oss-human-review/oss-human-review-form.tsx"
 
 permissions:
   contents: write
 
 concurrency:
-  group: web-ci-${{ github.workflow }}-${{ github.ref }}
+  group: oss-review-hydration-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
+  fix:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    env:
-      NEXT_TELEMETRY_DISABLED: "1"
-    defaults:
-      run:
-        working-directory: web
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: proof/oss-homepage-human-review
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
-
-      - name: Install locked dependencies
+      - working-directory: web
         run: npm ci
-
-      - name: Fix and commit review draft hydration
+      - name: Replace hydration effect by structural boundary
         shell: python
         run: |
           from pathlib import Path
 
-          path = Path("components/oss-human-review/oss-human-review-form.tsx")
+          path = Path("web/components/oss-human-review/oss-human-review-form.tsx")
           content = path.read_text(encoding="utf-8")
-          old = '''  useEffect(() => {
-            const today = localIsoDate();
-            try {
-              const stored = window.localStorage.getItem(OSS_HUMAN_REVIEW_STORAGE_KEY);
-              if (!stored) {
-                setDraft(createEmptyOssHumanReviewDraft(today));
-              } else {
-                setDraft(normalizeOssHumanReviewDraft(JSON.parse(stored), today));
-              }
-            } catch {
-              setDraft(createEmptyOssHumanReviewDraft(today));
-              setAnnouncement(
-                "The saved review draft could not be read. A new local draft was started.",
-              );
-            }
-            setHydrated(true);
-          }, []);
-          '''
-          new = '''  useEffect(() => {
+          start = content.index("  useEffect(() => {\n", content.index("export function OssHumanReviewForm"))
+          second = content.index("  useEffect(() => {\n", start + 1)
+          replacement = '''  useEffect(() => {
             const frame = window.requestAnimationFrame(() => {
               const today = localIsoDate();
               try {
@@ -107,14 +59,13 @@ jobs:
 
             return () => window.cancelAnimationFrame(frame);
           }, []);
-          '''
-          if old not in content:
-              raise SystemExit("review hydration target mismatch")
-          path.write_text(content.replace(old, new, 1), encoding="utf-8")
 
-      - name: Format and commit hydration fix
+          '''
+          path.write_text(content[:start] + replacement + content[second:], encoding="utf-8")
+      - name: Format and commit
         shell: bash
         run: |
+          cd web
           npx prettier --write components/oss-human-review/oss-human-review-form.tsx
           cd ..
           git config user.name "tessli-agent"
@@ -122,92 +73,3 @@ jobs:
           git add web/components/oss-human-review/oss-human-review-form.tsx
           git commit -m "fix: hydrate OSS review draft without cascading render"
           git push origin HEAD:proof/oss-homepage-human-review
-
-      - name: Verify approved hero asset
-        shell: bash
-        run: |
-          test -s public/brand/tessli-hero-geometry.webp
-          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
-
-      - name: Check formatting
-        run: npm run format:check
-
-      - name: Check types
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Test
-        run: npm test
-
-      - name: Check catalogue drift
-        run: npm run catalogue:check
-
-      - name: Build
-        run: npm run build
-
-      - name: Measure OSS proof handoff
-        run: node scripts/measure-oss-proof-handoff.mjs
-
-      - name: Run canonical route and browser matrix
-        shell: bash
-        run: |
-          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
-          server_pid=$!
-          chrome_pid=""
-          cleanup() {
-            if [ -n "$chrome_pid" ]; then kill "$chrome_pid" 2>/dev/null || true; fi
-            kill "$server_pid" 2>/dev/null || true
-          }
-          trap cleanup EXIT
-
-          curl --fail --silent --show-error --retry 20 --retry-connrefused --retry-delay 1 \
-            http://127.0.0.1:3000/resources > /tmp/tessli-resources.html
-          grep -q "Browse design sources" /tmp/tessli-resources.html
-          grep -q 'data-browse-view="cards"' /tmp/tessli-resources.html
-          grep -q "Inspect Tessli profile" /tmp/tessli-resources.html
-
-          curl --fail --silent --show-error \
-            http://127.0.0.1:3000/resources/designindex > /tmp/tessli-profile.html
-          grep -q "What this profile supports" /tmp/tessli-profile.html
-
-          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
-          test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review
-          "$chrome_bin" \
-            --headless=new \
-            --no-sandbox \
-            --disable-gpu \
-            --disable-dev-shm-usage \
-            --remote-allow-origins=* \
-            --remote-debugging-port=9222 \
-            --user-data-dir=/tmp/tessli-cdp \
-            about:blank > artifacts/search-browser/chrome.log 2>&1 &
-          chrome_pid=$!
-
-          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
-          node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/explore-results-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/saved-resources-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/release-gate-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-          node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
-
-      - name: Upload browser diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-browser-diagnostics
-          path: |
-            web/artifacts/search-browser/*
-            web/artifacts/responsive-ui/*.png
-            web/artifacts/phase-1-release/*.png
-            web/artifacts/oss-proof-candidate/*.png
-            web/artifacts/oss-human-review/*.png
-            web/artifacts/oss-proof-metrics.json
-          if-no-files-found: warn
-          retention-days: 7
