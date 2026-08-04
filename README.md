@@ -22,29 +22,22 @@ Read the authoritative direction and execution plan first:
 
 Product Plan v2 records Phase 0 as the completed direction reset and Phases 1–10 as the ten development phases. Legacy slice numbers remain only as historical aliases for already merged work.
 
-## Current Phase 1 application
+## Current application baseline
 
-The current production application is the completed Phase 1 directory experience. It includes:
+The current application now includes the first reusable Tessli research loop:
 
-- search and URL-backed filters;
-- 295 validated sources across 11 categories;
-- browser-local Saved;
+- one canonical paginated `/resources` browser;
+- truthful internal profiles for all 295 sources;
+- 275 Listed, 20 Profiled, and 0 Verified coverage;
+- enriched intelligence for the 20 Profiled sources;
+- explainable Similar Sources;
+- browser-local Saved with search, filters, sorting, removal, and undo;
+- browser-local project Boards with goals, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
 - six repository-maintained collections;
-- card media fallbacks and reviewed provenance tooling;
-- a dense Full Reference route;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
 
-Some current product decisions are now explicitly superseded and will be replaced through Product Plan v2:
-
-- separate Explore and Full Reference catalogue products;
-- an unpaginated complete reference view;
-- source cards acting primarily as outbound links;
-- optional rather than required source-detail pages;
-- Save being unavailable on some research surfaces;
-- public disabled auth and contribution placeholders.
-
-Existing runtime code remains until replaced through the approved slice loop.
+Authentication, cloud workspaces, submissions, moderation, Pattern Candidates, and public UI-taste claims remain deferred until their prerequisites are demonstrated.
 
 ## Active next product loop
 
@@ -67,9 +60,9 @@ The first proof project is expected to use a real Online Scope Studio page and c
 ```text
 Phase 0  Direction Reset                         DONE
 Phase 1  Source Intelligence Foundation          DONE
-Phase 2  Browse and Source Detail                ACTIVE
-Phase 3  Local Saved and Project Boards          PLANNED
-Phase 4  Research-Pack Export                    PLANNED
+Phase 2  Browse and Source Detail                DONE
+Phase 3  Local Saved and Project Boards          DONE
+Phase 4  Research-Pack Export                    ACTIVE
 Phase 5  Real OSS Proof Project                  PROOF
 Phase 6  Homepage, Navigation, Playbooks, For AI PLANNED
 Phase 7  Reviewed Pattern Candidates             PLANNED
@@ -78,7 +71,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next slice is **Phase 2 / Slice 2.2 — canonical `/resources` implementation**.
+The approved next slice is **Phase 4 / Slice 4.2 — deterministic Markdown export**.
 
 ## Source coverage levels
 
