@@ -170,7 +170,9 @@ export function SavedResourcesExperience({
   const restoreClearedResources = useCallback(
     (resourceIds: readonly string[]) => {
       setSavedResourceIds((currentIds) => {
-        const restoredIds = Array.from(new Set([...resourceIds, ...currentIds]));
+        const restoredIds = Array.from(
+          new Set([...resourceIds, ...currentIds]),
+        );
         writeSavedResourceIds(restoredIds);
         return restoredIds;
       });
