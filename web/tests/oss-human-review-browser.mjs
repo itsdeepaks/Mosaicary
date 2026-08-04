@@ -169,6 +169,7 @@ assert.match(routeBody, /no automatic upload/iu);
 assert.doesNotMatch(routeBody, /checked=""|checked="checked"/u);
 
 const storageId = { securityOrigin: origin, isLocalStorage: true };
+await navigate(`${origin}/`);
 await send("DOMStorage.setDOMStorageItem", {
   storageId,
   key: storageKey,
