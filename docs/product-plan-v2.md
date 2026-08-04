@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan**  
+Status: **active execution plan — Phase 4**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -9,20 +9,22 @@ Effective date: 2026-08-04
 
 The legacy Tessli roadmap used continuously increasing slice numbers from the original directory build. That history remains valid, but it makes the direction reset look like another extension of the old product.
 
-Product Plan v2 starts a new execution frame:
+Product Plan v2 provides the active execution frame:
 
 - **Phase 0** records the completed direction reset;
 - **Phases 1–10** are the ten development phases;
-- each phase contains one or more independently reviewable slices;
-- legacy `14.x` identifiers remain only as historical aliases for already completed work;
-- no Git history or merged evidence is rewritten.
+- each phase contains independently reviewable vertical slices;
+- legacy `14.x` identifiers remain only as historical aliases for completed work;
+- no merged history or evidence is rewritten.
+
+`build-slices.md` is the operational source of truth for the active and next slice. This document defines the phase outcomes, dependencies, proof boundaries, and completion rules.
 
 ## 2. North-star workflow
 
 ```text
 Search
 → inspect an internal source profile
-→ save sources to a project
+→ save sources to a project Board
 → record selected and rejected directions
 → export compact research context
 → use it with an LLM or MCP client
@@ -32,54 +34,52 @@ Search
 → retain approved and rejected outcomes
 ```
 
-The first five phases prove the workflow. Later phases improve presentation, persistence, contribution, and the evidence-backed UI-taste layer.
+The first five phases prove this workflow. Later phases improve presentation, persistence, contribution, and the evidence-backed UI-taste layer.
 
 ## 3. Phase map
 
-| Phase | Name | Outcome |
-|---:|---|---|
-| 0 | Direction Reset | One approved product truth and operating contract |
-| 1 | Source Intelligence Foundation | One canonical source/profile model shared by website, exports, and MCP |
-| 2 | Browse and Source Detail | One paginated browser and useful internal profile for every source |
-| 3 | Local Saved and Project Boards | Reusable browser-local research without requiring an account |
-| 4 | Research-Pack Export | Deterministic, model-independent project context |
-| 5 | Real OSS Proof Project | Evidence that Tessli improves or fails to improve a real workflow |
-| 6 | Homepage, Navigation, Playbooks, and For AI | Public product presentation built around the proven workflow |
-| 7 | Reviewed Pattern Candidates | Small human-reviewed pattern knowledge derived from real work |
-| 8 | Authentication and Cloud Workspace | Google/email accounts and cross-device research persistence |
-| 9 | Community and Moderation | Safe source submissions, corrections, reports, and review workflow |
-| 10 | Evidence-Backed UI-Taste Layer | Evaluated precedents, pattern promotion, design packs, and truthful claims |
+| Phase | Name                                        | Status   | Outcome                                                                     |
+| ----: | ------------------------------------------- | -------- | --------------------------------------------------------------------------- |
+|     0 | Direction Reset                             | DONE     | One approved product truth and operating contract                           |
+|     1 | Source Intelligence Foundation              | DONE     | One canonical source/profile model shared by website, exports, and MCP      |
+|     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source          |
+|     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account                |
+|     4 | Research-Pack Export                        | ACTIVE   | Deterministic, model-independent project context                            |
+|     5 | Real OSS Proof Project                      | PROOF    | Evidence that Tessli improves or fails to improve a real workflow           |
+|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | Public presentation built around the proven workflow                        |
+|     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work               |
+|     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                 |
+|     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow          |
+|    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims  |
 
 ## 4. Phase 0 — Direction Reset
 
 Status: **DONE**
 
-Outcome:
+Delivered:
 
-- Tessli is defined as Source Index + Research Intelligence + UI Judgment;
-- DesignIndex is recorded as inspiration for the directory layer, not the final product blueprint;
-- public pages, exports, and MCP use one canonical truth;
-- UI-taste claims require evidence;
-- old directory-only decisions are marked superseded;
-- authentication is deferred until local workspace value exists.
+- Tessli defined as Source Index + Research Intelligence + UI Judgment;
+- DesignIndex recorded as inspiration for the directory layer, not the final product blueprint;
+- public pages, exports, and MCP required to share canonical truth;
+- UI-taste claims tied to evidence rather than catalogue size;
+- directory-only decisions marked superseded;
+- authentication deferred until local workspace value exists.
 
 Historical mapping:
 
-- Product Plan v2 Phase 0 / Slice 0.1
-- legacy ID `14.0`
-- merged PR `#74`
+- Product Plan v2 Phase 0 / Slice 0.1;
+- legacy ID `14.0`;
+- merged PR #74.
 
 ## 5. Phase 1 — Source Intelligence Foundation
 
 Status: **DONE**
 
-Goal:
-
-Define the smallest truthful source model that Browse, Source Detail, exports, and MCP can share.
-
-Completed slices:
+Goal: define the smallest truthful source model that Browse, Source Detail, exports, and MCP can share.
 
 ### 1.1 Canonical source-profile contract
+
+Status: **DONE**
 
 - all 295 sources represented;
 - stable IDs and slugs;
@@ -88,7 +88,9 @@ Completed slices:
 - truthful empty/null fallback;
 - no invented enrichment.
 
-### 1.2 Coverage mapping and intelligence-profile adapter
+### 1.2 Coverage mapping and intelligence adapter
+
+Status: **DONE**
 
 - 275 Listed;
 - 20 Profiled;
@@ -96,129 +98,128 @@ Completed slices:
 - existing evidence preserved;
 - website and MCP compatibility retained.
 
-Historical mapping:
+Exit criteria met:
 
-- Product Plan v2 Phase 1 / Slices 1.1–1.2
-- legacy ID `14.1`
-- detailed evidence: `docs/slices/14.1-source-profile-contract.md`
-
-Exit criteria:
-
-- schema validates;
-- generated mapping is deterministic and network-free;
-- all records resolve to a truthful level;
-- focused and full CI pass.
+- schema validation;
+- deterministic network-free generation;
+- truthful coverage for every record;
+- focused and full CI.
 
 ## 6. Phase 2 — Browse and Source Detail
 
-Status: **ACTIVE**
+Status: **DONE**
 
-Goal:
-
-Replace the competing Explore/Full Reference catalogue experiences with one canonical, paginated source browser and a useful internal profile for every source.
+Goal: replace the competing Explore/Full Reference catalogue experiences with one canonical, paginated source browser and a useful internal profile for every source.
 
 ### 2.1 Canonical Browse contract
 
 Status: **DONE**
 
 - canonical URL state;
-- initial filters and sorts;
 - 24-card / 50-row pagination;
 - card/list/table responsibilities;
 - one responsive result tree;
 - primary internal profile navigation;
-- separate Save and Visit source actions;
+- separate Save and Visit actions;
 - history, focus, scroll, progressive-enhancement, and browser-test contract.
 
-Historical mapping:
-
-- legacy ID `14.2`
-- contract: `docs/slices/14.2-canonical-browse-contract.md`
-- merged PR `#77`
+Historical mapping: legacy ID `14.2`, contract `docs/slices/14.2-canonical-browse-contract.md`, PR #77.
 
 ### 2.2 Canonical Browse implementation
 
-Status: **NEXT**
+Status: **DONE**
 
 - server-derived current page rather than all 295 records in the client;
 - URL-backed query, category, access, source type, profile level, sort, view, and page;
-- cards, compact list, and table;
+- card, compact-list, and table views;
 - no duplicated mobile/desktop result map;
-- no hard-coded verification date;
-- no fake verification sort;
-- homepage search and global navigation route to `/resources`;
-- homepage full catalogue reduced to a bounded compatibility preview;
-- complete unit, route, accessibility, responsive, history, and no-JavaScript checks.
+- no hard-coded verification date or fake verification sort;
+- homepage search routes to `/resources`;
+- homepage catalogue reduced to a bounded preview;
+- complete unit, route, accessibility, responsive, and no-JavaScript checks.
+
+Evidence: `docs/slices/2.2-canonical-browse-implementation.md`, PR #79.
 
 ### 2.3 Source Detail foundation
 
+Status: **DONE**
+
 - `/resources/[slug]` for all 295 stable slugs;
-- useful Listed state;
-- progressive Profiled/Verified sections;
-- Save, Add to board when available, and Visit source;
-- availability, limitations, evidence, freshness, collection membership;
+- truthful Listed state and progressive Profiled/Verified sections;
+- Save and Visit actions;
+- availability, limitations, evidence, freshness, and collection membership;
 - metadata and sitemap;
-- internal profile remains available when provider destination fails.
+- internal profiles remain available when provider destinations fail.
 
-### 2.4 Enriched intelligence detail and Similar Sources
+Evidence: `docs/slices/2.3-source-detail-foundation.md`, PR #80.
 
-- capabilities;
-- discovery model;
-- integrations and agent interfaces;
-- workflow fit;
-- governance;
-- evidence;
-- defensible peer/category Similar Sources;
-- no copying of paid/private content.
+### 2.4 Enriched intelligence and Similar Sources
 
-Phase exit criteria:
+Status: **DONE**
 
-- `/resources` is the only complete browser;
-- every source has an internal profile;
-- result state is shareable and restorable;
-- current page only is rendered;
-- internal evaluation precedes provider exit;
-- all repository and browser gates pass.
+- capabilities, objects, platforms, frameworks, integrations, formats, tools, governance, and evidence for the 20 Profiled sources;
+- explainable Similar Sources based on category, source type, and recorded metadata overlap;
+- explicit repository-intelligence versus live-provider-verification boundary;
+- no popularity, rating, trend, aesthetic, or universal-best scoring.
+
+Evidence: `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81.
 
 ## 7. Phase 3 — Local Saved and Project Boards
 
-Status: **PLANNED**
+Status: **DONE**
 
-Goal:
-
-Make research reusable without introducing authentication.
+Goal: make research reusable without introducing authentication.
 
 ### 3.1 Universal local Save
 
-- Browse cards/list/table;
-- Source Detail;
-- playbook items;
-- Saved workspace;
-- one versioned storage contract;
-- legacy migration;
-- tab synchronization where practical;
-- accessible save/remove announcements.
+Status: **DONE**
+
+- one stable-ID local store across Browse, Source Detail, collection resources, and Saved;
+- legacy Tessli and Mosaicary migration;
+- accessible announcements;
+- same-document and cross-tab synchronization;
+- local-only privacy boundary.
+
+Evidence: `docs/slices/3.1-universal-local-save.md`, PR #82.
 
 ### 3.2 Saved workspace refinement
 
-- search;
-- type/category/profile-level filters where useful;
-- sort;
-- clear/remove/undo;
-- clear local-only privacy explanation;
-- no fake folders or cloud claims.
+Status: **DONE**
+
+- search, filters, and sorting;
+- truthful counts and no-match state;
+- remove/undo and clear-all confirmation/undo;
+- persisted order and storage compatibility preserved;
+- responsive labelled controls.
+
+Evidence: `docs/slices/3.2-saved-workspace-refinement.md`, PR #83.
 
 ### 3.3 Local project Boards
 
-- create, rename, and delete;
-- goal, audience, and constraints;
-- add/remove sources;
-- per-item notes;
-- selected/rejected state;
-- unresolved questions;
-- deterministic versioned local persistence.
+Status: **DONE**
 
-Phase exit criteria:
+- create, rename, switch, and delete;
+- project goal and constraints;
+- catalogue source membership;
+- per-source notes;
+- versioned local persistence;
+- safe malformed-data fallback;
+- same-document and cross-tab synchronization.
+
+Evidence: `docs/slices/3.3-local-project-boards.md`, PR #84.
+
+### 3.4 Decisions and unresolved questions
+
+Status: **DONE**
+
+- selected, rejected, and undecided source state;
+- rationale kept separate from research notes;
+- editable unresolved questions retained in Board order;
+- backward-compatible local persistence.
+
+Evidence: `docs/slices/3.4-board-decisions.md`, PR #85.
+
+Phase exit criteria met:
 
 - research survives refresh and normal browser use;
 - selected and rejected references are retained by project;
@@ -227,63 +228,70 @@ Phase exit criteria:
 
 ## 8. Phase 4 — Research-Pack Export
 
-Status: **PLANNED**
+Status: **ACTIVE**
 
-Goal:
+Goal: turn one project Board into compact context usable by any language model, with or without MCP.
 
-Turn one project Board into compact context usable by any language model, with or without MCP.
+### 4.1 Board research-pack contract
 
-### 4.1 Board export contract
+Status: **DONE**
 
-- sourced facts;
-- curator/project judgment;
-- decisions;
-- rejected directions;
-- open questions;
-- evidence/source URLs;
-- deterministic ordering;
-- size and relevance budget.
+Contract: `docs/research-pack-contract.md`
+
+Defined:
+
+- canonical source facts, project judgment, and Tessli interpretation boundaries;
+- selected, rejected, undecided, and unresolved-question output;
+- deterministic ordering and explicit date injection;
+- a twelve-selected-source relevance budget with no silent truncation;
+- unknown-source and missing-intelligence behavior;
+- provenance, evidence, privacy, security, filename, and accessibility rules;
+- executable requirements for Slice 4.2;
+- backward-compatible boundary for the existing MCP reference-packet tool.
+
+Evidence: PR #86.
 
 ### 4.2 Deterministic Markdown export
 
-- download/copy Markdown;
-- compact source summaries;
-- selected and rejected items;
-- constraints and implementation reminders;
-- no account;
-- reuse current packet-builder logic where appropriate.
+Status: **NEXT**
 
-### 4.3 Machine-readable public representations
+- one pure Board formatter using the canonical source-profile adapter;
+- Copy Markdown and Download `.md` from Boards;
+- exact same bytes for copy and download;
+- selected and rejected items, project constraints, unresolved questions, provenance, and interpretation boundaries;
+- deterministic filename and explicit generated date;
+- local-only processing with no Board upload;
+- accessible validation, success, and failure states;
+- no MCP behavior change.
+
+### 4.3 Safe public machine-readable representations
+
+Status: **PLANNED**
 
 Only after privacy review:
 
-- public source `.md` / `.json` representations;
+- public source `.md` and `.json` representations;
 - public collection/playbook representations;
-- example research pack;
 - stable semantic pages and sitemap;
+- example public research pack;
 - no public exposure of private local Board content.
 
 Phase exit criteria:
 
-- same Board always produces the same export;
+- the same Board snapshot and explicit date always produce the same export;
 - export is useful in models without MCP;
 - evidence and limitations survive compression;
-- private browser-local content is not published.
+- private browser-local content is never published.
 
 ## 9. Phase 5 — Real OSS Proof Project
 
 Status: **PROOF**
 
-Goal:
-
-Test whether Tessli actually improves one real OSS design workflow.
-
-Recommended target: Online Scope Studio homepage.
+Goal: test whether Tessli improves one real Online Scope Studio design workflow.
 
 ### 5.1 Research setup
 
-- real brief;
-- audience and constraints;
+- real brief, audience, and constraints;
 - 8–12 selected sources;
 - rejected directions;
 - exported research pack;
@@ -292,9 +300,9 @@ Recommended target: Online Scope Studio homepage.
 ### 5.2 Agent implementation
 
 - give the pack and repository context to Codex;
-- implement one approved page/section candidate;
+- implement one approved page or section candidate;
 - retain prompts, changed files, time, and iteration count;
-- no hidden manual intervention presented as automation.
+- do not present hidden manual intervention as automation.
 
 ### 5.3 Browser and human review
 
@@ -304,9 +312,9 @@ Recommended target: Online Scope Studio homepage.
 - no invented human scores;
 - blind review preserved where used.
 
-### 5.4 Evidence report
+### 5.4 Outcome report
 
-State whether Tessli produced:
+Report honestly whether Tessli produced:
 
 - smaller or better context;
 - faster research;
@@ -315,22 +323,17 @@ State whether Tessli produced:
 - better hierarchy, mobile usability, coherence, accessibility, restraint, or ship readiness;
 - no measurable improvement.
 
-Phase exit criteria:
-
-- evidence is committed;
-- success and failure are both reported honestly;
-- findings update profiles, Board/export rules, or Pattern Candidates;
-- no public UI-taste claim is made from one result.
+One proof cannot justify a broad public UI-taste claim.
 
 ## 10. Phase 6 — Homepage, Navigation, Playbooks, and For AI
 
 Status: **PLANNED**
 
-Goal:
-
-Present the proven workflow clearly to humans and models.
+Goal: present the proven workflow clearly to humans and models.
 
 ### 6.1 Global navigation and naming
+
+Primary navigation:
 
 ```text
 Browse | Collections | For AI
@@ -349,13 +352,11 @@ Search | Saved
 ### 6.2 Curated homepage
 
 - task-based hero search routed to `/resources`;
-- real coverage facts;
-- research-goal entry points;
+- real coverage facts and research-goal entry points;
 - 3–6 featured playbooks;
-- 8–12 recently reviewed/featured sources;
+- 8–12 featured or recently reviewed sources;
 - human versus MCP example;
 - research-pack explanation;
-- no 48-card catalogue;
 - no fake metrics, logos, trends, or AI decoration.
 
 ### 6.3 Collections become playbooks
@@ -363,49 +364,36 @@ Search | Saved
 - outcome and audience;
 - staged research sequence;
 - why each source is included;
-- what to inspect;
-- which decision it supports;
-- Save/add to Board/export where available;
+- what to inspect and which decision it supports;
+- Save/add-to-Board/export where available;
 - last reviewed date.
 
 ### 6.4 For AI
 
 - current seven MCP tools;
-- coverage and limits;
-- setup examples;
-- evidence and governance;
+- coverage, limits, setup, evidence, governance, and exports;
 - no paid/private-library proxy claims;
 - model-independent export workflow.
-
-Phase exit criteria:
-
-- public IA matches actual functionality;
-- the homepage explains the product in under ten seconds;
-- no unfinished action is promoted;
-- human and agent workflows are visible without overclaiming.
 
 ## 11. Phase 7 — Reviewed Pattern Candidates
 
 Status: **PLANNED**
 
-Goal:
-
-Create the first small, evidence-linked layer of reusable UI judgment.
+Goal: create the first small, evidence-linked layer of reusable UI judgment.
 
 ### 7.1 Pattern Candidate contract
 
 Required:
 
 - problem;
-- when to use;
-- when not to use;
-- anatomy/key rules;
-- responsive behaviour;
+- when to use and when not to use;
+- anatomy and key rules;
+- responsive behavior;
 - accessibility requirements;
 - common failures;
 - example sources;
 - project usage;
-- review state/date.
+- review state and date.
 
 ### 7.2 First 5–10 candidates
 
@@ -417,25 +405,17 @@ Required:
 
 ### 7.3 Retrieval
 
-- website and export representation;
-- `find_patterns` / `get_pattern` only after schema/content are stable;
+- website and export representations;
+- `find_patterns` / `get_pattern` only after schema and content are stable;
 - no mass-generated catalogue.
-
-Phase exit criteria:
-
-- candidates are useful in a second real project;
-- provenance and limitations are visible;
-- no candidate is presented as universal truth.
 
 ## 12. Phase 8 — Authentication and Cloud Workspace
 
 Status: **DEFERRED UNTIL LOCAL PROOF**
 
-Goal:
+Goal: add accounts only when cross-device persistence has demonstrated value.
 
-Add accounts only when cross-device persistence has demonstrated value.
-
-### 8.1 Auth/security contract
+### 8.1 Auth and security contract
 
 - Google OAuth;
 - email/password signup;
@@ -444,7 +424,7 @@ Add accounts only when cross-device persistence has demonstrated value.
 - signup email-verification OTP;
 - standard password sign-in without email OTP after every login;
 - optional authenticator TOTP MFA;
-- recovery, security notifications, sessions, export, deletion.
+- recovery, security notifications, sessions, export, and deletion.
 
 ### 8.2 Authentication implementation
 
@@ -462,29 +442,15 @@ Add accounts only when cross-device persistence has demonstrated value.
 - deduplicated import;
 - no silent overwrite;
 - cross-device sync;
-- account data export/deletion.
+- account data export and deletion.
 
-External blockers that may legitimately stop this phase:
-
-- missing OAuth configuration;
-- missing SMTP/domain verification;
-- missing production environment separation;
-- unresolved RLS/security review.
-
-Phase exit criteria:
-
-- one complete sign-up/sign-in/recovery flow works;
-- cloud workspace provides visible benefit;
-- RLS and session boundaries are tested;
-- public Sign in appears only after the benefit works.
+Legitimate blockers include missing OAuth, SMTP/domain verification, environment separation, and unresolved RLS/security review.
 
 ## 13. Phase 9 — Community and Moderation
 
 Status: **DEFERRED UNTIL OWNER AND AUTH EXIST**
 
-Goal:
-
-Let people improve Tessli without turning the catalogue into an unreviewed dump.
+Goal: let people improve Tessli without turning the catalogue into an unreviewed dump.
 
 ### 9.1 Submission and correction forms
 
@@ -497,7 +463,7 @@ Let people improve Tessli without turning the catalogue into an unreviewed dump.
 
 ### 9.2 Moderation workflow
 
-- pending/accepted/rejected/needs-info states;
+- pending, accepted, rejected, and needs-info states;
 - evidence and reviewer notes;
 - attribution where appropriate;
 - audit timestamps;
@@ -506,38 +472,26 @@ Let people improve Tessli without turning the catalogue into an unreviewed dump.
 
 ### 9.3 Abuse and transactional communication
 
-- server validation;
-- URL normalization;
-- length limits;
-- rate limiting;
+- server validation and URL normalization;
+- length limits and rate limiting;
 - honeypot, with CAPTCHA only when justified;
 - safe errors;
-- transactional emails through approved provider.
-
-Phase exit criteria:
-
-- no public submission bypasses moderation;
-- accepted changes preserve provenance;
-- reports can be resolved and audited;
-- abuse and privacy requirements are tested.
+- transactional emails through an approved provider.
 
 ## 14. Phase 10 — Evidence-Backed UI-Taste Layer
 
 Status: **LONG-TERM; REQUIRES MULTIPLE PROOF PROJECTS**
 
-Goal:
-
-Turn repeated evaluated work into a defensible design-intelligence layer.
+Goal: turn repeated evaluated work into a defensible design-intelligence layer.
 
 ### 10.1 Evaluation and precedent model
 
-- brief;
-- constraints;
+- brief and constraints;
 - retrieved sources/patterns;
 - research pack;
 - implementation version;
 - browser evidence;
-- human scores/notes;
+- human scores and notes;
 - approved/rejected decisions;
 - revision outcome.
 
@@ -545,13 +499,13 @@ Turn repeated evaluated work into a defensible design-intelligence layer.
 
 - find prior decisions relevant to a new project;
 - permission boundaries for private OSS/client work;
-- no leaking client or personal data;
+- no client or personal-data leakage;
 - explicit provenance and confidence.
 
 ### 10.3 Pattern promotion and design packs
 
 - promote candidates only after repeated evidence;
-- project-specific `design.md`/token/prompt packs where justified;
+- project-specific `design.md`, token, and prompt packs where justified;
 - styles emerge from repeated use rather than speculative mass generation;
 - agent tools added only for stable objects.
 
@@ -559,10 +513,10 @@ Turn repeated evaluated work into a defensible design-intelligence layer.
 
 - multiple project types;
 - compare Tessli-assisted and baseline workflows;
-- track research time, iteration count, generic-output complaints, accessibility, mobile quality, coherence, restraint, and ship readiness;
+- track research time, iterations, generic-output complaints, accessibility, mobile quality, coherence, restraint, and ship readiness;
 - preserve failed experiments.
 
-### 10.5 Claim review
+### 10.5 Public claim review
 
 Only after sufficient evidence, decide whether Tessli may truthfully claim:
 
@@ -570,45 +524,57 @@ Only after sufficient evidence, decide whether Tessli may truthfully claim:
 
 Do not claim that Tessli gives AI taste merely because it has sources, screenshots, embeddings, patterns, or MCP tools.
 
-Phase exit criteria:
+## 15. Execution rules
 
-- multiple evaluated projects;
-- documented improvement or bounded non-improvement;
-- privacy and rights review;
-- stable precedent/pattern retrieval;
-- claims match the evidence.
+Development proceeds one vertical slice at a time in the active conversation and repository loop:
 
-## 15. Autonomous execution rules
+1. refresh current `main`;
+2. read the mandatory product and repository documents;
+3. finish any approved in-progress slice before starting another;
+4. create one branch from current `main`;
+5. define exact acceptance criteria, exclusions, and expected files;
+6. implement one vertical slice;
+7. run focused checks;
+8. review the complete diff and fix findings;
+9. run all applicable CI, browser, accessibility, security, and data gates;
+10. open or update a draft PR;
+11. review the PR diff and exact-head CI;
+12. fix final findings;
+13. squash-merge only when gates pass;
+14. delete the branch where tooling permits;
+15. refresh `main` before the next slice.
 
-The goal is to advance through all ten development phases without waiting for routine approval after each slice.
+No recurring scheduled development automation is part of this process.
 
-Autonomy does not permit:
+## 16. Stop conditions
 
-- bypassing failed CI;
-- merging unrelated scopes;
-- inventing human review or provider verification;
-- committing secrets;
-- enabling authentication without credentials/security readiness;
-- copying or persisting paid/private content without permission;
-- weakening release, security, accessibility, or provenance gates;
-- claiming completion when an external or human dependency remains unresolved.
+Stop and record a blocker rather than:
+
+- bypass CI or review;
+- merge unrelated scopes;
+- invent human review or provider verification;
+- commit secrets;
+- enable authentication without credentials and security readiness;
+- copy or persist paid/private content without permission;
+- weaken release, security, accessibility, privacy, or provenance gates;
+- claim completion when an external or human dependency remains unresolved.
 
 When blocked:
 
 1. record the exact blocker;
-2. complete all safe preparatory work in the current slice;
-3. mark the slice `BLOCKED` rather than `DONE`;
+2. complete safe preparatory work within the current slice;
+3. mark the slice `BLOCKED`, not `DONE`;
 4. identify the smallest external action required;
-5. continue only with independent work that does not violate the one-slice rule.
+5. continue only with independent work after the current slice is resolved.
 
-## 16. Definition of phase completion
+## 17. Definition of phase completion
 
 A phase is complete only when:
 
 - every required slice is merged to current `main`;
 - acceptance criteria are demonstrated;
 - focused and full applicable checks pass;
-- browser/accessibility/security/data gates pass where relevant;
+- browser, accessibility, security, privacy, and data gates pass where relevant;
 - evidence and rollback notes are committed;
 - `build-slices.md` marks the phase complete;
 - no hidden blocker is described as finished.
