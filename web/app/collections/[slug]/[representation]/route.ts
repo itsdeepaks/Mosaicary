@@ -52,7 +52,11 @@ function notFoundResponse(representation: string) {
 
 async function buildResponse({ params }: RouteProps, head = false) {
   const { slug, representation } = await params;
-  if (!representations.includes(representation as (typeof representations)[number])) {
+  if (
+    !representations.includes(
+      representation as (typeof representations)[number],
+    )
+  ) {
     return notFoundResponse(representation);
   }
   const collection = getPublishedCollection(slug);
@@ -61,9 +65,7 @@ async function buildResponse({ params }: RouteProps, head = false) {
     collection,
     getAllSourceProfiles(),
   );
-  const format = representation.endsWith(".json")
-    ? "json"
-    : "markdown";
+  const format = representation.endsWith(".json") ? "json" : "markdown";
   const body =
     format === "json"
       ? serializePublicJson(document)

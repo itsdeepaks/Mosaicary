@@ -118,7 +118,10 @@ test("source JSON and Markdown are deterministic and truthful", () => {
   assert.equal(json.endsWith("\n"), true);
   assert.equal(md.endsWith("\n"), true);
   assert.doesNotMatch(md, /[ \t]+$/gmu);
-  assert.match(md, /Repository intelligence is not live-provider verification/u);
+  assert.match(
+    md,
+    /Repository intelligence is not live-provider verification/u,
+  );
   assert.match(json, /"profileLevel": "profiled"/u);
   assert.doesNotMatch(json, /localStorage|boardId|savedIds|cookie/u);
 });
@@ -148,10 +151,7 @@ test("collection representations preserve editorial order and stay bounded", () 
     profiled,
     listed,
   ]);
-  assert.equal(
-    document.contract,
-    PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
-  );
+  assert.equal(document.contract, PUBLIC_COLLECTION_REPRESENTATION_CONTRACT);
   assert.deepEqual(
     document.resources.map((resource) => resource.id),
     ["source-two", "source-one"],

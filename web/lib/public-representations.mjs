@@ -1,5 +1,4 @@
-export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT =
-  "tessli.public-source.v1";
+export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT = "tessli.public-source.v1";
 export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT =
   "tessli.public-collection.v1";
 
@@ -76,12 +75,9 @@ function publicIntelligence(profile) {
     },
     governance: intelligence.governance
       ? {
-          defaultPersistence:
-            intelligence.governance.defaultPersistence,
-          assetRedistribution:
-            intelligence.governance.assetRedistribution,
-          sourceAttribution:
-            intelligence.governance.sourceAttribution,
+          defaultPersistence: intelligence.governance.defaultPersistence,
+          assetRedistribution: intelligence.governance.assetRedistribution,
+          sourceAttribution: intelligence.governance.sourceAttribution,
           userCredentialRequired: Boolean(
             intelligence.governance.userCredentialRequired,
           ),
@@ -118,8 +114,7 @@ export function createPublicSourceRepresentation(profile) {
       sourceTypeBasis: profile.sourceTypeBasis,
       accessModel: {
         access: profile.accessModel.access,
-        subscriptionRequired:
-          profile.accessModel.subscriptionRequired,
+        subscriptionRequired: profile.accessModel.subscriptionRequired,
       },
       profileLevel: profile.profileLevel,
       status: profile.status,
@@ -160,9 +155,7 @@ export function createPublicCollectionRepresentation(
   if (!isPlainObject(collection) || typeof collection.slug !== "string") {
     throw new TypeError("A published Tessli collection is required.");
   }
-  const byId = new Map(
-    sourceProfiles.map((profile) => [profile.id, profile]),
-  );
+  const byId = new Map(sourceProfiles.map((profile) => [profile.id, profile]));
   const resources = collection.resourceIds.map((resourceId, index) => {
     const profile = byId.get(resourceId);
     if (!profile) {
@@ -182,8 +175,7 @@ export function createPublicCollectionRepresentation(
       sourceType: profile.sourceType,
       accessModel: {
         access: profile.accessModel.access,
-        subscriptionRequired:
-          profile.accessModel.subscriptionRequired,
+        subscriptionRequired: profile.accessModel.subscriptionRequired,
       },
       profileLevel: profile.profileLevel,
       status: profile.status,
@@ -255,16 +247,12 @@ export function serializePublicSourceMarkdown(document) {
     "",
     `- **Level:** ${inline(source.coverage.level)}`,
     `- **Reason:** ${inline(source.coverage.reason)}`,
-    `- **Repository profile status:** ${inline(
-      source.coverage.profileStatus,
-    )}`,
+    `- **Repository profile status:** ${inline(source.coverage.profileStatus)}`,
     `- **Last recorded verification:** ${inline(
       source.coverage.lastVerifiedAt,
     )}`,
     `- **Confidence:** ${inline(source.coverage.confidence)}`,
-    `- **Human review:** ${inline(
-      source.coverage.humanReviewStatus,
-    )}`,
+    `- **Human review:** ${inline(source.coverage.humanReviewStatus)}`,
     `- **Freshness:** ${inline(source.coverage.freshnessStatus)}`,
     "",
   ];
@@ -286,9 +274,7 @@ export function serializePublicSourceMarkdown(document) {
       lines.push(
         `- ${inline(item.sourceType)} verified ${inline(
           item.verifiedAt,
-        )}${confidence}: ${inline(item.claim)} (${inline(
-          item.sourceUrl,
-        )})`,
+        )}${confidence}: ${inline(item.claim)} (${inline(item.sourceUrl)})`,
       );
     }
     lines.push("");
@@ -298,15 +284,9 @@ export function serializePublicSourceMarkdown(document) {
     lines.push(
       "## Governance",
       "",
-      `- **Default persistence:** ${inline(
-        governance.defaultPersistence,
-      )}`,
-      `- **Asset redistribution:** ${inline(
-        governance.assetRedistribution,
-      )}`,
-      `- **Source attribution:** ${inline(
-        governance.sourceAttribution,
-      )}`,
+      `- **Default persistence:** ${inline(governance.defaultPersistence)}`,
+      `- **Asset redistribution:** ${inline(governance.assetRedistribution)}`,
+      `- **Source attribution:** ${inline(governance.sourceAttribution)}`,
       `- **User credential required:** ${
         governance.userCredentialRequired ? "yes" : "no"
       }`,

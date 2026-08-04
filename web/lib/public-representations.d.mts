@@ -6,10 +6,8 @@ export interface PublicRepresentationHeadersInput {
   markdownPath: string;
 }
 
-export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT:
-  "tessli.public-source.v1";
-export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT:
-  "tessli.public-collection.v1";
+export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT: "tessli.public-source.v1";
+export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT: "tessli.public-collection.v1";
 
 export function createPublicSourceRepresentation(
   profile: Record<string, unknown>,

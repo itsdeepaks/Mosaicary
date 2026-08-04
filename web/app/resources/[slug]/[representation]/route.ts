@@ -5,10 +5,7 @@ import {
   serializePublicJson,
   serializePublicSourceMarkdown,
 } from "@/lib/public-representations.mjs";
-import {
-  getAllSourceProfiles,
-  getSourceProfile,
-} from "@/lib/source-profiles";
+import { getAllSourceProfiles, getSourceProfile } from "@/lib/source-profiles";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -51,15 +48,17 @@ function notFoundResponse(representation: string) {
 
 async function buildResponse({ params }: RouteProps, head = false) {
   const { slug, representation } = await params;
-  if (!representations.includes(representation as (typeof representations)[number])) {
+  if (
+    !representations.includes(
+      representation as (typeof representations)[number],
+    )
+  ) {
     return notFoundResponse(representation);
   }
   const profile = getSourceProfile(slug);
   if (!profile) return notFoundResponse(representation);
   const document = createPublicSourceRepresentation(profile);
-  const format = representation.endsWith(".json")
-    ? "json"
-    : "markdown";
+  const format = representation.endsWith(".json") ? "json" : "markdown";
   const body =
     format === "json"
       ? serializePublicJson(document)
