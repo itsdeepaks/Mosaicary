@@ -26,25 +26,15 @@ jobs:
 
           formatter_path = Path("web/lib/board-research-pack.mjs")
           formatter = formatter_path.read_text()
-          old = '''  const markdown = `${lines
-            .map((line) => normalizeLineEndings(line).replace(/[ \\t]+$/gu, ""))
-            .join("\\n")
-            .replace(/\\n+$/gu, "")}\\n`;
-          '''
-          new = '''  const markdown = `${lines
-            .flatMap((line) => normalizeLineEndings(line).split("\\n"))
-            .map((line) => line.replace(/[ \\t]+$/gu, ""))
-            .join("\\n")
-            .replace(/\\n+$/gu, "")}\\n`;
-          '''
-          if old not in formatter:
-              raise SystemExit("formatter target not found")
-          formatter_path.write_text(formatter.replace(old, new))
+          old_formatter_line = '    .map((line) => normalizeLineEndings(line).replace(/[ \\t]+$/gu, ""))'
+          new_formatter_lines = '    .flatMap((line) => normalizeLineEndings(line).split("\\n"))\n    .map((line) => line.replace(/[ \\t]+$/gu, ""))'
+          if formatter.count(old_formatter_line) != 1:
+              raise SystemExit("formatter target count was not exactly one")
+          formatter_path.write_text(formatter.replace(old_formatter_line, new_formatter_lines, 1))
 
           test_path = Path("web/tests/board-research-pack.test.mjs")
           tests = test_path.read_text()
-          marker = '''test("changing the explicit date changes only the generated line", () => {
-          '''
+          marker = 'test("changing the explicit date changes only the generated line", () => {\n'
           regression = '''test("multiline Board content is normalized without trailing whitespace", () => {
             const input = makeInput();
             input.board.goal = "First line  \\r\\nSecond line\\t";
@@ -63,16 +53,16 @@ jobs:
           });
 
           '''
-          if marker not in tests:
-              raise SystemExit("test insertion marker not found")
+          if tests.count(marker) != 1:
+              raise SystemExit("test insertion marker count was not exactly one")
           test_path.write_text(tests.replace(marker, regression + marker, 1))
 
           evidence_path = Path("docs/slices/4.2-deterministic-markdown-export.md")
           evidence = evidence_path.read_text()
           evidence_marker = "- replaced a brittle source-text assertion with whitespace-tolerant copy validation;\n"
           evidence_addition = evidence_marker + "- normalized embedded multiline Board content before per-line trailing-whitespace cleanup;\n"
-          if evidence_marker not in evidence:
-              raise SystemExit("evidence insertion marker not found")
+          if evidence.count(evidence_marker) != 1:
+              raise SystemExit("evidence insertion marker count was not exactly one")
           evidence_path.write_text(evidence.replace(evidence_marker, evidence_addition, 1))
 
       - name: Commit review fix
