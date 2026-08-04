@@ -1,0 +1,217 @@
+name: Align Phase 4.1 repository status
+
+on:
+  push:
+    branches:
+      - docs/board-research-pack-contract
+    paths:
+      - .github/workflows/phase-4-1-align.yml
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/board-research-pack-contract
+
+      - name: Align plan, README, ledger, and release contract
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def replace_once(text: str, old: str, new: str, label: str) -> str:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected exactly one match, found {count}")
+              return text.replace(old, new, 1)
+
+          plan_path = Path("docs/product-plan-v2.md")
+          plan = plan_path.read_text(encoding="utf-8")
+          plan = replace_once(
+              plan,
+              "## 6. Phase 2 — Browse and Source Detail\n\nStatus: **ACTIVE**",
+              "## 6. Phase 2 — Browse and Source Detail\n\nStatus: **DONE**",
+              "Phase 2 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 2.2 Canonical Browse implementation\n\nStatus: **NEXT**",
+              "### 2.2 Canonical Browse implementation\n\nStatus: **DONE**",
+              "Slice 2.2 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 2.3 Source Detail foundation\n\n- `/resources/[slug]`",
+              "### 2.3 Source Detail foundation\n\nStatus: **DONE**\n\n- `/resources/[slug]`",
+              "Slice 2.3 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 2.4 Enriched intelligence detail and Similar Sources\n\n- capabilities;",
+              "### 2.4 Enriched intelligence detail and Similar Sources\n\nStatus: **DONE**\n\n- capabilities;",
+              "Slice 2.4 status",
+          )
+          plan = replace_once(
+              plan,
+              "## 7. Phase 3 — Local Saved and Project Boards\n\nStatus: **PLANNED**",
+              "## 7. Phase 3 — Local Saved and Project Boards\n\nStatus: **DONE**",
+              "Phase 3 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 3.1 Universal local Save\n\n- Browse cards/list/table;",
+              "### 3.1 Universal local Save\n\nStatus: **DONE**\n\n- Browse cards/list/table;",
+              "Slice 3.1 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 3.2 Saved workspace refinement\n\n- search;",
+              "### 3.2 Saved workspace refinement\n\nStatus: **DONE**\n\n- search;",
+              "Slice 3.2 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 3.3 Local project Boards\n\n- create, rename, and delete;",
+              "### 3.3 Local project Boards\n\nStatus: **DONE**\n\n- create, rename, and delete;",
+              "Slice 3.3 status",
+          )
+          plan = replace_once(
+              plan,
+              "- deterministic versioned local persistence.\n\nPhase exit criteria:",
+              "- deterministic versioned local persistence;\n- selected/rejected/undecided decisions with separate rationale;\n- editable unresolved questions.\n\n### 3.4 Decisions and unresolved questions\n\nStatus: **DONE**\n\n- selected, rejected, and undecided state;\n- rationale kept separate from research notes;\n- unresolved questions retained in Board order;\n- backward-compatible local persistence.\n\nPhase exit criteria:",
+              "Slice 3.4 insertion",
+          )
+          plan = replace_once(
+              plan,
+              "## 8. Phase 4 — Research-Pack Export\n\nStatus: **PLANNED**",
+              "## 8. Phase 4 — Research-Pack Export\n\nStatus: **ACTIVE**",
+              "Phase 4 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 4.1 Board export contract\n\n- sourced facts;",
+              "### 4.1 Board export contract\n\nStatus: **DONE**\n\nContract: `docs/research-pack-contract.md`\n\n- sourced facts;",
+              "Slice 4.1 status",
+          )
+          plan = replace_once(
+              plan,
+              "### 4.2 Deterministic Markdown export\n\n- download/copy Markdown;",
+              "### 4.2 Deterministic Markdown export\n\nStatus: **NEXT**\n\n- download/copy Markdown;",
+              "Slice 4.2 status",
+          )
+          plan_path.write_text(plan, encoding="utf-8", newline="\n")
+
+          readme_path = Path("README.md")
+          readme = readme_path.read_text(encoding="utf-8")
+          start = readme.index("## Current Phase 1 application")
+          end = readme.index("## Active next product loop")
+          current = """## Current application baseline
+
+The current application now includes the first reusable Tessli research loop:
+
+- one canonical paginated `/resources` browser;
+- truthful internal profiles for all 295 sources;
+- 275 Listed, 20 Profiled, and 0 Verified coverage;
+- enriched intelligence for the 20 Profiled sources;
+- explainable Similar Sources;
+- browser-local Saved with search, filters, sorting, removal, and undo;
+- browser-local project Boards with goals, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
+- six repository-maintained collections;
+- public About, curation, privacy, terms, and content-policy pages;
+- responsive and browser-tested interaction states.
+
+Authentication, cloud workspaces, submissions, moderation, Pattern Candidates, and public UI-taste claims remain deferred until their prerequisites are demonstrated.
+
+"""
+          readme = readme[:start] + current + readme[end:]
+          status_start = readme.index("## Product Plan v2 status")
+          status_end = readme.index("## Source coverage levels")
+          status = """## Product Plan v2 status
+
+```text
+Phase 0  Direction Reset                         DONE
+Phase 1  Source Intelligence Foundation          DONE
+Phase 2  Browse and Source Detail                DONE
+Phase 3  Local Saved and Project Boards          DONE
+Phase 4  Research-Pack Export                    ACTIVE
+Phase 5  Real OSS Proof Project                  PROOF
+Phase 6  Homepage, Navigation, Playbooks, For AI PLANNED
+Phase 7  Reviewed Pattern Candidates             PLANNED
+Phase 8  Authentication and Cloud Workspace      DEFERRED
+Phase 9  Community and Moderation                DEFERRED
+Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
+```
+
+The approved next slice is **Phase 4 / Slice 4.2 — deterministic Markdown export**.
+
+"""
+          readme = readme[:status_start] + status + readme[status_end:]
+          readme_path.write_text(readme, encoding="utf-8", newline="\n")
+
+          slices_path = Path("build-slices.md")
+          slices = slices_path.read_text(encoding="utf-8")
+          slices = replace_once(
+              slices,
+              "Status: **active delivery plan — Phase 4 / Slice 4.1 NEXT**",
+              "Status: **active delivery plan — Phase 4 / Slice 4.2 NEXT**",
+              "ledger heading",
+          )
+          slices = replace_once(
+              slices,
+              "|     4 | Research-Pack Export                        | ACTIVE   | 4.1 NEXT",
+              "|     4 | Research-Pack Export                        | ACTIVE   | 4.2 NEXT",
+              "phase table",
+          )
+          slices = replace_once(
+              slices,
+              "| 4.1  | Board research-pack contract                          | NEXT     | 3.4                     | —                                                            |\n| 4.2  | Deterministic Markdown export                         | PLANNED",
+              "| 4.1  | Board research-pack contract                          | DONE     | 3.4                     | `docs/research-pack-contract.md`, PR #86                     |\n| 4.2  | Deterministic Markdown export                         | NEXT",
+              "slice table",
+          )
+          slices = replace_once(
+              slices,
+              "### Phase 4 — Research-Pack Export\n\nFreeze the Board export contract, then implement deterministic model-independent Markdown and safe public source/collection representations. Never publish private local Board content.",
+              "### Phase 4 — Research-Pack Export\n\n#### DONE — Slice 4.1 Board research-pack contract\n\nDefined the versioned `tessli.board-research-pack.v1` contract, information-class boundaries, selected/rejected/undecided and unresolved-question behavior, deterministic ordering and date injection, twelve-selected-source relevance budget, unknown-source fallback, evidence/provenance limits, filename rules, local-only privacy/security constraints, accessibility requirements, and executable Slice 4.2 tests in `docs/research-pack-contract.md`; PR #86.\n\n#### NEXT — Slice 4.2 Deterministic Markdown export\n\nImplement one pure canonical formatter plus labelled Copy Markdown and Download `.md` controls in Boards. Copy and download must use identical bytes, remain local-only, and preserve the contract without changing MCP behavior.\n\nSlice 4.3 remains the later public source/collection representation boundary. Private local Board content must never be published.",
+              "Phase 4 evidence",
+          )
+          slices_path.write_text(slices, encoding="utf-8", newline="\n")
+
+          test_path = Path("web/tests/release-hardening.test.mjs")
+          test = test_path.read_text(encoding="utf-8")
+          test = replace_once(
+              test,
+              '["4.1", "Board research-pack contract", "NEXT", "3.4", "—"],',
+              '[\n      "4.1",\n      "Board research-pack contract",\n      "DONE",\n      "3.4",\n      "`docs/research-pack-contract.md`, PR #86",\n    ],\n    ["4.2", "Deterministic Markdown export", "NEXT", "4.1", "—"],',
+              "release rows",
+          )
+          test = replace_once(
+              test,
+              '/Status: \\*\\*active delivery plan — Phase 4 \\/ Slice 4\\.1 NEXT\\*\\*/',
+              '/Status: \\*\\*active delivery plan — Phase 4 \\/ Slice 4\\.2 NEXT\\*\\*/',
+              "release status assertion",
+          )
+          marker = '  assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);\n'
+          replacement = marker + '  assert.match(plan, /## 6\\. Phase 2 — Browse and Source Detail\\n\\nStatus: \\*\\*DONE\\*\\*/);\n  assert.match(plan, /## 7\\. Phase 3 — Local Saved and Project Boards\\n\\nStatus: \\*\\*DONE\\*\\*/);\n  assert.match(plan, /## 8\\. Phase 4 — Research-Pack Export\\n\\nStatus: \\*\\*ACTIVE\\*\\*/);\n  assert.match(plan, /### 4\\.2 Deterministic Markdown export\\n\\nStatus: \\*\\*NEXT\\*\\*/);\n'
+          test = replace_once(test, marker, replacement, "plan status assertions")
+          test_path.write_text(test, encoding="utf-8", newline="\n")
+
+      - name: Format changed files
+        working-directory: web
+        run: npx prettier --write ../README.md ../docs/product-plan-v2.md ../build-slices.md ../docs/research-pack-contract.md tests/release-hardening.test.mjs
+
+      - name: Run focused release-contract test
+        working-directory: web
+        run: node --test tests/release-hardening.test.mjs
+
+      - name: Commit aligned files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md docs/product-plan-v2.md build-slices.md docs/research-pack-contract.md web/tests/release-hardening.test.mjs
+          git commit -m "docs: align Phase 4 research-pack plan"
+          git push origin HEAD:docs/board-research-pack-contract
