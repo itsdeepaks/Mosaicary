@@ -8,7 +8,10 @@ export interface SimilarSourceMatch {
 
 function overlapCount(left: readonly string[], right: readonly string[]) {
   const rightValues = new Set(right);
-  return left.reduce((count, value) => count + Number(rightValues.has(value)), 0);
+  return left.reduce(
+    (count, value) => count + Number(rightValues.has(value)),
+    0,
+  );
 }
 
 export function getSimilarSourceProfiles(
