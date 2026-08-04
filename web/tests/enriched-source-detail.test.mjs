@@ -12,10 +12,15 @@ async function read(relativePath) {
 
 test("source detail renders recorded intelligence without claiming live verification", async () => {
   const page = await read("app/resources/[slug]/page.tsx");
-  const detail = await read("components/source-detail/intelligence-detail.tsx");
+  const detail = await read(
+    "components/source-detail/intelligence-detail.tsx",
+  );
 
   assert.match(page, /getSimilarSourceProfiles\(profile, 4\)/);
-  assert.match(page, /<IntelligenceDetail profile=\{profile\} similar=\{similar\}/);
+  assert.match(
+    page,
+    /<IntelligenceDetail profile=\{profile\} similar=\{similar\}/,
+  );
   assert.match(detail, /Profiled record, not a live provider verification/);
   assert.match(detail, /Governance/);
   assert.match(detail, /Evidence/);
