@@ -49,7 +49,9 @@ export function SourceActions({ resource }: SourceActionsProps) {
         {saved ? "Saved" : "Save source"}
       </button>
       {resource.status === "unavailable" ? (
-        <span className={styles.unavailable}>Provider currently unavailable</span>
+        <span className={styles.unavailable}>
+          Provider currently unavailable
+        </span>
       ) : (
         <a href={resource.url} rel="noopener noreferrer" target="_blank">
           Visit source ↗

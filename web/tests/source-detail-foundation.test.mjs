@@ -10,10 +10,7 @@ const page = await readFile(
   "utf8",
 );
 const actions = await readFile(
-  new URL(
-    "../components/source-detail/source-actions.tsx",
-    import.meta.url,
-  ),
+  new URL("../components/source-detail/source-actions.tsx", import.meta.url),
   "utf8",
 );
 const sitemap = await readFile(
