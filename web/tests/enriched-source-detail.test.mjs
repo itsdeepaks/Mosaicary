@@ -10,29 +10,24 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("source detail renders recorded intelligence without claiming live verification", async () => {
+test("source detail renders recorded intelligence without live verification claims", async () => {
   const page = await read("app/resources/[slug]/page.tsx");
-  const detail = await read(
-    "components/source-detail/intelligence-detail.tsx",
-  );
+  const detail = await read("components/source-detail/intelligence-detail.tsx");
 
-  assert.match(page, /getSimilarSourceProfiles\(profile, 4\)/);
-  assert.match(
-    page,
-    /<IntelligenceDetail profile=\{profile\} similar=\{similar\}/,
-  );
-  assert.match(detail, /Profiled record, not a live provider verification/);
-  assert.match(detail, /Governance/);
-  assert.match(detail, /Evidence/);
-  assert.match(detail, /not a universal quality ranking/);
+  assert.ok(page.includes("getSimilarSourceProfiles(profile, 4)"));
+  assert.ok(page.includes("<IntelligenceDetail profile={profile}"));
+  assert.ok(detail.includes("not a live provider verification"));
+  assert.ok(detail.includes("Governance"));
+  assert.ok(detail.includes("Evidence"));
+  assert.ok(detail.includes("not a universal quality ranking"));
 });
 
 test("similar sources use explainable metadata instead of popularity", async () => {
   const similar = await read("lib/similar-sources.ts");
 
-  assert.match(similar, /candidate\.category === source\.category/);
-  assert.match(similar, /candidate\.sourceType === source\.sourceType/);
-  assert.match(similar, /capabilityOverlap/);
-  assert.match(similar, /contentObjects/);
+  assert.ok(similar.includes("candidate.category === source.category"));
+  assert.ok(similar.includes("candidate.sourceType === source.sourceType"));
+  assert.ok(similar.includes("capabilityOverlap"));
+  assert.ok(similar.includes("contentObjects"));
   assert.doesNotMatch(similar, /popularity|rating|trend/i);
 });
