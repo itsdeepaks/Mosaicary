@@ -94,7 +94,7 @@ test("canonical Browse renders one responsive result tree without duplicate desk
   assert.match(css, /@media \(max-width: 1100px\)/);
   assert.match(css, /grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
   assert.match(css, /@media \(max-width: 700px\)/);
-  assert.match(css, /grid-template-columns:\s*1fr/);
+  assert.match(css, /grid-template-columns:\s*minmax\(0, 1fr\)/);
   assert.match(css, /overflow-x:\s*auto/);
 });
 
