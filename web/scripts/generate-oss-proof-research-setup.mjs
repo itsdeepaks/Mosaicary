@@ -1,5 +1,5 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 
 import { createBoardResearchPack } from "../lib/board-research-pack.mjs";
 
@@ -93,7 +93,7 @@ export async function writeOssProofPack() {
 }
 
 const executedPath = process.argv[1]
-  ? pathToFileURL(fileURLToPath(process.argv[1])).href
+  ? pathToFileURL(process.argv[1]).href
   : null;
 if (executedPath === import.meta.url) {
   const artifacts = await writeOssProofPack();
