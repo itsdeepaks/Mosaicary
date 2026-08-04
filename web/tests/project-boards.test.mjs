@@ -15,17 +15,19 @@ test("project boards use a backward-compatible versioned browser-local contract"
   const store = await read("components/project-boards/board-store.ts");
   assert.match(store, /tessli-project-boards-v1/);
   assert.match(store, /goal: string/);
+  assert.match(store, /audience: string/);
   assert.match(store, /constraints: string/);
   assert.match(store, /unresolvedQuestions: readonly string\[\]/);
   assert.match(store, /decision: ProjectBoardDecision/);
   assert.match(store, /rationale: string/);
+  assert.match(store, /typeof board\.audience === "string"/);
   assert.match(store, /item\.decision === "selected"/);
   assert.match(store, /item\.decision === "rejected"/);
   assert.match(store, /: "undecided";/);
   assert.match(store, /localStorage\.setItem/);
 });
 
-test("project boards support explicit research decisions and open questions", async () => {
+test("project boards support explicit research decisions and local export", async () => {
   const experience = await read(
     "components/project-boards/project-boards-experience.tsx",
   );
@@ -33,6 +35,7 @@ test("project boards support explicit research decisions and open questions", as
     "Create board",
     "Delete board",
     "Project goal",
+    "Audience",
     "Constraints",
     "Unresolved questions",
     "Add question",
@@ -41,18 +44,38 @@ test("project boards support explicit research decisions and open questions", as
     "Selected",
     "Rejected",
     "Research note",
+    "BoardExportControls",
     "Remove",
   ]) {
     assert.match(experience, new RegExp(phrase));
   }
-  assert.doesNotMatch(experience, /Export research pack/i);
   assert.doesNotMatch(experience, /Sync to cloud/i);
 });
 
-test("boards route is discoverable and private-local messaging is explicit", async () => {
+test("Board export is labelled, local-only, and validation-aware", async () => {
+  const controls = await read(
+    "components/project-boards/board-export-controls.tsx",
+  );
+  for (const phrase of [
+    "Export research pack",
+    "Generated date",
+    "Copy Markdown",
+    "Download .md",
+    "Complete these requirements before exporting",
+    "Board content stays in this browser and is not uploaded",
+  ]) {
+    assert.match(controls, new RegExp(phrase.replaceAll(".", "\\."), "i"));
+  }
+  assert.match(controls, /aria-live="polite"/);
+  assert.match(controls, /disabled={!result\.ok}/);
+});
+
+test("boards route uses canonical source profiles and remains discoverable", async () => {
   const page = await read("app/boards/page.tsx");
   const saved = await read("app/saved/page.tsx");
   const sitemap = await read("app/sitemap.ts");
+  assert.match(page, /getAllSourceProfiles/);
+  assert.match(page, /profileLevel: profile\.profileLevel/);
   assert.match(page, /ProjectBoardsExperience/);
   assert.match(saved, /href="\/boards"/);
   assert.match(sitemap, /"\/boards"/);
