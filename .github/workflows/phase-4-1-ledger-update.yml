@@ -107,3 +107,5 @@ jobs:
           git add build-slices.md docs/product-plan-v2.md web/tests/release-hardening.test.mjs
           git commit -m "docs: complete board research-pack contract ledger"
           git push origin HEAD:docs/board-research-pack-contract
+
+# Retrigger after workflow exists on the branch.
