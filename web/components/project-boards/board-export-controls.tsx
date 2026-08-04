@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   createBoardResearchPack,
@@ -14,13 +14,19 @@ type Props = Readonly<{
   resources: readonly BoardResearchPackSource[];
 }>;
 
+type ExportStatus = Readonly<{
+  signature: string;
+  message: string;
+}>;
+
 function todayUtc() {
   return new Date().toISOString().slice(0, 10);
 }
 
 export function BoardExportControls({ board, resources }: Props) {
   const [generatedAt, setGeneratedAt] = useState(todayUtc);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<ExportStatus | null>(null);
+  const resultSignature = `${board.updatedAt}|${generatedAt}`;
 
   const result = useMemo(
     () =>
@@ -33,9 +39,9 @@ export function BoardExportControls({ board, resources }: Props) {
     [board, generatedAt, resources],
   );
 
-  useEffect(() => {
-    setStatus("");
-  }, [board, generatedAt]);
+  const announce = (message: string) => {
+    setStatus({ signature: resultSignature, message });
+  };
 
   const copyMarkdown = async () => {
     if (!result.ok) return;
@@ -44,9 +50,9 @@ export function BoardExportControls({ board, resources }: Props) {
         throw new Error("Clipboard access is unavailable.");
       }
       await navigator.clipboard.writeText(result.markdown);
-      setStatus("Research pack copied as Markdown.");
+      announce("Research pack copied as Markdown.");
     } catch {
-      setStatus("Copy failed. Download the Markdown file instead.");
+      announce("Copy failed. Download the Markdown file instead.");
     }
   };
 
@@ -61,7 +67,7 @@ export function BoardExportControls({ board, resources }: Props) {
     anchor.download = result.filename;
     anchor.click();
     window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
-    setStatus(`${result.filename} downloaded.`);
+    announce(`${result.filename} downloaded.`);
   };
 
   return (
@@ -115,7 +121,7 @@ export function BoardExportControls({ board, resources }: Props) {
       </div>
 
       <p className={styles.status} aria-live="polite">
-        {status}
+        {status?.signature === resultSignature ? status.message : ""}
       </p>
     </section>
   );
