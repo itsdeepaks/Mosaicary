@@ -130,6 +130,7 @@ export default async function ResourcesPage({
           <label>
             Search
             <input
+              id="browse-search"
               defaultValue={state.query}
               maxLength={160}
               name="q"
