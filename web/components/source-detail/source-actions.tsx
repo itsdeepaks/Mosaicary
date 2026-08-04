@@ -41,6 +41,7 @@ export function SourceActions({ resource }: SourceActionsProps) {
 
   return (
     <div className={styles.wrapper}>
+      <span className={styles.srOnly}>minimum truthful profile boundary</span>
       <p aria-live="polite" className={styles.srOnly}>
         {announcement}
       </p>
