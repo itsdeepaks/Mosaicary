@@ -1,0 +1,44 @@
+name: Format Saved browser harness
+
+on:
+  push:
+    branches:
+      - feat/public-machine-readable-representations
+    paths:
+      - ".github/workflows/format-saved-browser.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/public-machine-readable-representations
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Format Saved browser harness
+        working-directory: web
+        run: npx prettier --write tests/saved-resources-browser.mjs
+
+      - name: Commit formatting
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/tests/saved-resources-browser.mjs
+          git commit -m "style: format Saved browser harness"
+          git push origin HEAD:feat/public-machine-readable-representations
