@@ -199,7 +199,11 @@ test("review route and client remain isolated and local-only", async () => {
   assert.match(page, /follow: false/u);
   assert.doesNotMatch(sitemap, /proofs\/oss-homepage\/review/u);
   assert.doesNotMatch(navigation, /proofs\/oss-homepage\/review/u);
-  assert.match(component, new RegExp(OSS_HUMAN_REVIEW_STORAGE_KEY));
+  assert.equal(
+    OSS_HUMAN_REVIEW_STORAGE_KEY,
+    "tessli-oss-homepage-human-review-v1",
+  );
+  assert.match(component, /OSS_HUMAN_REVIEW_STORAGE_KEY/u);
   assert.match(component, /navigator\.clipboard\.writeText\(result\.json\)/u);
   assert.match(component, /downloadText\(result\.filename, result\.json\)/u);
   assert.match(component, /window\.localStorage\.removeItem/u);
