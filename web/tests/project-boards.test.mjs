@@ -62,10 +62,13 @@ test("Board export is labelled, local-only, and validation-aware", async () => {
     "Copy Markdown",
     "Download .md",
     "Complete these requirements before exporting",
-    "Board content stays in this browser and is not uploaded",
   ]) {
     assert.match(controls, new RegExp(phrase.replaceAll(".", "\\."), "i"));
   }
+  assert.match(
+    controls,
+    /Board content stays in this\s+browser and is not uploaded/i,
+  );
   assert.match(controls, /aria-live="polite"/);
   assert.match(controls, /disabled={!result\.ok}/);
 });
