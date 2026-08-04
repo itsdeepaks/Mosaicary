@@ -1,65 +1,81 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("../", import.meta.url);
-const read = (relativePath) => readFile(new URL(relativePath, root), "utf8");
+const currentFile = fileURLToPath(import.meta.url);
+const webRoot = path.resolve(path.dirname(currentFile), "..");
 
-const catalogue = JSON.parse(await read("data/catalogue.json"));
-
-const allowedViews = new Set(["cards", "list", "table"]);
-const allowedSorts = new Set(["name-asc", "name-desc"]);
-
-function normalizeView(value) {
-  return allowedViews.has(value) ? value : "cards";
-}
-
-function normalizeSort(value) {
-  return allowedSorts.has(value) ? value : "name-asc";
+async function read(relativePath) {
+  return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
 test("canonical Browse derives one paginated result set from source profiles", async () => {
-  const [page, browse, results] = await Promise.all([
+  const [page, browse] = await Promise.all([
     read("app/resources/page.tsx"),
     read("lib/browse.ts"),
-    read("components/browse/browse-results.tsx"),
   ]);
 
-  assert.match(page, /getAllSourceProfiles/);
-  assert.match(page, /deriveBrowseResult/);
-  assert.match(page, /<BrowseResults/);
-  assert.match(page, /pagination/);
-  assert.match(browse, /CARD_PAGE_SIZE = 24/);
-  assert.match(browse, /ROW_PAGE_SIZE = 50/);
-  assert.match(browse, /slice\(start, start \+ pageSize\)/);
-  assert.match(results, /data-browse-view="cards"/);
-  assert.match(results, /data-browse-view="list"/);
-  assert.match(results, /data-browse-view="table"/);
+  assert.match(page, /getAllSourceProfiles\(\)/);
+  assert.match(page, /parseBrowseState\(/);
+  assert.match(page, /deriveBrowseResults\(/);
+  assert.match(page, /<BrowseResults resources=\{resources\}/);
+  assert.match(
+    page,
+    /redirect\(withState\(state, \{ page: result\.page \}\)\)/,
+  );
+  assert.match(browse, /state\.view === "cards" \? 24 : 50/);
+  assert.match(browse, /filtered\.slice\(start, start \+ pageSize\)/);
+  assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
 });
 
 test("Browse state is allowlisted, serializable, and rejects fake verification sorting", async () => {
   const browse = await read("lib/browse.ts");
 
-  assert.equal(normalizeView("table"), "table");
-  assert.equal(normalizeView("unknown"), "cards");
-  assert.equal(normalizeSort("name-desc"), "name-desc");
-  assert.equal(normalizeSort("recently-verified"), "name-asc");
-  assert.match(browse, /BROWSE_VIEWS/);
-  assert.match(browse, /BROWSE_SORTS/);
-  assert.match(browse, /URLSearchParams/);
-  assert.doesNotMatch(browse, /recently-verified|verified-desc|verified-asc/);
+  for (const field of [
+    "q",
+    "category",
+    "access",
+    "sourceType",
+    "profileLevel",
+    "sort",
+    "view",
+    "page",
+  ]) {
+    assert.match(browse, new RegExp(`"${field}"`));
+  }
+
+  assert.match(
+    browse,
+    /browseSortValues = \["curated", "name-asc", "name-desc"\]/,
+  );
+  assert.match(
+    browse,
+    /Legacy sort=verified intentionally normalizes to curated/,
+  );
+  assert.doesNotMatch(browse, /browseSortValues[^\n]*verified/);
+  assert.match(browse, /Number\.isSafeInteger\(number\) && number > 0/);
+  assert.match(browse, /slice\(0, 160\)/);
 });
 
 test("cards, list, and table expose internal profiles plus independent save and provider actions", async () => {
   const results = await read("components/browse/browse-results.tsx");
 
-  assert.match(results, /href={`\/resources\/\${profile\.slug}`}/);
-  assert.match(results, /Inspect Tessli profile/);
+  assert.match(results, /if \(view === "cards"\)/);
+  assert.match(results, /if \(view === "table"\)/);
+  assert.match(results, /data-browse-view="cards"/);
+  assert.match(results, /data-browse-view="table"/);
+  assert.match(results, /data-browse-view="list"/);
+  assert.match(results, /href=\{`\/resources\/\$\{profile\.slug\}`\}/);
   assert.match(results, /Visit source ↗/);
-  assert.match(results, /aria-pressed/);
-  assert.match(results, /writeSavedResourceIds/);
-  assert.match(results, /rel="noopener noreferrer"/);
   assert.match(results, /target="_blank"/);
+  assert.match(results, /rel="noopener noreferrer"/);
+  assert.match(results, /aria-pressed=\{savedIds\.includes\(card\.id\)\}/);
+  assert.match(results, /aria-live="polite"/);
+  assert.match(results, /<table className=\{styles\.table\}>/);
+  assert.match(results, /<caption className=\{styles\.srOnly\}>/);
+  assert.doesNotMatch(results, /fetch\(|sessionStorage/);
 });
 
 test("canonical Browse renders one responsive result tree without duplicate desktop and mobile catalogues", async () => {
