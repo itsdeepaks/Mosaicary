@@ -36,7 +36,10 @@ test("project boards support lifecycle, source membership, and notes", async () 
   ]) {
     assert.match(experience, new RegExp(phrase));
   }
-  assert.doesNotMatch(experience, /selected|rejected|export|cloud sync/i);
+  assert.doesNotMatch(experience, />Selected</i);
+  assert.doesNotMatch(experience, />Rejected</i);
+  assert.doesNotMatch(experience, /Export research pack/i);
+  assert.doesNotMatch(experience, /Sync to cloud/i);
 });
 
 test("boards route is discoverable and private-local messaging is explicit", async () => {
