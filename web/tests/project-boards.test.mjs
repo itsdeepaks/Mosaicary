@@ -19,7 +19,9 @@ test("project boards use a backward-compatible versioned browser-local contract"
   assert.match(store, /unresolvedQuestions: readonly string\[\]/);
   assert.match(store, /decision: ProjectBoardDecision/);
   assert.match(store, /rationale: string/);
-  assert.match(store, /decision: "undecided"/);
+  assert.match(store, /item\.decision === "selected"/);
+  assert.match(store, /item\.decision === "rejected"/);
+  assert.match(store, /: "undecided";/);
   assert.match(store, /localStorage\.setItem/);
 });
 
