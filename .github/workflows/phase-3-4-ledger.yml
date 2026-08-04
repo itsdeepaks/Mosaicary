@@ -1,0 +1,68 @@
+name: Phase 3.4 ledger update
+
+on:
+  push:
+    branches:
+      - agent/phase-3-4
+    paths:
+      - ".github/workflows/phase-3-4-ledger.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/phase-3-4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Update active ledger and release assertion
+        shell: python
+        run: |
+          from pathlib import Path
+
+          ledger = Path("build-slices.md")
+          text = ledger.read_text()
+          replacements = {
+            "Status: **active delivery plan — Phase 3 / Slice 3.4 NEXT**": "Status: **active delivery plan — Phase 4 / Slice 4.1 NEXT**",
+            "| 3 | Local Saved and Project Boards | ACTIVE | 3.4 NEXT |": "| 3 | Local Saved and Project Boards | DONE | — |",
+            "| 4 | Research-Pack Export | PLANNED | 4.1 |": "| 4 | Research-Pack Export | ACTIVE | 4.1 NEXT |",
+            "| 3.4 | Selected/rejected decisions and unresolved questions | NEXT | 3.3 | — |": "| 3.4 | Selected/rejected decisions and unresolved questions | DONE | 3.3 | `docs/slices/3.4-board-decisions.md`, PR #85 |",
+            "| 4.1 | Board research-pack contract | PLANNED | 3.4 | — |": "| 4.1 | Board research-pack contract | NEXT | 3.4 | — |",
+            "### Slice 3.4 Decisions\n\nSelected/rejected status, rationale, unresolved questions, and stable local persistence.": "### DONE — Slice 3.4 Decisions\n\nDelivered selected/rejected/undecided source status, separate decision rationale, editable unresolved questions, and backward-compatible stable local persistence; `docs/slices/3.4-board-decisions.md`; PR #85.",
+          }
+          for old, new in replacements.items():
+            if old not in text:
+              raise SystemExit(f"missing ledger text: {old}")
+            text = text.replace(old, new)
+          ledger.write_text(text)
+
+          release = Path("web/tests/release-hardening.test.mjs")
+          release_text = release.read_text()
+          release_replacements = {
+            "Phase 3 / Slice 3.4 NEXT": "Phase 4 / Slice 4.1 NEXT",
+            "Phase 3 — ACTIVE": "Phase 3 — DONE",
+            "Slice 3.4 — NEXT": "Slice 3.4 — DONE",
+          }
+          for old, new in release_replacements.items():
+            if old in release_text:
+              release_text = release_text.replace(old, new)
+          release.write_text(release_text)
+      - name: Format changed files
+        working-directory: web
+        run: |
+          npm ci
+          npx prettier --write ../build-slices.md tests/release-hardening.test.mjs components/project-boards/board-store.ts components/project-boards/project-boards-experience.tsx components/project-boards/project-boards.module.css tests/project-boards.test.mjs ../docs/slices/3.4-board-decisions.md
+      - name: Commit ledger update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md web/tests/release-hardening.test.mjs web/components/project-boards web/tests/project-boards.test.mjs docs/slices/3.4-board-decisions.md
+          git diff --cached --quiet || git commit -m "chore: complete phase 3 ledger"
+          git push
