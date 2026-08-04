@@ -78,7 +78,12 @@ export async function buildOssProofArtifacts() {
   if (!result.ok) {
     throw new Error(`OSS proof pack is invalid: ${result.errors.join(" ")}`);
   }
-  return { snapshot, sources, markdown: result.markdown, filename: result.filename };
+  return {
+    snapshot,
+    sources,
+    markdown: result.markdown,
+    filename: result.filename,
+  };
 }
 
 export async function writeOssProofPack() {

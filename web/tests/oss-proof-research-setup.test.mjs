@@ -19,7 +19,10 @@ test("OSS proof Board uses canonical bounded decisions", async () => {
   assert.equal(artifacts.snapshot.generatedAt, OSS_PROOF_DATE);
   assert.equal(selected.length, 10);
   assert.equal(rejected.length, 4);
-  assert.equal(new Set(items.map((item) => item.resourceId)).size, items.length);
+  assert.equal(
+    new Set(items.map((item) => item.resourceId)).size,
+    items.length,
+  );
   assert.equal(artifacts.sources.length, items.length);
   assert.deepEqual(
     artifacts.sources.map((source) => source.id),
@@ -39,7 +42,10 @@ test("committed research pack matches deterministic generation", async () => {
   const artifacts = await buildOssProofArtifacts();
   let committedPack = null;
   try {
-    committedPack = await readFile(new URL("research-pack.md", proofRoot), "utf8");
+    committedPack = await readFile(
+      new URL("research-pack.md", proofRoot),
+      "utf8",
+    );
   } catch {
     // The first bootstrap run intentionally reports the exact missing bytes.
   }
