@@ -1,0 +1,51 @@
+name: Finalize local project boards ledger
+
+on:
+  push:
+    branches:
+      - feat/local-project-boards
+    paths:
+      - ".github/workflows/finalize-local-project-boards-ledger.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/local-project-boards
+      - name: Update Product Plan v2 ledger
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          ledger = Path('build-slices.md')
+          text = ledger.read_text()
+          replacements = {
+            'Status: **active delivery plan — Phase 3 / Slice 3.3 NEXT**': 'Status: **active delivery plan — Phase 3 / Slice 3.4 NEXT**',
+            '| 3 | Local Saved and Project Boards | ACTIVE | 3.3 NEXT |': '| 3 | Local Saved and Project Boards | ACTIVE | 3.4 NEXT |',
+            '| 3.3 | Local project Boards and notes | NEXT | 3.1, 3.2 | — |': '| 3.3 | Local project Boards and notes | DONE | 3.1, 3.2 | `docs/slices/3.3-local-project-boards.md`, PR #84 |',
+            '| 3.4 | Selected/rejected decisions and unresolved questions | PLANNED | 3.3 | — |': '| 3.4 | Selected/rejected decisions and unresolved questions | NEXT | 3.3 | — |',
+            '### Slice 3.3 Local project Boards\n\nCreate, rename, delete, project goal/constraints, source membership, and per-item notes.': '### DONE — Slice 3.3 Local project Boards\n\nDelivered create, rename, switch, and delete; project goal and constraints; catalogue source membership; per-source notes; versioned browser-local persistence; safe malformed-data fallback; same-document and cross-tab synchronization; Saved navigation; sitemap coverage; responsive and accessible controls; `docs/slices/3.3-local-project-boards.md`; PR #84.'
+          }
+          for old, new in replacements.items():
+            if old not in text:
+              raise SystemExit(f'missing ledger text: {old}')
+            text = text.replace(old, new, 1)
+          ledger.write_text(text)
+
+          note = Path('docs/slices/3.3-local-project-boards.md')
+          note_text = note.read_text().replace('Status: implementation in review', 'Status: complete — pending squash merge', 1)
+          note_text += '\n\n## Completion evidence\n\n- `/boards` route with local Board lifecycle, goal, constraints, source membership, and per-source notes;\n- versioned key `tessli-project-boards-v1`;\n- malformed input falls back safely;\n- same-document and cross-tab synchronization;\n- Saved navigation and sitemap entry;\n- focused contract tests;\n- full CI and release gates passed before final ledger update;\n- PR #84.\n'
+          note.write_text(note_text)
+          PY
+      - name: Commit ledger update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md docs/slices/3.3-local-project-boards.md
+          git commit -m "docs: complete local project boards slice"
+          git push origin HEAD:feat/local-project-boards
