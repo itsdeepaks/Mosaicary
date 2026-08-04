@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 3 / Slice 3.1 NEXT**  
+Status: **active delivery plan — Phase 3 / Slice 3.2 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -106,7 +106,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 0 | Direction Reset | DONE | — |
 | 1 | Source Intelligence Foundation | DONE | — |
 | 2 | Browse and Source Detail | DONE | — |
-| 3 | Local Saved and Project Boards | ACTIVE | 3.1 NEXT |
+| 3 | Local Saved and Project Boards | ACTIVE | 3.2 NEXT |
 | 4 | Research-Pack Export | PLANNED | 4.1 |
 | 5 | Real OSS Proof Project | PROOF | 5.1 |
 | 6 | Homepage, Navigation, Playbooks, and For AI | PLANNED | 6.1 |
@@ -126,8 +126,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 2.2 | Canonical `/resources` implementation | DONE | 2.1 | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79 |
 | 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |
 | 2.4 | Enriched intelligence detail and Similar Sources | DONE | 2.3 | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81 |
-| 3.1 | Universal browser-local Save | NEXT | 2.2, 2.3 | — |
-| 3.2 | Saved workspace search/filter refinement | PLANNED | 3.1 | — |
+| 3.1 | Universal browser-local Save | DONE | 2.2, 2.3 | `docs/slices/3.1-universal-local-save.md`, PR #82 |
+| 3.2 | Saved workspace search/filter refinement | NEXT | 3.1 | — |
 | 3.3 | Local project Boards and notes | PLANNED | 3.1 | — |
 | 3.4 | Selected/rejected decisions and unresolved questions | PLANNED | 3.3 | — |
 | 4.1 | Board research-pack contract | PLANNED | 3.4 | — |
@@ -199,7 +199,7 @@ Evidence:
 
 ## 9. Phase 3 — Local Saved and Project Boards
 
-### NEXT — Slice 3.1 Universal browser-local Save
+### DONE — Slice 3.1 Universal browser-local Save
 
 Goal: one versioned local Save contract across Browse, Source Detail, collections/playbooks, and Saved.
 
@@ -213,6 +213,16 @@ Required:
 - cross-tab synchronization where practical;
 - truthful local-only/device-only messaging;
 - no account, cloud, or collaboration dependency.
+
+Completion evidence:
+
+- one stable-ID browser-local store across Browse, Source Detail, collection resources, and Saved;
+- legacy Tessli and Mosaicary URL-list migration retained;
+- same-document and cross-tab synchronization;
+- accessible persistent Save controls on every collection resource;
+- no account, network, cloud, catalogue, schema, or dependency change;
+- `docs/slices/3.1-universal-local-save.md`;
+- PR #82.
 
 ### Slice 3.2 Saved workspace refinement
 
