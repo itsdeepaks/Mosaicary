@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 4**  
+Status: **active execution plan — Phase 6; Phase 5 proof blocked**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -45,8 +45,8 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 |     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source         |
 |     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account               |
 |     4 | Research-Pack Export                        | ACTIVE   | Deterministic, model-independent project context                           |
-|     5 | Real OSS Proof Project                      | PROOF    | Evidence that Tessli improves or fails to improve a real workflow          |
-|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | Public presentation built around the proven workflow                       |
+|     5 | Real OSS Proof Project                      | BLOCKED  | Safe review setup complete; genuine human judgment still required          |
+|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | Independent public-shell work can continue while the proof is blocked      |
 |     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work              |
 |     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                |
 |     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow         |
@@ -288,7 +288,7 @@ Phase exit criteria met:
 
 ## 9. Phase 5 — Real OSS Proof Project
 
-Status: **ACTIVE — PROOF REQUIRED**
+Status: **BLOCKED — GENUINE HUMAN REVIEW REQUIRED**
 
 Goal: test whether Tessli improves one real Online Scope Studio design workflow.
 
@@ -319,7 +319,7 @@ Evidence: `docs/slices/5.2-oss-homepage-candidate.md`, PR #90.
 
 ### 5.3 Browser and human review
 
-Status: **NEXT**
+Status: **BLOCKED — SAFE REVIEW SETUP COMPLETE**
 
 - 1440, 1024, 768, 390, and 320 px checks where applicable;
 - accessibility and interaction review;
@@ -328,6 +328,8 @@ Status: **NEXT**
 - blind review preserved where used.
 
 ### 5.4 Outcome report
+
+Status: **BLOCKED — REQUIRES COMPLETED 5.3 HUMAN ARTIFACT**
 
 Report honestly whether Tessli produced:
 
@@ -347,6 +349,8 @@ Status: **PLANNED**
 Goal: present the proven workflow clearly to humans and models.
 
 ### 6.1 Global navigation and naming
+
+Status: **NEXT**
 
 Primary navigation:
 
