@@ -1,0 +1,35 @@
+name: Format saved undo fix
+
+on:
+  push:
+    branches:
+      - feat/saved-workspace-refinement
+    paths:
+      - ".github/workflows/format-saved-undo.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/saved-workspace-refinement
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+        working-directory: web
+      - run: npx prettier --write components/saved-resources/saved-resources-experience.tsx tests/saved-resources-page.test.mjs
+        working-directory: web
+      - name: Commit formatting
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/components/saved-resources/saved-resources-experience.tsx web/tests/saved-resources-page.test.mjs
+          git diff --cached --quiet || git commit -m "style: format saved undo fix"
+          git push origin HEAD:feat/saved-workspace-refinement
