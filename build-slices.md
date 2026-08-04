@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 4 / Slice 4.2 NEXT**  
+Status: **active delivery plan — Phase 4 / Slice 4.3 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -92,7 +92,8 @@ Unless an approved slice changes them, Tessli already has:
 - resource-media fallbacks and provenance tooling;
 - six repository-maintained collections;
 - browser-local Saved with search, filters, sorting, removal, and undo;
-- browser-local project Boards with goals, constraints, source notes, decisions, rationale, and unresolved questions;
+- browser-local project Boards with goals, audience, constraints, source notes, decisions, rationale, and unresolved questions;
+- deterministic browser-local Markdown research-pack copy and download;
 - Supabase SSR/client and user-data schema groundwork that remains inactive publicly;
 - evidence/profile validation tooling;
 - a local context-engine provider;
@@ -109,7 +110,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 |     1 | Source Intelligence Foundation              | DONE     | —                          |
 |     2 | Browse and Source Detail                    | DONE     | —                          |
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
-|     4 | Research-Pack Export                        | ACTIVE   | 4.2 NEXT                   |
+|     4 | Research-Pack Export                        | ACTIVE   | 4.3 NEXT                   |
 |     5 | Real OSS Proof Project                      | PROOF    | 5.1 after 4.2              |
 |     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | 6.1                        |
 |     7 | Reviewed Pattern Candidates                 | PLANNED  | 7.1 after Phase 5          |
@@ -133,8 +134,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 3.3  | Local project Boards and notes                        | DONE     | 3.1, 3.2                | `docs/slices/3.3-local-project-boards.md`, PR #84            |
 | 3.4  | Selected/rejected decisions and unresolved questions  | DONE     | 3.3                     | `docs/slices/3.4-board-decisions.md`, PR #85                 |
 | 4.1  | Board research-pack contract                          | DONE     | 3.4                     | `docs/research-pack-contract.md`, PR #86                     |
-| 4.2  | Deterministic Markdown export                         | NEXT     | 4.1                     | —                                                            |
-| 4.3  | Safe public machine-readable representations          | PLANNED  | 2.4, 4.2                | —                                                            |
+| 4.2  | Deterministic Markdown export                         | DONE     | 4.1                     | `docs/slices/4.2-deterministic-markdown-export.md`, PR #87   |
+| 4.3  | Safe public machine-readable representations          | NEXT     | 2.4, 4.2                | —                                                            |
 | 5.1  | OSS proof brief and research Board                    | PROOF    | 4.2                     | —                                                            |
 | 5.2  | Agent implementation from exported pack               | PROOF    | 5.1                     | —                                                            |
 | 5.3  | Browser and human review                              | PROOF    | 5.2                     | —                                                            |
@@ -209,7 +210,7 @@ Delivered:
 
 - universal stable-ID local Save and legacy migration;
 - Saved search, filtering, sorting, remove/undo, and clear-all safety;
-- Board lifecycle, goals, constraints, source membership, and per-source notes;
+- Board lifecycle, goals, audience, constraints, source membership, and per-source notes;
 - selected, rejected, and undecided state;
 - decision rationale separate from research notes;
 - editable unresolved questions;
@@ -246,26 +247,26 @@ Defined the versioned `tessli.board-research-pack.v1` contract, including:
 
 Evidence: `docs/research-pack-contract.md`, PR #86.
 
-### NEXT — Slice 4.2 Deterministic Markdown export
+### DONE — Slice 4.2 Deterministic Markdown export
 
-Implement one pure canonical formatter plus labelled Copy Markdown and Download `.md` controls in Boards.
+Delivered:
 
-Required:
+- one pure `tessli.board-research-pack.v1` formatter with explicit date injection;
+- deterministic section, field, Board, profile-array, evidence, filename, line-ending, and final-newline behavior;
+- actionable validation for blank identity/goal, invalid date, duplicate IDs, zero selected, and more than twelve selected sources;
+- canonical source facts separated from Board notes, rationale, decisions, audience, constraints, and unresolved questions;
+- truthful Listed/Profiled and unknown-source fallback without invented intelligence;
+- backward-compatible Board audience persistence;
+- Copy Markdown and Download `.md` using the same bytes;
+- local-only accessible validation, success, and failure states;
+- `/boards` route and viewport coverage in the release browser matrix;
+- no public route, MCP, account, cloud, provider, dependency, or deployment-state change.
 
-- exact contract output and validation;
-- canonical source-profile resolution;
-- exact same bytes for copy and download;
-- deterministic filename and explicit generated date;
-- local-only processing with no network request or Board upload;
-- audience support only through a backward-compatible explicit field;
-- accessible success, failure, and blocked-export states;
-- focused formatter/UI/storage tests;
-- complete browser and release gates;
-- no MCP behavior change.
+Evidence: `docs/slices/4.2-deterministic-markdown-export.md`, PR #87.
 
-### PLANNED — Slice 4.3 Safe public machine-readable representations
+### NEXT — Slice 4.3 Safe public machine-readable representations
 
-Add public source and collection `.md`/`.json` representations only after privacy and route review. Private local Board content must never be published.
+Add public source and collection `.md`/`.json` representations only after privacy and route review. Keep representations deterministic, canonical, bounded, and indexable while never publishing private local Board content.
 
 ## 10. Later phase boundaries
 
@@ -295,6 +296,6 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 ## 11. Current continuation boundary
 
-The current conversation should finish and merge Slice 4.1, refresh `main`, then begin Slice 4.2 on a new branch.
+After Slice 4.2 merges, refresh `main` and begin Slice 4.3 on a new branch in this conversation.
 
 No recurring scheduled development task is enabled or permitted for this workflow.

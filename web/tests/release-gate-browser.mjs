@@ -10,6 +10,32 @@ const outputDirectory = new URL(
 const catalogue = JSON.parse(
   await readFile(new URL("../data/catalogue.json", import.meta.url), "utf8"),
 );
+const boardSeed = [
+  {
+    id: "release-board",
+    name: "Release research pack",
+    goal: "Verify the browser-local Board export workflow.",
+    audience: "Tessli researchers and model users.",
+    constraints: "Local-only, deterministic, accessible, and responsive.",
+    unresolvedQuestions: ["Does the exported context remain compact?"],
+    createdAt: "2026-08-04T00:00:00.000Z",
+    updatedAt: "2026-08-04T00:00:00.000Z",
+    items: [
+      {
+        resourceId: catalogue.resources[0].id,
+        note: "Inspect the hierarchy and source boundaries.",
+        decision: "selected",
+        rationale: "Useful for validating the export path.",
+      },
+      {
+        resourceId: catalogue.resources[1].id,
+        note: "Retain the rejected direction in project context.",
+        decision: "rejected",
+        rationale: "Not appropriate for this verification task.",
+      },
+    ],
+  },
+];
 
 const viewports = [
   [1440, 900],
@@ -37,6 +63,7 @@ const routeChecks = [
   ["/resources", 200, "Browse design sources"],
   ["/resources/designindex", 200, "What this profile supports"],
   ["/saved", 200, "Search and refine the references kept in this browser"],
+  ["/boards", 200, "Project boards"],
   ["/about", 200, "Keep reading"],
   ["/curation", 200, "Keep reading"],
   ["/privacy", 200, "Keep reading"],
@@ -79,6 +106,12 @@ const visualCases = [
     path: "/saved",
     selector: "[data-saved-resources-page=true]",
     saved: true,
+  },
+  {
+    name: "boards",
+    path: "/boards",
+    selector: "#board-export-title",
+    boards: true,
   },
   { name: "about", path: "/about", selector: "#main-content article" },
   {
@@ -192,14 +225,23 @@ for (const [width, height] of viewports) {
   });
 
   for (const visualCase of visualCases) {
-    if (visualCase.saved) {
+    if (visualCase.saved || visualCase.boards) {
       await send("Page.navigate", { url: `${origin}/` });
       await waitFor(
         "document.readyState === 'complete'",
-        "Explore before saved seed",
+        `${visualCase.name} seed page`,
       );
+    }
+
+    if (visualCase.saved) {
       await evaluate(
         `localStorage.setItem('tessli-saved-resource-ids-v2', JSON.stringify([${JSON.stringify(catalogue.resources[0].id)}, ${JSON.stringify(catalogue.resources[1].id)}])); true`,
+      );
+    }
+
+    if (visualCase.boards) {
+      await evaluate(
+        `localStorage.setItem('tessli-project-boards-v1', ${JSON.stringify(JSON.stringify(boardSeed))}); true`,
       );
     }
 
@@ -251,6 +293,54 @@ for (const [width, height] of viewports) {
         `Browse provider links at ${width}`,
       );
       assert.equal(browseAudit.saveButtons, 24, `Browse saves at ${width}`);
+    }
+
+    if (visualCase.boards) {
+      const boardAudit = await evaluate(`(() => {
+        const section = document.querySelector('[aria-labelledby=board-export-title]');
+        const buttons = [...(section?.querySelectorAll('button') ?? [])];
+        const date = section?.querySelector('input[type=date]');
+        const audience = [...document.querySelectorAll('label span')]
+          .find((label) => label.textContent === 'Audience')
+          ?.parentElement?.querySelector('textarea');
+        return {
+          audience: audience?.value,
+          buttonsEnabled:
+            buttons.length === 2 && buttons.every((button) => !button.disabled),
+          buttonLabels: buttons.map((button) => button.textContent?.trim()),
+          dateValue: date?.value,
+          localOnlyCopy: section?.textContent?.includes(
+            'Board content stays in this browser and is not uploaded',
+          ),
+          readyCopy: section?.textContent?.includes('Ready: 1 selected reference'),
+        };
+      })()`);
+      assert.equal(
+        boardAudit.audience,
+        boardSeed[0].audience,
+        `Board audience at ${width}`,
+      );
+      assert.equal(
+        boardAudit.buttonsEnabled,
+        true,
+        `Board export controls enabled at ${width}`,
+      );
+      assert.deepEqual(
+        boardAudit.buttonLabels,
+        ["Copy Markdown", "Download .md"],
+        `Board export labels at ${width}`,
+      );
+      assert.match(
+        boardAudit.dateValue ?? "",
+        /^\d{4}-\d{2}-\d{2}$/u,
+        `Board generated date at ${width}`,
+      );
+      assert.equal(
+        boardAudit.localOnlyCopy,
+        true,
+        `Board local-only copy at ${width}`,
+      );
+      assert.equal(boardAudit.readyCopy, true, `Board ready state at ${width}`);
     }
 
     if (visualCase.auth) {

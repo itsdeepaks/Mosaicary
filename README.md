@@ -32,7 +32,8 @@ The current application now includes the first reusable Tessli research loop:
 - enriched intelligence for the 20 Profiled sources;
 - explainable Similar Sources;
 - browser-local Saved with search, filters, sorting, removal, and undo;
-- browser-local project Boards with goals, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
+- browser-local project Boards with goals, audience, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
+- deterministic browser-local Markdown research-pack copy and download;
 - six repository-maintained collections;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
@@ -71,7 +72,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next slice is **Phase 4 / Slice 4.2 — deterministic Markdown export**.
+The approved next slice is **Phase 4 / Slice 4.3 — safe public machine-readable representations**.
 
 ## Source coverage levels
 

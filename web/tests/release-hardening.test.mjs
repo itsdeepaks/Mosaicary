@@ -118,13 +118,26 @@ test("release history remains preserved under Product Plan v2", async () => {
       "3.4",
       "`docs/research-pack-contract.md`, PR #86",
     ],
-    ["4.2", "Deterministic Markdown export", "NEXT", "4.1", "—"],
+    [
+      "4.2",
+      "Deterministic Markdown export",
+      "DONE",
+      "4.1",
+      "`docs/slices/4.2-deterministic-markdown-export.md`, PR #87",
+    ],
+    [
+      "4.3",
+      "Safe public machine-readable representations",
+      "NEXT",
+      "2.4, 4.2",
+      "—",
+    ],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.2 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.3 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -145,7 +158,11 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /### 4\.2 Deterministic Markdown export\n\nStatus: \*\*NEXT\*\*/,
+    /### 4\.2 Deterministic Markdown export\n\nStatus: \*\*DONE\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 4\.3 Safe public machine-readable representations\n\nStatus: \*\*NEXT\*\*/,
   );
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
@@ -191,6 +208,7 @@ test("release workflow covers the locked checks and formal viewport set", async 
     "/collections",
     "/resources",
     "/saved",
+    "/boards",
     "/about",
     "/curation",
     "/privacy",
@@ -204,6 +222,8 @@ test("release workflow covers the locked checks and formal viewport set", async 
   }
 
   assert.match(browser, /data-saved-resources-empty/);
+  assert.match(browser, /board-export-title/);
+  assert.match(browser, /tessli-project-boards-v1/);
   assert.match(browser, /scrollWidth > document\.documentElement\.clientWidth/);
   assert.match(workflow, /tessli-phase-1-release-evidence/);
 });
