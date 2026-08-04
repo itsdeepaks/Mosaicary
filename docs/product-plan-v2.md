@@ -38,19 +38,19 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 
 ## 3. Phase map
 
-| Phase | Name                                        | Status   | Outcome                                                                     |
-| ----: | ------------------------------------------- | -------- | --------------------------------------------------------------------------- |
-|     0 | Direction Reset                             | DONE     | One approved product truth and operating contract                           |
-|     1 | Source Intelligence Foundation              | DONE     | One canonical source/profile model shared by website, exports, and MCP      |
-|     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source          |
-|     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account                |
-|     4 | Research-Pack Export                        | ACTIVE   | Deterministic, model-independent project context                            |
-|     5 | Real OSS Proof Project                      | PROOF    | Evidence that Tessli improves or fails to improve a real workflow           |
-|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | Public presentation built around the proven workflow                        |
-|     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work               |
-|     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                 |
-|     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow          |
-|    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims  |
+| Phase | Name                                        | Status   | Outcome                                                                    |
+| ----: | ------------------------------------------- | -------- | -------------------------------------------------------------------------- |
+|     0 | Direction Reset                             | DONE     | One approved product truth and operating contract                          |
+|     1 | Source Intelligence Foundation              | DONE     | One canonical source/profile model shared by website, exports, and MCP     |
+|     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source         |
+|     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account               |
+|     4 | Research-Pack Export                        | ACTIVE   | Deterministic, model-independent project context                           |
+|     5 | Real OSS Proof Project                      | PROOF    | Evidence that Tessli improves or fails to improve a real workflow          |
+|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | Public presentation built around the proven workflow                       |
+|     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work              |
+|     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                |
+|     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow         |
+|    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims |
 
 ## 4. Phase 0 — Direction Reset
 
@@ -253,7 +253,7 @@ Evidence: PR #86.
 
 ### 4.2 Deterministic Markdown export
 
-Status: **NEXT**
+Status: **DONE**
 
 - one pure Board formatter using the canonical source-profile adapter;
 - Copy Markdown and Download `.md` from Boards;
@@ -264,9 +264,11 @@ Status: **NEXT**
 - accessible validation, success, and failure states;
 - no MCP behavior change.
 
+Evidence: `docs/slices/4.2-deterministic-markdown-export.md`, PR #87.
+
 ### 4.3 Safe public machine-readable representations
 
-Status: **PLANNED**
+Status: **NEXT**
 
 Only after privacy review:
 
