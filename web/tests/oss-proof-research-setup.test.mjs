@@ -12,6 +12,11 @@ const proofRoot = new URL("../../docs/proofs/oss-homepage/", import.meta.url);
 
 test("OSS proof Board uses canonical bounded decisions", async () => {
   const artifacts = await buildOssProofArtifacts();
+  console.error(
+    `OSS_PROOF_SOURCE_MAP:${JSON.stringify(
+      artifacts.sources.map(({ id, slug, name }) => ({ id, slug, name })),
+    )}`,
+  );
   const items = artifacts.snapshot.board.items;
   const selected = items.filter((item) => item.decision === "selected");
   const rejected = items.filter((item) => item.decision === "rejected");
