@@ -28,7 +28,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -46,6 +46,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-human-review
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -56,6 +58,70 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Fix and commit review draft hydration
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("components/oss-human-review/oss-human-review-form.tsx")
+          content = path.read_text(encoding="utf-8")
+          old = '''  useEffect(() => {
+            const today = localIsoDate();
+            try {
+              const stored = window.localStorage.getItem(OSS_HUMAN_REVIEW_STORAGE_KEY);
+              if (!stored) {
+                setDraft(createEmptyOssHumanReviewDraft(today));
+              } else {
+                setDraft(normalizeOssHumanReviewDraft(JSON.parse(stored), today));
+              }
+            } catch {
+              setDraft(createEmptyOssHumanReviewDraft(today));
+              setAnnouncement(
+                "The saved review draft could not be read. A new local draft was started.",
+              );
+            }
+            setHydrated(true);
+          }, []);
+          '''
+          new = '''  useEffect(() => {
+            const frame = window.requestAnimationFrame(() => {
+              const today = localIsoDate();
+              try {
+                const stored = window.localStorage.getItem(
+                  OSS_HUMAN_REVIEW_STORAGE_KEY,
+                );
+                setDraft(
+                  stored
+                    ? normalizeOssHumanReviewDraft(JSON.parse(stored), today)
+                    : createEmptyOssHumanReviewDraft(today),
+                );
+              } catch {
+                setDraft(createEmptyOssHumanReviewDraft(today));
+                setAnnouncement(
+                  "The saved review draft could not be read. A new local draft was started.",
+                );
+              }
+              setHydrated(true);
+            });
+
+            return () => window.cancelAnimationFrame(frame);
+          }, []);
+          '''
+          if old not in content:
+              raise SystemExit("review hydration target mismatch")
+          path.write_text(content.replace(old, new, 1), encoding="utf-8")
+
+      - name: Format and commit hydration fix
+        shell: bash
+        run: |
+          npx prettier --write components/oss-human-review/oss-human-review-form.tsx
+          cd ..
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/components/oss-human-review/oss-human-review-form.tsx
+          git commit -m "fix: hydrate OSS review draft without cascading render"
+          git push origin HEAD:proof/oss-homepage-human-review
 
       - name: Verify approved hero asset
         shell: bash
