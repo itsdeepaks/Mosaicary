@@ -64,6 +64,7 @@ jobs:
             app/proofs/oss-homepage/page.tsx \
             tests/oss-homepage-browser.mjs \
             tests/oss-homepage-candidate.test.mjs
+          mkdir -p artifacts
           tar -czf artifacts/oss-proof-formatted.tar.gz \
             app/proofs/oss-homepage/oss-homepage.module.css \
             app/proofs/oss-homepage/page.tsx \
