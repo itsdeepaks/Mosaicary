@@ -66,7 +66,8 @@ export function ProjectBoardsExperience({ resources }: Props) {
     setBoards(next);
   };
 
-  const activeBoard = boards.find((board) => board.id === activeBoardId) ?? null;
+  const activeBoard =
+    boards.find((board) => board.id === activeBoardId) ?? null;
   const resourcesById = useMemo(
     () => new Map(resources.map((resource) => [resource.id, resource])),
     [resources],
@@ -191,7 +192,9 @@ export function ProjectBoardsExperience({ resources }: Props) {
               {boards.map((board) => (
                 <button
                   aria-current={board.id === activeBoardId ? "page" : undefined}
-                  className={board.id === activeBoardId ? styles.activeBoard : ""}
+                  className={
+                    board.id === activeBoardId ? styles.activeBoard : ""
+                  }
                   key={board.id}
                   onClick={() => setActiveBoardId(board.id)}
                   type="button"
@@ -284,7 +287,10 @@ export function ProjectBoardsExperience({ resources }: Props) {
                               <textarea
                                 maxLength={2000}
                                 onChange={(event) =>
-                                  updateNote(item.resourceId, event.target.value)
+                                  updateNote(
+                                    item.resourceId,
+                                    event.target.value,
+                                  )
                                 }
                                 placeholder="Why is this source relevant? What should you inspect?"
                                 value={item.note}
@@ -304,7 +310,9 @@ export function ProjectBoardsExperience({ resources }: Props) {
                     <label>
                       <span>Find a source to add</span>
                       <input
-                        onChange={(event) => setResourceQuery(event.target.value)}
+                        onChange={(event) =>
+                          setResourceQuery(event.target.value)
+                        }
                         placeholder="Search by name, domain, or category"
                         type="search"
                         value={resourceQuery}
