@@ -300,7 +300,8 @@ export function createBoardResearchPack(input) {
   );
 
   const markdown = `${lines
-    .map((line) => normalizeLineEndings(line).replace(/[ \t]+$/gu, ""))
+    .flatMap((line) => normalizeLineEndings(line).split("\n"))
+    .map((line) => line.replace(/[ \t]+$/gu, ""))
     .join("\n")
     .replace(/\n+$/gu, "")}\n`;
 

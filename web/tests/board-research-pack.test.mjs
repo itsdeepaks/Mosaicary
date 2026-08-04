@@ -119,6 +119,23 @@ test("identical Board snapshots and dates produce byte-identical Markdown", () =
   assert.doesNotMatch(first.markdown, /[ \t]+$/gmu);
 });
 
+test("multiline Board content is normalized without trailing whitespace", () => {
+  const input = makeInput();
+  input.board.goal = "First line  \r\nSecond line\t";
+  input.board.items[0].note = "Primary note  \r\nContinuation\t";
+  input.board.unresolvedQuestions = ["Question line  \r\ncontinued\t"];
+  input.implementationReminders = ["Additional reminder  \r\ncontinued\t"];
+
+  const result = createBoardResearchPack(input);
+  assert.equal(result.ok, true);
+  assert.doesNotMatch(result.markdown, /\r/u);
+  assert.doesNotMatch(result.markdown, /[ \t]+$/gmu);
+  assert.match(result.markdown, /First line\nSecond line/u);
+  assert.match(result.markdown, /Primary note\nContinuation/u);
+  assert.match(result.markdown, /1\. Question line\ncontinued/u);
+  assert.match(result.markdown, /- Additional reminder\ncontinued/u);
+});
+
 test("changing the explicit date changes only the generated line", () => {
   const first = createBoardResearchPack(makeInput());
   const second = createBoardResearchPack(
