@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 2 / Slice 2.3 NEXT**  
+Status: **active delivery plan — Phase 2 / Slice 2.4 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -103,7 +103,7 @@ Completed code is not automatically approved as the future product model. The Ex
 |---:|---|---|---|
 | 0 | Direction Reset | DONE | — |
 | 1 | Source Intelligence Foundation | DONE | — |
-| 2 | Browse and Source Detail | ACTIVE | 2.3 NEXT |
+| 2 | Browse and Source Detail | ACTIVE | 2.4 NEXT |
 | 3 | Local Saved and Project Boards | PLANNED | 3.1 |
 | 4 | Research-Pack Export | PLANNED | 4.1 |
 | 5 | Real OSS Proof Project | PROOF | 5.1 |
@@ -122,8 +122,8 @@ Completed code is not automatically approved as the future product model. The Ex
 | 1.2 | Coverage mapping and intelligence adapter | DONE | 1.1 | `docs/slices/14.1-source-profile-contract.md` |
 | 2.1 | Canonical Browse architecture and pagination contract | DONE | 1.2 | legacy `14.2`, PR #77 |
 | 2.2 | Canonical `/resources` implementation | DONE | 2.1 | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79 |
-| 2.3 | Source Detail foundation for all 295 sources | NEXT | 1.2, 2.2 | — |
-| 2.4 | Enriched intelligence detail and Similar Sources | PLANNED | 2.3 | — |
+| 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |
+| 2.4 | Enriched intelligence detail and Similar Sources | NEXT | 2.3 | — |
 | 3.1 | Universal browser-local Save | PLANNED | 2.2, 2.3 | — |
 | 3.2 | Saved workspace search/filter refinement | PLANNED | 3.1 | — |
 | 3.3 | Local project Boards and notes | PLANNED | 3.1 | — |
@@ -272,9 +272,9 @@ Replace the competing catalogue browsers with one paginated, shareable, responsi
 - no mass screenshot work;
 - no unrelated refactor.
 
-## 12. NEXT — Phase 2 / Slice 2.3 Source Detail foundation
+## 12. Phase 2 / Slice 2.3 completion and Slice 2.4 next
 
-### Goal and acceptance boundary
+### Slice 2.3 completion evidence
 
 - 295 stable routes;
 - truthful Listed state;
@@ -285,7 +285,7 @@ Replace the competing catalogue browsers with one paginated, shareable, responsi
 - metadata, sitemap, 404;
 - provider failure does not break Tessli profile.
 
-### 2.4 Enriched intelligence and Similar Sources
+### NEXT — 2.4 Enriched intelligence and Similar Sources
 
 - capabilities and content objects;
 - platforms/frameworks;
