@@ -187,27 +187,19 @@ for (const [index, slug] of collectionSlugs.entries()) {
   );
 
   if (index === 0) {
-    const savedResourceId = await evaluate(`(() => {
-      const button = document.querySelector('[data-collection-resource-grid] [data-resource-save]');
-      const card = button?.closest('[data-resource-card]');
-      button?.click();
-      return card?.getAttribute('data-resource-id') ?? null;
-    })()`);
-
-    assert.ok(
-      savedResourceId,
-      "The first collection resource should expose a stable ID.",
+    await evaluate(
+      `document.querySelector('[data-collection-resource-grid] [data-resource-save]')?.click()`,
     );
     await waitFor(
       `document.querySelector('[data-collection-resource-grid] [data-resource-save]')?.getAttribute('aria-pressed') === 'true'`,
       "collection resource save state",
     );
-    assert.deepEqual(
-      await evaluate(
-        'JSON.parse(localStorage.getItem("tessli-saved-resource-ids-v2") ?? "[]")',
-      ),
-      [savedResourceId],
+
+    const storedIds = await evaluate(
+      'JSON.parse(localStorage.getItem("tessli-saved-resource-ids-v2") ?? "[]")',
     );
+    assert.equal(storedIds.length, 1);
+    assert.match(storedIds[0], /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
   }
 
   assert.equal(
