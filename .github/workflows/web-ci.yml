@@ -81,6 +81,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Measure OSS proof handoff
+        run: node scripts/measure-oss-proof-handoff.mjs artifacts/oss-proof-metrics.json
+
       - name: Run canonical route and browser matrix
         shell: bash
         run: |
@@ -137,5 +140,6 @@ jobs:
             web/artifacts/responsive-ui/*.png
             web/artifacts/phase-1-release/*.png
             web/artifacts/oss-proof-candidate/*.png
+            web/artifacts/oss-proof-metrics.json
           if-no-files-found: warn
           retention-days: 7
