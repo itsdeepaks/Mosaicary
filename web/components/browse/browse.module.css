@@ -1,9 +1,11 @@
 .page {
+  min-width: 0;
   padding: 3rem 0 5rem;
 }
 
 .header {
   display: grid;
+  min-width: 0;
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -24,10 +26,15 @@
 .controls {
   display: grid;
   grid-template-columns: minmax(15rem, 2fr) repeat(5, minmax(8rem, 1fr));
+  min-width: 0;
   gap: 0.75rem;
   align-items: end;
   padding: 1rem 0;
   border-block: 1px solid var(--color-border);
+}
+
+.controls > * {
+  min-width: 0;
 }
 
 .controls label {
@@ -42,6 +49,8 @@
 .controls input,
 .controls select,
 .controls button {
+  width: 100%;
+  min-width: 0;
   min-height: 2.75rem;
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -59,6 +68,7 @@
 
 .summary {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
@@ -70,6 +80,7 @@
 .pagination,
 .rowActions {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
@@ -83,6 +94,7 @@
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
   gap: 1rem;
 }
 
@@ -98,6 +110,7 @@
   display: grid;
   align-content: start;
   gap: 0.75rem;
+  min-width: 0;
   min-height: 18rem;
   padding: 1.25rem;
   color: inherit;
@@ -107,6 +120,7 @@
 .browseCardPrimary h2,
 .browseCardPrimary p {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .browseCardPrimary h2 {
@@ -126,6 +140,7 @@
 
 .browseCardActions {
   display: flex;
+  min-width: 0;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.75rem;
@@ -146,6 +161,7 @@
 
 .compactList {
   display: grid;
+  min-width: 0;
   gap: 0;
   margin: 0;
   padding: 0;
@@ -156,15 +172,21 @@
 .compactList li {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0;
   gap: 1.5rem;
   align-items: center;
   padding: 1.25rem 0;
   border-bottom: 1px solid var(--color-border);
 }
 
+.compactList li > * {
+  min-width: 0;
+}
+
 .compactList h2,
 .compactList p {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .compactList h2 {
@@ -177,9 +199,13 @@
 .unavailable {
   color: var(--color-text-muted);
   font-size: 0.8rem;
+  overflow-wrap: anywhere;
 }
 
 .tableScroller {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid var(--color-border);
 }
@@ -254,15 +280,15 @@
   }
 
   .controls {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .cardGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .compactList li {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .summary {
