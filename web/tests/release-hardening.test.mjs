@@ -111,19 +111,42 @@ test("release history remains preserved under Product Plan v2", async () => {
       "3.3",
       "`docs/slices/3.4-board-decisions.md`, PR #85",
     ],
-    ["4.1", "Board research-pack contract", "NEXT", "3.4", "—"],
+    [
+      "4.1",
+      "Board research-pack contract",
+      "DONE",
+      "3.4",
+      "`docs/research-pack-contract.md`, PR #86",
+    ],
+    ["4.2", "Deterministic Markdown export", "NEXT", "4.1", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.1 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.2 NEXT\*\*/,
   );
   assert.match(
     plan,
     /(?:\*\*)?Phases 1–10(?:\*\*)? are the ten development phases/i,
   );
   assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
+  assert.match(
+    plan,
+    /## 6\. Phase 2 — Browse and Source Detail\n\nStatus: \*\*DONE\*\*/,
+  );
+  assert.match(
+    plan,
+    /## 7\. Phase 3 — Local Saved and Project Boards\n\nStatus: \*\*DONE\*\*/,
+  );
+  assert.match(
+    plan,
+    /## 8\. Phase 4 — Research-Pack Export\n\nStatus: \*\*ACTIVE\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 4\.2 Deterministic Markdown export\n\nStatus: \*\*NEXT\*\*/,
+  );
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);
   assert.match(cutover, /no grouped runtime errors/i);
@@ -203,7 +226,7 @@ test("release note and README preserve evidence and rollback boundaries", async 
 
   assert.match(note, /does not change the production deployment target/i);
   assert.match(note, /previous known-good deployment/i);
-  assert.match(readme, /Phase 1 application/i);
+  assert.match(readme, /Current application baseline/i);
   assert.match(readme, /web\/package\.json/i);
   assert.match(
     readme,
