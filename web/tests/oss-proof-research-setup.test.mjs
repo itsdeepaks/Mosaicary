@@ -12,11 +12,6 @@ const proofRoot = new URL("../../docs/proofs/oss-homepage/", import.meta.url);
 
 test("OSS proof Board uses canonical bounded decisions", async () => {
   const artifacts = await buildOssProofArtifacts();
-  console.error(
-    `OSS_PROOF_SOURCE_MAP:${JSON.stringify(
-      artifacts.sources.map(({ id, slug, name }) => ({ id, slug, name })),
-    )}`,
-  );
   const items = artifacts.snapshot.board.items;
   const selected = items.filter((item) => item.decision === "selected");
   const rejected = items.filter((item) => item.decision === "rejected");
@@ -29,19 +24,16 @@ test("OSS proof Board uses canonical bounded decisions", async () => {
     items.length,
   );
   assert.equal(artifacts.sources.length, items.length);
-  for (const [index, item] of items.entries()) {
-    const source = artifacts.sources[index];
-    assert.equal(
-      source.id === item.resourceId || source.slug === item.resourceId,
-      true,
-      `${item.resourceId} canonical resolution`,
-    );
-  }
+  assert.deepEqual(
+    artifacts.sources.map((source) => source.id),
+    items.map((item) => item.resourceId),
+  );
   assert.equal(
     artifacts.sources.every((source) => source.profileLevel === "profiled"),
     true,
   );
   for (const item of items) {
+    assert.match(item.resourceId, /^resource-[a-f0-9]{12}$/u);
     assert.ok(item.rationale.trim(), `${item.resourceId} rationale`);
     assert.ok(item.note.trim(), `${item.resourceId} note`);
   }
