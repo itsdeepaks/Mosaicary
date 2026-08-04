@@ -10,13 +10,7 @@ function label(value: string) {
     .join(" ");
 }
 
-function List({
-  title,
-  items,
-}: {
-  title: string;
-  items: readonly string[];
-}) {
+function List({ title, items }: { title: string; items: readonly string[] }) {
   if (items.length === 0) return null;
   return (
     <section>
@@ -60,10 +54,7 @@ export function IntelligenceDetail({
             title="Integration methods"
             items={profile.integrationMethods}
           />
-          <List
-            title="Delivery formats"
-            items={intelligence.deliveryFormats}
-          />
+          <List title="Delivery formats" items={intelligence.deliveryFormats} />
           <List title="Design tools" items={intelligence.designTools} />
           <section>
             <h3>Governance</h3>
@@ -105,8 +96,8 @@ export function IntelligenceDetail({
         <p>Alternative discovery</p>
         <h2 id="similar-sources-title">Similar sources</h2>
         <p>
-          Related by category, source type, and recorded capability overlap. This
-          is not a universal quality ranking.
+          Related by category, source type, and recorded capability overlap.
+          This is not a universal quality ranking.
         </p>
         <ul>
           {similar.map((match) => (
