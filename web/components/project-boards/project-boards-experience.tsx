@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import type { BoardResearchPackSource } from "@/lib/board-research-pack.mjs";
+import { BoardExportControls } from "./board-export-controls";
 import {
   boardStoreEvent,
   createBoard,
@@ -13,15 +15,7 @@ import {
 } from "./board-store";
 import styles from "./project-boards.module.css";
 
-type BoardResource = Readonly<{
-  id: string;
-  slug: string;
-  name: string;
-  domain: string;
-  category: string;
-}>;
-
-type Props = Readonly<{ resources: readonly BoardResource[] }>;
+type Props = Readonly<{ resources: readonly BoardResearchPackSource[] }>;
 
 function updateBoard(
   boards: readonly ProjectBoard[],
@@ -283,17 +277,30 @@ export function ProjectBoardsExperience({ resources }: Props) {
                     />
                   </label>
                   <label>
+                    <span>Audience</span>
+                    <textarea
+                      maxLength={1200}
+                      onChange={(event) =>
+                        patchActiveBoard({ audience: event.target.value })
+                      }
+                      placeholder="Who is this experience for?"
+                      value={activeBoard.audience}
+                    />
+                  </label>
+                  <label className={styles.wideField}>
                     <span>Constraints</span>
                     <textarea
                       maxLength={2000}
                       onChange={(event) =>
                         patchActiveBoard({ constraints: event.target.value })
                       }
-                      placeholder="Audience, platform, brand, accessibility, technical, and content constraints"
+                      placeholder="Platform, brand, accessibility, technical, and content constraints"
                       value={activeBoard.constraints}
                     />
                   </label>
                 </div>
+
+                <BoardExportControls board={activeBoard} resources={resources} />
 
                 <section aria-labelledby="board-questions-title">
                   <div className={styles.sectionHeading}>
