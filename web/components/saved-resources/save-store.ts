@@ -1,6 +1,7 @@
 import type { ResourceCardData } from "@/components/resource-card/resource-card";
 
 export const savedResourceStoreKey = "tessli-saved-resource-ids-v2";
+export const savedResourceChangedEvent = "tessli:saved-resources-changed";
 
 const legacySaveKeys = [
   "tessli-saved-resources-v1",
@@ -61,6 +62,14 @@ function mapLegacyValues(
   );
 }
 
+function notifySavedResourceChange() {
+  try {
+    window.dispatchEvent(new Event(savedResourceChangedEvent));
+  } catch {
+    // Storage can be used in restricted browser contexts where events are unavailable.
+  }
+}
+
 export function readSavedResourceIds(resources: readonly ResourceCardData[]) {
   const storage = browserStorage();
   if (!storage) {
@@ -97,6 +106,7 @@ export function writeSavedResourceIds(resourceIds: readonly string[]) {
       savedResourceStoreKey,
       JSON.stringify(uniqueStrings(resourceIds)),
     );
+    notifySavedResourceChange();
     return true;
   } catch {
     return false;

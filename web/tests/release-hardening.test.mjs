@@ -49,7 +49,15 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     slices,
-    /\| 3\.1 \| Universal browser-local Save \| NEXT \| 2\.2, 2\.3 \| — \|/,
+    /\| 3\.1 \| Universal browser-local Save \| DONE \| 2\.2, 2\.3 \| `docs\/slices\/3\.1-universal-local-save\.md`, PR #82 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 3\.2 \| Saved workspace search\/filter refinement \| NEXT \| 3\.1 \| — \|/,
+  );
+  assert.match(
+    slices,
+    /Status: \*\*active delivery plan — Phase 3 \/ Slice 3\.2 NEXT\*\*/,
   );
   assert.match(
     plan,

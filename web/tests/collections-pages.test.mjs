@@ -73,7 +73,10 @@ test("collection cards are native internal links with factual metadata and no sa
 });
 
 test("collection details are static, ordered, truthful, and 404 unknown slugs", async () => {
-  const detail = await read("app/collections/[slug]/page.tsx");
+  const [detail, resourceList] = await Promise.all([
+    read("app/collections/[slug]/page.tsx"),
+    read("components/collection-resources/collection-resource-list.tsx"),
+  ]);
 
   assert.match(detail, /export const dynamicParams = false/);
   assert.match(detail, /generateStaticParams/);
@@ -86,16 +89,19 @@ test("collection details are static, ordered, truthful, and 404 unknown slugs", 
   );
   assert.match(detail, /<time dateTime=\{collection\.lastReviewedAt\}>/);
   assert.match(detail, /href="\/suggest"/);
+  assert.match(detail, /<CollectionResourceList/);
+  assert.match(detail, /className=\{styles\.grid\}/);
+  assert.match(detail, /resources=\{collection\.resources\}/);
+
   assert.match(
-    detail,
-    /<ol className=\{styles\.grid\} data-collection-resource-grid>/,
+    resourceList,
+    /<ol className=\{className\} data-collection-resource-grid>/,
   );
-  assert.match(detail, /collection\.resources\.map/);
-  assert.match(detail, /<ResourceCard/);
-  assert.doesNotMatch(
-    detail,
-    /onSavedChange=|saved=\{|curator|avatar|trending\b|popular\b/i,
-  );
+  assert.match(resourceList, /resources\.map/);
+  assert.match(resourceList, /<ResourceCard/);
+  assert.match(resourceList, /onSavedChange=\{handleSavedChange\}/);
+  assert.match(resourceList, /saved=\{savedIds\.includes\(resource\.id\)\}/);
+  assert.doesNotMatch(resourceList, /curator|avatar|trending\b|popular\b/i);
 });
 
 test("Collections layouts follow featured/compact and four-two-one resource contracts", async () => {
