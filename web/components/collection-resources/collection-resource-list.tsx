@@ -13,6 +13,8 @@ import {
   writeSavedResourceIds,
 } from "@/components/saved-resources/save-store";
 
+import styles from "./collection-resource-list.module.css";
+
 type CollectionResource = Readonly<{
   resource: ResourceCardData;
   categoryLabel: string;
@@ -84,7 +86,7 @@ export function CollectionResourceList({
           </li>
         ))}
       </ol>
-      <p aria-live="polite" className="tessli-visually-hidden">
+      <p aria-live="polite" className={styles.srOnly}>
         {announcement}
       </p>
     </>
