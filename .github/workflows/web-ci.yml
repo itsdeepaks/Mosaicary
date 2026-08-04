@@ -30,7 +30,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -48,84 +48,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: feat/global-navigation-naming-cleanup
-
-      - name: Advance Product Plan v2 after Slice 6.1
-        working-directory: .
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          updates = {
-              Path("build-slices.md"): {
-                  "Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.1 NEXT**":
-                      "Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.3 NEXT**",
-                  "|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.1 NEXT                   |":
-                      "|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.3 NEXT                   |",
-                  "| 6.1  | Global navigation and naming cleanup                  | NEXT     | 2.2                     | —                                                                    |":
-                      "| 6.1  | Global navigation and naming cleanup                  | DONE     | 2.2                     | `docs/slices/6.1-global-navigation-cleanup.md`, PR #92                |",
-                  "| 6.2  | Curated homepage built around proven workflow         | PLANNED  | 5.4, 6.1                | —                                                                    |":
-                      "| 6.2  | Curated homepage built around proven workflow         | BLOCKED  | 5.4, 6.1                | —                                                                    |",
-                  "| 6.3  | Collections-to-playbooks conversion                   | PLANNED  | 3.3, 4.2                | —                                                                    |":
-                      "| 6.3  | Collections-to-playbooks conversion                   | NEXT     | 3.3, 4.2                | —                                                                    |",
-                  "### ACTIVE — Phase 5 Real OSS Proof Project":
-                      "### BLOCKED — Phase 5 Real OSS Proof Project",
-                  "Only working routes enter public navigation. Homepage redesign follows the proven research loop. Collections become staged playbooks. For AI documents real tools, setup, coverage, governance, and exports.":
-                      "Slice 6.1 delivered one truthful public shell: Browse and Collections as primary routes, Search and Saved as utilities, About in the footer, no premature Sign in or For AI promotion, and responsive browser evidence. Homepage redesign remains blocked on Phase 5. Collections become staged playbooks next; For AI follows as a working product route. Evidence: `docs/slices/6.1-global-navigation-cleanup.md`, PR #92.",
-                  "After Slice 5.3 merges, refresh `main` and begin Phase 6 / Slice 6.1 on a new branch. Slice 5.4 and Slice 6.2 remain blocked until a genuine completed human-review artifact is returned.":
-                      "After Slice 6.1 merges, refresh `main` and begin Phase 6 / Slice 6.3 on a new branch. Slice 5.4 and Slice 6.2 remain blocked until a genuine completed human-review artifact is returned."
-              },
-              Path("docs/product-plan-v2.md"): {
-                  "## 10. Phase 6 — Homepage, Navigation, Playbooks, and For AI\n\nStatus: **PLANNED**":
-                      "## 10. Phase 6 — Homepage, Navigation, Playbooks, and For AI\n\nStatus: **ACTIVE**",
-                  "### 6.1 Global navigation and naming\n\nStatus: **NEXT**":
-                      "### 6.1 Global navigation and naming\n\nStatus: **DONE**",
-                  "Primary navigation:\n\n```text\nBrowse | Collections | For AI\n```":
-                      "Primary navigation:\n\n```text\nBrowse | Collections\n```",
-                  "- remove duplicated Resources/Full Reference/Explore naming;\n- About moves to secondary/footer navigation;\n- Sign in remains absent until Phase 8 works.\n\n### 6.2 Curated homepage":
-                      "- removed duplicated Resources/Full Reference/Explore naming from the public shell;\n- About moved to secondary/footer navigation;\n- Sign in remains absent until Phase 8 works;\n- For AI remains absent until Slice 6.4 supplies a working route;\n- responsive desktop/mobile browser evidence passed.\n\nEvidence: `docs/slices/6.1-global-navigation-cleanup.md`, PR #92.\n\n### 6.2 Curated homepage\n\nStatus: **BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME**",
-                  "### 6.3 Collections become playbooks\n\n- outcome and audience;":
-                      "### 6.3 Collections become playbooks\n\nStatus: **NEXT**\n\n- outcome and audience;",
-                  "### 6.4 For AI\n\n- current seven MCP tools;":
-                      "### 6.4 For AI\n\nStatus: **PLANNED**\n\n- current seven MCP tools;"
-              },
-              Path("web/tests/release-hardening.test.mjs"): {
-                  '["6.1", "Global navigation and naming cleanup", "NEXT", "2.2", "—"],':
-                      '[\n      "6.1",\n      "Global navigation and naming cleanup",\n      "DONE",\n      "2.2",\n      "`docs/slices/6.1-global-navigation-cleanup.md`, PR #92",\n    ],\n    [\n      "6.2",\n      "Curated homepage built around proven workflow",\n      "BLOCKED",\n      "5.4, 6.1",\n      "—",\n    ],\n    [\n      "6.3",\n      "Collections-to-playbooks conversion",\n      "NEXT",\n      "3.3, 4.2",\n      "—",\n    ],',
-                  '/Status: \\*\\*active delivery plan — Slice 5\\.3 BLOCKED; Phase 6 \\/ Slice 6\\.1 NEXT\\*\\*/,':
-                      '/Status: \\*\\*active delivery plan — Slice 5\\.3 BLOCKED; Phase 6 \\/ Slice 6\\.3 NEXT\\*\\*/,',
-                  '/### 6\\.1 Global navigation and naming\\n\\nStatus: \\*\\*NEXT\\*\\*/,':
-                      '/### 6\\.1 Global navigation and naming\\n\\nStatus: \\*\\*DONE\\*\\*/,',
-                  '  assert.match(\n    plan,\n    /### 6\\.1 Global navigation and naming\\n\\nStatus: \\*\\*DONE\\*\\*/,\n  );':
-                      '  assert.match(\n    plan,\n    /### 6\\.1 Global navigation and naming\\n\\nStatus: \\*\\*DONE\\*\\*/,\n  );\n  assert.match(\n    plan,\n    /### 6\\.2 Curated homepage\\n\\nStatus: \\*\\*BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME\\*\\*/,\n  );\n  assert.match(\n    plan,\n    /### 6\\.3 Collections become playbooks\\n\\nStatus: \\*\\*NEXT\\*\\*/,\n  );'
-              }
-          }
-
-          for path, replacements in updates.items():
-              text = path.read_text(encoding="utf-8")
-              for old, new in replacements.items():
-                  if old in text:
-                      if text.count(old) != 1:
-                          raise SystemExit(f"Expected exactly one match in {path}: {old!r}")
-                      text = text.replace(old, new)
-                  elif new not in text:
-                      raise SystemExit(f"Neither old nor new state found in {path}: {old!r}")
-              path.write_text(text, encoding="utf-8", newline="\n")
-          PY
-
-          cd web
-          npx prettier --write tests/release-hardening.test.mjs
-          cd ..
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add build-slices.md docs/product-plan-v2.md web/tests/release-hardening.test.mjs
-          if ! git diff --cached --quiet; then
-            git commit -m "docs: advance Phase 6 to playbooks"
-            git push origin HEAD:feat/global-navigation-naming-cleanup
-          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
