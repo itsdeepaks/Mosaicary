@@ -1,0 +1,654 @@
+name: Implement OSS proof research setup
+
+on:
+  push:
+    branches:
+      - proof/oss-homepage-research-setup
+    paths:
+      - ".github/workflows/implement-oss-proof-setup.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-research-setup
+
+      - name: Write proof artifacts and generator
+        shell: python
+        run: |
+          from pathlib import Path
+
+          files = {
+            "docs/proofs/oss-homepage/brief.md": r'''# Online Scope Studio Homepage — Proof Brief
+
+Status: **approved Slice 5.1 input**  
+Proof ID: `oss-homepage-2026-08-04`  
+Public baseline: `https://www.onlinescope.in/`  
+Observed: 2026-08-04
+
+## 1. Evidence classes
+
+This brief keeps three evidence classes separate:
+
+1. **Observed current-site facts** — text and structure visible on the public homepage on the observation date.
+2. **Project decisions** — owner-approved Online Scope Studio direction used as implementation constraints.
+3. **Open questions** — unresolved choices that the candidate must not silently decide.
+
+## 2. Observed current-site baseline
+
+The current public homepage:
+
+- uses the title `Website Development for Small Business India | Online Scope Studio`;
+- leads with `We Build Websites & Systems That Grow With Your Business`;
+- describes the audience as Indian business owners who are new online, selling on marketplaces, or ready to scale;
+- presents Shopify Store Development, Business Automation, and Custom Web Applications as the three core services;
+- explains a four-step process: Discovery Call, Proposal & Planning, Build & Review, Launch & Support;
+- highlights ScopeQR, Daddy Official, and BrandScope as selected work;
+- lists a broad tool stack including WordPress, Wix, Shopify, React, Figma, Next.js, n8n, JavaScript, Node.js, Supabase, GA4, and OpenClaw;
+- uses a consultation-led primary conversion path and WhatsApp as an additional contact path;
+- contains separate homepage sections for audience, expertise, process, selected work, tools, automation, and final CTA.
+
+These observations describe the current page. They do not endorse every current claim or lock its copy.
+
+## 3. Baseline gap
+
+The current page establishes broad website-and-automation capability, but it still reads primarily as a website-development offer for small businesses. The proof candidate must test whether Tessli research can make the homepage communicate a broader, longer-term technical-partner relationship without becoming vague, over-designed, or enterprise theatre.
+
+## 4. Project decisions
+
+### Positioning
+
+- Brand: **Online Scope Studio** / **OSS**.
+- Present OSS as a studio and long-term technical partner, not as a generic agency and not as a public solo-founder business.
+- Lead with business outcomes and technical partnership; platforms and tools support the story rather than becoming the story.
+- Keep the service scope grounded in website engineering, e-commerce, custom web applications, automation, AI-enabled workflow additions, analytics/measurement, SEO/maintenance, and UI/UX.
+- Do not add social-media marketing as a service.
+
+### Audience
+
+Primary audience:
+
+- small-to-medium business owners and founders;
+- operators and marketing/operations leaders who need reliable execution across websites, commerce, internal tools, and automation;
+- businesses that want one accountable technical partner rather than disconnected vendors.
+
+The candidate should remain understandable to a non-technical buyer while showing enough system depth to earn technical trust.
+
+### Homepage job
+
+Within the first screen and first two sections, a qualified visitor should understand:
+
+1. what OSS helps businesses build or improve;
+2. that OSS can stay involved beyond a one-off website;
+3. the main service paths;
+4. why the work is credible;
+5. the next action.
+
+### Visual direction
+
+- black, warm white, and grey foundation with one restrained signal accent;
+- technical and modern, but warmer and more original than a direct OpenAI, Vercel, Resend, or shadcn-style imitation;
+- short, visually balanced hero headline;
+- clear typography hierarchy, whitespace, borders, and moderate density;
+- restrained motion and at most one meaningful 3D/technical visual hypothesis;
+- real work and interface evidence before decorative imagery;
+- no generic AI-purple palette, glassmorphism, cursor-follow effects, scroll-jacking, decorative orbs, or meaningless floating 3D;
+- no fake metrics, testimonials, client logos, awards, urgency, or social proof.
+
+### Interaction and accessibility
+
+- responsive at 1440, 1024, 768, 390, and 320 pixels;
+- semantic structure, keyboard operation, visible focus, reduced motion, sufficient contrast, and touch-safe targets;
+- mobile is recomposed, not merely shrunk;
+- performance cost must be justified by communication value.
+
+### Conversion
+
+- one primary consultation/project-start action;
+- one secondary proof/work action;
+- WhatsApp may remain a contact option but must not compete with every section;
+- no dead newsletter, sign-in, or placeholder action.
+
+## 5. Candidate content architecture
+
+The research candidate may test this sequence:
+
+1. short positioning hero;
+2. proof of technical range through selected work or system examples;
+3. three to four outcome-oriented service paths;
+4. how the partnership works;
+5. capability/system depth without a logo wall of tools;
+6. selected work with truthful context;
+7. objection handling and final CTA.
+
+This is a research hypothesis, not a requirement to copy any selected source.
+
+## 6. Open questions
+
+- Should the signal accent remain warm orange or move toward a restrained blue?
+- Should fixed starting prices appear on the homepage or remain on a dedicated pricing page?
+- Which three to four projects have publishable outcomes and evidence beyond screenshots?
+- Does a meaningful 3D/technical visual improve comprehension enough to justify attention and performance cost?
+- Should the audience stay broad across Indian SMBs or narrow toward operations-heavy growth businesses?
+- Which single phrase best communicates long-term technical partnership without sounding like outsourced-CTO theatre?
+
+## 7. Success boundary for this proof
+
+Slice 5.1 succeeds when the brief, Board, selected and rejected sources, deterministic research pack, and baseline measurement plan are complete and reproducible.
+
+It does **not** prove that Tessli improved the homepage. That requires the candidate build, browser verification, genuine human review, and outcome report in Slices 5.2–5.4.
+''',
+            "docs/proofs/oss-homepage/baseline.md": r'''# Online Scope Studio Homepage — Baseline Measurement Plan
+
+Status: **Slice 5.1 baseline**  
+Observed page: `https://www.onlinescope.in/`  
+Observation date: 2026-08-04
+
+## 1. Why this baseline exists
+
+The proof must compare a Tessli-assisted workflow with the current manual workflow without backfilling convenient numbers after the result is known.
+
+## 2. Current manual workflow
+
+Before this proof, OSS homepage design research generally involved:
+
+1. browsing a large manually curated design-resource list;
+2. opening references one by one;
+3. collecting screenshots, URLs, section ideas, and npm/npx references in separate places;
+4. explaining selected examples to Figma or Codex;
+5. rebuilding sections when the generated UI felt generic or inconsistent;
+6. relying on conversational memory and ad-hoc Markdown notes to carry decisions across sessions.
+
+This process description is owner-reported context. It is not a timed benchmark.
+
+## 3. Baseline observations
+
+- Current homepage title is centred on website development for small businesses in India.
+- Current hero combines websites and systems in one broad statement.
+- Current homepage contains distinct audience, expertise, process, selected-work, tools, automation, and CTA sections.
+- Current service presentation is platform/deliverable heavy.
+- Current page contains real project names, but this baseline does not independently verify outcome claims.
+
+## 4. Metrics locked before implementation
+
+| Metric | Pre-proof baseline | Tessli-assisted value | Measurement rule |
+|---|---|---|---|
+| Research time | not measured | pending | Record wall-clock start/end for the bounded research task. |
+| Prompt/context size | not measured | pending | Record characters and approximate tokens in the final implementation handoff. |
+| Candidate build time | not measured | pending | Record wall-clock start/end for Slice 5.2 implementation. |
+| Rebuild loops | not measured | pending | Count material layout/direction rebuilds, not small fixes. |
+| Generic-design complaints | not measured | pending | Count explicit reviewer notes identifying generic or derivative UI. |
+| Manual corrections | not measured | pending | Count reviewer-requested corrections after first browser review. |
+| Task fit | not scored | pending human review | Score 1–5 with evidence. |
+| Hierarchy | not scored | pending human review | Score 1–5 with evidence. |
+| Mobile usability | not scored | pending human review | Score 1–5 with evidence. |
+| Discoverability | not scored | pending human review | Score 1–5 with evidence. |
+| Density | not scored | pending human review | Score 1–5 with evidence. |
+| Coherence | not scored | pending human review | Score 1–5 with evidence. |
+| Consistency | not scored | pending human review | Score 1–5 with evidence. |
+| Component reuse | not scored | pending human review | Score 1–5 with evidence. |
+| Accessibility | not scored | pending human review | Score 1–5 with evidence plus automated/manual findings. |
+| Restraint | not scored | pending human review | Score 1–5 with evidence. |
+| Regression risk | not scored | pending human review | Score 1–5 with evidence. |
+| Ship readiness | not scored | pending human review | Score 1–5 with evidence. |
+
+## 5. Measurement rules
+
+- Do not convert `not measured` into zero.
+- Do not compare scores from different rubrics.
+- Preserve the first candidate before fixes.
+- Record browser findings before changing the candidate.
+- Human scores must come from an actual reviewer and include notes.
+- A single successful candidate cannot establish a general UI-taste claim.
+- Failed or neutral results remain valid evidence.
+
+## 6. Current Slice 5.1 measurements
+
+- Selected Tessli references: **10**.
+- Rejected Tessli directions: **4**.
+- Unresolved project questions: **6**.
+- Research-pack generation: deterministic repository formatter.
+- Research time: **not measured**.
+- Human outcome scores: **not measured**.
+- Implementation loops: **not measured**.
+''',
+            "docs/proofs/oss-homepage/slice-5.2-handoff.md": r'''# Slice 5.2 Handoff — OSS Homepage Candidate
+
+Status: **candidate-build input; no implementation completed in Slice 5.1**
+
+## 1. Required inputs
+
+Slice 5.2 must read:
+
+1. `docs/proofs/oss-homepage/brief.md`;
+2. `docs/proofs/oss-homepage/research-board.json`;
+3. `docs/proofs/oss-homepage/research-pack.md`;
+4. `docs/proofs/oss-homepage/baseline.md`;
+5. Tessli `design.md` only for Tessli repository UI rules, not as the OSS brand contract;
+6. the current public OSS homepage for content provenance, not as a layout to preserve blindly.
+
+## 2. Build target
+
+Build one isolated, non-production homepage candidate under a dedicated proof/evaluation path in the Tessli repository. It must be browser-runnable and testable without changing `https://www.onlinescope.in/` or publishing a replacement site.
+
+The candidate should include:
+
+- responsive desktop/tablet/mobile composition;
+- short technical-partner hero;
+- truthful service and selected-work content;
+- primary consultation action and secondary work/proof action;
+- restrained interaction;
+- an explicit decision on whether the bounded 3D hypothesis is included or rejected;
+- semantic, keyboard, focus, contrast, motion, and overflow behavior.
+
+## 3. Agent context boundary
+
+The implementation agent receives the research pack as the design-research context. It may inspect the cited public sources under their own terms, but must not copy layouts, provider assets, paid components, screenshots, or private content.
+
+Use selected sources for different jobs:
+
+- editorial/brand direction: SiteInspire and Godly;
+- section architecture: Landingfolio and Relume;
+- typography: Typewolf;
+- component implementation: shadcn/ui and 21st.dev;
+- motion: Motion;
+- accessibility: WhoCanUse;
+- bounded 3D hypothesis: Three.js.
+
+Rejected sources remain rejected for this candidate unless new documented evidence justifies reopening the decision.
+
+## 4. Required evidence from Slice 5.2
+
+- implementation start/end timestamps;
+- final handoff character count and approximate token count;
+- first candidate retained before review fixes;
+- complete changed-file list;
+- implementation rationale linked to selected references;
+- deviations from the research pack;
+- responsive browser output at 1440, 1024, 768, 390, and 320 pixels;
+- accessibility and overflow checks;
+- no human scores yet.
+
+## 5. Exclusions
+
+- no production deployment or mutation of the live OSS site;
+- no fabricated metrics, testimonials, logos, outcomes, or client quotes;
+- no authentication, CMS, backend, contact-form submission, analytics, or external integration;
+- no Pattern Candidate publication;
+- no claim that Tessli improved UI quality before Slice 5.3 review and Slice 5.4 analysis.
+
+## 6. Exit boundary
+
+Slice 5.2 is complete when one bounded candidate and its browser/implementation evidence are merged. Human scoring and post-review fixes belong to Slice 5.3.
+''',
+            "web/scripts/generate-oss-proof-research-setup.mjs": r'''import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+          import { fileURLToPath, pathToFileURL } from "node:url";
+
+          import { createBoardResearchPack } from "../lib/board-research-pack.mjs";
+
+          export const OSS_PROOF_ID = "oss-homepage-2026-08-04";
+          export const OSS_PROOF_DATE = "2026-08-04";
+
+          const proofDirectory = new URL(
+            "../../docs/proofs/oss-homepage/",
+            import.meta.url,
+          );
+          const boardPath = new URL("research-board.json", proofDirectory);
+          const packPath = new URL("research-pack.md", proofDirectory);
+          const cataloguePath = new URL("../data/catalogue.json", import.meta.url);
+          const profilesDirectory = new URL(
+            "../data/intelligence-profiles/",
+            import.meta.url,
+          );
+
+          const boardSnapshot = Object.freeze({
+            proofVersion: 1,
+            proofId: OSS_PROOF_ID,
+            generatedAt: OSS_PROOF_DATE,
+            source: "repository-proof-snapshot",
+            board: {
+              id: "proof-oss-homepage-v1",
+              name: "Online Scope Studio Homepage",
+              goal:
+                "Reposition the current Online Scope Studio homepage from a broad website-development offer into a clear, credible long-term technical-partner story for small-to-medium businesses, while preserving truthful services and an understandable conversion path.",
+              audience:
+                "Small-to-medium business owners, founders, and marketing or operations leaders who need one accountable technical partner across websites, commerce, custom web applications, automation, measurement, maintenance, and UI/UX.",
+              constraints:
+                "Use a black, warm-white, and grey foundation with one restrained signal accent. Keep the hero short and balanced. Show business outcomes before tool logos. Preserve real project evidence only. Do not present OSS as a generic agency or public solo-founder business. Do not add social-media marketing. Avoid generic AI-purple styling, glassmorphism, cursor effects, scroll-jacking, fake proof, and decorative 3D. Any motion or 3D must improve comprehension and remain accessible, responsive, and performance-conscious.",
+              unresolvedQuestions: [
+                "Should the signal accent remain warm orange or move toward restrained blue?",
+                "Should fixed starting prices appear on the homepage or remain on a dedicated pricing page?",
+                "Which three to four projects have publishable outcomes beyond screenshots?",
+                "Does one meaningful 3D or technical visual improve comprehension enough to justify its cost?",
+                "Should the audience remain broad across Indian SMBs or narrow toward operations-heavy growth businesses?",
+                "Which short phrase communicates long-term technical partnership without outsourced-CTO theatre?",
+              ],
+              createdAt: "2026-08-04T00:00:00.000Z",
+              updatedAt: "2026-08-04T00:00:00.000Z",
+              items: [
+                {
+                  resourceId: "siteinspire",
+                  decision: "selected",
+                  rationale:
+                    "Establish an editorial, studio-quality brand direction without locking the candidate to one layout.",
+                  note:
+                    "Inspect short hero typography, project presentation, whitespace, borders, and restrained colour. Treat it as visual research only; it provides no code exports.",
+                },
+                {
+                  resourceId: "godly",
+                  decision: "selected",
+                  rationale:
+                    "Set an upper craft boundary for typography and interaction while making restraint an explicit review criterion.",
+                  note:
+                    "Inspect page rhythm and motion timing, then reject continuous spectacle, illegible display type, and agency-showcase excess.",
+                },
+                {
+                  resourceId: "landingfolio",
+                  decision: "selected",
+                  rationale:
+                    "Research hero, services, proof, process, objection, and CTA section patterns for an original homepage structure.",
+                  note:
+                    "Retain source URLs. Do not mirror screenshots or paid components; membership and request limits remain provider concerns.",
+                },
+                {
+                  resourceId: "typewolf",
+                  decision: "selected",
+                  rationale:
+                    "Define a readable display/body hierarchy that feels editorial and premium without sacrificing clarity for non-technical buyers.",
+                  note:
+                    "Inspect scale, line length, contrast, and pairing principles. Font licensing and availability must be revalidated before production use.",
+                },
+                {
+                  resourceId: "shadcn-ui",
+                  decision: "selected",
+                  rationale:
+                    "Ground buttons, navigation, dialogs, and form-adjacent components in accessible, implementable React patterns.",
+                  note:
+                    "Use primitives and behavior, not the default shadcn visual identity. Preserve OSS-specific spacing, type, borders, and colour decisions.",
+                },
+                {
+                  resourceId: "21st-dev",
+                  decision: "selected",
+                  rationale:
+                    "Explore contemporary component-level alternatives and implementation precedents without turning the candidate into a component collage.",
+                  note:
+                    "Validate code, dependencies, originality, licensing, and accessibility before reuse. Select only patterns serving the brief.",
+                },
+                {
+                  resourceId: "motion",
+                  decision: "selected",
+                  rationale:
+                    "Implement a small motion system with purposeful entrance, feedback, and reduced-motion behavior.",
+                  note:
+                    "Prefer opacity/transform and short state transitions. No scroll-jacking, continuous motion, or animation used to hide weak hierarchy.",
+                },
+                {
+                  resourceId: "who-can-use",
+                  decision: "selected",
+                  rationale:
+                    "Check whether the restrained accent and neutral palette remain legible across common vision conditions.",
+                  note:
+                    "Use it as one contrast-research input, then verify final tokens against WCAG-oriented tooling and manual review.",
+                },
+                {
+                  resourceId: "relume",
+                  decision: "selected",
+                  rationale:
+                    "Challenge the information architecture and section sequence before visual polish begins.",
+                  note:
+                    "Use planning and structural principles only. Revalidate access, terms, and any paid-library boundary before using provider material.",
+                },
+                {
+                  resourceId: "three-js",
+                  decision: "selected",
+                  rationale:
+                    "Test one bounded technical-visual hypothesis rather than assuming 3D belongs on the page.",
+                  note:
+                    "Include only if it explains systems, connection, or technical depth better than static composition. Otherwise record a deliberate rejection.",
+                },
+                {
+                  resourceId: "v0",
+                  decision: "rejected",
+                  rationale:
+                    "Reject v0 as the primary visual-authority or taste source for this proof because generated defaults could bias the candidate toward generic AI UI.",
+                  note:
+                    "It may be considered later as an implementation assistant only after the brief and research pack control the direction.",
+                },
+                {
+                  resourceId: "ant-design",
+                  decision: "rejected",
+                  rationale:
+                    "Its enterprise product-interface system is not the primary fit for an editorial marketing homepage.",
+                  note:
+                    "This is project-specific. Ant Design remains useful for complex application interfaces, not this candidate's brand direction.",
+                },
+                {
+                  resourceId: "mobbin",
+                  decision: "rejected",
+                  rationale:
+                    "Mobile product-flow research is not the highest-priority input for the homepage positioning and section-architecture problem.",
+                  note:
+                    "Reopen for a future product onboarding or application-flow task, not for this marketing-page proof.",
+                },
+                {
+                  resourceId: "page-flows",
+                  decision: "rejected",
+                  rationale:
+                    "Recorded app and website flows do not directly solve the homepage's technical-partner positioning and visual-system task.",
+                  note:
+                    "Reopen when researching a specific product journey, form flow, onboarding, or conversion sequence.",
+                },
+              ],
+            },
+            implementationReminders: [
+              "Keep the hero headline short enough to remain visually balanced on mobile and desktop.",
+              "Do not identify OSS publicly as a solo-founder business.",
+              "Do not add social-media marketing to the service scope.",
+              "Use only real portfolio evidence; omit unsupported metrics, testimonials, and client-logo claims.",
+              "Treat the accent colour and 3D hypothesis as open decisions until the candidate is reviewed.",
+            ],
+          });
+
+          async function loadCanonicalSources() {
+            const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
+            const rawProfiles = new Map();
+            for (const filename of await readdir(profilesDirectory)) {
+              if (!filename.endsWith(".json")) continue;
+              const profile = JSON.parse(
+                await readFile(new URL(filename, profilesDirectory), "utf8"),
+              );
+              rawProfiles.set(profile.resourceId, profile);
+            }
+            const catalogueById = new Map(
+              catalogue.resources.map((resource) => [resource.id, resource]),
+            );
+            return boardSnapshot.board.items.map((item) => {
+              const resource = catalogueById.get(item.resourceId);
+              if (!resource) {
+                throw new Error(`Unknown canonical source: ${item.resourceId}`);
+              }
+              const profile = rawProfiles.get(resource.id) ?? null;
+              return {
+                id: resource.id,
+                slug: resource.slug,
+                name: resource.name,
+                url: resource.url,
+                domain: resource.domain,
+                summary: resource.description,
+                category: resource.category,
+                access: resource.access,
+                profileLevel: profile ? "profiled" : "listed",
+                bestFor: profile?.workflowFit ?? [],
+                capabilities: profile?.capabilities ?? [],
+                limitations: profile?.limitations ?? [],
+                evidence: profile?.evidence ?? [],
+              };
+            });
+          }
+
+          export async function buildOssProofArtifacts() {
+            const sources = await loadCanonicalSources();
+            const packInput = {
+              contractVersion: 1,
+              generatedAt: boardSnapshot.generatedAt,
+              board: boardSnapshot.board,
+              sources,
+              implementationReminders: boardSnapshot.implementationReminders,
+            };
+            const result = createBoardResearchPack(packInput);
+            if (!result.ok) {
+              throw new Error(`OSS proof pack is invalid: ${result.errors.join(" ")}`);
+            }
+            return {
+              board: boardSnapshot,
+              sources,
+              markdown: result.markdown,
+              filename: result.filename,
+            };
+          }
+
+          export async function writeOssProofArtifacts() {
+            const artifacts = await buildOssProofArtifacts();
+            await mkdir(proofDirectory, { recursive: true });
+            await writeFile(
+              boardPath,
+              `${JSON.stringify(artifacts.board, null, 2)}\n`,
+              "utf8",
+            );
+            await writeFile(packPath, artifacts.markdown, "utf8");
+            return artifacts;
+          }
+
+          if (process.argv[1] && pathToFileURL(fileURLToPath(import.meta.url)).href === pathToFileURL(process.argv[1]).href) {
+            const artifacts = await writeOssProofArtifacts();
+            console.log(
+              `Generated ${artifacts.filename} with ${artifacts.board.board.items.filter((item) => item.decision === "selected").length} selected references.`,
+            );
+          }
+          ''',
+            "web/tests/oss-proof-research-setup.test.mjs": r'''import assert from "node:assert/strict";
+          import { readFile } from "node:fs/promises";
+          import { test } from "node:test";
+
+          import {
+            OSS_PROOF_DATE,
+            OSS_PROOF_ID,
+            buildOssProofArtifacts,
+          } from "../scripts/generate-oss-proof-research-setup.mjs";
+
+          const proofRoot = new URL("../../docs/proofs/oss-homepage/", import.meta.url);
+
+          test("OSS proof Board uses canonical bounded decisions", async () => {
+            const artifacts = await buildOssProofArtifacts();
+            const items = artifacts.board.board.items;
+            const selected = items.filter((item) => item.decision === "selected");
+            const rejected = items.filter((item) => item.decision === "rejected");
+            assert.equal(artifacts.board.proofId, OSS_PROOF_ID);
+            assert.equal(artifacts.board.generatedAt, OSS_PROOF_DATE);
+            assert.equal(selected.length, 10);
+            assert.equal(rejected.length, 4);
+            assert.equal(new Set(items.map((item) => item.resourceId)).size, items.length);
+            assert.equal(artifacts.sources.length, items.length);
+            assert.deepEqual(
+              artifacts.sources.map((source) => source.id),
+              items.map((item) => item.resourceId),
+            );
+            assert.equal(
+              artifacts.sources.every((source) => source.profileLevel === "profiled"),
+              true,
+            );
+            for (const item of items) {
+              assert.ok(item.rationale.trim(), `${item.resourceId} rationale`);
+              assert.ok(item.note.trim(), `${item.resourceId} note`);
+            }
+          });
+
+          test("committed Board and research pack match deterministic generation", async () => {
+            const artifacts = await buildOssProofArtifacts();
+            const committedBoard = await readFile(
+              new URL("research-board.json", proofRoot),
+              "utf8",
+            );
+            const committedPack = await readFile(
+              new URL("research-pack.md", proofRoot),
+              "utf8",
+            );
+            assert.equal(
+              committedBoard,
+              `${JSON.stringify(artifacts.board, null, 2)}\n`,
+            );
+            assert.equal(committedPack, artifacts.markdown);
+            assert.match(committedPack, /Contract: tessli\.board-research-pack\.v1/u);
+            assert.match(committedPack, /Generated: 2026-08-04/u);
+            assert.match(committedPack, /Selected references: 10/u);
+            assert.match(committedPack, /## 3\. Rejected Directions/u);
+            assert.doesNotMatch(committedPack, /Unknown source/u);
+            assert.doesNotMatch(committedPack, /[ \t]+$/gmu);
+            assert.equal(committedPack.endsWith("\n"), true);
+          });
+
+          test("proof setup preserves evidence and outcome boundaries", async () => {
+            const [brief, baseline, handoff, pack] = await Promise.all([
+              readFile(new URL("brief.md", proofRoot), "utf8"),
+              readFile(new URL("baseline.md", proofRoot), "utf8"),
+              readFile(new URL("slice-5.2-handoff.md", proofRoot), "utf8"),
+              readFile(new URL("research-pack.md", proofRoot), "utf8"),
+            ]);
+            assert.match(brief, /Observed current-site baseline/u);
+            assert.match(brief, /Project decisions/u);
+            assert.match(brief, /Open questions/u);
+            assert.match(brief, /https:\/\/www\.onlinescope\.in\//u);
+            assert.match(baseline, /Research time \| not measured/u);
+            assert.match(baseline, /Human outcome scores: \*\*not measured\*\*/u);
+            assert.match(handoff, /no implementation completed in Slice 5\.1/u);
+            assert.match(handoff, /no human scores yet/u);
+            assert.match(pack, /not live-provider verification/u);
+            assert.doesNotMatch(
+              [brief, baseline, handoff, pack].join("\n"),
+              /Tessli (?:proved|improved|guaranteed) the (?:design|homepage|UI)/iu,
+            );
+          });
+
+          test("proof generator is deterministic and network-free", async () => {
+            const source = await readFile(
+              new URL(
+                "../scripts/generate-oss-proof-research-setup.mjs",
+                import.meta.url,
+              ),
+              "utf8",
+            );
+            assert.doesNotMatch(
+              source,
+              /fetch\(|XMLHttpRequest|Date\.now\(|new Date\(|localStorage|cookies\(|process\.env/u,
+            );
+          });
+          ''',
+          }
+
+          for path, content in files.items():
+              target = Path(path)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_text(content)
+
+      - name: Generate committed Board and research pack
+        working-directory: web
+        run: node scripts/generate-oss-proof-research-setup.mjs
+
+      - name: Format proof files
+        working-directory: web
+        run: npx prettier --write ../docs/proofs/oss-homepage ../docs/slices/5.1-oss-proof-research-setup.md scripts/generate-oss-proof-research-setup.mjs tests/oss-proof-research-setup.test.mjs
+
+      - name: Commit implementation
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/proofs/oss-homepage docs/slices/5.1-oss-proof-research-setup.md web/scripts/generate-oss-proof-research-setup.mjs web/tests/oss-proof-research-setup.test.mjs
+          git commit -m "proof: add OSS homepage research setup"
+          git push origin HEAD:proof/oss-homepage-research-setup
