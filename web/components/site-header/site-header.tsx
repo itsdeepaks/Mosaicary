@@ -5,11 +5,18 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CloseIcon, MenuIcon } from "./icons";
-import { availableNavigationItems, type NavigationItem } from "./navigation";
+import {
+  availablePrimaryNavigationItems,
+  availableUtilityNavigationItems,
+  type NavigationItem,
+} from "./navigation";
 import styles from "./site-header.module.css";
 
 function isItemActive(item: NavigationItem, pathname: string) {
-  return item.exact ? pathname === item.href : pathname.startsWith(item.href);
+  if (item.match === "none") return false;
+  return item.match === "exact"
+    ? pathname === item.href
+    : pathname.startsWith(item.href);
 }
 
 export function SiteHeader() {
@@ -18,7 +25,6 @@ export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
-  const isAuthActive = pathname.startsWith("/auth");
 
   const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
@@ -141,7 +147,7 @@ export function SiteHeader() {
           className={styles.desktopNavigation}
           aria-label="Primary navigation"
         >
-          {availableNavigationItems.map((item) => {
+          {availablePrimaryNavigationItems.map((item) => {
             const active = isItemActive(item, pathname);
             return (
               <Link
@@ -157,13 +163,21 @@ export function SiteHeader() {
         </nav>
 
         <div className={styles.actions}>
-          <Link
-            aria-current={isAuthActive ? "page" : undefined}
-            className={`${styles.accountLink} ${isAuthActive ? styles.accountLinkActive : ""}`}
-            href="/auth"
-          >
-            Sign in
-          </Link>
+          <nav className={styles.utilityNavigation} aria-label="Utilities">
+            {availableUtilityNavigationItems.map((item) => {
+              const active = isItemActive(item, pathname);
+              return (
+                <Link
+                  aria-current={active ? "page" : undefined}
+                  className={`${styles.utilityLink} ${active ? styles.utilityLinkActive : ""}`}
+                  href={item.href}
+                  key={item.href}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
           <button
             aria-controls="mobile-navigation-sheet"
             aria-expanded={isMenuOpen}
@@ -218,7 +232,7 @@ export function SiteHeader() {
             className={styles.mobileNavigation}
             aria-label="Mobile primary navigation"
           >
-            {availableNavigationItems.map((item) => {
+            {availablePrimaryNavigationItems.map((item) => {
               const active = isItemActive(item, pathname);
               return (
                 <Link
@@ -233,15 +247,26 @@ export function SiteHeader() {
               );
             })}
           </nav>
-          <Link
-            aria-current={isAuthActive ? "page" : undefined}
-            className={`${styles.mobileAccountLink} ${isAuthActive ? styles.mobileAccountLinkActive : ""}`}
-            href="/auth"
-            onClick={closeMenu}
-          >
-            <span>Sign in to Tessli</span>
-            <span aria-hidden="true">→</span>
-          </Link>
+          <div className={styles.mobileUtilities}>
+            <p>Utilities</p>
+            <nav aria-label="Mobile utilities">
+              {availableUtilityNavigationItems.map((item) => {
+                const active = isItemActive(item, pathname);
+                return (
+                  <Link
+                    aria-current={active ? "page" : undefined}
+                    className={`${styles.mobileUtilityLink} ${active ? styles.mobileUtilityLinkActive : ""}`}
+                    href={item.href}
+                    key={item.href}
+                    onClick={closeMenu}
+                  >
+                    <span>{item.label}</span>
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
         </div>
       </div>
     </header>
