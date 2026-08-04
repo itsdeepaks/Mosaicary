@@ -194,7 +194,10 @@ for (const [index, slug] of collectionSlugs.entries()) {
       return card?.getAttribute('data-resource-id') ?? null;
     })()`);
 
-    assert.ok(savedResourceId, "The first collection resource should expose a stable ID.");
+    assert.ok(
+      savedResourceId,
+      "The first collection resource should expose a stable ID.",
+    );
     await waitFor(
       `document.querySelector('[data-collection-resource-grid] [data-resource-save]')?.getAttribute('aria-pressed') === 'true'`,
       "collection resource save state",
