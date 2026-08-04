@@ -1,0 +1,119 @@
+name: Complete Slice 5.1 ledger and evidence
+
+on:
+  push:
+    branches:
+      - proof/oss-homepage-research-setup
+    paths:
+      - ".github/workflows/complete-slice-5-1.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out proof branch
+        uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-research-setup
+
+      - name: Align Slice 5.1 completion state
+        shell: python
+        run: |
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              target = Path(path)
+              content = target.read_text()
+              count = content.count(old)
+              if count != 1:
+                  raise SystemExit(f"{path}: expected one match, found {count}: {old!r}")
+              target.write_text(content.replace(old, new, 1))
+
+          replace_once(
+              "build-slices.md",
+              "Status: **active delivery plan — Phase 5 / Slice 5.1 NEXT**",
+              "Status: **active delivery plan — Phase 5 / Slice 5.2 NEXT**",
+          )
+          replace_once(
+              "build-slices.md",
+              "|     5 | Real OSS Proof Project                      | ACTIVE   | 5.1 NEXT                   |",
+              "|     5 | Real OSS Proof Project                      | ACTIVE   | 5.2 NEXT                   |",
+          )
+          replace_once(
+              "build-slices.md",
+              "| 5.1  | OSS proof brief and research Board                    | NEXT     | 4.3                     | —                                                                    |\n| 5.2  | Agent implementation from exported pack               | PROOF    | 5.1                     | —                                                                    |",
+              "| 5.1  | OSS proof brief and research Board                    | DONE     | 4.3                     | `docs/slices/5.1-oss-proof-research-setup.md`, PR #89                 |\n| 5.2  | Agent implementation from exported pack               | NEXT     | 5.1                     | —                                                                    |",
+          )
+          replace_once(
+              "build-slices.md",
+              "### ACTIVE — Phase 5 Real OSS Proof Project\n\nSlice 5.1 is next. Use a real OSS brief, Board, exported pack, agent build, browser verification, and genuine human review. Missing human review is a blocker, not permission to invent scores.",
+              "### ACTIVE — Phase 5 Real OSS Proof Project\n\nSlice 5.1 delivered a real OSS homepage brief, ten selected references, four rejected directions, a deterministic `tessli.board-research-pack.v1` handoff, locked baseline metrics, and a bounded Slice 5.2 implementation brief. Evidence: `docs/slices/5.1-oss-proof-research-setup.md`, PR #89.\n\nSlice 5.2 is next: implement one isolated non-production candidate from the committed pack, retain the first candidate and implementation evidence, and do not invent human scores. Missing human review remains a blocker for Slice 5.3, not permission to fabricate evidence.",
+          )
+          replace_once(
+              "build-slices.md",
+              "After Slice 4.3 merges, refresh `main` and begin Phase 5 / Slice 5.1 on a new branch in this conversation.",
+              "After Slice 5.1 merges, refresh `main` and begin Phase 5 / Slice 5.2 on a new branch in this conversation.",
+          )
+
+          replace_once(
+              "docs/product-plan-v2.md",
+              "### 5.1 Research setup\n\nStatus: **NEXT**\n\n- real brief, audience, and constraints;\n- 8–12 selected sources;\n- rejected directions;\n- exported research pack;\n- baseline timing and process notes.\n\n### 5.2 Agent implementation\n\n- give the pack and repository context to Codex;",
+              "### 5.1 Research setup\n\nStatus: **DONE**\n\n- real Online Scope Studio homepage brief, audience, and constraints;\n- ten selected canonical sources and four rejected directions;\n- deterministic `tessli.board-research-pack.v1` export;\n- baseline timing/process rubric with unknown values kept `not measured`;\n- bounded candidate-build handoff without implementation or human-score claims.\n\nEvidence: `docs/slices/5.1-oss-proof-research-setup.md`, PR #89.\n\n### 5.2 Agent implementation\n\nStatus: **NEXT**\n\n- give the pack and repository context to Codex;",
+          )
+
+          replace_once(
+              "README.md",
+              "- deterministic public Markdown/JSON for every source and published collection;\n",
+              "- deterministic public Markdown/JSON for every source and published collection;\n- a reproducible Online Scope Studio homepage proof brief, Board, baseline, and research pack;\n",
+          )
+          replace_once(
+              "README.md",
+              "The approved next slice is **Phase 5 / Slice 5.1 — OSS proof brief and research Board**.",
+              "The approved next slice is **Phase 5 / Slice 5.2 — agent implementation from the exported OSS research pack**.",
+          )
+
+          slice_path = Path("docs/slices/5.1-oss-proof-research-setup.md")
+          slice_doc = slice_path.read_text()
+          slice_doc = slice_doc.replace("Status: **IN PROGRESS**", "Status: **DONE**", 1)
+          slice_doc += '''\n## Delivered\n\n- real public OSS homepage baseline separated from approved project decisions and open questions;\n- ten selected canonical Profiled sources and four project-specific rejected directions;\n- stable canonical source IDs retained in a repository proof Board snapshot;\n- exact formatter-generated `tessli.board-research-pack.v1` Markdown with explicit date `2026-08-04`;\n- baseline measurement table using `not measured` and `not scored` rather than invented values;\n- bounded Slice 5.2 handoff for one isolated non-production candidate;\n- deterministic, network-free generator and byte-parity tests.\n\n## Review findings fixed\n\n- removed unused temporary implementation and formatting workflows;\n- fixed direct generator execution without passing a file URL through `fileURLToPath`;\n- resolved proof sources by canonical stable ID or slug while mapping intelligence by canonical ID/slug;\n- replaced readable slugs in the Board with actual stable IDs required by the Board exporter;\n- narrowed the false-outcome assertion so explicit statements that improvement has not been proven remain allowed;\n- committed the research pack only through the repository formatter, then removed the temporary generator workflow.\n\n## Evidence boundary\n\nSlice 5.1 records setup evidence only. Research time, candidate build time, iterations, human scores, and outcome improvement remain unmeasured until their approved later slices.\n\n## Validation boundary\n\nThe final exact head, Web CI run, Release Gate run, complete-diff findings, and review-thread state are recorded in PR #89. No failed check or missing human evidence is bypassed.\n'''
+          slice_path.write_text(slice_doc)
+
+          test_path = Path("web/tests/release-hardening.test.mjs")
+          test = test_path.read_text()
+          test = test.replace(
+              '["5.1", "OSS proof brief and research Board", "NEXT", "4.3", "—"],',
+              '''[\n      "5.1",\n      "OSS proof brief and research Board",\n      "DONE",\n      "4.3",\n      "`docs/slices/5.1-oss-proof-research-setup.md`, PR #89",\n    ],\n    [\n      "5.2",\n      "Agent implementation from exported pack",\n      "NEXT",\n      "5.1",\n      "—",\n    ],''',
+              1,
+          )
+          test = test.replace(
+              r'/Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.1 NEXT\*\*/',
+              r'/Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.2 NEXT\*\*/',
+              1,
+          )
+          test = test.replace(
+              r'/### 5\.1 Research setup\n\nStatus: \*\*NEXT\*\*/',
+              r'/### 5\.1 Research setup\n\nStatus: \*\*DONE\*\*/',
+              1,
+          )
+          marker = '  assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);\n'
+          addition = '''  assert.match(\n    plan,\n    /### 5\\.2 Agent implementation\\n\\nStatus: \\*\\*NEXT\\*\\*/,\n  );\n  assert.match(\n    slices,\n    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,\n  );\n'''
+          if test.count(marker) != 1:
+              raise SystemExit("release test insertion marker mismatch")
+          test = test.replace(marker, addition + marker, 1)
+          test_path.write_text(test)
+
+      - name: Format completion files
+        working-directory: web
+        run: npx prettier --write ../build-slices.md ../docs/product-plan-v2.md ../README.md ../docs/slices/5.1-oss-proof-research-setup.md tests/release-hardening.test.mjs
+
+      - name: Commit completion state
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add build-slices.md docs/product-plan-v2.md README.md docs/slices/5.1-oss-proof-research-setup.md web/tests/release-hardening.test.mjs
+          git commit -m "docs: complete OSS proof research setup"
+          git push origin HEAD:proof/oss-homepage-research-setup
