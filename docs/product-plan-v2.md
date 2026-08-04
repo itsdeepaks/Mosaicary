@@ -44,7 +44,7 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 |     1 | Source Intelligence Foundation              | DONE     | One canonical source/profile model shared by website, exports, and MCP     |
 |     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source         |
 |     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account               |
-|     4 | Research-Pack Export                        | ACTIVE   | Deterministic, model-independent project context                           |
+|     4 | Research-Pack Export                        | DONE     | Deterministic, model-independent project context                           |
 |     5 | Real OSS Proof Project                      | BLOCKED  | Safe review setup complete; genuine human judgment still required          |
 |     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | Independent public-shell work can continue while the proof is blocked      |
 |     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work              |

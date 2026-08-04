@@ -153,20 +153,8 @@ test("release history remains preserved under Product Plan v2", async () => {
       "5.2",
       "`docs/slices/5.3-oss-homepage-human-review.md`, PR #91",
     ],
-    [
-      "5.4",
-      "Outcome/evidence report",
-      "BLOCKED",
-      "5.3 human artifact",
-      "—",
-    ],
-    [
-      "6.1",
-      "Global navigation and naming cleanup",
-      "NEXT",
-      "2.2",
-      "—",
-    ],
+    ["5.4", "Outcome/evidence report", "BLOCKED", "5.3 human artifact", "—"],
+    ["6.1", "Global navigation and naming cleanup", "NEXT", "2.2", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
