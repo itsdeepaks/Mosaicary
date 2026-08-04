@@ -139,13 +139,20 @@ test("release history remains preserved under Product Plan v2", async () => {
       "4.3",
       "`docs/slices/5.1-oss-proof-research-setup.md`, PR #89",
     ],
-    ["5.2", "Agent implementation from exported pack", "NEXT", "5.1", "—"],
+    [
+      "5.2",
+      "Agent implementation from exported pack",
+      "DONE",
+      "5.1",
+      "`docs/slices/5.2-oss-homepage-candidate.md`, PR #90",
+    ],
+    ["5.3", "Browser and human review", "NEXT", "5.2", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.2 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Phase 5 \/ Slice 5\.3 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -177,10 +184,18 @@ test("release history remains preserved under Product Plan v2", async () => {
     /## 9\. Phase 5 — Real OSS Proof Project\n\nStatus: \*\*ACTIVE — PROOF REQUIRED\*\*/,
   );
   assert.match(plan, /### 5\.1 Research setup\n\nStatus: \*\*DONE\*\*/);
-  assert.match(plan, /### 5\.2 Agent implementation\n\nStatus: \*\*NEXT\*\*/);
+  assert.match(plan, /### 5\.2 Agent implementation\n\nStatus: \*\*DONE\*\*/);
+  assert.match(
+    plan,
+    /### 5\.3 Browser and human review\n\nStatus: \*\*NEXT\*\*/,
+  );
   assert.match(
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,
+  );
+  assert.match(
+    slices,
+    /35,079-character handoff.*five-viewport screenshot checks/is,
   );
   assert.match(cutover, /dpl_6fj2gzYhAEDahEbeQZvVrTneejy9/);
   assert.match(cutover, /dpl_CQXFJvSFdnXGkEsswdGQv38NhymS/);

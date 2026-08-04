@@ -306,14 +306,20 @@ Evidence: `docs/slices/5.1-oss-proof-research-setup.md`, PR #89.
 
 ### 5.2 Agent implementation
 
-Status: **NEXT**
+Status: **DONE**
 
-- give the pack and repository context to Codex;
-- implement one approved page or section candidate;
-- retain prompts, changed files, time, and iteration count;
-- do not present hidden manual intervention as automation.
+- implemented one isolated, non-production OSS homepage candidate from the committed pack;
+- retained the first candidate before browser-review corrections;
+- recorded a 35,079-character / 8,770-token-estimate repository handoff;
+- recorded the one-hour implementation and automated-review window, source traceability, deviations, and correction count;
+- passed structural, accessibility-tree, touch-target, overflow, console, and five-viewport screenshot checks;
+- preserved the no-production, no-provider-asset, no-human-score, and no-outcome-claim boundaries.
+
+Evidence: `docs/slices/5.2-oss-homepage-candidate.md`, PR #90.
 
 ### 5.3 Browser and human review
+
+Status: **NEXT**
 
 - 1440, 1024, 768, 390, and 320 px checks where applicable;
 - accessibility and interaction review;
