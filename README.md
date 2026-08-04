@@ -34,6 +34,7 @@ The current application now includes the first reusable Tessli research loop:
 - browser-local Saved with search, filters, sorting, removal, and undo;
 - browser-local project Boards with goals, audience, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
 - deterministic browser-local Markdown research-pack copy and download;
+- deterministic public Markdown/JSON for every source and published collection;
 - six repository-maintained collections;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
@@ -63,8 +64,8 @@ Phase 0  Direction Reset                         DONE
 Phase 1  Source Intelligence Foundation          DONE
 Phase 2  Browse and Source Detail                DONE
 Phase 3  Local Saved and Project Boards          DONE
-Phase 4  Research-Pack Export                    ACTIVE
-Phase 5  Real OSS Proof Project                  PROOF
+Phase 4  Research-Pack Export                    DONE
+Phase 5  Real OSS Proof Project                  ACTIVE
 Phase 6  Homepage, Navigation, Playbooks, For AI PLANNED
 Phase 7  Reviewed Pattern Candidates             PLANNED
 Phase 8  Authentication and Cloud Workspace      DEFERRED
@@ -72,7 +73,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next slice is **Phase 4 / Slice 4.3 — safe public machine-readable representations**.
+The approved next slice is **Phase 5 / Slice 5.1 — OSS proof brief and research Board**.
 
 ## Source coverage levels
 
@@ -96,7 +97,7 @@ All 295 sources must not imply equal intelligence depth.
 
 ### Without MCP
 
-Tessli will support stable, semantic public source pages and deterministic Markdown/JSON exports that can be searched, shared, pasted, or uploaded to models.
+Tessli supports stable semantic source pages, deterministic Board research packs, and public source/collection Markdown and JSON that can be searched, shared, pasted, or uploaded to models.
 
 ### With MCP
 

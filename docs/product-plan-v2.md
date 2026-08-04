@@ -228,7 +228,7 @@ Phase exit criteria met:
 
 ## 8. Phase 4 — Research-Pack Export
 
-Status: **ACTIVE**
+Status: **DONE**
 
 Goal: turn one project Board into compact context usable by any language model, with or without MCP.
 
@@ -268,30 +268,33 @@ Evidence: `docs/slices/4.2-deterministic-markdown-export.md`, PR #87.
 
 ### 4.3 Safe public machine-readable representations
 
-Status: **NEXT**
+Status: **DONE**
 
-Only after privacy review:
+- every canonical source exposes deterministic `profile.json` and `profile.md`;
+- every published collection exposes deterministic `collection.json` and `collection.md`;
+- canonical SourceProfile truth and editorial collection order are preserved;
+- response headers make representations readable, cacheable, indexable, and safe for cross-origin model clients;
+- repository intelligence remains explicitly distinct from live-provider verification;
+- no bulk catalogue endpoint or private browser-local Board content is published.
 
-- public source `.md` and `.json` representations;
-- public collection/playbook representations;
-- stable semantic pages and sitemap;
-- example public research pack;
-- no public exposure of private local Board content.
+Evidence: `docs/slices/4.3-public-machine-readable-representations.md`, PR #88.
 
-Phase exit criteria:
+Phase exit criteria met:
 
 - the same Board snapshot and explicit date always produce the same export;
-- export is useful in models without MCP;
-- evidence and limitations survive compression;
+- public source and collection context works without MCP;
+- evidence, limitations, and interpretation boundaries survive representation;
 - private browser-local content is never published.
 
 ## 9. Phase 5 — Real OSS Proof Project
 
-Status: **PROOF**
+Status: **ACTIVE — PROOF REQUIRED**
 
 Goal: test whether Tessli improves one real Online Scope Studio design workflow.
 
 ### 5.1 Research setup
+
+Status: **NEXT**
 
 - real brief, audience, and constraints;
 - 8–12 selected sources;
