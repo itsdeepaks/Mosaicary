@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 3 / Slice 3.2 NEXT**  
+Status: **active delivery plan — Phase 3 / Slice 3.3 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -106,7 +106,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 0 | Direction Reset | DONE | — |
 | 1 | Source Intelligence Foundation | DONE | — |
 | 2 | Browse and Source Detail | DONE | — |
-| 3 | Local Saved and Project Boards | ACTIVE | 3.2 NEXT |
+| 3 | Local Saved and Project Boards | ACTIVE | 3.3 NEXT |
 | 4 | Research-Pack Export | PLANNED | 4.1 |
 | 5 | Real OSS Proof Project | PROOF | 5.1 |
 | 6 | Homepage, Navigation, Playbooks, and For AI | PLANNED | 6.1 |
@@ -127,8 +127,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |
 | 2.4 | Enriched intelligence detail and Similar Sources | DONE | 2.3 | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81 |
 | 3.1 | Universal browser-local Save | DONE | 2.2, 2.3 | `docs/slices/3.1-universal-local-save.md`, PR #82 |
-| 3.2 | Saved workspace search/filter refinement | NEXT | 3.1 | — |
-| 3.3 | Local project Boards and notes | PLANNED | 3.1 | — |
+| 3.2 | Saved workspace search/filter refinement | DONE | 3.1 | `docs/slices/3.2-saved-workspace-refinement.md`, PR #83 |
+| 3.3 | Local project Boards and notes | NEXT | 3.1, 3.2 | — |
 | 3.4 | Selected/rejected decisions and unresolved questions | PLANNED | 3.3 | — |
 | 4.1 | Board research-pack contract | PLANNED | 3.4 | — |
 | 4.2 | Deterministic Markdown export | PLANNED | 4.1 | — |
@@ -224,9 +224,19 @@ Completion evidence:
 - `docs/slices/3.1-universal-local-save.md`;
 - PR #82.
 
-### Slice 3.2 Saved workspace refinement
+### DONE — Slice 3.2 Saved workspace refinement
 
-Search, filter, sort, remove, and undo with accessible empty and dynamic states.
+Delivered:
+
+- search across saved source name, domain, description, use case, and tags;
+- filters limited to categories and access models present in the saved set;
+- recent, A–Z, and Z–A sorting without changing persisted order;
+- truthful counts, no-match state, and accessible filter reset;
+- individual removal undo plus retained clear-all confirmation and undo;
+- responsive labelled controls with 44px targets and visible focus;
+- the existing stable-ID local store, legacy migration, and synchronization boundaries unchanged;
+- `docs/slices/3.2-saved-workspace-refinement.md`;
+- PR #83.
 
 ### Slice 3.3 Local project Boards
 
