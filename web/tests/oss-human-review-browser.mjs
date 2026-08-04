@@ -259,24 +259,25 @@ for (const [index, [width, height]] of viewports.entries()) {
   );
 
   if (index === 0) {
-    const copyButton = findAxNode(
-      accessibility.nodes,
-      "button",
-      "Copy JSON",
-    );
+    const copyButton = findAxNode(accessibility.nodes, "button", "Copy JSON");
     await clickAxNode(copyButton);
     await delay(250);
     const refreshed = await send("DOM.getDocument", {
       depth: -1,
       pierce: true,
     });
-    const alertNodeId = await querySelector(refreshed.root.nodeId, '[role="alert"]');
+    const alertNodeId = await querySelector(
+      refreshed.root.nodeId,
+      '[role="alert"]',
+    );
     assert.ok(alertNodeId > 0, "empty review shows validation alert");
     const errorItems = await querySelectorAll(alertNodeId, "li");
     assert.equal(errorItems.length, 28, "all required fields are reported");
 
     const storage = await send("DOMStorage.getDOMStorageItems", { storageId });
-    const storedReview = storage.entries.find(([key]) => key === storageKey)?.[1];
+    const storedReview = storage.entries.find(
+      ([key]) => key === storageKey,
+    )?.[1];
     assert.ok(storedReview, "review draft persisted locally");
     const parsed = JSON.parse(storedReview);
     assert.equal(parsed.reviewer, "");

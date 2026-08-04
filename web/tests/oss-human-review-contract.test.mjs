@@ -36,7 +36,7 @@ function completeDraft() {
     "Keep the direction and correct the evidence gaps before production adaptation.";
   for (const [index, dimension] of OSS_HUMAN_REVIEW_DIMENSIONS.entries()) {
     draft.dimensions[dimension.id] = {
-      score: ((index % 5) + 1),
+      score: (index % 5) + 1,
       note: `Evidence recorded for ${dimension.label.toLocaleLowerCase()}.`,
     };
   }
@@ -68,9 +68,7 @@ test("review dimensions remain canonical, ordered, and unscored by default", () 
 });
 
 test("validation requires attributable complete human evidence", () => {
-  const empty = validateOssHumanReviewDraft(
-    createEmptyOssHumanReviewDraft(""),
-  );
+  const empty = validateOssHumanReviewDraft(createEmptyOssHumanReviewDraft(""));
   assert.equal(empty.valid, false);
   assert.equal(empty.errors.length, 28);
   assert.deepEqual(
@@ -182,10 +180,7 @@ test("review template and packet contain no invented human judgment", async () =
 test("review route and client remain isolated and local-only", async () => {
   const [page, component, sitemap, navigation] = await Promise.all([
     readFile(
-      new URL(
-        "../app/proofs/oss-homepage/review/page.tsx",
-        import.meta.url,
-      ),
+      new URL("../app/proofs/oss-homepage/review/page.tsx", import.meta.url),
       "utf8",
     ),
     readFile(

@@ -105,14 +105,13 @@ export function OssHumanReviewForm() {
     );
   }, [draft, hydrated]);
 
-  const validation = useMemo(
-    () => validateOssHumanReviewDraft(draft),
-    [draft],
-  );
-  const completedDimensions = OSS_HUMAN_REVIEW_DIMENSIONS.filter((dimension) => {
-    const value = draft.dimensions[dimension.id];
-    return value.score !== null && Boolean(value.note.trim());
-  }).length;
+  const validation = useMemo(() => validateOssHumanReviewDraft(draft), [draft]);
+  const completedDimensions = OSS_HUMAN_REVIEW_DIMENSIONS.filter(
+    (dimension) => {
+      const value = draft.dimensions[dimension.id];
+      return value.score !== null && Boolean(value.note.trim());
+    },
+  ).length;
   const visibleErrors = showErrors ? validation.errors : [];
 
   const patchDraft = (patch: Partial<OssHumanReviewDraft>) => {
@@ -122,7 +121,9 @@ export function OssHumanReviewForm() {
 
   const patchDimension = (
     id: OssHumanReviewDimensionId,
-    patch: Partial<OssHumanReviewDraft["dimensions"][OssHumanReviewDimensionId]>,
+    patch: Partial<
+      OssHumanReviewDraft["dimensions"][OssHumanReviewDimensionId]
+    >,
   ) => {
     setDraft((current) => ({
       ...current,
@@ -211,7 +212,9 @@ export function OssHumanReviewForm() {
       <section className={styles.intro} aria-labelledby="review-title">
         <div>
           <p className={styles.eyebrow}>Genuine human judgment required</p>
-          <h1 id="review-title">Review the direction, not just the screenshot.</h1>
+          <h1 id="review-title">
+            Review the direction, not just the screenshot.
+          </h1>
         </div>
         <div className={styles.introCopy}>
           <p>
@@ -294,9 +297,7 @@ export function OssHumanReviewForm() {
                     ? "review-date-error"
                     : undefined
                 }
-                aria-invalid={Boolean(
-                  fieldError(visibleErrors, "reviewedAt"),
-                )}
+                aria-invalid={Boolean(fieldError(visibleErrors, "reviewedAt"))}
                 onChange={(event) =>
                   patchDraft({ reviewedAt: event.target.value })
                 }
@@ -312,7 +313,10 @@ export function OssHumanReviewForm() {
           </div>
         </section>
 
-        <section className={styles.dimensions} aria-labelledby="dimensions-title">
+        <section
+          className={styles.dimensions}
+          aria-labelledby="dimensions-title"
+        >
           <header className={styles.sectionHeader}>
             <div>
               <p className={styles.sectionLabel}>Twelve dimensions</p>
@@ -422,7 +426,9 @@ export function OssHumanReviewForm() {
         <section className={styles.decision} aria-labelledby="decision-title">
           <div>
             <p className={styles.sectionLabel}>Overall judgment</p>
-            <h2 id="decision-title">Keep, correct, or rebuild the direction.</h2>
+            <h2 id="decision-title">
+              Keep, correct, or rebuild the direction.
+            </h2>
           </div>
           <div>
             <fieldset
@@ -439,9 +445,7 @@ export function OssHumanReviewForm() {
                     <input
                       checked={draft.decision === decision.value}
                       name="overall-decision"
-                      onChange={() =>
-                        patchDraft({ decision: decision.value })
-                      }
+                      onChange={() => patchDraft({ decision: decision.value })}
                       type="radio"
                       value={decision.value}
                     />
@@ -516,7 +520,10 @@ export function OssHumanReviewForm() {
               </div>
             ) : null}
 
-            <p className={styles.readiness} data-review-ready={validation.valid}>
+            <p
+              className={styles.readiness}
+              data-review-ready={validation.valid}
+            >
               {validation.valid
                 ? "Ready to export: all twelve scores and notes are complete."
                 : `${validation.errors.length} required field${validation.errors.length === 1 ? " remains" : "s remain"}.`}
@@ -538,10 +545,7 @@ export function OssHumanReviewForm() {
                   <button onClick={clearDraft} type="button">
                     Confirm clear
                   </button>
-                  <button
-                    onClick={() => setConfirmClear(false)}
-                    type="button"
-                  >
+                  <button onClick={() => setConfirmClear(false)} type="button">
                     Cancel
                   </button>
                 </div>
@@ -560,7 +564,9 @@ export function OssHumanReviewForm() {
       </p>
 
       <footer className={styles.footer}>
-        <span>Human scores remain pending until a reviewer completes this form.</span>
+        <span>
+          Human scores remain pending until a reviewer completes this form.
+        </span>
         <a href={OSS_HUMAN_REVIEW_CANDIDATE_ROUTE}>Return to candidate</a>
       </footer>
     </main>

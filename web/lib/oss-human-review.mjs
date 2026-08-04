@@ -1,5 +1,4 @@
-export const OSS_HUMAN_REVIEW_CONTRACT =
-  "tessli.oss-homepage-human-review.v1";
+export const OSS_HUMAN_REVIEW_CONTRACT = "tessli.oss-homepage-human-review.v1";
 export const OSS_HUMAN_REVIEW_STORAGE_KEY =
   "tessli-oss-homepage-human-review-v1";
 export const OSS_HUMAN_REVIEW_PROOF_ID = "oss-homepage-2026-08-04";
@@ -60,7 +59,8 @@ export const OSS_HUMAN_REVIEW_DIMENSIONS = Object.freeze([
     prompt:
       "Are typography, spacing, borders, actions, labels, and repeated patterns applied consistently?",
     lowAnchor: "Repeated rules change without a useful reason.",
-    highAnchor: "Repeated rules are predictable while allowing useful variation.",
+    highAnchor:
+      "Repeated rules are predictable while allowing useful variation.",
   },
   {
     id: "component-reuse",
@@ -76,7 +76,8 @@ export const OSS_HUMAN_REVIEW_DIMENSIONS = Object.freeze([
     prompt:
       "Do contrast, type, focus, keyboard use, semantics, motion, and touch targets support broad use?",
     lowAnchor: "Material barriers remain for common access needs.",
-    highAnchor: "The experience is perceivable and operable with strong evidence.",
+    highAnchor:
+      "The experience is perceivable and operable with strong evidence.",
   },
   {
     id: "restraint",
@@ -84,7 +85,8 @@ export const OSS_HUMAN_REVIEW_DIMENSIONS = Object.freeze([
     prompt:
       "Does the design avoid unnecessary effects, imitation, decorative complexity, and competing calls to action?",
     lowAnchor: "Decoration or trend-following weakens the message.",
-    highAnchor: "Every visible treatment earns its place and supports the message.",
+    highAnchor:
+      "Every visible treatment earns its place and supports the message.",
   },
   {
     id: "regression-risk",
@@ -92,7 +94,8 @@ export const OSS_HUMAN_REVIEW_DIMENSIONS = Object.freeze([
     prompt:
       "How safely could this direction be adapted without introducing fragile layout, performance, or maintenance problems?",
     lowAnchor: "The direction appears fragile or costly to maintain.",
-    highAnchor: "The direction appears robust, bounded, and straightforward to maintain.",
+    highAnchor:
+      "The direction appears robust, bounded, and straightforward to maintain.",
   },
   {
     id: "ship-readiness",
