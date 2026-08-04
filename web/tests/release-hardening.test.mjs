@@ -154,13 +154,27 @@ test("release history remains preserved under Product Plan v2", async () => {
       "`docs/slices/5.3-oss-homepage-human-review.md`, PR #91",
     ],
     ["5.4", "Outcome/evidence report", "BLOCKED", "5.3 human artifact", "—"],
-    ["6.1", "Global navigation and naming cleanup", "NEXT", "2.2", "—"],
+    [
+      "6.1",
+      "Global navigation and naming cleanup",
+      "DONE",
+      "2.2",
+      "`docs/slices/6.1-global-navigation-cleanup.md`, PR #92",
+    ],
+    [
+      "6.2",
+      "Curated homepage built around proven workflow",
+      "BLOCKED",
+      "5.4, 6.1",
+      "—",
+    ],
+    ["6.3", "Collections-to-playbooks conversion", "NEXT", "3.3, 4.2", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.1 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.3 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -203,7 +217,15 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /### 6\.1 Global navigation and naming\n\nStatus: \*\*NEXT\*\*/,
+    /### 6\.1 Global navigation and naming\n\nStatus: \*\*DONE\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 6\.2 Curated homepage\n\nStatus: \*\*BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 6\.3 Collections become playbooks\n\nStatus: \*\*NEXT\*\*/,
   );
   assert.match(
     slices,
