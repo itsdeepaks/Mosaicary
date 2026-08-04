@@ -1,0 +1,119 @@
+name: Add OSS proof browser coverage
+
+on:
+  push:
+    branches:
+      - proof/oss-homepage-candidate
+    paths:
+      - ".github/workflows/add-oss-proof-browser-coverage.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-candidate
+
+      - name: Add proof markers and release-browser audit
+        shell: python
+        run: |
+          from pathlib import Path
+
+          page_path = Path("web/app/proofs/oss-homepage/page.tsx")
+          page = page_path.read_text()
+          old = '<div aria-hidden="true" className={styles.systemMap}>'
+          new = '<div aria-hidden="true" className={styles.systemMap} data-oss-system-map="css">'
+          if page.count(old) != 1:
+              raise SystemExit("system map marker target mismatch")
+          page_path.write_text(page.replace(old, new, 1))
+
+          browser_path = Path("web/tests/release-gate-browser.mjs")
+          browser = browser_path.read_text()
+
+          route_old = '  ["/boards", 200, "Project boards"],\n'
+          route_new = route_old + '  [\n    "/proofs/oss-homepage",\n    200,\n    "Your business needs a technical partner, not another hand-off",\n  ],\n'
+          if browser.count(route_old) != 1:
+              raise SystemExit("route insertion target mismatch")
+          browser = browser.replace(route_old, route_new, 1)
+
+          visual_old = '''  {
+            name: "boards",
+            path: "/boards",
+            selector: "#board-export-title",
+            boards: true,
+          },
+          '''
+          visual_new = visual_old + '''  {
+            name: "oss-proof",
+            path: "/proofs/oss-homepage",
+            selector: "[data-oss-proof=ready]",
+            proof: true,
+          },
+          '''
+          if browser.count(visual_old) != 1:
+              raise SystemExit("visual insertion target mismatch")
+          browser = browser.replace(visual_old, visual_new, 1)
+
+          audit_marker = '''    if (visualCase.auth) {
+          '''
+          proof_audit = '''    if (visualCase.proof) {
+              const proofAudit = await evaluate(`(() => {
+                const root = document.querySelector('[data-oss-proof=ready]');
+                const systemMap = root?.querySelector('[data-oss-system-map=css]');
+                const publicHeader = document.querySelector('body > header');
+                const publicFooter = document.querySelector('[data-site-content] > footer');
+                const links = [...(root?.querySelectorAll('a[href]') ?? [])];
+                const primaryActions = [...(root?.querySelectorAll('a[href="#proof-contact"]') ?? [])];
+                return {
+                  candidate: root?.getAttribute('data-proof-candidate'),
+                  cssSystemMap: Boolean(systemMap),
+                  externalLinks: links.filter((link) => !link.getAttribute('href')?.startsWith('#')).length,
+                  firstHeading: root?.querySelector('h1')?.textContent?.trim(),
+                  noIndex: document.querySelector('meta[name=robots]')?.getAttribute('content')?.includes('noindex'),
+                  primaryActionCount: primaryActions.length,
+                  primaryTargets:
+                    primaryActions.length > 0 &&
+                    primaryActions.every((link) => link.getBoundingClientRect().height >= 44),
+                  publicFooterHidden:
+                    !publicFooter || getComputedStyle(publicFooter).display === 'none',
+                  publicHeaderHidden:
+                    !publicHeader || getComputedStyle(publicHeader).display === 'none',
+                  proofNotice: root?.textContent?.includes('Proof candidate · not the live OSS website'),
+                  submits: root?.querySelectorAll('form').length ?? 0,
+                };
+              })()`);
+              assert.equal(proofAudit.candidate, "first", `OSS candidate marker at ${width}`);
+              assert.equal(proofAudit.cssSystemMap, true, `OSS CSS system map at ${width}`);
+              assert.equal(proofAudit.externalLinks, 0, `OSS external links at ${width}`);
+              assert.equal(
+                proofAudit.firstHeading,
+                "Your business needs a technical partner, not another hand-off.",
+                `OSS heading at ${width}`,
+              );
+              assert.equal(proofAudit.noIndex, true, `OSS noindex at ${width}`);
+              assert.ok(proofAudit.primaryActionCount >= 2, `OSS primary actions at ${width}`);
+              assert.equal(proofAudit.primaryTargets, true, `OSS action targets at ${width}`);
+              assert.equal(proofAudit.publicFooterHidden, true, `OSS public footer isolation at ${width}`);
+              assert.equal(proofAudit.publicHeaderHidden, true, `OSS public header isolation at ${width}`);
+              assert.equal(proofAudit.proofNotice, true, `OSS proof notice at ${width}`);
+              assert.equal(proofAudit.submits, 0, `OSS no form submission at ${width}`);
+            }
+
+          '''
+          if browser.count(audit_marker) != 1:
+              raise SystemExit("audit insertion target mismatch")
+          browser = browser.replace(audit_marker, proof_audit + audit_marker, 1)
+          browser_path.write_text(browser)
+
+      - name: Commit browser coverage
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/app/proofs/oss-homepage/page.tsx web/tests/release-gate-browser.mjs
+          git commit -m "test: cover OSS proof candidate in release matrix"
+          git push origin HEAD:proof/oss-homepage-candidate
