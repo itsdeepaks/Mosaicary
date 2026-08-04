@@ -65,7 +65,10 @@ export function BoardExportControls({ board, resources }: Props) {
   };
 
   return (
-    <section className={styles.exportPanel} aria-labelledby="board-export-title">
+    <section
+      className={styles.exportPanel}
+      aria-labelledby="board-export-title"
+    >
       <div className={styles.heading}>
         <div>
           <p className={styles.eyebrow}>Local research handoff</p>
@@ -96,7 +99,8 @@ export function BoardExportControls({ board, resources }: Props) {
         </div>
       ) : (
         <p className={styles.ready}>
-          Ready: {board.items.filter((item) => item.decision === "selected").length}{" "}
+          Ready:{" "}
+          {board.items.filter((item) => item.decision === "selected").length}{" "}
           selected reference(s), filename <code>{result.filename}</code>.
         </p>
       )}

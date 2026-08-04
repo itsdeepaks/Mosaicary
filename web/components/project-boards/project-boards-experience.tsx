@@ -300,7 +300,10 @@ export function ProjectBoardsExperience({ resources }: Props) {
                   </label>
                 </div>
 
-                <BoardExportControls board={activeBoard} resources={resources} />
+                <BoardExportControls
+                  board={activeBoard}
+                  resources={resources}
+                />
 
                 <section aria-labelledby="board-questions-title">
                   <div className={styles.sectionHeading}>

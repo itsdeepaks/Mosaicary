@@ -160,14 +160,8 @@ test("canonical source facts and project judgment use separate labels", () => {
     result.markdown,
     /\*\*Canonical summary:\*\* Canonical source summary\./u,
   );
-  assert.match(
-    result.markdown,
-    /\*\*Why selected:\*\* Useful for hierarchy/u,
-  );
-  assert.match(
-    result.markdown,
-    /\*\*Research note:\*\* Inspect structure/u,
-  );
+  assert.match(result.markdown, /\*\*Why selected:\*\* Useful for hierarchy/u);
+  assert.match(result.markdown, /\*\*Research note:\*\* Inspect structure/u);
   assert.match(result.markdown, /Project notes, rationale, decisions/u);
 });
 
@@ -219,12 +213,11 @@ test("validation reports actionable errors without silent truncation", () => {
   const invalid = makeInput({ generatedAt: "2026-02-30" });
   invalid.board.name = "";
   invalid.board.goal = "";
-  invalid.board.items = [
-    invalid.board.items[0],
-    { ...invalid.board.items[0] },
-  ];
+  invalid.board.items = [invalid.board.items[0], { ...invalid.board.items[0] }];
   const errors = validateBoardResearchPackInput(invalid);
-  assert.ok(errors.includes("Generated date must be a valid YYYY-MM-DD value."));
+  assert.ok(
+    errors.includes("Generated date must be a valid YYYY-MM-DD value."),
+  );
   assert.ok(errors.includes("Board name is required."));
   assert.ok(errors.includes("Project goal is required."));
   assert.ok(errors.includes("Duplicate Board source: profiled-source."));

@@ -56,9 +56,14 @@ function evidenceLine(item) {
 
 function pushList(lines, label, values, limit, emptyLabel) {
   const items = Array.isArray(values)
-    ? values.map((value) => inline(value, "")).filter(Boolean).slice(0, limit)
+    ? values
+        .map((value) => inline(value, ""))
+        .filter(Boolean)
+        .slice(0, limit)
     : [];
-  lines.push(`- **${label}:** ${items.length > 0 ? items.join(", ") : emptyLabel}`);
+  lines.push(
+    `- **${label}:** ${items.length > 0 ? items.join(", ") : emptyLabel}`,
+  );
 }
 
 function unknownHeader(item) {
@@ -153,9 +158,7 @@ export function sanitizeBoardResearchPackFilename(boardName) {
     .slice(0, 72)
     .replace(/-+$/gu, "");
 
-  return ascii
-    ? `tessli-${ascii}-research-pack.md`
-    : "tessli-research-pack.md";
+  return ascii ? `tessli-${ascii}-research-pack.md` : "tessli-research-pack.md";
 }
 
 export function validateBoardResearchPackInput(input) {
@@ -194,7 +197,8 @@ export function validateBoardResearchPackInput(input) {
     if (item.decision === "selected") selected += 1;
   }
 
-  if (selected === 0) errors.push("Select at least one source before exporting.");
+  if (selected === 0)
+    errors.push("Select at least one source before exporting.");
   if (selected > BOARD_RESEARCH_PACK_SELECTED_LIMIT) {
     errors.push(
       `Select no more than ${BOARD_RESEARCH_PACK_SELECTED_LIMIT} sources before exporting.`,
