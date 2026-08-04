@@ -1,0 +1,48 @@
+name: Source detail ledger updater
+
+on:
+  push:
+    branches:
+      - feat/source-detail-foundation
+    paths:
+      - ".github/workflows/source-detail-ledger.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/source-detail-foundation
+      - name: Update active ledger
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("build-slices.md")
+          text = path.read_text(encoding="utf-8")
+          replacements = {
+              "Status: **active delivery plan — Phase 2 / Slice 2.3 NEXT**": "Status: **active delivery plan — Phase 2 / Slice 2.4 NEXT**",
+              "| 2 | Browse and Source Detail | ACTIVE | 2.3 NEXT |": "| 2 | Browse and Source Detail | ACTIVE | 2.4 NEXT |",
+              "| 2.3 | Source Detail foundation for all 295 sources | NEXT | 1.2, 2.2 | — |": "| 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |",
+              "| 2.4 | Enriched intelligence detail and Similar Sources | PLANNED | 2.3 | — |": "| 2.4 | Enriched intelligence detail and Similar Sources | NEXT | 2.3 | — |",
+              "## 12. NEXT — Phase 2 / Slice 2.3 Source Detail foundation": "## 12. Phase 2 / Slice 2.3 completion and Slice 2.4 next",
+              "### Goal and acceptance boundary": "### Slice 2.3 completion evidence",
+              "### 2.4 Enriched intelligence and Similar Sources": "### NEXT — 2.4 Enriched intelligence and Similar Sources",
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f"Missing ledger marker: {old}")
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8")
+      - name: Commit ledger update
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md
+          git commit -m "docs: advance source detail ledger"
+          git push origin HEAD:feat/source-detail-foundation
