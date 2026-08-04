@@ -49,7 +49,10 @@ test("candidate implements the approved content architecture without fake proof"
     "BrandScope",
     "proof only",
   ]) {
-    assert.match(page, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"));
+    assert.match(
+      page,
+      new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"),
+    );
   }
   assert.doesNotMatch(
     page,
@@ -60,9 +63,14 @@ test("candidate implements the approved content architecture without fake proof"
 
 test("candidate actions are in-page and no external form or provider asset is introduced", async () => {
   const page = await readFile(pagePath, "utf8");
-  const hrefs = [...page.matchAll(/href="([^"]+)"/gu)].map((match) => match[1]);
+  const hrefs = [...page.matchAll(/href="([^"]+)"/gu)].map(
+    (match) => match[1],
+  );
   assert.ok(hrefs.length >= 8);
-  assert.equal(hrefs.every((href) => href.startsWith("#")), true);
+  assert.equal(
+    hrefs.every((href) => href.startsWith("#")),
+    true,
+  );
   assert.doesNotMatch(page, /<form|onSubmit|mailto:|wa\.me|target="_blank"/u);
   assert.doesNotMatch(page, /<img|next\/image|https?:\/\//u);
   assert.doesNotMatch(page, /three|WebGL|canvas/iu);
@@ -85,9 +93,15 @@ test("candidate CSS is route-scoped, responsive, focus-safe, and reduced-motion 
 
 test("first-candidate evidence records traceability and defers human judgment", async () => {
   const evidence = await readFile(evidencePath, "utf8");
-  assert.match(evidence, /First candidate head: `8577e3e6c3dbdd8d629bc8752b2f23060fb8643d`/u);
+  assert.match(
+    evidence,
+    /First candidate head: `8577e3e6c3dbdd8d629bc8752b2f23060fb8643d`/u,
+  );
   assert.match(evidence, /3D: rejected for the first candidate/u);
   assert.match(evidence, /No human scores/u);
   assert.match(evidence, /characters: pending deterministic calculation/u);
-  assert.match(evidence, /approximate tokens: pending deterministic calculation/u);
+  assert.match(
+    evidence,
+    /approximate tokens: pending deterministic calculation/u,
+  );
 });
