@@ -10,7 +10,13 @@ function label(value: string) {
     .join(" ");
 }
 
-function List({ title, items }: { title: string; items: readonly string[] }) {
+function List({
+  title,
+  items,
+}: {
+  title: string;
+  items: readonly string[];
+}) {
   if (items.length === 0) return null;
   return (
     <section>
@@ -36,7 +42,10 @@ export function IntelligenceDetail({
   return (
     <>
       {intelligence ? (
-        <section data-enriched-intelligence aria-labelledby="intelligence-title">
+        <section
+          data-enriched-intelligence
+          aria-labelledby="intelligence-title"
+        >
           <p>Research intelligence</p>
           <h2 id="intelligence-title">Recorded capabilities and boundaries</h2>
           <p>
