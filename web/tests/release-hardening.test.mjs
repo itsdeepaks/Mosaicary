@@ -37,7 +37,11 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     slices,
-    /\| 2\.2 \| Canonical `\/resources` implementation \| NEXT \| 2\.1 \| — \|/,
+    /\| 2\.2 \| Canonical `\/resources` implementation \| DONE \| 2\.1 \| `docs\/slices\/2\.2-canonical-browse-implementation\.md`, PR #79 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 2\.3 \| Source Detail foundation for all 295 sources \| NEXT \| 1\.2, 2\.2 \| — \|/,
   );
   assert.match(
     plan,
