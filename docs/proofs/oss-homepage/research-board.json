@@ -21,85 +21,85 @@
     "updatedAt": "2026-08-04T00:00:00.000Z",
     "items": [
       {
-        "resourceId": "siteinspire",
+        "resourceId": "resource-a5297d09a82a",
         "decision": "selected",
         "rationale": "Establish an editorial, studio-quality brand direction without locking the candidate to one layout.",
         "note": "Inspect short hero typography, project presentation, whitespace, borders, and restrained colour. Treat it as visual research only; it provides no code exports."
       },
       {
-        "resourceId": "godly",
+        "resourceId": "resource-169e5a48b03e",
         "decision": "selected",
         "rationale": "Set an upper craft boundary for typography and interaction while making restraint an explicit review criterion.",
         "note": "Inspect page rhythm and motion timing, then reject continuous spectacle, illegible display type, and agency-showcase excess."
       },
       {
-        "resourceId": "landingfolio",
+        "resourceId": "resource-c6ead4379d56",
         "decision": "selected",
         "rationale": "Research hero, services, proof, process, objection, and CTA section patterns for an original homepage structure.",
         "note": "Retain source URLs. Do not mirror screenshots or paid components; membership and request limits remain provider concerns."
       },
       {
-        "resourceId": "typewolf",
+        "resourceId": "resource-7ff8dc33fe5e",
         "decision": "selected",
         "rationale": "Define a readable display/body hierarchy that feels editorial and premium without sacrificing clarity for non-technical buyers.",
         "note": "Inspect scale, line length, contrast, and pairing principles. Font licensing and availability must be revalidated before production use."
       },
       {
-        "resourceId": "shadcn-ui",
+        "resourceId": "resource-affc29967a7c",
         "decision": "selected",
         "rationale": "Ground buttons, navigation, dialogs, and form-adjacent components in accessible, implementable React patterns.",
         "note": "Use primitives and behaviour, not the default shadcn visual identity. Preserve OSS-specific spacing, type, borders, and colour decisions."
       },
       {
-        "resourceId": "21st-dev",
+        "resourceId": "resource-28acba4a9d55",
         "decision": "selected",
         "rationale": "Explore contemporary component-level alternatives and implementation precedents without turning the candidate into a component collage.",
         "note": "Validate code, dependencies, originality, licensing, and accessibility before reuse. Select only patterns serving the brief."
       },
       {
-        "resourceId": "motion",
+        "resourceId": "resource-374543d4f72b",
         "decision": "selected",
         "rationale": "Implement a small motion system with purposeful entrance, feedback, and reduced-motion behaviour.",
         "note": "Prefer opacity/transform and short state transitions. No scroll-jacking, continuous motion, or animation used to hide weak hierarchy."
       },
       {
-        "resourceId": "who-can-use",
+        "resourceId": "resource-9aca4d63712d",
         "decision": "selected",
         "rationale": "Check whether the restrained accent and neutral palette remain legible across common vision conditions.",
         "note": "Use it as one contrast-research input, then verify final tokens against WCAG-oriented tooling and manual review."
       },
       {
-        "resourceId": "relume",
+        "resourceId": "resource-e81793f16a04",
         "decision": "selected",
         "rationale": "Challenge the information architecture and section sequence before visual polish begins.",
         "note": "Use planning and structural principles only. Revalidate access, terms, and any paid-library boundary before using provider material."
       },
       {
-        "resourceId": "three-js",
+        "resourceId": "resource-e5c348f9190f",
         "decision": "selected",
         "rationale": "Test one bounded technical-visual hypothesis rather than assuming 3D belongs on the page.",
         "note": "Include only if it explains systems, connection, or technical depth better than static composition. Otherwise record a deliberate rejection."
       },
       {
-        "resourceId": "v0",
+        "resourceId": "resource-4b1cd233f883",
         "decision": "rejected",
         "rationale": "Reject v0 as the primary visual-authority or taste source for this proof because generated defaults could bias the candidate toward generic AI UI.",
         "note": "It may be considered later as an implementation assistant only after the brief and research pack control the direction."
       },
       {
-        "resourceId": "ant-design",
+        "resourceId": "resource-51c9a91512df",
         "decision": "rejected",
         "rationale": "Its enterprise product-interface system is not the primary fit for an editorial marketing homepage.",
         "note": "This is project-specific. Ant Design remains useful for complex application interfaces, not this candidate's brand direction."
       },
       {
-        "resourceId": "mobbin",
+        "resourceId": "resource-52bddd200880",
         "decision": "rejected",
         "rationale": "Mobile product-flow research is not the highest-priority input for the homepage positioning and section-architecture problem.",
         "note": "Reopen for a future product onboarding or application-flow task, not for this marketing-page proof."
       },
       {
-        "resourceId": "page-flows",
+        "resourceId": "resource-d9b680b771cc",
         "decision": "rejected",
         "rationale": "Recorded app and website flows do not directly solve the homepage's technical-partner positioning and visual-system task.",
         "note": "Reopen when researching a specific product journey, form flow, onboarding, or conversion sequence."
