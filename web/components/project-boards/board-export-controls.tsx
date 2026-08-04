@@ -19,12 +19,16 @@ type ExportStatus = Readonly<{
   message: string;
 }>;
 
-function todayUtc() {
-  return new Date().toISOString().slice(0, 10);
+function todayLocal() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 export function BoardExportControls({ board, resources }: Props) {
-  const [generatedAt, setGeneratedAt] = useState(todayUtc);
+  const [generatedAt, setGeneratedAt] = useState(todayLocal);
   const [status, setStatus] = useState<ExportStatus | null>(null);
   const resultSignature = `${board.updatedAt}|${generatedAt}`;
 
@@ -65,7 +69,10 @@ export function BoardExportControls({ board, resources }: Props) {
     const anchor = document.createElement("a");
     anchor.href = objectUrl;
     anchor.download = result.filename;
+    anchor.hidden = true;
+    document.body.append(anchor);
     anchor.click();
+    anchor.remove();
     window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
     announce(`${result.filename} downloaded.`);
   };
