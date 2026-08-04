@@ -1,26 +1,51 @@
-name: Finalize Slice 4.2 completion records
+name: Web CI
 
 on:
   pull_request:
     paths:
+      - "web/**"
       - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/**"
+      - "docs/data-and-media-contract.md"
+      - "docs/slices/**"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/**"
+      - "docs/data-and-media-contract.md"
+      - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: slice-4-2-completion-${{ github.ref }}
+  group: web-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  finalize:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    defaults:
+      run:
+        working-directory: web
     steps:
-      - name: Check out feature branch
+      - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: feat/deterministic-markdown-export
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -30,266 +55,85 @@ jobs:
           cache-dependency-path: web/package-lock.json
 
       - name: Install locked dependencies
-        working-directory: web
         run: npm ci
 
-      - name: Advance Product Plan v2 to Slice 4.3
-        shell: python
+      - name: Verify approved hero asset
+        shell: bash
         run: |
-          from pathlib import Path
+          test -s public/brand/tessli-hero-geometry.webp
+          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
 
-          def replace_once(text: str, old: str, new: str, label: str) -> str:
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f"{label}: expected exactly one match, found {count}")
-              return text.replace(old, new, 1)
+      - name: Check formatting
+        run: npm run format:check
 
-          readme_path = Path("README.md")
-          readme = readme_path.read_text(encoding="utf-8")
-          readme = replace_once(
-              readme,
-              "- browser-local project Boards with goals, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;\n- six repository-maintained collections;",
-              "- browser-local project Boards with goals, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;\n- deterministic browser-local Markdown research-pack copy and download;\n- six repository-maintained collections;",
-              "README baseline",
-          )
-          readme = replace_once(
-              readme,
-              "The approved next slice is **Phase 4 / Slice 4.2 — deterministic Markdown export**.",
-              "The approved next slice is **Phase 4 / Slice 4.3 — safe public machine-readable representations**.",
-              "README next slice",
-          )
-          readme_path.write_text(readme, encoding="utf-8", newline="\n")
+      - name: Check types
+        run: npm run typecheck
 
-          plan_path = Path("docs/product-plan-v2.md")
-          plan = plan_path.read_text(encoding="utf-8")
-          plan = replace_once(
-              plan,
-              "### 4.2 Deterministic Markdown export\n\nStatus: **NEXT**",
-              "### 4.2 Deterministic Markdown export\n\nStatus: **DONE**",
-              "plan Slice 4.2 status",
-          )
-          plan = replace_once(
-              plan,
-              "- accessible validation, success, and failure states;\n- no MCP behavior change.\n\n### 4.3 Safe public machine-readable representations",
-              "- accessible validation, success, and failure states;\n- no MCP behavior change.\n\nEvidence: `docs/slices/4.2-deterministic-markdown-export.md`, PR #87.\n\n### 4.3 Safe public machine-readable representations",
-              "plan Slice 4.2 evidence",
-          )
-          plan = replace_once(
-              plan,
-              "### 4.3 Safe public machine-readable representations\n\nStatus: **PLANNED**",
-              "### 4.3 Safe public machine-readable representations\n\nStatus: **NEXT**",
-              "plan Slice 4.3 status",
-          )
-          plan_path.write_text(plan, encoding="utf-8", newline="\n")
+      - name: Lint
+        run: npm run lint
 
-          slices_path = Path("build-slices.md")
-          slices = slices_path.read_text(encoding="utf-8")
-          slices = replace_once(
-              slices,
-              "Status: **active delivery plan — Phase 4 / Slice 4.2 NEXT**",
-              "Status: **active delivery plan — Phase 4 / Slice 4.3 NEXT**",
-              "ledger heading",
-          )
-          slices = replace_once(
-              slices,
-              "- browser-local project Boards with goals, constraints, source notes, decisions, rationale, and unresolved questions;\n- Supabase SSR/client",
-              "- browser-local project Boards with goals, audience, constraints, source notes, decisions, rationale, and unresolved questions;\n- deterministic browser-local Markdown research-pack copy and download;\n- Supabase SSR/client",
-              "ledger baseline",
-          )
-          slices = replace_once(
-              slices,
-              "|     4 | Research-Pack Export                        | ACTIVE   | 4.2 NEXT",
-              "|     4 | Research-Pack Export                        | ACTIVE   | 4.3 NEXT",
-              "phase table",
-          )
-          slices = replace_once(
-              slices,
-              "| 4.2  | Deterministic Markdown export                         | NEXT     | 4.1                     | —                                                            |\n| 4.3  | Safe public machine-readable representations          | PLANNED",
-              "| 4.2  | Deterministic Markdown export                         | DONE     | 4.1                     | `docs/slices/4.2-deterministic-markdown-export.md`, PR #87   |\n| 4.3  | Safe public machine-readable representations          | NEXT",
-              "slice table",
-          )
-          old_phase = """### NEXT — Slice 4.2 Deterministic Markdown export
+      - name: Test
+        run: npm test
 
-Implement one pure canonical formatter plus labelled Copy Markdown and Download `.md` controls in Boards.
+      - name: Check catalogue drift
+        run: npm run catalogue:check
 
-Required:
+      - name: Build
+        run: npm run build
 
-- exact contract output and validation;
-- canonical source-profile resolution;
-- exact same bytes for copy and download;
-- deterministic filename and explicit generated date;
-- local-only processing with no network request or Board upload;
-- audience support only through a backward-compatible explicit field;
-- accessible success, failure, and blocked-export states;
-- focused formatter/UI/storage tests;
-- complete browser and release gates;
-- no MCP behavior change.
-
-### PLANNED — Slice 4.3 Safe public machine-readable representations
-
-Add public source and collection `.md`/`.json` representations only after privacy and route review. Private local Board content must never be published."""
-          new_phase = """### DONE — Slice 4.2 Deterministic Markdown export
-
-Delivered:
-
-- one pure `tessli.board-research-pack.v1` formatter with explicit date injection;
-- deterministic section, field, Board, profile-array, evidence, filename, line-ending, and final-newline behavior;
-- actionable validation for blank identity/goal, invalid date, duplicate IDs, zero selected, and more than twelve selected sources;
-- canonical source facts separated from Board notes, rationale, decisions, audience, constraints, and unresolved questions;
-- truthful Listed/Profiled and unknown-source fallback without invented intelligence;
-- backward-compatible Board audience persistence;
-- Copy Markdown and Download `.md` using the same bytes;
-- local-only accessible validation, success, and failure states;
-- `/boards` route and viewport coverage in the release browser matrix;
-- no public route, MCP, account, cloud, provider, dependency, or deployment-state change.
-
-Evidence: `docs/slices/4.2-deterministic-markdown-export.md`, PR #87.
-
-### NEXT — Slice 4.3 Safe public machine-readable representations
-
-Add public source and collection `.md`/`.json` representations only after privacy and route review. Keep representations deterministic, canonical, bounded, and indexable while never publishing private local Board content."""
-          slices = replace_once(slices, old_phase, new_phase, "Phase 4 evidence")
-          slices = replace_once(
-              slices,
-              "The current conversation should finish and merge Slice 4.1, refresh `main`, then begin Slice 4.2 on a new branch.",
-              "After Slice 4.2 merges, refresh `main` and begin Slice 4.3 on a new branch in this conversation.",
-              "continuation boundary",
-          )
-          slices_path.write_text(slices, encoding="utf-8", newline="\n")
-
-          slice_path = Path("docs/slices/4.2-deterministic-markdown-export.md")
-          slice_doc = slice_path.read_text(encoding="utf-8")
-          slice_doc = replace_once(
-              slice_doc,
-              "Status: **IN PROGRESS**",
-              "Status: **DONE**",
-              "slice evidence status",
-          )
-          slice_doc = slice_doc.rstrip() + """
-
-## Delivered
-
-- pure deterministic Board formatter and TypeScript declaration contract;
-- fixed selected, rejected, undecided, unresolved-question, reminder, and provenance sections;
-- twelve-selected-source relevance budget with no silent truncation;
-- truthful Listed/Profiled and unknown-source handling;
-- backward-compatible optional Board audience field;
-- local Copy Markdown and Download `.md` controls using identical bytes;
-- deterministic local-calendar date default and filename sanitization;
-- accessible validation and status messaging;
-- canonical source-profile payload for Board export;
-- `/boards` route and export-control checks at 1440, 1280, 1024, 768, 430, 390, and 360 pixel viewport widths.
-
-## Review findings fixed
-
-- replaced a brittle source-text assertion with whitespace-tolerant copy validation;
-- removed synchronous status clearing from a React effect;
-- bound export status to the active Board snapshot and generated date;
-- changed the default generated date from UTC to the user's local calendar date;
-- attached and removed the temporary download anchor for reliable browser behavior;
-- added the missing `/boards` route, ready-state, local-only copy, audience, control-label, enabled-state, date, and overflow browser checks;
-- removed every temporary formatter workflow from the intended diff.
-
-## Validation
-
-Implementation review head `09494b62f3d582d3e7d481492723529e5e5530fb` passed:
-
-- Web CI run `30893695763`;
-- Phase 1 Release Gate run `30893695764`;
-- formatting, TypeScript, lint, 175 tests and validators, catalogue drift, production build, route checks, responsive browser matrix, Board export ready state, and overflow checks.
-
-Final exact-head validation is recorded in PR #87 after the completion-ledger commit.
-
-## Privacy and security
-
-Board content is formatted in the browser and is never uploaded, published, sent to analytics, fetched through a provider, injected as HTML, or exposed through a public route. Board UUIDs are excluded from the Markdown. The existing MCP packet tool remains unchanged.
-
-## Actual changed files
-
-- `docs/slices/4.2-deterministic-markdown-export.md`;
-- `web/app/boards/page.tsx`;
-- `web/components/project-boards/board-export-controls.module.css`;
-- `web/components/project-boards/board-export-controls.tsx`;
-- `web/components/project-boards/board-store.ts`;
-- `web/components/project-boards/project-boards-experience.tsx`;
-- `web/components/project-boards/project-boards.module.css`;
-- `web/lib/board-research-pack.d.mts`;
-- `web/lib/board-research-pack.mjs`;
-- `web/tests/board-research-pack.test.mjs`;
-- `web/tests/project-boards.test.mjs`;
-- `web/tests/release-gate-browser.mjs`;
-- bounded README, plan, ledger, and release-contract completion updates.
-"""
-          slice_path.write_text(slice_doc, encoding="utf-8", newline="\n")
-
-          test_path = Path("web/tests/release-hardening.test.mjs")
-          test = test_path.read_text(encoding="utf-8")
-          test = replace_once(
-              test,
-              '["4.2", "Deterministic Markdown export", "NEXT", "4.1", "—"],',
-              '[\n      "4.2",\n      "Deterministic Markdown export",\n      "DONE",\n      "4.1",\n      "`docs/slices/4.2-deterministic-markdown-export.md`, PR #87",\n    ],\n    [\n      "4.3",\n      "Safe public machine-readable representations",\n      "NEXT",\n      "2.4, 4.2",\n      "—",\n    ],',
-              "release rows",
-          )
-          test = replace_once(
-              test,
-              "/Status: \\*\\*active delivery plan — Phase 4 \\/ Slice 4\\.2 NEXT\\*\\*/",
-              "/Status: \\*\\*active delivery plan — Phase 4 \\/ Slice 4\\.3 NEXT\\*\\*/",
-              "release status assertion",
-          )
-          test = replace_once(
-              test,
-              "/### 4\\.2 Deterministic Markdown export\\n\\nStatus: \\*\\*NEXT\\*\\*/",
-              "/### 4\\.2 Deterministic Markdown export\\n\\nStatus: \\*\\*DONE\\*\\*/",
-              "plan 4.2 assertion",
-          )
-          marker = """  assert.match(
-    plan,
-    /### 4\\.2 Deterministic Markdown export\\n\\nStatus: \\*\\*DONE\\*\\*/,
-  );
-"""
-          replacement = marker + """  assert.match(
-    plan,
-    /### 4\\.3 Safe public machine-readable representations\\n\\nStatus: \\*\\*NEXT\\*\\*/,
-  );
-"""
-          test = replace_once(test, marker, replacement, "plan 4.3 assertion")
-          test = replace_once(
-              test,
-              '    "/saved",\n    "/about",',
-              '    "/saved",\n    "/boards",\n    "/about",',
-              "locked board route",
-          )
-          test = replace_once(
-              test,
-              "  assert.match(browser, /data-saved-resources-empty/);\n  assert.match(browser, /scrollWidth > document\\.documentElement\\.clientWidth/);",
-              "  assert.match(browser, /data-saved-resources-empty/);\n  assert.match(browser, /board-export-title/);\n  assert.match(browser, /tessli-project-boards-v1/);\n  assert.match(browser, /scrollWidth > document\\.documentElement\\.clientWidth/);",
-              "locked Board browser assertions",
-          )
-          test_path.write_text(test, encoding="utf-8", newline="\n")
-
-      - name: Format completion files
-        working-directory: web
+      - name: Run canonical route and browser matrix
+        shell: bash
         run: |
-          npx prettier --write \
-            ../README.md \
-            ../docs/product-plan-v2.md \
-            ../build-slices.md \
-            ../docs/slices/4.2-deterministic-markdown-export.md \
-            tests/release-hardening.test.mjs
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
+          server_pid=$!
+          chrome_pid=""
+          cleanup() {
+            if [ -n "$chrome_pid" ]; then kill "$chrome_pid" 2>/dev/null || true; fi
+            kill "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
 
-      - name: Run focused release-contract test
-        working-directory: web
-        run: node --test tests/release-hardening.test.mjs
+          curl --fail --silent --show-error --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/resources > /tmp/tessli-resources.html
+          grep -q "Browse design sources" /tmp/tessli-resources.html
+          grep -q 'data-browse-view="cards"' /tmp/tessli-resources.html
+          grep -q "Inspect Tessli profile" /tmp/tessli-resources.html
 
-      - name: Commit completion records
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            README.md \
-            docs/product-plan-v2.md \
-            build-slices.md \
-            docs/slices/4.2-deterministic-markdown-export.md \
-            web/tests/release-hardening.test.mjs
-          git commit -m "docs: complete deterministic Board export slice"
-          git push origin HEAD:feat/deterministic-markdown-export
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/resources/designindex > /tmp/tessli-profile.html
+          grep -q "What this profile supports" /tmp/tessli-profile.html
+
+          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$chrome_bin"
+          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-allow-origins=* \
+            --remote-debugging-port=9222 \
+            --user-data-dir=/tmp/tessli-cdp \
+            about:blank > artifacts/search-browser/chrome.log 2>&1 &
+          chrome_pid=$!
+
+          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
+          node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/explore-results-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/saved-resources-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/release-gate-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+
+      - name: Upload browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-browser-diagnostics
+          path: |
+            web/artifacts/search-browser/*
+            web/artifacts/responsive-ui/*.png
+            web/artifacts/phase-1-release/*.png
+          if-no-files-found: warn
+          retention-days: 7
