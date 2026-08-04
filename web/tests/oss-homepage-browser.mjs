@@ -164,7 +164,10 @@ for (const [width, height] of viewports) {
   const mainNodeId = await querySelector(documentNodeId, "main#main-content");
   assert.ok(mainNodeId > 0, `main landmark at ${width}`);
 
-  const publicHeaderNodeId = await querySelector(documentNodeId, "body > header");
+  const publicHeaderNodeId = await querySelector(
+    documentNodeId,
+    "body > header",
+  );
   const publicFooterNodeId = await querySelector(
     documentNodeId,
     "[data-site-content] > footer",
