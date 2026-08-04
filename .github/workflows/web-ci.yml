@@ -28,7 +28,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -46,8 +46,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: proof/oss-homepage-candidate
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -58,28 +56,6 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
-
-      - name: Apply and commit Slice 5.2 completion state
-        shell: bash
-        run: |
-          cd ..
-          python .github/complete-slice-5-2.py
-          cd web
-          npx prettier --write \
-            ../build-slices.md \
-            ../docs/product-plan-v2.md \
-            ../README.md \
-            tests/release-hardening.test.mjs
-          cd ..
-          git config user.name "tessli-agent"
-          git config user.email "actions@users.noreply.github.com"
-          git add build-slices.md docs/product-plan-v2.md README.md web/tests/release-hardening.test.mjs
-          if git diff --cached --quiet; then
-            echo "Slice 5.2 completion state is already current."
-            exit 0
-          fi
-          git commit -m "docs: complete OSS homepage candidate slice"
-          git push origin HEAD:proof/oss-homepage-candidate
 
       - name: Verify approved hero asset
         shell: bash
