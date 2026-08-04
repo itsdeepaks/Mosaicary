@@ -153,18 +153,35 @@ export function SavedResourcesExperience({
   }, []);
 
   const restoreResource = useCallback(
-    (resourceId: string, previousIds: readonly string[]) => {
-      writeSavedResourceIds(previousIds);
-      setSavedResourceIds(previousIds);
+    (resourceId: string) => {
+      setSavedResourceIds((currentIds) => {
+        const restoredIds = currentIds.includes(resourceId)
+          ? currentIds
+          : [...currentIds, resourceId];
+        writeSavedResourceIds(restoredIds);
+        return restoredIds;
+      });
       const resource = resourcesById.get(resourceId);
       setAnnouncement(`${resource?.name ?? "Resource"} restored.`);
     },
     [resourcesById],
   );
 
+  const restoreClearedResources = useCallback(
+    (resourceIds: readonly string[]) => {
+      setSavedResourceIds((currentIds) => {
+        const restoredIds = Array.from(new Set([...resourceIds, ...currentIds]));
+        writeSavedResourceIds(restoredIds);
+        return restoredIds;
+      });
+      setClearedResourceIds(null);
+      setAnnouncement(`${resourceCountLabel(resourceIds.length)} restored.`);
+    },
+    [],
+  );
+
   const handleSavedChange = useCallback(
     (resourceId: string, saved: boolean) => {
-      const previous = savedResourceIds;
       const next = saved
         ? Array.from(new Set([...savedResourceIds, resourceId]))
         : savedResourceIds.filter((id) => id !== resourceId);
@@ -184,7 +201,7 @@ export function SavedResourcesExperience({
           ...(saved
             ? {}
             : {
-                onUndo: () => restoreResource(resourceId, previous),
+                onUndo: () => restoreResource(resourceId),
                 undoLabel: "Undo",
               }),
         },
@@ -209,12 +226,7 @@ export function SavedResourcesExperience({
       {
         id: `toast-${Date.now()}`,
         message,
-        onUndo: () => {
-          writeSavedResourceIds(previous);
-          setSavedResourceIds(previous);
-          setClearedResourceIds(null);
-          setAnnouncement(`${resourceCountLabel(previous.length)} restored.`);
-        },
+        onUndo: () => restoreClearedResources(previous),
         undoLabel: "Undo",
       },
     ]);
@@ -223,12 +235,7 @@ export function SavedResourcesExperience({
 
   const undoClear = () => {
     if (!clearedResourceIds) return;
-    writeSavedResourceIds(clearedResourceIds);
-    setSavedResourceIds(clearedResourceIds);
-    setClearedResourceIds(null);
-    setAnnouncement(
-      `${resourceCountLabel(clearedResourceIds.length)} restored.`,
-    );
+    restoreClearedResources(clearedResourceIds);
   };
 
   const resetFilters = () => {
