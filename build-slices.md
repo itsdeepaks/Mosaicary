@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 3 / Slice 3.3 NEXT**  
+Status: **active delivery plan — Phase 3 / Slice 3.4 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -106,7 +106,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 0 | Direction Reset | DONE | — |
 | 1 | Source Intelligence Foundation | DONE | — |
 | 2 | Browse and Source Detail | DONE | — |
-| 3 | Local Saved and Project Boards | ACTIVE | 3.3 NEXT |
+| 3 | Local Saved and Project Boards | ACTIVE | 3.4 NEXT |
 | 4 | Research-Pack Export | PLANNED | 4.1 |
 | 5 | Real OSS Proof Project | PROOF | 5.1 |
 | 6 | Homepage, Navigation, Playbooks, and For AI | PLANNED | 6.1 |
@@ -128,8 +128,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 2.4 | Enriched intelligence detail and Similar Sources | DONE | 2.3 | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81 |
 | 3.1 | Universal browser-local Save | DONE | 2.2, 2.3 | `docs/slices/3.1-universal-local-save.md`, PR #82 |
 | 3.2 | Saved workspace search/filter refinement | DONE | 3.1 | `docs/slices/3.2-saved-workspace-refinement.md`, PR #83 |
-| 3.3 | Local project Boards and notes | NEXT | 3.1, 3.2 | — |
-| 3.4 | Selected/rejected decisions and unresolved questions | PLANNED | 3.3 | — |
+| 3.3 | Local project Boards and notes | DONE | 3.1, 3.2 | `docs/slices/3.3-local-project-boards.md`, PR #84 |
+| 3.4 | Selected/rejected decisions and unresolved questions | NEXT | 3.3 | — |
 | 4.1 | Board research-pack contract | PLANNED | 3.4 | — |
 | 4.2 | Deterministic Markdown export | PLANNED | 4.1 | — |
 | 4.3 | Safe public machine-readable representations | PLANNED | 2.4, 4.2 | — |
@@ -238,9 +238,9 @@ Delivered:
 - `docs/slices/3.2-saved-workspace-refinement.md`;
 - PR #83.
 
-### Slice 3.3 Local project Boards
+### DONE — Slice 3.3 Local project Boards
 
-Create, rename, delete, project goal/constraints, source membership, and per-item notes.
+Delivered create, rename, switch, and delete; project goal and constraints; catalogue source membership; per-source notes; versioned browser-local persistence; safe malformed-data fallback; same-document and cross-tab synchronization; Saved navigation; sitemap coverage; responsive and accessible controls; `docs/slices/3.3-local-project-boards.md`; PR #84.
 
 ### Slice 3.4 Decisions
 

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import catalogue from "@/data/catalogue.json";
 import { SavedResourcesExperience } from "@/components/saved-resources/saved-resources-experience";
 import type {
@@ -37,6 +39,9 @@ const resources: readonly ResourceCardData[] = catalogue.resources.map(
 export default function SavedPage() {
   return (
     <main id="main-content">
+      <div className="tessli-container" style={{ paddingTop: "1rem" }}>
+        <Link href="/boards">Organise research in project boards →</Link>
+      </div>
       <SavedResourcesExperience
         categoryLabels={categoryLabels}
         resources={resources}
