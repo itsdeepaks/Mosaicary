@@ -40,8 +40,9 @@ test("source detail exposes truthful progressive profile state", () => {
   ]) {
     assert.match(page, new RegExp(text));
   }
-  assert.match(page, /profile\.bestFor\.length/);
-  assert.match(page, /profile\.limitations\.length/);
+  assert.match(page, /items=\{profile\.bestFor\}/);
+  assert.match(page, /items=\{profile\.limitations\}/);
+  assert.match(page, /items\.length > 0/);
   assert.match(page, /profile\.evidence\.length/);
   assert.doesNotMatch(page, /Add to board/);
 });
