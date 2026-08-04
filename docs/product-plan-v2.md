@@ -294,15 +294,19 @@ Goal: test whether Tessli improves one real Online Scope Studio design workflow.
 
 ### 5.1 Research setup
 
-Status: **NEXT**
+Status: **DONE**
 
-- real brief, audience, and constraints;
-- 8–12 selected sources;
-- rejected directions;
-- exported research pack;
-- baseline timing and process notes.
+- real Online Scope Studio homepage brief, audience, and constraints;
+- ten selected canonical sources and four rejected directions;
+- deterministic `tessli.board-research-pack.v1` export;
+- baseline timing/process rubric with unknown values kept `not measured`;
+- bounded candidate-build handoff without implementation or human-score claims.
+
+Evidence: `docs/slices/5.1-oss-proof-research-setup.md`, PR #89.
 
 ### 5.2 Agent implementation
+
+Status: **NEXT**
 
 - give the pack and repository context to Codex;
 - implement one approved page or section candidate;
