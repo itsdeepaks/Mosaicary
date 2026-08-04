@@ -88,35 +88,33 @@
   gap: var(--space-3);
 }
 
-.accountLink {
+.utilityNavigation {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.utilityLink {
   display: inline-flex;
   min-height: 40px;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--line);
   border-radius: var(--radius-control-md);
-  background: var(--surface);
-  padding-inline: var(--space-4);
-  color: var(--text-strong);
+  padding-inline: var(--space-3);
+  color: var(--text-body);
   font-size: var(--text-body-sm);
-  font-weight: 650;
+  font-weight: 600;
   text-decoration: none;
   transition:
-    border-color var(--motion-fast) var(--ease-standard),
     background var(--motion-fast) var(--ease-standard),
-    transform var(--motion-fast) var(--ease-standard);
+    color var(--motion-fast) var(--ease-standard);
 }
 
-.accountLink:hover,
-.accountLink:focus-visible,
-.accountLinkActive {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.accountLink:hover,
-.accountLink:focus-visible {
-  transform: translateY(-1px);
+.utilityLink:hover,
+.utilityLink:focus-visible,
+.utilityLinkActive {
+  background: var(--surface-muted);
+  color: var(--text-strong);
 }
 
 .menuTrigger,
@@ -211,28 +209,43 @@
   color: var(--accent-text);
 }
 
-.mobileAccountLink {
+.mobileUtilities {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: var(--space-5);
+}
+
+.mobileUtilities > p {
+  margin: 0 0 var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mobileUtilities nav {
+  display: grid;
+}
+
+.mobileUtilityLink {
   display: flex;
-  min-height: 56px;
+  min-height: 52px;
   align-items: center;
   justify-content: space-between;
-  margin: auto var(--space-5) var(--space-5);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  padding-inline: var(--space-4);
-  color: var(--text-strong);
+  border-bottom: 1px solid var(--line-subtle);
+  color: var(--text-body);
   font-size: var(--text-body-sm);
-  font-weight: 700;
+  font-weight: 650;
   text-decoration: none;
 }
 
-.mobileAccountLink span:last-child {
+.mobileUtilityLink span:last-child {
   color: var(--accent-text);
 }
 
-.mobileAccountLinkActive {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+.mobileUtilityLinkActive {
+  color: var(--accent-text);
 }
 
 @media (max-width: 767px) {
@@ -250,7 +263,7 @@
   }
 
   .desktopNavigation,
-  .accountLink {
+  .utilityNavigation {
     display: none;
   }
 
@@ -273,7 +286,7 @@
 @media (prefers-reduced-motion: reduce) {
   .header,
   .navigationLink::after,
-  .accountLink {
+  .utilityLink {
     transition: none;
   }
 }

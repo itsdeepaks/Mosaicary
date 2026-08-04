@@ -11,16 +11,29 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("only implemented navigation routes are available", async () => {
+test("public navigation separates primary research routes from utilities", async () => {
   const navigation = await read("components/site-header/navigation.ts");
 
-  assert.match(navigation, /label: "Explore", href: "\/", available: true/);
-  for (const label of ["Collections", "Resources", "About", "Saved"]) {
-    assert.match(
-      navigation,
-      new RegExp(`label: "${label}"[\\s\\S]*?available: true`),
-    );
-  }
+  assert.match(
+    navigation,
+    /label: "Browse"[\s\S]*?href: "\/resources"[\s\S]*?available: true/,
+  );
+  assert.match(
+    navigation,
+    /label: "Collections"[\s\S]*?href: "\/collections"[\s\S]*?available: true/,
+  );
+  assert.match(
+    navigation,
+    /label: "Search"[\s\S]*?href: "\/resources#browse-search"[\s\S]*?match: "none"/,
+  );
+  assert.match(
+    navigation,
+    /label: "Saved"[\s\S]*?href: "\/saved"[\s\S]*?available: true/,
+  );
+  assert.doesNotMatch(
+    navigation,
+    /label: "Explore"|label: "Resources"|label: "About"/,
+  );
 });
 
 test("header implements accessible modal navigation behaviour", async () => {
@@ -36,8 +49,9 @@ test("header implements accessible modal navigation behaviour", async () => {
   assert.match(header, /event\.key !== "Tab"/);
   assert.match(header, /desktopQuery\.addEventListener\("change"/);
   assert.match(header, /window\.addEventListener\("popstate"/);
-  assert.match(header, /href="\/auth"/);
-  assert.match(header, /Sign in to Tessli/);
+  assert.match(header, /aria-label="Utilities"/);
+  assert.match(header, /aria-label="Mobile utilities"/);
+  assert.doesNotMatch(header, /href="\/auth"|Sign in to Tessli|isAuthActive/);
   assert.doesNotMatch(header, /fake avatar|theme toggle/i);
 });
 
@@ -49,15 +63,18 @@ test("header avoids synchronous state updates during effect setup", async () => 
   assert.match(header, /cancelAnimationFrame\(focusFrame\)/);
 });
 
-test("header visual contract uses underline and a viewport modal", async () => {
+test("header visual contract uses underline, utilities, and a viewport modal", async () => {
   const css = await read("components/site-header/site-header.module.css");
 
   assert.match(css, /\.navigationLink::after/);
   assert.match(css, /background: var\(--accent\)/);
+  assert.match(css, /\.utilityNavigation \{/);
+  assert.match(css, /\.utilityLink \{/);
+  assert.match(css, /\.mobileUtilities \{/);
   assert.match(css, /@media \(max-width: 767px\)/);
   assert.match(css, /\.sheetLayer \{[\s\S]*?inset: 0/);
   assert.match(css, /\.sheet \{[\s\S]*?height: 100%/);
-  assert.doesNotMatch(css, /backdrop-filter/);
+  assert.doesNotMatch(css, /\.accountLink|\.mobileAccountLink|backdrop-filter/);
 });
 
 test("root layout mounts one global header and isolates site content", async () => {

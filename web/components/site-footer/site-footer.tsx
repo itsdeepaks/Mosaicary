@@ -12,8 +12,8 @@ export function SiteFooter() {
             Tessli
           </Link>
           <p>
-            A curated index for discovering design resources, studying useful
-            patterns, and creating original work.
+            Find design and frontend sources, inspect their fit, and keep
+            project research reusable.
           </p>
         </div>
 

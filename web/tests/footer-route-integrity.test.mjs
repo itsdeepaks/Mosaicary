@@ -12,9 +12,10 @@ async function read(relativePath) {
 }
 
 const footerRoutes = [
-  "/",
-  "/collections",
   "/resources",
+  "/collections",
+  "/saved",
+  "/boards",
   "/submit",
   "/suggest",
   "/about",
@@ -25,10 +26,10 @@ const footerRoutes = [
 ];
 
 const implementedRoutes = new Set([
-  "/",
-  "/collections",
   "/resources",
+  "/collections",
   "/saved",
+  "/boards",
   "/about",
   "/curation",
   "/privacy",
@@ -41,26 +42,32 @@ const routeShells = footerRoutes.filter(
 
 test("every internal footer destination has an App Router page", async () => {
   for (const route of footerRoutes) {
-    const pagePath = route === "/" ? "app/page.tsx" : `app${route}/page.tsx`;
-    await access(path.join(webRoot, pagePath));
+    await access(path.join(webRoot, `app${route}/page.tsx`));
   }
 });
 
-test("footer contains only truthful launch groups and safe external links", async () => {
+test("footer contains truthful research groups and safe external links", async () => {
   const [navigation, footer, styles] = await Promise.all([
     read("components/site-footer/footer-navigation.ts"),
     read("components/site-footer/site-footer.tsx"),
     read("components/site-footer/site-footer.module.css"),
   ]);
 
-  for (const group of ["Explore", "Contribute", "About", "Legal"]) {
+  for (const group of ["Research", "Contribute", "About", "Legal"]) {
     assert.match(navigation, new RegExp(`label: "${group}"`));
   }
 
-  for (const route of footerRoutes.slice(1)) {
+  for (const route of footerRoutes) {
     assert.match(navigation, new RegExp(`href: "${route}"`));
   }
 
+  assert.match(navigation, /label: "Browse sources", href: "\/resources"/);
+  assert.match(navigation, /label: "Saved sources", href: "\/saved"/);
+  assert.match(navigation, /label: "Project boards", href: "\/boards"/);
+  assert.doesNotMatch(
+    navigation,
+    /Explore resources|Full reference|footer-explore/,
+  );
   assert.match(footer, /target="_blank"/);
   assert.match(footer, /rel="noopener noreferrer"/);
   assert.match(footer, /public repository does not itself grant reuse rights/i);
@@ -92,17 +99,17 @@ test("route shells are honest, visitor-facing, and never collect data", async ()
   assert.match(placeholder, /rel="noopener noreferrer"/);
 });
 
-test("header exposes only routes implemented by this slice", async () => {
+test("header exposes only working primary and utility routes", async () => {
   const navigation = await read("components/site-header/navigation.ts");
 
-  for (const label of ["Explore", "Collections", "Resources", "About"]) {
-    assert.match(
-      navigation,
-      new RegExp(`label: "${label}"[\\s\\S]*?available: true`),
-    );
-  }
-
+  assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Collections"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Search"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
+  assert.doesNotMatch(
+    navigation,
+    /label: "Explore"|label: "Resources"|label: "About"|label: "For AI"|\/auth/,
+  );
 });
 
 test("global footer stays inside the modal-inert site content wrapper", async () => {

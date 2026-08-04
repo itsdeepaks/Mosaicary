@@ -344,18 +344,18 @@ One proof cannot justify a broad public UI-taste claim.
 
 ## 10. Phase 6 — Homepage, Navigation, Playbooks, and For AI
 
-Status: **PLANNED**
+Status: **ACTIVE**
 
 Goal: present the proven workflow clearly to humans and models.
 
 ### 6.1 Global navigation and naming
 
-Status: **NEXT**
+Status: **DONE**
 
 Primary navigation:
 
 ```text
-Browse | Collections | For AI
+Browse | Collections
 ```
 
 Utilities:
@@ -364,11 +364,17 @@ Utilities:
 Search | Saved
 ```
 
-- remove duplicated Resources/Full Reference/Explore naming;
-- About moves to secondary/footer navigation;
-- Sign in remains absent until Phase 8 works.
+- removed duplicated Resources/Full Reference/Explore naming from the public shell;
+- About moved to secondary/footer navigation;
+- Sign in remains absent until Phase 8 works;
+- For AI remains absent until Slice 6.4 supplies a working route;
+- responsive desktop/mobile browser evidence passed.
+
+Evidence: `docs/slices/6.1-global-navigation-cleanup.md`, PR #92.
 
 ### 6.2 Curated homepage
+
+Status: **BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME**
 
 - task-based hero search routed to `/resources`;
 - real coverage facts and research-goal entry points;
@@ -380,6 +386,8 @@ Search | Saved
 
 ### 6.3 Collections become playbooks
 
+Status: **NEXT**
+
 - outcome and audience;
 - staged research sequence;
 - why each source is included;
@@ -388,6 +396,8 @@ Search | Saved
 - last reviewed date.
 
 ### 6.4 For AI
+
+Status: **PLANNED**
 
 - current seven MCP tools;
 - coverage, limits, setup, evidence, governance, and exports;

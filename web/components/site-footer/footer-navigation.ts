@@ -14,12 +14,13 @@ export const repositoryUrl = "https://github.com/itsdeepaks/tessli";
 
 export const footerGroups: readonly FooterGroup[] = [
   {
-    id: "footer-explore",
-    label: "Explore",
+    id: "footer-research",
+    label: "Research",
     links: [
-      { label: "Explore resources", href: "/" },
+      { label: "Browse sources", href: "/resources" },
       { label: "Collections", href: "/collections" },
-      { label: "Full reference", href: "/resources" },
+      { label: "Saved sources", href: "/saved" },
+      { label: "Project boards", href: "/boards" },
     ],
   },
   {

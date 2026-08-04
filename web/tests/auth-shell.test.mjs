@@ -41,22 +41,18 @@ test("credential-ready shell is truthful and does not send auth requests", async
   assert.doesNotMatch(shell, /createBrowserSupabaseClient/);
 });
 
-test("header exposes separate desktop and mobile account entry points", async () => {
-  const [header, styles] = await Promise.all([
+test("public shell does not promote incomplete account access", async () => {
+  const [header, navigation, styles] = await Promise.all([
     readWebFile("components/site-header/site-header.tsx"),
+    readWebFile("components/site-header/navigation.ts"),
     readWebFile("components/site-header/site-header.module.css"),
   ]);
 
-  assert.equal(header.match(/href="\/auth"/g)?.length, 2);
-  assert.match(header, /isAuthActive = pathname\.startsWith\("\/auth"\)/);
-  assert.match(header, /Sign in to Tessli/);
-  assert.match(header, /aria-current=\{isAuthActive \? "page" : undefined\}/);
-  assert.match(styles, /\.accountLink \{/);
-  assert.match(styles, /\.mobileAccountLink \{/);
-  assert.match(
-    styles,
-    /\.desktopNavigation,\n  \.accountLink \{\n    display: none;/,
-  );
+  assert.doesNotMatch(header, /href="\/auth"|isAuthActive|Sign in to Tessli/);
+  assert.doesNotMatch(navigation, /\/auth|Sign in/);
+  assert.doesNotMatch(styles, /\.accountLink|\.mobileAccountLink/);
+  assert.match(header, /aria-label="Utilities"/);
+  assert.match(header, /aria-label="Mobile utilities"/);
 });
 
 test("auth shell follows the editorial responsive design contract", async () => {

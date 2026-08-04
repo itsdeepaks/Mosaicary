@@ -163,5 +163,6 @@ test("Saved and canonical Browse use repository data without remote state", asyn
   assert.match(resources, /<BrowseResults resources=\{resources\}/);
   assert.doesNotMatch(resources, /RoutePlaceholder|localStorage|fetch\(/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
-  assert.match(navigation, /label: "Resources"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
+  assert.match(resources, /id="browse-search"/);
 });
