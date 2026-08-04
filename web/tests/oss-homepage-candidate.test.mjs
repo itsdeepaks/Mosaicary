@@ -63,9 +63,7 @@ test("candidate implements the approved content architecture without fake proof"
 
 test("candidate actions are in-page and no external form or provider asset is introduced", async () => {
   const page = await readFile(pagePath, "utf8");
-  const hrefs = [...page.matchAll(/href="([^"]+)"/gu)].map(
-    (match) => match[1],
-  );
+  const hrefs = [...page.matchAll(/href="([^"]+)"/gu)].map((match) => match[1]);
   assert.ok(hrefs.length >= 8);
   assert.equal(
     hrefs.every((href) => href.startsWith("#")),
