@@ -80,7 +80,8 @@ async function evaluate(expression) {
     expression,
     returnByValue: true,
   });
-  if (response.exceptionDetails) throw new Error(response.exceptionDetails.text);
+  if (response.exceptionDetails)
+    throw new Error(response.exceptionDetails.text);
   return response.result.value;
 }
 
