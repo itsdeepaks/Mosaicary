@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 5 / Slice 5.3 NEXT**  
+Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.1 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -112,8 +112,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 |     2 | Browse and Source Detail                    | DONE     | —                          |
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
-|     5 | Real OSS Proof Project                      | ACTIVE   | 5.3 NEXT                   |
-|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | 6.1                        |
+|     5 | Real OSS Proof Project                      | BLOCKED  | 5.3 human review           |
+|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.1 NEXT                   |
 |     7 | Reviewed Pattern Candidates                 | PLANNED  | 7.1 after Phase 5          |
 |     8 | Authentication and Cloud Workspace          | DEFERRED | 8.1 after local proof      |
 |     9 | Community and Moderation                    | DEFERRED | 9.1 after auth/owner       |
@@ -139,9 +139,9 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 4.3  | Safe public machine-readable representations          | DONE     | 2.4, 4.2                | `docs/slices/4.3-public-machine-readable-representations.md`, PR #88 |
 | 5.1  | OSS proof brief and research Board                    | DONE     | 4.3                     | `docs/slices/5.1-oss-proof-research-setup.md`, PR #89                |
 | 5.2  | Agent implementation from exported pack               | DONE     | 5.1                     | `docs/slices/5.2-oss-homepage-candidate.md`, PR #90                  |
-| 5.3  | Browser and human review                              | NEXT     | 5.2                     | —                                                                    |
-| 5.4  | Outcome/evidence report                               | PROOF    | 5.3                     | —                                                                    |
-| 6.1  | Global navigation and naming cleanup                  | PLANNED  | 2.2                     | —                                                                    |
+| 5.3  | Browser and human review                              | BLOCKED  | 5.2                     | `docs/slices/5.3-oss-homepage-human-review.md`, PR #91                |
+| 5.4  | Outcome/evidence report                               | BLOCKED  | 5.3 human artifact      | —                                                                    |
+| 6.1  | Global navigation and naming cleanup                  | NEXT     | 2.2                     | —                                                                    |
 | 6.2  | Curated homepage built around proven workflow         | PLANNED  | 5.4, 6.1                | —                                                                    |
 | 6.3  | Collections-to-playbooks conversion                   | PLANNED  | 3.3, 4.2                | —                                                                    |
 | 6.4  | For AI product page                                   | PLANNED  | 2.4, 4.3                | —                                                                    |
@@ -290,7 +290,7 @@ Slice 5.1 delivered a real OSS homepage brief, ten selected references, four rej
 
 Slice 5.2 delivered one isolated, non-production OSS homepage candidate from the committed pack, retained the first candidate, measured a 35,079-character handoff, recorded a one-hour implementation window, and passed structural, accessibility-tree, overflow, console, touch-target, and five-viewport screenshot checks. Evidence: `docs/slices/5.2-oss-homepage-candidate.md`, PR #90.
 
-Slice 5.3 is next: preserve the candidate and browser evidence, prepare the approved twelve-dimension review packet, collect genuine human scores and notes, and record review-driven corrections without inventing judgment. Missing human review is a blocker, not permission to fabricate evidence.
+Slice 5.3 now has a safe browser-local review workspace, versioned JSON contract, empty reviewer packet/template, focused validation, and five-viewport browser evidence. It is BLOCKED on a genuine completed human-review artifact. Slice 5.4 remains blocked on that artifact and any approved review-driven corrections. Evidence: `docs/slices/5.3-oss-homepage-human-review.md`, PR #91.
 
 ### Phase 6 — Homepage, Navigation, Playbooks, and For AI
 
@@ -314,6 +314,6 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 ## 11. Current continuation boundary
 
-After Slice 5.2 merges, refresh `main` and begin Phase 5 / Slice 5.3 on a new branch in this conversation.
+After Slice 5.3 merges, refresh `main` and begin Phase 6 / Slice 6.1 on a new branch. Slice 5.4 and Slice 6.2 remain blocked until a genuine completed human-review artifact is returned.
 
 No recurring scheduled development task is enabled or permitted for this workflow.
