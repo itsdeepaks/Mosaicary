@@ -126,6 +126,7 @@
 
 .headerAction {
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   justify-self: end;
   gap: 9px;
