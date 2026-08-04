@@ -146,7 +146,7 @@ assert.equal(
 
 await send("Page.navigate", { url: `${origin}/resources/designindex` });
 await waitFor(
-  `document.readyState === "complete" && document.body.textContent.includes('minimum truthful profile boundary')`,
+  `document.readyState === "complete" && Boolean(document.querySelector('[data-source-detail=designindex]'))`,
   "internal source profile",
 );
 assert.equal(

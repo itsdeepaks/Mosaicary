@@ -99,7 +99,10 @@ test("canonical Browse renders one responsive result tree without duplicate desk
 });
 
 test("minimum source profile routes cover all source slugs without overstating enrichment", async () => {
-  const detail = await read("app/resources/[slug]/page.tsx");
+  const [detail, actions] = await Promise.all([
+    read("app/resources/[slug]/page.tsx"),
+    read("components/source-detail/source-actions.tsx"),
+  ]);
 
   assert.match(detail, /generateStaticParams/);
   assert.match(detail, /getAllSourceProfiles\(\)\.map/);
@@ -107,7 +110,9 @@ test("minimum source profile routes cover all source slugs without overstating e
   assert.match(detail, /if \(!profile\) notFound\(\)/);
   assert.match(detail, /profile\.profileLevel/);
   assert.match(detail, /profile\.coverage\.reason/);
-  assert.match(detail, /Visit source ↗/);
-  assert.match(detail, /minimum truthful profile boundary/i);
+  assert.match(detail, /<SourceActions resource=\{card\}/);
+  assert.match(detail, /What this profile supports/i);
+  assert.match(actions, /Visit source ↗/);
+  assert.match(actions, /rel="noopener noreferrer"/);
   assert.doesNotMatch(detail, /rating|popularity|quality score|trend/i);
 });

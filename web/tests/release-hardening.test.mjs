@@ -41,7 +41,11 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     slices,
-    /\| 2\.3 \| Source Detail foundation for all 295 sources \| NEXT \| 1\.2, 2\.2 \| — \|/,
+    /\| 2\.3 \| Source Detail foundation for all 295 sources \| DONE \| 1\.2, 2\.2 \| `docs\/slices\/2\.3-source-detail-foundation\.md`, PR #80 \|/,
+  );
+  assert.match(
+    slices,
+    /\| 2\.4 \| Enriched intelligence detail and Similar Sources \| NEXT \| 2\.3 \| — \|/,
   );
   assert.match(
     plan,
