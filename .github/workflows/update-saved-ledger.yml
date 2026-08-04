@@ -43,3 +43,5 @@ jobs:
           git add build-slices.md
           git diff --cached --quiet || git commit -m "docs: record saved workspace refinement"
           git push origin HEAD:feat/saved-workspace-refinement
+
+# Temporary workflow; remove before merge.
