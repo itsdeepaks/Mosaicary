@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
+import { measureOssProofHandoff } from "../scripts/measure-oss-proof-handoff.mjs";
+
 const pagePath = new URL(
   "../app/proofs/oss-homepage/page.tsx",
   import.meta.url,
@@ -87,22 +89,33 @@ test("candidate CSS is route-scoped, responsive, focus-safe, and reduced-motion 
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/u);
   assert.match(styles, /@media \(forced-colors: active\)/u);
   assert.match(styles, /:focus-visible/u);
+  assert.match(styles, /min-height: 44px/u);
   assert.match(styles, /min-height: 48px/u);
   assert.match(styles, /overflow: clip/u);
   assert.doesNotMatch(styles, /animation:/u);
 });
 
-test("first-candidate evidence records traceability and defers human judgment", async () => {
-  const evidence = await readFile(evidencePath, "utf8");
+test("implementation evidence retains the first candidate and exact handoff metrics", async () => {
+  const [evidence, metrics] = await Promise.all([
+    readFile(evidencePath, "utf8"),
+    measureOssProofHandoff(),
+  ]);
   assert.match(
     evidence,
     /First candidate head: `8577e3e6c3dbdd8d629bc8752b2f23060fb8643d`/u,
   );
   assert.match(evidence, /3D: rejected for the first candidate/u);
-  assert.match(evidence, /No human scores/u);
-  assert.match(evidence, /characters: pending deterministic calculation/u);
-  assert.match(
-    evidence,
-    /approximate tokens: pending deterministic calculation/u,
-  );
+  assert.match(evidence, /Human scores.*remain unmeasured/isu);
+  assert.deepEqual(metrics.totals, {
+    characters: 35079,
+    bytes: 35113,
+    approximateTokens: 8770,
+    tokenEstimateMethod: "ceil(Unicode code points / 4)",
+  });
+  assert.match(evidence, /characters: \*\*35,079 Unicode code points\*\*/u);
+  assert.match(evidence, /UTF-8 bytes: \*\*35,113\*\*/u);
+  assert.match(evidence, /approximate tokens: \*\*8,770\*\*/u);
+  assert.match(evidence, /Material direction rebuilds: \*\*0\*\*/u);
+  assert.match(evidence, /Automated browser findings: \*\*1\*\*/u);
+  assert.match(evidence, /Corrections after the first candidate: \*\*1\*\*/u);
 });
