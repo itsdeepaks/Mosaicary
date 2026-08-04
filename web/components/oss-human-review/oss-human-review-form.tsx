@@ -80,21 +80,27 @@ export function OssHumanReviewForm() {
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const today = localIsoDate();
-    try {
-      const stored = window.localStorage.getItem(OSS_HUMAN_REVIEW_STORAGE_KEY);
-      if (!stored) {
+    const frame = window.requestAnimationFrame(() => {
+      const today = localIsoDate();
+      try {
+        const stored = window.localStorage.getItem(
+          OSS_HUMAN_REVIEW_STORAGE_KEY,
+        );
+        setDraft(
+          stored
+            ? normalizeOssHumanReviewDraft(JSON.parse(stored), today)
+            : createEmptyOssHumanReviewDraft(today),
+        );
+      } catch {
         setDraft(createEmptyOssHumanReviewDraft(today));
-      } else {
-        setDraft(normalizeOssHumanReviewDraft(JSON.parse(stored), today));
+        setAnnouncement(
+          "The saved review draft could not be read. A new local draft was started.",
+        );
       }
-    } catch {
-      setDraft(createEmptyOssHumanReviewDraft(today));
-      setAnnouncement(
-        "The saved review draft could not be read. A new local draft was started.",
-      );
-    }
-    setHydrated(true);
+      setHydrated(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
