@@ -147,7 +147,11 @@ export default function OssHomepageProofPage() {
       </div>
 
       <header className={styles.header} id="proof-top">
-        <a className={styles.brand} href="#proof-top" aria-label="Online Scope Studio proof home">
+        <a
+          className={styles.brand}
+          href="#proof-top"
+          aria-label="Online Scope Studio proof home"
+        >
           <span className={styles.brandMark}>OS</span>
           <span>
             Online Scope
@@ -167,7 +171,9 @@ export default function OssHomepageProofPage() {
 
       <section className={styles.hero} aria-labelledby="oss-proof-title">
         <div className={styles.heroCopy}>
-          <p className={styles.eyebrow}>Web · commerce · automation · products</p>
+          <p className={styles.eyebrow}>
+            Web · commerce · automation · products
+          </p>
           <h1 id="oss-proof-title">
             Your business needs a technical partner, not another hand-off.
           </h1>
@@ -218,7 +224,9 @@ export default function OssHomepageProofPage() {
       >
         <div className={styles.sectionHeading}>
           <p className={styles.sectionLabel}>What we help build</p>
-          <h2 id="services-title">Choose the business problem, not the platform.</h2>
+          <h2 id="services-title">
+            Choose the business problem, not the platform.
+          </h2>
           <p>
             The stack follows the job. Each engagement starts with what must
             improve for the customer or the team—not a pre-selected template.
@@ -275,7 +283,9 @@ export default function OssHomepageProofPage() {
       >
         <div className={styles.sectionHeading}>
           <p className={styles.sectionLabel}>How the partnership works</p>
-          <h2 id="process-title">Small enough to stay accountable. Structured enough to scale.</h2>
+          <h2 id="process-title">
+            Small enough to stay accountable. Structured enough to scale.
+          </h2>
         </div>
         <ol className={styles.processList}>
           {processSteps.map((step, index) => (
@@ -290,10 +300,15 @@ export default function OssHomepageProofPage() {
         </ol>
       </section>
 
-      <section className={styles.capabilitySection} aria-labelledby="capability-title">
+      <section
+        className={styles.capabilitySection}
+        aria-labelledby="capability-title"
+      >
         <div>
           <p className={styles.sectionLabel}>Capability depth</p>
-          <h2 id="capability-title">The right specialists and systems, held together by one context.</h2>
+          <h2 id="capability-title">
+            The right specialists and systems, held together by one context.
+          </h2>
           <p>
             Tools change. The valuable part is retaining the decisions,
             constraints, and operating knowledge across each piece of work.
@@ -309,10 +324,15 @@ export default function OssHomepageProofPage() {
         </ul>
       </section>
 
-      <section className={styles.partnerSection} aria-labelledby="partner-title">
+      <section
+        className={styles.partnerSection}
+        aria-labelledby="partner-title"
+      >
         <div className={styles.partnerIntro}>
           <p className={styles.sectionLabel}>Why a technical partner</p>
-          <h2 id="partner-title">Fewer gaps between the idea, the build, and the work after launch.</h2>
+          <h2 id="partner-title">
+            Fewer gaps between the idea, the build, and the work after launch.
+          </h2>
         </div>
         <div className={styles.partnerPoints}>
           <article>
@@ -342,10 +362,16 @@ export default function OssHomepageProofPage() {
         </div>
       </section>
 
-      <section className={styles.contactSection} id="proof-contact" aria-labelledby="contact-title">
+      <section
+        className={styles.contactSection}
+        id="proof-contact"
+        aria-labelledby="contact-title"
+      >
         <div>
           <p className={styles.sectionLabel}>Start with the problem</p>
-          <h2 id="contact-title">What should work better in your business six months from now?</h2>
+          <h2 id="contact-title">
+            What should work better in your business six months from now?
+          </h2>
         </div>
         <div className={styles.contactPanel}>
           <p>
