@@ -22,11 +22,14 @@ async function loadBoardSnapshot() {
   return JSON.parse(await readFile(boardPath, "utf8"));
 }
 
-async function loadCanonicalSources(resourceIds) {
+async function loadCanonicalSources(resourceIdsOrSlugs) {
   const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
-  const catalogueById = new Map(
-    catalogue.resources.map((resource) => [resource.id, resource]),
-  );
+  const catalogueByIdentifier = new Map();
+  for (const resource of catalogue.resources) {
+    catalogueByIdentifier.set(resource.id, resource);
+    catalogueByIdentifier.set(resource.slug, resource);
+  }
+
   const profiles = new Map();
   for (const filename of await readdir(profilesDirectory)) {
     if (!filename.endsWith(".json")) continue;
@@ -36,10 +39,11 @@ async function loadCanonicalSources(resourceIds) {
     profiles.set(profile.resourceId, profile);
   }
 
-  return resourceIds.map((resourceId) => {
-    const resource = catalogueById.get(resourceId);
-    if (!resource) throw new Error(`Unknown canonical source: ${resourceId}`);
-    const profile = profiles.get(resource.id) ?? null;
+  return resourceIdsOrSlugs.map((identifier) => {
+    const resource = catalogueByIdentifier.get(identifier);
+    if (!resource) throw new Error(`Unknown canonical source: ${identifier}`);
+    const profile =
+      profiles.get(resource.id) ?? profiles.get(resource.slug) ?? null;
     return {
       id: resource.id,
       slug: resource.slug,
