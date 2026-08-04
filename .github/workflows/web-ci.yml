@@ -81,6 +81,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Measure OSS proof handoff
+        run: node scripts/measure-oss-proof-handoff.mjs
+
       - name: Run canonical route and browser matrix
         shell: bash
         run: |
@@ -105,7 +108,7 @@ jobs:
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release
+          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate
           "$chrome_bin" \
             --headless=new \
             --no-sandbox \
@@ -125,6 +128,7 @@ jobs:
           node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/saved-resources-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/release-gate-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
 
       - name: Upload browser diagnostics
         if: always()
@@ -135,5 +139,7 @@ jobs:
             web/artifacts/search-browser/*
             web/artifacts/responsive-ui/*.png
             web/artifacts/phase-1-release/*.png
+            web/artifacts/oss-proof-candidate/*.png
+            web/artifacts/oss-proof-metrics.json
           if-no-files-found: warn
           retention-days: 7

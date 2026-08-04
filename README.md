@@ -36,6 +36,7 @@ The current application now includes the first reusable Tessli research loop:
 - deterministic browser-local Markdown research-pack copy and download;
 - deterministic public Markdown/JSON for every source and published collection;
 - a reproducible Online Scope Studio homepage proof brief, Board, baseline, and research pack;
+- an isolated, browser-tested OSS homepage candidate with retained implementation evidence;
 - six repository-maintained collections;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
@@ -74,7 +75,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next slice is **Phase 5 / Slice 5.2 — agent implementation from the exported OSS research pack**.
+The approved next slice is **Phase 5 / Slice 5.3 — browser and genuine human review of the retained OSS candidate**.
 
 ## Source coverage levels
 
