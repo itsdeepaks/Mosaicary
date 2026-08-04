@@ -49,21 +49,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Upload temporary shell source snapshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: tessli-shell-source-snapshot
-          path: |
-            web/app/**/*.tsx
-            web/app/**/*.css
-            web/components/site-header/**
-            web/components/site-footer/**
-            web/tests/**
-            web/package.json
-            web/tsconfig.json
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
@@ -125,7 +110,7 @@ jobs:
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review
+          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation
           "$chrome_bin" \
             --headless=new \
             --no-sandbox \
@@ -147,6 +132,7 @@ jobs:
           node tests/release-gate-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/global-navigation-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
 
       - name: Upload browser diagnostics
         if: always()
@@ -159,6 +145,7 @@ jobs:
             web/artifacts/phase-1-release/*.png
             web/artifacts/oss-proof-candidate/*.png
             web/artifacts/oss-human-review/*.png
+            web/artifacts/global-navigation/*.png
             web/artifacts/oss-proof-metrics.json
           if-no-files-found: warn
           retention-days: 7
