@@ -33,7 +33,10 @@ test("save writes publish a same-document synchronization event", async () => {
     store,
     /savedResourceChangedEvent = "tessli:saved-resources-changed"/,
   );
-  assert.match(store, /window\.dispatchEvent\(new Event\(savedResourceChangedEvent\)\)/);
+  assert.match(
+    store,
+    /window\.dispatchEvent\(new Event\(savedResourceChangedEvent\)\)/,
+  );
   assert.match(store, /storage\.setItem\(/);
   assert.match(store, /notifySavedResourceChange\(\)/);
   assert.match(store, /tessli-saved-resource-ids-v2/);
