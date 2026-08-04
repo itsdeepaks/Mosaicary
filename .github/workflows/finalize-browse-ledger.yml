@@ -1,0 +1,54 @@
+name: Finalize Browse ledger
+
+on:
+  push:
+    branches:
+      - feat/canonical-browse
+    paths:
+      - ".github/workflows/finalize-browse-ledger.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/canonical-browse
+      - name: Align completion and next-slice headings
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('build-slices.md')
+          text = path.read_text()
+          replacements = [
+              ('## 11. NEXT — Phase 2 / Slice 2.2 Canonical Browse implementation', '## 11. Phase 2 / Slice 2.2 completion evidence'),
+              ('## 12. Phase 2 remaining slices\n\n### 2.3 Source Detail foundation', '## 12. NEXT — Phase 2 / Slice 2.3 Source Detail foundation\n\n### Goal and acceptance boundary'),
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'missing expected heading: {old}')
+              text = text.replace(old, new)
+          marker = '### Exclusions\n\n- no mature Source Detail content beyond the minimum non-dead boundary;'
+          if marker not in text:
+              raise SystemExit('missing Slice 2.2 exclusions marker')
+          completion = (
+              '### Completion evidence\n\n'
+              '- implementation and final findings: `docs/slices/2.2-canonical-browse-implementation.md`;\n'
+              '- pull request: PR #79;\n'
+              '- exact-head CI and browser run IDs are recorded in the PR before squash merge.\n\n'
+          )
+          text = text.replace(marker, completion + marker, 1)
+          path.write_text(text)
+          PY
+      - name: Commit ledger alignment
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add build-slices.md
+          git commit -m "docs: align Browse completion and next-slice headings"
+          git push origin HEAD:feat/canonical-browse
