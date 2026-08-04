@@ -14,6 +14,7 @@ export type ProjectBoard = Readonly<{
   id: string;
   name: string;
   goal: string;
+  audience: string;
   constraints: string;
   unresolvedQuestions: readonly string[];
   createdAt: string;
@@ -59,6 +60,7 @@ function normalizeBoard(value: unknown): ProjectBoard | null {
     id: board.id,
     name: board.name,
     goal: board.goal,
+    audience: typeof board.audience === "string" ? board.audience : "",
     constraints: board.constraints,
     unresolvedQuestions: Array.isArray(board.unresolvedQuestions)
       ? board.unresolvedQuestions.filter(
@@ -101,6 +103,7 @@ export function createBoard(name: string): ProjectBoard {
     id: crypto.randomUUID(),
     name: name.trim(),
     goal: "",
+    audience: "",
     constraints: "",
     unresolvedQuestions: [],
     createdAt: now,
