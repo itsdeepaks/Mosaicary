@@ -45,11 +45,17 @@ export async function writeOssProofHandoffMetrics(outputPath) {
   const metrics = await measureOssProofHandoff();
   const resolvedOutput = resolve(repositoryRoot, outputPath);
   await mkdir(dirname(resolvedOutput), { recursive: true });
-  await writeFile(resolvedOutput, `${JSON.stringify(metrics, null, 2)}\n`, "utf8");
+  await writeFile(
+    resolvedOutput,
+    `${JSON.stringify(metrics, null, 2)}\n`,
+    "utf8",
+  );
   return metrics;
 }
 
-const executedPath = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+const executedPath = process.argv[1]
+  ? pathToFileURL(process.argv[1]).href
+  : null;
 if (executedPath === import.meta.url) {
   const outputPath = process.argv[2] ?? "web/artifacts/oss-proof-metrics.json";
   const metrics = await writeOssProofHandoffMetrics(outputPath);
