@@ -28,7 +28,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -46,8 +46,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: proof/oss-homepage-human-review
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -58,30 +56,6 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
-
-      - name: Format and commit OSS human-review files
-        run: |
-          npx prettier --write \
-            components/oss-human-review/oss-human-review-form.tsx \
-            lib/oss-human-review.d.ts \
-            lib/oss-human-review.mjs \
-            tests/oss-human-review-browser.mjs \
-            tests/oss-human-review-contract.test.mjs
-          cd ..
-          git config user.name "tessli-agent"
-          git config user.email "actions@users.noreply.github.com"
-          git add \
-            web/components/oss-human-review/oss-human-review-form.tsx \
-            web/lib/oss-human-review.d.ts \
-            web/lib/oss-human-review.mjs \
-            web/tests/oss-human-review-browser.mjs \
-            web/tests/oss-human-review-contract.test.mjs
-          if git diff --cached --quiet; then
-            echo "OSS human-review files are already formatted."
-          else
-            git commit -m "style: format OSS human-review workflow"
-            git push origin HEAD:proof/oss-homepage-human-review
-          fi
 
       - name: Verify approved hero asset
         shell: bash
