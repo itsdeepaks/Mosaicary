@@ -33,6 +33,11 @@ test("Saved page provides a local, searchable workspace with reversible changes"
   assert.match(experience, /data-confirm-clear-saved/);
   assert.match(experience, /data-undo-clear-saved/);
   assert.match(experience, /onUndo: \(\) => restoreResource/);
+  assert.match(experience, /setSavedResourceIds\(\(currentIds\) =>/);
+  assert.match(
+    experience,
+    /new Set\(\[\.\.\.resourceIds, \.\.\.currentIds\]\)/,
+  );
   assert.match(experience, /href="\/resources"/);
   assert.match(experience, /<dialog/);
   assert.match(experience, /event\.preventDefault\(\)/);
