@@ -29,7 +29,10 @@ export function CollectionResourceList({
   resources,
   className,
 }: CollectionResourceListProps) {
-  const cards = useMemo(() => resources.map((item) => item.resource), [resources]);
+  const cards = useMemo(
+    () => resources.map((item) => item.resource),
+    [resources],
+  );
   const [savedIds, setSavedIds] = useState<readonly string[]>([]);
   const [announcement, setAnnouncement] = useState("");
 
@@ -59,7 +62,9 @@ export function CollectionResourceList({
         : current.filter((id) => id !== resourceId);
 
       if (!writeSavedResourceIds(next)) {
-        setAnnouncement("This browser did not allow Tessli to update saved resources.");
+        setAnnouncement(
+          "This browser did not allow Tessli to update saved resources.",
+        );
         return;
       }
 
