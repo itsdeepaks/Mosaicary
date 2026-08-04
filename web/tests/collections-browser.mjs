@@ -144,7 +144,7 @@ assert.equal(
     'document.querySelectorAll("[data-collection-card] button, [data-collection-card] [data-resource-save]").length',
   ),
   0,
-  "Collection cards must not expose non-persistent saves.",
+  "Collection index cards must remain navigation-only.",
 );
 assert.equal(
   await evaluate(
@@ -157,7 +157,9 @@ assert.equal(
   true,
 );
 
-for (const slug of collectionSlugs) {
+await evaluate('localStorage.removeItem("tessli-saved-resource-ids-v2")');
+
+for (const [index, slug] of collectionSlugs.entries()) {
   await navigate(
     `/collections/${slug}`,
     `document.querySelector('[data-collection-detail="${slug}"]')?.getAttribute('data-collection-resource-count') === '10'`,
@@ -174,7 +176,8 @@ for (const slug of collectionSlugs) {
     await evaluate(
       'document.querySelectorAll("[data-collection-resource-grid] [data-resource-save]").length',
     ),
-    0,
+    10,
+    `${slug} should expose one persistent Save control per resource.`,
   );
   assert.equal(
     await evaluate(
@@ -182,6 +185,28 @@ for (const slug of collectionSlugs) {
     ),
     10,
   );
+
+  if (index === 0) {
+    const savedResourceId = await evaluate(`(() => {
+      const button = document.querySelector('[data-collection-resource-grid] [data-resource-save]');
+      const card = button?.closest('[data-resource-card]');
+      button?.click();
+      return card?.getAttribute('data-resource-id') ?? null;
+    })()`);
+
+    assert.ok(savedResourceId, "The first collection resource should expose a stable ID.");
+    await waitFor(
+      `document.querySelector('[data-collection-resource-grid] [data-resource-save]')?.getAttribute('aria-pressed') === 'true'`,
+      "collection resource save state",
+    );
+    assert.deepEqual(
+      await evaluate(
+        'JSON.parse(localStorage.getItem("tessli-saved-resource-ids-v2") ?? "[]")',
+      ),
+      [savedResourceId],
+    );
+  }
+
   assert.equal(
     await evaluate(
       `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
@@ -201,4 +226,4 @@ for (const slug of collectionSlugs) {
 }
 
 socket.close();
-console.log("Collections index and static detail route checks passed.");
+console.log("Collections index, detail, and persistent save checks passed.");
