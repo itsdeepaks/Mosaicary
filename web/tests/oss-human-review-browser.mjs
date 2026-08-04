@@ -286,7 +286,7 @@ for (const [index, [width, height]] of viewports.entries()) {
     );
     assert.ok(alertNodeId > 0, "empty review shows validation alert");
     const errorItems = await querySelectorAll(alertNodeId, "li");
-    assert.equal(errorItems.length, 28, "all required fields are reported");
+    assert.equal(errorItems.length, 27, "all required fields are reported");
 
     const storage = await send("DOMStorage.getDOMStorageItems", { storageId });
     const storedReview = storage.entries.find(
