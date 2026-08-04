@@ -1,0 +1,35 @@
+name: Format OSS proof setup
+
+on:
+  push:
+    branches:
+      - proof/oss-homepage-research-setup
+    paths:
+      - ".github/workflows/format-oss-proof-setup.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: proof/oss-homepage-research-setup
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      - working-directory: web
+        run: npx prettier --write scripts/generate-oss-proof-research-setup.mjs tests/oss-proof-research-setup.test.mjs
+      - shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/scripts/generate-oss-proof-research-setup.mjs web/tests/oss-proof-research-setup.test.mjs
+          git commit -m "style: format OSS proof setup"
+          git push origin HEAD:proof/oss-homepage-research-setup
