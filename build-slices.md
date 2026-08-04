@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 3 / Slice 3.4 NEXT**  
+Status: **active delivery plan — Phase 4 / Slice 4.1 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -101,61 +101,61 @@ Completed code is not automatically approval for later-phase functionality. Publ
 
 ## 6. Phase status
 
-| Phase | Name | Status | Active/next slice |
-|---:|---|---|---|
-| 0 | Direction Reset | DONE | — |
-| 1 | Source Intelligence Foundation | DONE | — |
-| 2 | Browse and Source Detail | DONE | — |
-| 3 | Local Saved and Project Boards | ACTIVE | 3.4 NEXT |
-| 4 | Research-Pack Export | PLANNED | 4.1 |
-| 5 | Real OSS Proof Project | PROOF | 5.1 |
-| 6 | Homepage, Navigation, Playbooks, and For AI | PLANNED | 6.1 |
-| 7 | Reviewed Pattern Candidates | PLANNED | 7.1 |
-| 8 | Authentication and Cloud Workspace | DEFERRED | 8.1 after local proof |
-| 9 | Community and Moderation | DEFERRED | 9.1 after auth/owner |
-| 10 | Evidence-Backed UI-Taste Layer | DEFERRED | 10.1 after multiple proofs |
+| Phase | Name                                        | Status   | Active/next slice          |
+| ----: | ------------------------------------------- | -------- | -------------------------- |
+|     0 | Direction Reset                             | DONE     | —                          |
+|     1 | Source Intelligence Foundation              | DONE     | —                          |
+|     2 | Browse and Source Detail                    | DONE     | —                          |
+|     3 | Local Saved and Project Boards              | DONE     | —                          |
+|     4 | Research-Pack Export                        | ACTIVE   | 4.1 NEXT                   |
+|     5 | Real OSS Proof Project                      | PROOF    | 5.1                        |
+|     6 | Homepage, Navigation, Playbooks, and For AI | PLANNED  | 6.1                        |
+|     7 | Reviewed Pattern Candidates                 | PLANNED  | 7.1                        |
+|     8 | Authentication and Cloud Workspace          | DEFERRED | 8.1 after local proof      |
+|     9 | Community and Moderation                    | DEFERRED | 9.1 after auth/owner       |
+|    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | 10.1 after multiple proofs |
 
 ## 7. Slice status
 
-| ID | Slice | Status | Depends on | Historical alias/evidence |
-|---|---|---|---|---|
-| 0.1 | Product direction and operating reset | DONE | previous baseline | legacy `14.0`, PR #74 |
-| 1.1 | Canonical source-profile contract | DONE | 0.1 | legacy `14.1` |
-| 1.2 | Coverage mapping and intelligence adapter | DONE | 1.1 | `docs/slices/14.1-source-profile-contract.md` |
-| 2.1 | Canonical Browse architecture and pagination contract | DONE | 1.2 | legacy `14.2`, PR #77 |
-| 2.2 | Canonical `/resources` implementation | DONE | 2.1 | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79 |
-| 2.3 | Source Detail foundation for all 295 sources | DONE | 1.2, 2.2 | `docs/slices/2.3-source-detail-foundation.md`, PR #80 |
-| 2.4 | Enriched intelligence detail and Similar Sources | DONE | 2.3 | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81 |
-| 3.1 | Universal browser-local Save | DONE | 2.2, 2.3 | `docs/slices/3.1-universal-local-save.md`, PR #82 |
-| 3.2 | Saved workspace search/filter refinement | DONE | 3.1 | `docs/slices/3.2-saved-workspace-refinement.md`, PR #83 |
-| 3.3 | Local project Boards and notes | DONE | 3.1, 3.2 | `docs/slices/3.3-local-project-boards.md`, PR #84 |
-| 3.4 | Selected/rejected decisions and unresolved questions | NEXT | 3.3 | — |
-| 4.1 | Board research-pack contract | PLANNED | 3.4 | — |
-| 4.2 | Deterministic Markdown export | PLANNED | 4.1 | — |
-| 4.3 | Safe public machine-readable representations | PLANNED | 2.4, 4.2 | — |
-| 5.1 | OSS proof brief and research Board | PROOF | 4.2 | — |
-| 5.2 | Agent implementation from exported pack | PROOF | 5.1 | — |
-| 5.3 | Browser and human review | PROOF | 5.2 | — |
-| 5.4 | Outcome/evidence report | PROOF | 5.3 | — |
-| 6.1 | Global navigation and naming cleanup | PLANNED | 2.2 | — |
-| 6.2 | Curated homepage built around proven workflow | PLANNED | 5.4, 6.1 | — |
-| 6.3 | Collections-to-playbooks conversion | PLANNED | 3.3, 4.2 | — |
-| 6.4 | For AI product page | PLANNED | 2.4, 4.3 | — |
-| 7.1 | Pattern Candidate schema | PLANNED | 5.4 | — |
-| 7.2 | First 5–10 reviewed candidates | PLANNED | 7.1 | — |
-| 7.3 | Pattern retrieval for website/export/MCP | PLANNED | 7.2 | — |
-| 8.1 | Authentication UX/security contract | DEFERRED | Phase 3–5 proof | — |
-| 8.2 | Google + email/password + signup verification | DEFERRED | 8.1, SMTP/OAuth | — |
-| 8.3 | Cloud Saved/Boards and local merge | DEFERRED | 8.2, RLS review | — |
-| 8.4 | Account security, sessions, export, deletion | DEFERRED | 8.2 | — |
-| 9.1 | Submission and correction forms | DEFERRED | 8.2, moderation owner | — |
-| 9.2 | Moderation workflow and audit state | DEFERRED | 9.1 | — |
-| 9.3 | Abuse protection and transactional email | DEFERRED | 9.1, provider setup | — |
-| 10.1 | Evaluation and approved-precedent model | DEFERRED | multiple Phase 5 proofs | — |
-| 10.2 | Permission-aware precedent retrieval | DEFERRED | 10.1 | — |
-| 10.3 | Pattern promotion and project design packs | DEFERRED | 7.3, 10.1 | — |
-| 10.4 | Repeated outcome evaluation | DEFERRED | 10.1–10.3 | — |
-| 10.5 | Public UI-taste claim review | DEFERRED | 10.4 | — |
+| ID   | Slice                                                 | Status   | Depends on              | Historical alias/evidence                                    |
+| ---- | ----------------------------------------------------- | -------- | ----------------------- | ------------------------------------------------------------ |
+| 0.1  | Product direction and operating reset                 | DONE     | previous baseline       | legacy `14.0`, PR #74                                        |
+| 1.1  | Canonical source-profile contract                     | DONE     | 0.1                     | legacy `14.1`                                                |
+| 1.2  | Coverage mapping and intelligence adapter             | DONE     | 1.1                     | `docs/slices/14.1-source-profile-contract.md`                |
+| 2.1  | Canonical Browse architecture and pagination contract | DONE     | 1.2                     | legacy `14.2`, PR #77                                        |
+| 2.2  | Canonical `/resources` implementation                 | DONE     | 2.1                     | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79 |
+| 2.3  | Source Detail foundation for all 295 sources          | DONE     | 1.2, 2.2                | `docs/slices/2.3-source-detail-foundation.md`, PR #80        |
+| 2.4  | Enriched intelligence detail and Similar Sources      | DONE     | 2.3                     | `docs/slices/2.4-enriched-intelligence-detail.md`, PR #81    |
+| 3.1  | Universal browser-local Save                          | DONE     | 2.2, 2.3                | `docs/slices/3.1-universal-local-save.md`, PR #82            |
+| 3.2  | Saved workspace search/filter refinement              | DONE     | 3.1                     | `docs/slices/3.2-saved-workspace-refinement.md`, PR #83      |
+| 3.3  | Local project Boards and notes                        | DONE     | 3.1, 3.2                | `docs/slices/3.3-local-project-boards.md`, PR #84            |
+| 3.4  | Selected/rejected decisions and unresolved questions  | DONE     | 3.3                     | `docs/slices/3.4-board-decisions.md`, PR #85                 |
+| 4.1  | Board research-pack contract                          | NEXT     | 3.4                     | —                                                            |
+| 4.2  | Deterministic Markdown export                         | PLANNED  | 4.1                     | —                                                            |
+| 4.3  | Safe public machine-readable representations          | PLANNED  | 2.4, 4.2                | —                                                            |
+| 5.1  | OSS proof brief and research Board                    | PROOF    | 4.2                     | —                                                            |
+| 5.2  | Agent implementation from exported pack               | PROOF    | 5.1                     | —                                                            |
+| 5.3  | Browser and human review                              | PROOF    | 5.2                     | —                                                            |
+| 5.4  | Outcome/evidence report                               | PROOF    | 5.3                     | —                                                            |
+| 6.1  | Global navigation and naming cleanup                  | PLANNED  | 2.2                     | —                                                            |
+| 6.2  | Curated homepage built around proven workflow         | PLANNED  | 5.4, 6.1                | —                                                            |
+| 6.3  | Collections-to-playbooks conversion                   | PLANNED  | 3.3, 4.2                | —                                                            |
+| 6.4  | For AI product page                                   | PLANNED  | 2.4, 4.3                | —                                                            |
+| 7.1  | Pattern Candidate schema                              | PLANNED  | 5.4                     | —                                                            |
+| 7.2  | First 5–10 reviewed candidates                        | PLANNED  | 7.1                     | —                                                            |
+| 7.3  | Pattern retrieval for website/export/MCP              | PLANNED  | 7.2                     | —                                                            |
+| 8.1  | Authentication UX/security contract                   | DEFERRED | Phase 3–5 proof         | —                                                            |
+| 8.2  | Google + email/password + signup verification         | DEFERRED | 8.1, SMTP/OAuth         | —                                                            |
+| 8.3  | Cloud Saved/Boards and local merge                    | DEFERRED | 8.2, RLS review         | —                                                            |
+| 8.4  | Account security, sessions, export, deletion          | DEFERRED | 8.2                     | —                                                            |
+| 9.1  | Submission and correction forms                       | DEFERRED | 8.2, moderation owner   | —                                                            |
+| 9.2  | Moderation workflow and audit state                   | DEFERRED | 9.1                     | —                                                            |
+| 9.3  | Abuse protection and transactional email              | DEFERRED | 9.1, provider setup     | —                                                            |
+| 10.1 | Evaluation and approved-precedent model               | DEFERRED | multiple Phase 5 proofs | —                                                            |
+| 10.2 | Permission-aware precedent retrieval                  | DEFERRED | 10.1                    | —                                                            |
+| 10.3 | Pattern promotion and project design packs            | DEFERRED | 7.3, 10.1               | —                                                            |
+| 10.4 | Repeated outcome evaluation                           | DEFERRED | 10.1–10.3               | —                                                            |
+| 10.5 | Public UI-taste claim review                          | DEFERRED | 10.4                    | —                                                            |
 
 ## 8. Completed phase evidence
 
@@ -242,9 +242,9 @@ Delivered:
 
 Delivered create, rename, switch, and delete; project goal and constraints; catalogue source membership; per-source notes; versioned browser-local persistence; safe malformed-data fallback; same-document and cross-tab synchronization; Saved navigation; sitemap coverage; responsive and accessible controls; `docs/slices/3.3-local-project-boards.md`; PR #84.
 
-### Slice 3.4 Decisions
+### DONE — Slice 3.4 Decisions
 
-Selected/rejected status, rationale, unresolved questions, and stable local persistence.
+Delivered selected/rejected/undecided source status, separate decision rationale, editable unresolved questions, and backward-compatible stable local persistence; `docs/slices/3.4-board-decisions.md`; PR #85.
 
 No authentication or cloud work belongs in Phase 3.
 

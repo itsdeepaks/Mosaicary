@@ -12,6 +12,14 @@ async function readRepositoryFile(relativePath) {
   return readFile(path.join(repositoryRoot, relativePath), "utf8");
 }
 
+function tableRow(...cells) {
+  return new RegExp(
+    `\\|\\s*${cells
+      .map((cell) => cell.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .join("\\s*\\|\\s*")}\\s*\\|`,
+  );
+}
+
 test("release history remains preserved under Product Plan v2", async () => {
   const slices = await readRepositoryFile("build-slices.md");
   const plan = await readRepositoryFile("docs/product-plan-v2.md");
@@ -25,47 +33,91 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     slices,
-    /\| 0\.1 \| Product direction and operating reset \| DONE \| previous baseline \| legacy `14\.0`, PR #74 \|/,
+    tableRow(
+      "0.1",
+      "Product direction and operating reset",
+      "DONE",
+      "previous baseline",
+      "legacy `14.0`, PR #74",
+    ),
   );
   assert.match(
     slices,
-    /\| 1\.1 \| Canonical source-profile contract \| DONE \| 0\.1 \| legacy `14\.1` \|/,
+    tableRow(
+      "1.1",
+      "Canonical source-profile contract",
+      "DONE",
+      "0.1",
+      "legacy `14.1`",
+    ),
   );
   assert.match(
     slices,
-    /\| 2\.1 \| Canonical Browse architecture and pagination contract \| DONE \| 1\.2 \| legacy `14\.2`, PR #77 \|/,
+    tableRow(
+      "2.1",
+      "Canonical Browse architecture and pagination contract",
+      "DONE",
+      "1.2",
+      "legacy `14.2`, PR #77",
+    ),
   );
+  for (const row of [
+    [
+      "2.2",
+      "Canonical `/resources` implementation",
+      "DONE",
+      "2.1",
+      "`docs/slices/2.2-canonical-browse-implementation.md`, PR #79",
+    ],
+    [
+      "2.3",
+      "Source Detail foundation for all 295 sources",
+      "DONE",
+      "1.2, 2.2",
+      "`docs/slices/2.3-source-detail-foundation.md`, PR #80",
+    ],
+    [
+      "2.4",
+      "Enriched intelligence detail and Similar Sources",
+      "DONE",
+      "2.3",
+      "`docs/slices/2.4-enriched-intelligence-detail.md`, PR #81",
+    ],
+    [
+      "3.1",
+      "Universal browser-local Save",
+      "DONE",
+      "2.2, 2.3",
+      "`docs/slices/3.1-universal-local-save.md`, PR #82",
+    ],
+    [
+      "3.2",
+      "Saved workspace search/filter refinement",
+      "DONE",
+      "3.1",
+      "`docs/slices/3.2-saved-workspace-refinement.md`, PR #83",
+    ],
+    [
+      "3.3",
+      "Local project Boards and notes",
+      "DONE",
+      "3.1, 3.2",
+      "`docs/slices/3.3-local-project-boards.md`, PR #84",
+    ],
+    [
+      "3.4",
+      "Selected/rejected decisions and unresolved questions",
+      "DONE",
+      "3.3",
+      "`docs/slices/3.4-board-decisions.md`, PR #85",
+    ],
+    ["4.1", "Board research-pack contract", "NEXT", "3.4", "—"],
+  ]) {
+    assert.match(slices, tableRow(...row));
+  }
   assert.match(
     slices,
-    /\| 2\.2 \| Canonical `\/resources` implementation \| DONE \| 2\.1 \| `docs\/slices\/2\.2-canonical-browse-implementation\.md`, PR #79 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 2\.3 \| Source Detail foundation for all 295 sources \| DONE \| 1\.2, 2\.2 \| `docs\/slices\/2\.3-source-detail-foundation\.md`, PR #80 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 2\.4 \| Enriched intelligence detail and Similar Sources \| DONE \| 2\.3 \| `docs\/slices\/2\.4-enriched-intelligence-detail\.md`, PR #81 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 3\.1 \| Universal browser-local Save \| DONE \| 2\.2, 2\.3 \| `docs\/slices\/3\.1-universal-local-save\.md`, PR #82 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 3\.2 \| Saved workspace search\/filter refinement \| DONE \| 3\.1 \| `docs\/slices\/3\.2-saved-workspace-refinement\.md`, PR #83 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 3\.3 \| Local project Boards and notes \| DONE \| 3\.1, 3\.2 \| `docs\/slices\/3\.3-local-project-boards\.md`, PR #84 \|/,
-  );
-  assert.match(
-    slices,
-    /\| 3\.4 \| Selected\/rejected decisions and unresolved questions \| NEXT \| 3\.3 \| — \|/,
-  );
-  assert.match(
-    slices,
-    /Status: \*\*active delivery plan — Phase 3 \/ Slice 3\.4 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Phase 4 \/ Slice 4\.1 NEXT\*\*/,
   );
   assert.match(
     plan,

@@ -1,9 +1,13 @@
 export const boardStoreKey = "tessli-project-boards-v1";
 export const boardStoreEvent = "tessli-project-boards-change";
 
+export type ProjectBoardDecision = "undecided" | "selected" | "rejected";
+
 export type ProjectBoardItem = Readonly<{
   resourceId: string;
   note: string;
+  decision: ProjectBoardDecision;
+  rationale: string;
 }>;
 
 export type ProjectBoard = Readonly<{
@@ -11,30 +15,60 @@ export type ProjectBoard = Readonly<{
   name: string;
   goal: string;
   constraints: string;
+  unresolvedQuestions: readonly string[];
   createdAt: string;
   updatedAt: string;
   items: readonly ProjectBoardItem[];
 }>;
 
-function isBoardItem(value: unknown): value is ProjectBoardItem {
-  if (!value || typeof value !== "object") return false;
+function normalizeBoardItem(value: unknown): ProjectBoardItem | null {
+  if (!value || typeof value !== "object") return null;
   const item = value as Record<string, unknown>;
-  return typeof item.resourceId === "string" && typeof item.note === "string";
+  if (typeof item.resourceId !== "string" || typeof item.note !== "string") {
+    return null;
+  }
+  const decision =
+    item.decision === "selected" || item.decision === "rejected"
+      ? item.decision
+      : "undecided";
+  return {
+    resourceId: item.resourceId,
+    note: item.note,
+    decision,
+    rationale: typeof item.rationale === "string" ? item.rationale : "",
+  };
 }
 
-function isBoard(value: unknown): value is ProjectBoard {
-  if (!value || typeof value !== "object") return false;
+function normalizeBoard(value: unknown): ProjectBoard | null {
+  if (!value || typeof value !== "object") return null;
   const board = value as Record<string, unknown>;
-  return (
-    typeof board.id === "string" &&
-    typeof board.name === "string" &&
-    typeof board.goal === "string" &&
-    typeof board.constraints === "string" &&
-    typeof board.createdAt === "string" &&
-    typeof board.updatedAt === "string" &&
-    Array.isArray(board.items) &&
-    board.items.every(isBoardItem)
-  );
+  if (
+    typeof board.id !== "string" ||
+    typeof board.name !== "string" ||
+    typeof board.goal !== "string" ||
+    typeof board.constraints !== "string" ||
+    typeof board.createdAt !== "string" ||
+    typeof board.updatedAt !== "string" ||
+    !Array.isArray(board.items)
+  ) {
+    return null;
+  }
+  const items = board.items.map(normalizeBoardItem);
+  if (items.some((item) => item === null)) return null;
+  return {
+    id: board.id,
+    name: board.name,
+    goal: board.goal,
+    constraints: board.constraints,
+    unresolvedQuestions: Array.isArray(board.unresolvedQuestions)
+      ? board.unresolvedQuestions.filter(
+          (question): question is string => typeof question === "string",
+        )
+      : [],
+    createdAt: board.createdAt,
+    updatedAt: board.updatedAt,
+    items: items as readonly ProjectBoardItem[],
+  };
 }
 
 export function parseBoards(value: string | null): readonly ProjectBoard[] {
@@ -42,7 +76,9 @@ export function parseBoards(value: string | null): readonly ProjectBoard[] {
   try {
     const parsed: unknown = JSON.parse(value);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isBoard);
+    return parsed
+      .map(normalizeBoard)
+      .filter((board): board is ProjectBoard => board !== null);
   } catch {
     return [];
   }
@@ -66,6 +102,7 @@ export function createBoard(name: string): ProjectBoard {
     name: name.trim(),
     goal: "",
     constraints: "",
+    unresolvedQuestions: [],
     createdAt: now,
     updatedAt: now,
     items: [],

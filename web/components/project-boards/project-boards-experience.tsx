@@ -9,6 +9,7 @@ import {
   readBoards,
   writeBoards,
   type ProjectBoard,
+  type ProjectBoardDecision,
 } from "./board-store";
 import styles from "./project-boards.module.css";
 
@@ -34,6 +35,7 @@ export function ProjectBoardsExperience({ resources }: Props) {
   const [boards, setBoards] = useState<readonly ProjectBoard[]>([]);
   const [activeBoardId, setActiveBoardId] = useState<string | null>(null);
   const [newBoardName, setNewBoardName] = useState("");
+  const [newQuestion, setNewQuestion] = useState("");
   const [resourceQuery, setResourceQuery] = useState("");
   const [announcement, setAnnouncement] = useState("");
 
@@ -119,18 +121,28 @@ export function ProjectBoardsExperience({ resources }: Props) {
   const addResource = (resourceId: string) => {
     if (!activeBoard) return;
     patchActiveBoard({
-      items: [...activeBoard.items, { resourceId, note: "" }],
+      items: [
+        ...activeBoard.items,
+        { resourceId, note: "", decision: "undecided", rationale: "" },
+      ],
     });
     setAnnouncement(
       `${resourcesById.get(resourceId)?.name ?? "Resource"} added to ${activeBoard.name}.`,
     );
   };
 
-  const updateNote = (resourceId: string, note: string) => {
+  const updateItem = (
+    resourceId: string,
+    patch: Readonly<{
+      note?: string;
+      decision?: ProjectBoardDecision;
+      rationale?: string;
+    }>,
+  ) => {
     if (!activeBoard) return;
     patchActiveBoard({
       items: activeBoard.items.map((item) =>
-        item.resourceId === resourceId ? { ...item, note } : item,
+        item.resourceId === resourceId ? { ...item, ...patch } : item,
       ),
     });
   };
@@ -143,6 +155,36 @@ export function ProjectBoardsExperience({ resources }: Props) {
     setAnnouncement("Resource removed from project board.");
   };
 
+  const addQuestion = () => {
+    if (!activeBoard) return;
+    const question = newQuestion.trim();
+    if (!question) return;
+    patchActiveBoard({
+      unresolvedQuestions: [...activeBoard.unresolvedQuestions, question],
+    });
+    setNewQuestion("");
+    setAnnouncement("Unresolved question added.");
+  };
+
+  const updateQuestion = (index: number, question: string) => {
+    if (!activeBoard) return;
+    patchActiveBoard({
+      unresolvedQuestions: activeBoard.unresolvedQuestions.map(
+        (current, itemIndex) => (itemIndex === index ? question : current),
+      ),
+    });
+  };
+
+  const removeQuestion = (index: number) => {
+    if (!activeBoard) return;
+    patchActiveBoard({
+      unresolvedQuestions: activeBoard.unresolvedQuestions.filter(
+        (_, itemIndex) => itemIndex !== index,
+      ),
+    });
+    setAnnouncement("Unresolved question removed.");
+  };
+
   return (
     <section className={styles.section} aria-labelledby="boards-title">
       <div className="tessli-container">
@@ -151,8 +193,9 @@ export function ProjectBoardsExperience({ resources }: Props) {
             <p className={styles.eyebrow}>Private browser workspace</p>
             <h1 id="boards-title">Project boards</h1>
             <p>
-              Keep project goals, constraints, sources, and notes together.
-              Boards remain on this browser and are not synced.
+              Keep goals, constraints, research decisions, open questions, and
+              source notes together. Boards remain on this browser and are not
+              synced.
             </p>
           </div>
           <Link className={styles.secondaryLink} href="/saved">
@@ -252,11 +295,71 @@ export function ProjectBoardsExperience({ resources }: Props) {
                   </label>
                 </div>
 
+                <section aria-labelledby="board-questions-title">
+                  <div className={styles.sectionHeading}>
+                    <div>
+                      <p className={styles.eyebrow}>Open decisions</p>
+                      <h2 id="board-questions-title">Unresolved questions</h2>
+                    </div>
+                    <span>{activeBoard.unresolvedQuestions.length} open</span>
+                  </div>
+                  {activeBoard.unresolvedQuestions.length > 0 ? (
+                    <ol className={styles.questions}>
+                      {activeBoard.unresolvedQuestions.map(
+                        (question, index) => (
+                          <li key={`${index}-${question}`}>
+                            <label>
+                              <span>Question {index + 1}</span>
+                              <textarea
+                                maxLength={1000}
+                                onChange={(event) =>
+                                  updateQuestion(index, event.target.value)
+                                }
+                                value={question}
+                              />
+                            </label>
+                            <button
+                              onClick={() => removeQuestion(index)}
+                              type="button"
+                            >
+                              Remove question
+                            </button>
+                          </li>
+                        ),
+                      )}
+                    </ol>
+                  ) : (
+                    <p className={styles.inlineEmpty}>
+                      Record decisions that still need research or owner input.
+                    </p>
+                  )}
+                  <form
+                    className={styles.questionForm}
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      addQuestion();
+                    }}
+                  >
+                    <label>
+                      <span>New unresolved question</span>
+                      <input
+                        maxLength={1000}
+                        onChange={(event) => setNewQuestion(event.target.value)}
+                        placeholder="Which direction best supports mobile scanning?"
+                        value={newQuestion}
+                      />
+                    </label>
+                    <button disabled={!newQuestion.trim()} type="submit">
+                      Add question
+                    </button>
+                  </form>
+                </section>
+
                 <section aria-labelledby="board-sources-title">
                   <div className={styles.sectionHeading}>
                     <div>
                       <p className={styles.eyebrow}>Research set</p>
-                      <h2 id="board-sources-title">Sources and notes</h2>
+                      <h2 id="board-sources-title">Sources and decisions</h2>
                     </div>
                     <span>{activeBoard.items.length} sources</span>
                   </div>
@@ -282,17 +385,47 @@ export function ProjectBoardsExperience({ resources }: Props) {
                                 Remove
                               </button>
                             </div>
+                            <div className={styles.decisionFields}>
+                              <label>
+                                <span>Decision</span>
+                                <select
+                                  onChange={(event) =>
+                                    updateItem(item.resourceId, {
+                                      decision: event.target
+                                        .value as ProjectBoardDecision,
+                                    })
+                                  }
+                                  value={item.decision}
+                                >
+                                  <option value="undecided">Undecided</option>
+                                  <option value="selected">Selected</option>
+                                  <option value="rejected">Rejected</option>
+                                </select>
+                              </label>
+                              <label>
+                                <span>Decision rationale</span>
+                                <textarea
+                                  maxLength={1500}
+                                  onChange={(event) =>
+                                    updateItem(item.resourceId, {
+                                      rationale: event.target.value,
+                                    })
+                                  }
+                                  placeholder="Why is this direction selected, rejected, or still undecided?"
+                                  value={item.rationale}
+                                />
+                              </label>
+                            </div>
                             <label>
                               <span>Research note</span>
                               <textarea
                                 maxLength={2000}
                                 onChange={(event) =>
-                                  updateNote(
-                                    item.resourceId,
-                                    event.target.value,
-                                  )
+                                  updateItem(item.resourceId, {
+                                    note: event.target.value,
+                                  })
                                 }
-                                placeholder="Why is this source relevant? What should you inspect?"
+                                placeholder="What should you inspect in this source?"
                                 value={item.note}
                               />
                             </label>

@@ -11,17 +11,21 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("project boards use a versioned browser-local contract", async () => {
+test("project boards use a backward-compatible versioned browser-local contract", async () => {
   const store = await read("components/project-boards/board-store.ts");
   assert.match(store, /tessli-project-boards-v1/);
   assert.match(store, /goal: string/);
   assert.match(store, /constraints: string/);
-  assert.match(store, /resourceId: string/);
-  assert.match(store, /note: string/);
+  assert.match(store, /unresolvedQuestions: readonly string\[\]/);
+  assert.match(store, /decision: ProjectBoardDecision/);
+  assert.match(store, /rationale: string/);
+  assert.match(store, /item\.decision === "selected"/);
+  assert.match(store, /item\.decision === "rejected"/);
+  assert.match(store, /: "undecided";/);
   assert.match(store, /localStorage\.setItem/);
 });
 
-test("project boards support lifecycle, source membership, and notes", async () => {
+test("project boards support explicit research decisions and open questions", async () => {
   const experience = await read(
     "components/project-boards/project-boards-experience.tsx",
   );
@@ -30,14 +34,17 @@ test("project boards support lifecycle, source membership, and notes", async () 
     "Delete board",
     "Project goal",
     "Constraints",
-    "Find a source to add",
+    "Unresolved questions",
+    "Add question",
+    "Decision rationale",
+    "Undecided",
+    "Selected",
+    "Rejected",
     "Research note",
     "Remove",
   ]) {
     assert.match(experience, new RegExp(phrase));
   }
-  assert.doesNotMatch(experience, />Selected</i);
-  assert.doesNotMatch(experience, />Rejected</i);
   assert.doesNotMatch(experience, /Export research pack/i);
   assert.doesNotMatch(experience, /Sync to cloud/i);
 });
