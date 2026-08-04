@@ -1,0 +1,35 @@
+name: Format homepage preview test
+
+on:
+  push:
+    branches:
+      - feat/canonical-browse
+    paths:
+      - ".github/workflows/format-explore-preview-test.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/canonical-browse
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - working-directory: web
+        run: npm ci
+      - working-directory: web
+        run: npx prettier --write tests/explore-results-browser.mjs
+      - shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/tests/explore-results-browser.mjs
+          git commit -m "style: format homepage preview browser test"
+          git push origin HEAD:feat/canonical-browse
