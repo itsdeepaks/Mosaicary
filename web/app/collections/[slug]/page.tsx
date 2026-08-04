@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CollectionCover } from "@/components/collection-card/collection-card";
-import { ResourceCard } from "@/components/resource-card/resource-card";
+import { CollectionResourceList } from "@/components/collection-resources/collection-resource-list";
 import {
   formatCollectionReviewDate,
   getPublishedCollection,
@@ -116,16 +116,10 @@ export default async function CollectionDetailPage({
             </p>
           </header>
 
-          <ol className={styles.grid} data-collection-resource-grid>
-            {collection.resources.map(({ resource, categoryLabel }) => (
-              <li key={resource.id}>
-                <ResourceCard
-                  categoryLabel={categoryLabel}
-                  resource={resource}
-                />
-              </li>
-            ))}
-          </ol>
+          <CollectionResourceList
+            className={styles.grid}
+            resources={collection.resources}
+          />
         </section>
       </div>
     </main>
