@@ -57,6 +57,30 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Produce exact formatted OSS human-review files
+        run: |
+          npx prettier --write \
+            components/oss-human-review/oss-human-review-form.tsx \
+            lib/oss-human-review.d.ts \
+            lib/oss-human-review.mjs \
+            tests/oss-human-review-browser.mjs \
+            tests/oss-human-review-contract.test.mjs
+          mkdir -p artifacts
+          tar -czf artifacts/oss-human-review-formatted.tar.gz \
+            components/oss-human-review/oss-human-review-form.tsx \
+            lib/oss-human-review.d.ts \
+            lib/oss-human-review.mjs \
+            tests/oss-human-review-browser.mjs \
+            tests/oss-human-review-contract.test.mjs
+
+      - name: Upload exact formatted OSS human-review files
+        uses: actions/upload-artifact@v4
+        with:
+          name: oss-human-review-formatted-files
+          path: web/artifacts/oss-human-review-formatted.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Verify approved hero asset
         shell: bash
         run: |
