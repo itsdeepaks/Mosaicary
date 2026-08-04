@@ -1,0 +1,976 @@
+name: Implement public machine-readable representations
+
+on:
+  push:
+    branches:
+      - feat/public-machine-readable-representations
+    paths:
+      - ".github/workflows/implement-public-representations.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/public-machine-readable-representations
+
+      - name: Write implementation and focused tests
+        shell: python
+        run: |
+          from pathlib import Path
+
+          files = {
+            "web/lib/public-representations.mjs": r'''export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT =
+            "tessli.public-source.v1";
+          export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT =
+            "tessli.public-collection.v1";
+
+          const CACHE_CONTROL =
+            "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800";
+
+          function isPlainObject(value) {
+            return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+          }
+
+          function normalizeLineEndings(value) {
+            return String(value ?? "").replace(/\r\n?/gu, "\n");
+          }
+
+          function inline(value, fallback = "Not recorded") {
+            const normalized = normalizeLineEndings(value)
+              .trim()
+              .replace(/\s*\n\s*/gu, " ");
+            return normalized || fallback;
+          }
+
+          function markdown(lines) {
+            return `${lines
+              .flatMap((line) => normalizeLineEndings(line).split("\n"))
+              .map((line) => line.replace(/[ \t]+$/gu, ""))
+              .join("\n")
+              .replace(/\n+$/gu, "")}\n`;
+          }
+
+          function pushList(lines, title, values) {
+            lines.push(`### ${title}`, "");
+            if (!Array.isArray(values) || values.length === 0) {
+              lines.push("None recorded", "");
+              return;
+            }
+            for (const value of values) lines.push(`- ${inline(value)}`);
+            lines.push("");
+          }
+
+          function publicEvidence(evidence) {
+            return Array.isArray(evidence)
+              ? evidence.map((item) => ({
+                  claim: item.claim,
+                  sourceUrl: item.sourceUrl,
+                  sourceType: item.sourceType,
+                  verifiedAt: item.verifiedAt,
+                  ...(item.confidence ? { confidence: item.confidence } : {}),
+                }))
+              : [];
+          }
+
+          function publicIntelligence(profile) {
+            const intelligence = profile.intelligence;
+            if (!isPlainObject(intelligence)) return null;
+            return {
+              profileVersion: intelligence.profileVersion,
+              repositoryStatus: intelligence.status,
+              recordedVerifiedAt: intelligence.verifiedAt,
+              summary: intelligence.summary,
+              designTools: [...(intelligence.designTools ?? [])],
+              deliveryFormats: [...(intelligence.deliveryFormats ?? [])],
+              agentInterfaces: (intelligence.agentInterfaces ?? []).map((item) => ({
+                type: item.type,
+                ...(item.transport ? { transport: item.transport } : {}),
+                ...(item.endpoint ? { endpoint: item.endpoint } : {}),
+                ...(item.status ? { status: item.status } : {}),
+              })),
+              discovery: {
+                textSearch: Boolean(intelligence.discovery?.textSearch),
+                ...(intelligence.discovery?.semanticSearch
+                  ? { semanticSearch: intelligence.discovery.semanticSearch }
+                  : {}),
+                facets: [...(intelligence.discovery?.facets ?? [])],
+              },
+              governance: intelligence.governance
+                ? {
+                    defaultPersistence:
+                      intelligence.governance.defaultPersistence,
+                    assetRedistribution:
+                      intelligence.governance.assetRedistribution,
+                    sourceAttribution:
+                      intelligence.governance.sourceAttribution,
+                    userCredentialRequired: Boolean(
+                      intelligence.governance.userCredentialRequired,
+                    ),
+                    termsReviewRequired: Boolean(
+                      intelligence.governance.termsReviewRequired,
+                    ),
+                    notes: [...(intelligence.governance.notes ?? [])],
+                  }
+                : null,
+            };
+          }
+
+          export function createPublicSourceRepresentation(profile) {
+            if (!isPlainObject(profile) || typeof profile.slug !== "string") {
+              throw new TypeError("A canonical Tessli SourceProfile is required.");
+            }
+            const canonicalPath = `/resources/${profile.slug}`;
+            const jsonPath = `${canonicalPath}/profile.json`;
+            const markdownPath = `${canonicalPath}/profile.md`;
+            return {
+              contract: PUBLIC_SOURCE_REPRESENTATION_CONTRACT,
+              canonicalPath,
+              representations: { json: jsonPath, markdown: markdownPath },
+              source: {
+                contractVersion: profile.contractVersion,
+                id: profile.id,
+                slug: profile.slug,
+                name: profile.name,
+                url: profile.url,
+                domain: profile.domain,
+                summary: profile.summary,
+                category: profile.category,
+                sourceType: profile.sourceType,
+                sourceTypeBasis: profile.sourceTypeBasis,
+                accessModel: {
+                  access: profile.accessModel.access,
+                  subscriptionRequired:
+                    profile.accessModel.subscriptionRequired,
+                },
+                profileLevel: profile.profileLevel,
+                status: profile.status,
+                verifiedAt: profile.verifiedAt,
+                coverage: {
+                  level: profile.coverage.level,
+                  reason: profile.coverage.reason,
+                  profileStatus: profile.coverage.profileStatus,
+                  lastVerifiedAt: profile.coverage.lastVerifiedAt,
+                  confidence: profile.coverage.confidence,
+                  humanReviewStatus: profile.coverage.humanReviewStatus,
+                  freshnessStatus: profile.coverage.freshnessStatus,
+                  evidenceCount: profile.coverage.evidenceCount,
+                },
+                bestFor: [...profile.bestFor],
+                capabilities: [...profile.capabilities],
+                contentObjects: [...profile.contentObjects],
+                platforms: [...profile.platforms],
+                frameworks: [...profile.frameworks],
+                integrationMethods: [...profile.integrationMethods],
+                limitations: [...profile.limitations],
+                evidence: publicEvidence(profile.evidence),
+                intelligence: publicIntelligence(profile),
+              },
+              boundaries: [
+                "Repository intelligence is not live-provider verification.",
+                "Revalidate provider access, pricing, licensing, terms, availability, and time-sensitive claims.",
+                "Tessli classifications are research guidance, not provider claims or universal rankings.",
+                "No browser-local Board, Saved, account, cookie, or credential data is included.",
+              ],
+            };
+          }
+
+          export function createPublicCollectionRepresentation(
+            collection,
+            sourceProfiles,
+          ) {
+            if (!isPlainObject(collection) || typeof collection.slug !== "string") {
+              throw new TypeError("A published Tessli collection is required.");
+            }
+            const byId = new Map(
+              sourceProfiles.map((profile) => [profile.id, profile]),
+            );
+            const resources = collection.resourceIds.map((resourceId, index) => {
+              const profile = byId.get(resourceId);
+              if (!profile) {
+                throw new Error(
+                  `Collection ${collection.slug} references missing source ${resourceId}.`,
+                );
+              }
+              return {
+                order: index + 1,
+                id: profile.id,
+                slug: profile.slug,
+                name: profile.name,
+                url: profile.url,
+                domain: profile.domain,
+                summary: profile.summary,
+                category: profile.category,
+                sourceType: profile.sourceType,
+                accessModel: {
+                  access: profile.accessModel.access,
+                  subscriptionRequired:
+                    profile.accessModel.subscriptionRequired,
+                },
+                profileLevel: profile.profileLevel,
+                status: profile.status,
+                tessliPath: `/resources/${profile.slug}`,
+                jsonPath: `/resources/${profile.slug}/profile.json`,
+                markdownPath: `/resources/${profile.slug}/profile.md`,
+              };
+            });
+            const canonicalPath = `/collections/${collection.slug}`;
+            const jsonPath = `${canonicalPath}/collection.json`;
+            const markdownPath = `${canonicalPath}/collection.md`;
+            return {
+              contract: PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
+              canonicalPath,
+              representations: { json: jsonPath, markdown: markdownPath },
+              collection: {
+                id: collection.id,
+                slug: collection.slug,
+                title: collection.title,
+                description: collection.description,
+                status: collection.status,
+                lastReviewedAt: collection.lastReviewedAt,
+                resourceCount: resources.length,
+              },
+              resources,
+              boundaries: [
+                "Resource order is editorial and does not represent popularity, sponsorship, or universal quality.",
+                "Repository intelligence is not live-provider verification.",
+                "Revalidate provider access, pricing, licensing, terms, availability, and time-sensitive claims.",
+                "No browser-local Board, Saved, account, cookie, or credential data is included.",
+              ],
+            };
+          }
+
+          export function serializePublicJson(value) {
+            return `${JSON.stringify(value, null, 2)}\n`;
+          }
+
+          export function serializePublicSourceMarkdown(document) {
+            const source = document.source;
+            const lines = [
+              `# Tessli Source Profile — ${inline(source.name)}`,
+              "",
+              `Contract: ${document.contract}`,
+              `Canonical Tessli path: ${document.canonicalPath}`,
+              `JSON representation: ${document.representations.json}`,
+              `Markdown representation: ${document.representations.markdown}`,
+              "",
+              "## Source identity",
+              "",
+              `- **ID:** ${inline(source.id)}`,
+              `- **Slug:** ${inline(source.slug)}`,
+              `- **Provider URL:** ${inline(source.url)}`,
+              `- **Domain:** ${inline(source.domain)}`,
+              `- **Category:** ${inline(source.category)}`,
+              `- **Source type:** ${inline(source.sourceType)}`,
+              `- **Access:** ${inline(source.accessModel.access)}`,
+              `- **Subscription required:** ${inline(
+                source.accessModel.subscriptionRequired,
+              )}`,
+              `- **Availability:** ${inline(source.status)}`,
+              `- **Profile level:** ${inline(source.profileLevel)}`,
+              "",
+              "## Canonical summary",
+              "",
+              inline(source.summary),
+              "",
+              "## Coverage",
+              "",
+              `- **Level:** ${inline(source.coverage.level)}`,
+              `- **Reason:** ${inline(source.coverage.reason)}`,
+              `- **Repository profile status:** ${inline(
+                source.coverage.profileStatus,
+              )}`,
+              `- **Last recorded verification:** ${inline(
+                source.coverage.lastVerifiedAt,
+              )}`,
+              `- **Confidence:** ${inline(source.coverage.confidence)}`,
+              `- **Human review:** ${inline(
+                source.coverage.humanReviewStatus,
+              )}`,
+              `- **Freshness:** ${inline(source.coverage.freshnessStatus)}`,
+              "",
+            ];
+            pushList(lines, "Best for", source.bestFor);
+            pushList(lines, "Capabilities", source.capabilities);
+            pushList(lines, "Content objects", source.contentObjects);
+            pushList(lines, "Platforms", source.platforms);
+            pushList(lines, "Frameworks", source.frameworks);
+            pushList(lines, "Integration methods", source.integrationMethods);
+            pushList(lines, "Limitations", source.limitations);
+            lines.push("## Evidence", "");
+            if (source.evidence.length === 0) {
+              lines.push("None recorded", "");
+            } else {
+              for (const item of source.evidence) {
+                const confidence = item.confidence
+                  ? `; confidence: ${item.confidence}`
+                  : "";
+                lines.push(
+                  `- ${inline(item.sourceType)} verified ${inline(
+                    item.verifiedAt,
+                  )}${confidence}: ${inline(item.claim)} (${inline(
+                    item.sourceUrl,
+                  )})`,
+                );
+              }
+              lines.push("");
+            }
+            if (source.intelligence?.governance) {
+              const governance = source.intelligence.governance;
+              lines.push(
+                "## Governance",
+                "",
+                `- **Default persistence:** ${inline(
+                  governance.defaultPersistence,
+                )}`,
+                `- **Asset redistribution:** ${inline(
+                  governance.assetRedistribution,
+                )}`,
+                `- **Source attribution:** ${inline(
+                  governance.sourceAttribution,
+                )}`,
+                `- **User credential required:** ${
+                  governance.userCredentialRequired ? "yes" : "no"
+                }`,
+                `- **Terms review required:** ${
+                  governance.termsReviewRequired ? "yes" : "no"
+                }`,
+                "",
+              );
+            }
+            lines.push("## Interpretation boundaries", "");
+            for (const boundary of document.boundaries) {
+              lines.push(`- ${inline(boundary)}`);
+            }
+            lines.push("");
+            return markdown(lines);
+          }
+
+          export function serializePublicCollectionMarkdown(document) {
+            const collection = document.collection;
+            const lines = [
+              `# Tessli Collection — ${inline(collection.title)}`,
+              "",
+              `Contract: ${document.contract}`,
+              `Canonical Tessli path: ${document.canonicalPath}`,
+              `JSON representation: ${document.representations.json}`,
+              `Markdown representation: ${document.representations.markdown}`,
+              "",
+              "## Collection",
+              "",
+              inline(collection.description),
+              "",
+              `- **ID:** ${inline(collection.id)}`,
+              `- **Status:** ${inline(collection.status)}`,
+              `- **Last reviewed:** ${inline(collection.lastReviewedAt)}`,
+              `- **Resource count:** ${collection.resourceCount}`,
+              "",
+              "## Ordered resources",
+              "",
+            ];
+            for (const resource of document.resources) {
+              lines.push(
+                `### ${resource.order}. ${inline(resource.name)}`,
+                "",
+                `- **Source ID:** ${inline(resource.id)}`,
+                `- **Provider URL:** ${inline(resource.url)}`,
+                `- **Tessli profile:** ${inline(resource.tessliPath)}`,
+                `- **Category:** ${inline(resource.category)}`,
+                `- **Source type:** ${inline(resource.sourceType)}`,
+                `- **Access:** ${inline(resource.accessModel.access)}`,
+                `- **Profile level:** ${inline(resource.profileLevel)}`,
+                `- **Summary:** ${inline(resource.summary)}`,
+                "",
+              );
+            }
+            lines.push("## Interpretation boundaries", "");
+            for (const boundary of document.boundaries) {
+              lines.push(`- ${inline(boundary)}`);
+            }
+            lines.push("");
+            return markdown(lines);
+          }
+
+          export function createPublicRepresentationHeaders({
+            format,
+            filename,
+            canonicalPath,
+            jsonPath,
+            markdownPath,
+          }) {
+            const contentType =
+              format === "json"
+                ? "application/json; charset=utf-8"
+                : "text/markdown; charset=utf-8";
+            return {
+              "Access-Control-Allow-Origin": "*",
+              "Cache-Control": CACHE_CONTROL,
+              "Content-Disposition": `inline; filename="${filename}"`,
+              "Content-Type": contentType,
+              "Cross-Origin-Resource-Policy": "cross-origin",
+              Link: `<${canonicalPath}>; rel="canonical"; type="text/html", <${jsonPath}>; rel="alternate"; type="application/json", <${markdownPath}>; rel="alternate"; type="text/markdown"`,
+              "X-Content-Type-Options": "nosniff",
+              "X-Robots-Tag": "index, follow",
+            };
+          }
+
+          export function createPublicOptionsHeaders() {
+            return {
+              Allow: "GET, HEAD, OPTIONS",
+              "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Max-Age": "86400",
+              "Cross-Origin-Resource-Policy": "cross-origin",
+              "X-Content-Type-Options": "nosniff",
+            };
+          }
+          ''',
+            "web/lib/public-representations.d.mts": r'''export interface PublicRepresentationHeadersInput {
+            format: "json" | "markdown";
+            filename: string;
+            canonicalPath: string;
+            jsonPath: string;
+            markdownPath: string;
+          }
+
+          export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT:
+            "tessli.public-source.v1";
+          export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT:
+            "tessli.public-collection.v1";
+
+          export function createPublicSourceRepresentation(
+            profile: Record<string, unknown>,
+          ): Record<string, any>;
+          export function createPublicCollectionRepresentation(
+            collection: Record<string, unknown>,
+            sourceProfiles: readonly Record<string, unknown>[],
+          ): Record<string, any>;
+          export function serializePublicJson(value: unknown): string;
+          export function serializePublicSourceMarkdown(
+            document: Record<string, any>,
+          ): string;
+          export function serializePublicCollectionMarkdown(
+            document: Record<string, any>,
+          ): string;
+          export function createPublicRepresentationHeaders(
+            input: PublicRepresentationHeadersInput,
+          ): Record<string, string>;
+          export function createPublicOptionsHeaders(): Record<string, string>;
+          ''',
+            "web/app/resources/[slug]/[representation]/route.ts": r'''import {
+            createPublicOptionsHeaders,
+            createPublicRepresentationHeaders,
+            createPublicSourceRepresentation,
+            serializePublicJson,
+            serializePublicSourceMarkdown,
+          } from "@/lib/public-representations.mjs";
+          import {
+            getAllSourceProfiles,
+            getSourceProfile,
+          } from "@/lib/source-profiles";
+
+          export const dynamic = "force-static";
+          export const dynamicParams = false;
+          export const revalidate = false;
+
+          const representations = ["profile.json", "profile.md"] as const;
+
+          type RouteProps = Readonly<{
+            params: Promise<{ slug: string; representation: string }>;
+          }>;
+
+          export function generateStaticParams() {
+            return getAllSourceProfiles().flatMap((profile) =>
+              representations.map((representation) => ({
+                slug: profile.slug,
+                representation,
+              })),
+            );
+          }
+
+          function notFoundResponse(representation: string) {
+            const json = representation.endsWith(".json");
+            return new Response(
+              json
+                ? `${JSON.stringify({ error: "Source representation not found." }, null, 2)}\n`
+                : "# Source representation not found\n",
+              {
+                status: 404,
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": json
+                    ? "application/json; charset=utf-8"
+                    : "text/markdown; charset=utf-8",
+                  "X-Content-Type-Options": "nosniff",
+                  "X-Robots-Tag": "noindex",
+                },
+              },
+            );
+          }
+
+          async function buildResponse({ params }: RouteProps, head = false) {
+            const { slug, representation } = await params;
+            if (!representations.includes(representation as (typeof representations)[number])) {
+              return notFoundResponse(representation);
+            }
+            const profile = getSourceProfile(slug);
+            if (!profile) return notFoundResponse(representation);
+            const document = createPublicSourceRepresentation(profile);
+            const format = representation.endsWith(".json")
+              ? "json"
+              : "markdown";
+            const body =
+              format === "json"
+                ? serializePublicJson(document)
+                : serializePublicSourceMarkdown(document);
+            const extension = format === "json" ? "json" : "md";
+            return new Response(head ? null : body, {
+              status: 200,
+              headers: createPublicRepresentationHeaders({
+                format,
+                filename: `tessli-${profile.slug}-profile.${extension}`,
+                canonicalPath: document.canonicalPath,
+                jsonPath: document.representations.json,
+                markdownPath: document.representations.markdown,
+              }),
+            });
+          }
+
+          export async function GET(_request: Request, context: RouteProps) {
+            return buildResponse(context);
+          }
+
+          export async function HEAD(_request: Request, context: RouteProps) {
+            return buildResponse(context, true);
+          }
+
+          export function OPTIONS() {
+            return new Response(null, {
+              status: 204,
+              headers: createPublicOptionsHeaders(),
+            });
+          }
+          ''',
+            "web/app/collections/[slug]/[representation]/route.ts": r'''import {
+            createPublicCollectionRepresentation,
+            createPublicOptionsHeaders,
+            createPublicRepresentationHeaders,
+            serializePublicCollectionMarkdown,
+            serializePublicJson,
+          } from "@/lib/public-representations.mjs";
+          import {
+            getPublishedCollection,
+            getPublishedCollections,
+          } from "@/lib/collections";
+          import { getAllSourceProfiles } from "@/lib/source-profiles";
+
+          export const dynamic = "force-static";
+          export const dynamicParams = false;
+          export const revalidate = false;
+
+          const representations = ["collection.json", "collection.md"] as const;
+
+          type RouteProps = Readonly<{
+            params: Promise<{ slug: string; representation: string }>;
+          }>;
+
+          export function generateStaticParams() {
+            return getPublishedCollections().flatMap((collection) =>
+              representations.map((representation) => ({
+                slug: collection.slug,
+                representation,
+              })),
+            );
+          }
+
+          function notFoundResponse(representation: string) {
+            const json = representation.endsWith(".json");
+            return new Response(
+              json
+                ? `${JSON.stringify({ error: "Collection representation not found." }, null, 2)}\n`
+                : "# Collection representation not found\n",
+              {
+                status: 404,
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Content-Type": json
+                    ? "application/json; charset=utf-8"
+                    : "text/markdown; charset=utf-8",
+                  "X-Content-Type-Options": "nosniff",
+                  "X-Robots-Tag": "noindex",
+                },
+              },
+            );
+          }
+
+          async function buildResponse({ params }: RouteProps, head = false) {
+            const { slug, representation } = await params;
+            if (!representations.includes(representation as (typeof representations)[number])) {
+              return notFoundResponse(representation);
+            }
+            const collection = getPublishedCollection(slug);
+            if (!collection) return notFoundResponse(representation);
+            const document = createPublicCollectionRepresentation(
+              collection,
+              getAllSourceProfiles(),
+            );
+            const format = representation.endsWith(".json")
+              ? "json"
+              : "markdown";
+            const body =
+              format === "json"
+                ? serializePublicJson(document)
+                : serializePublicCollectionMarkdown(document);
+            const extension = format === "json" ? "json" : "md";
+            return new Response(head ? null : body, {
+              status: 200,
+              headers: createPublicRepresentationHeaders({
+                format,
+                filename: `tessli-${collection.slug}-collection.${extension}`,
+                canonicalPath: document.canonicalPath,
+                jsonPath: document.representations.json,
+                markdownPath: document.representations.markdown,
+              }),
+            });
+          }
+
+          export async function GET(_request: Request, context: RouteProps) {
+            return buildResponse(context);
+          }
+
+          export async function HEAD(_request: Request, context: RouteProps) {
+            return buildResponse(context, true);
+          }
+
+          export function OPTIONS() {
+            return new Response(null, {
+              status: 204,
+              headers: createPublicOptionsHeaders(),
+            });
+          }
+          ''',
+            "web/tests/public-representations.test.mjs": r'''import assert from "node:assert/strict";
+          import { readFile } from "node:fs/promises";
+          import { test } from "node:test";
+
+          import {
+            PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
+            PUBLIC_SOURCE_REPRESENTATION_CONTRACT,
+            createPublicCollectionRepresentation,
+            createPublicOptionsHeaders,
+            createPublicRepresentationHeaders,
+            createPublicSourceRepresentation,
+            serializePublicCollectionMarkdown,
+            serializePublicJson,
+            serializePublicSourceMarkdown,
+          } from "../lib/public-representations.mjs";
+
+          const profiled = {
+            contractVersion: 1,
+            id: "source-one",
+            slug: "source-one",
+            name: "Source One",
+            url: "https://example.com",
+            domain: "example.com",
+            summary: "Canonical summary.",
+            category: "website-inspiration",
+            sourceType: "inspiration-directory",
+            sourceTypeBasis: "category-classification",
+            accessModel: { access: "free", subscriptionRequired: "no" },
+            bestFor: ["hierarchy"],
+            capabilities: ["inspiration"],
+            contentObjects: ["websites"],
+            platforms: ["web"],
+            frameworks: [],
+            integrationMethods: ["web-ui"],
+            limitations: ["No source code"],
+            profileLevel: "profiled",
+            status: "active",
+            verifiedAt: "2026-07-01",
+            evidence: [
+              {
+                claim: "Recorded claim",
+                sourceUrl: "https://example.com/docs",
+                sourceType: "official-docs",
+                verifiedAt: "2026-07-01",
+                confidence: "certain",
+              },
+            ],
+            coverage: {
+              level: "profiled",
+              reason: "Structured intelligence is present.",
+              profileStatus: "verified",
+              lastVerifiedAt: "2026-07-01",
+              confidence: "certain",
+              humanReviewStatus: "not-recorded",
+              freshnessStatus: "current",
+              evidenceCount: 1,
+            },
+            intelligence: {
+              profileVersion: 1,
+              status: "verified",
+              verifiedAt: "2026-07-01",
+              summary: "Intelligence summary.",
+              designTools: ["figma"],
+              deliveryFormats: ["web"],
+              agentInterfaces: [{ type: "mcp", transport: "stdio" }],
+              discovery: { textSearch: true, facets: ["type"] },
+              governance: {
+                defaultPersistence: "transient",
+                assetRedistribution: "restricted",
+                sourceAttribution: "required",
+                userCredentialRequired: false,
+                termsReviewRequired: true,
+                notes: [],
+              },
+            },
+          };
+
+          const listed = {
+            ...profiled,
+            id: "source-two",
+            slug: "source-two",
+            name: "Source Two",
+            url: "https://two.example",
+            domain: "two.example",
+            profileLevel: "listed",
+            verifiedAt: null,
+            bestFor: [],
+            capabilities: [],
+            contentObjects: [],
+            platforms: [],
+            integrationMethods: [],
+            limitations: [],
+            evidence: [],
+            coverage: {
+              level: "listed",
+              reason: "Catalogue metadata only.",
+              profileStatus: null,
+              lastVerifiedAt: null,
+              confidence: "unknown",
+              humanReviewStatus: "not-recorded",
+              freshnessStatus: "unknown",
+              evidenceCount: 0,
+            },
+            intelligence: null,
+          };
+
+          test("source JSON and Markdown are deterministic and truthful", () => {
+            const first = createPublicSourceRepresentation(profiled);
+            const second = createPublicSourceRepresentation(profiled);
+            assert.equal(first.contract, PUBLIC_SOURCE_REPRESENTATION_CONTRACT);
+            assert.equal(serializePublicJson(first), serializePublicJson(second));
+            assert.equal(
+              serializePublicSourceMarkdown(first),
+              serializePublicSourceMarkdown(second),
+            );
+            const json = serializePublicJson(first);
+            const md = serializePublicSourceMarkdown(first);
+            assert.equal(json.endsWith("\n"), true);
+            assert.equal(md.endsWith("\n"), true);
+            assert.doesNotMatch(md, /[ \t]+$/gmu);
+            assert.match(md, /Repository intelligence is not live-provider verification/u);
+            assert.match(json, /"profileLevel": "profiled"/u);
+            assert.doesNotMatch(json, /localStorage|boardId|savedIds|cookie/u);
+          });
+
+          test("Listed sources remain sparse without invented intelligence", () => {
+            const document = createPublicSourceRepresentation(listed);
+            assert.equal(document.source.intelligence, null);
+            assert.deepEqual(document.source.capabilities, []);
+            assert.deepEqual(document.source.evidence, []);
+            assert.match(
+              serializePublicSourceMarkdown(document),
+              /### Capabilities\n\nNone recorded/u,
+            );
+          });
+
+          test("collection representations preserve editorial order and stay bounded", () => {
+            const collection = {
+              id: "collection-one",
+              slug: "collection-one",
+              title: "Collection One",
+              description: "A reviewed collection.",
+              status: "published",
+              lastReviewedAt: "2026-08-01",
+              resourceIds: ["source-two", "source-one"],
+            };
+            const document = createPublicCollectionRepresentation(collection, [
+              profiled,
+              listed,
+            ]);
+            assert.equal(
+              document.contract,
+              PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
+            );
+            assert.deepEqual(
+              document.resources.map((resource) => resource.id),
+              ["source-two", "source-one"],
+            );
+            assert.equal(document.resources[0].order, 1);
+            assert.equal(document.resources[1].order, 2);
+            assert.equal(document.resources[0].intelligence, undefined);
+            const md = serializePublicCollectionMarkdown(document);
+            assert.ok(md.indexOf("1. Source Two") < md.indexOf("2. Source One"));
+            assert.doesNotMatch(md, /[ \t]+$/gmu);
+          });
+
+          test("public headers are readable, cacheable, indexable, and safe", () => {
+            const headers = createPublicRepresentationHeaders({
+              format: "json",
+              filename: "tessli-source.json",
+              canonicalPath: "/resources/source-one",
+              jsonPath: "/resources/source-one/profile.json",
+              markdownPath: "/resources/source-one/profile.md",
+            });
+            assert.equal(headers["Content-Type"], "application/json; charset=utf-8");
+            assert.equal(headers["Access-Control-Allow-Origin"], "*");
+            assert.equal(headers["X-Content-Type-Options"], "nosniff");
+            assert.equal(headers["X-Robots-Tag"], "index, follow");
+            assert.match(headers["Cache-Control"], /s-maxage=86400/u);
+            assert.match(headers.Link, /rel="canonical"/u);
+            const options = createPublicOptionsHeaders();
+            assert.equal(options.Allow, "GET, HEAD, OPTIONS");
+          });
+
+          test("runtime routes are static, canonical-data only, and privacy bounded", async () => {
+            const sourceRoute = await readFile(
+              new URL(
+                "../app/resources/[slug]/[representation]/route.ts",
+                import.meta.url,
+              ),
+              "utf8",
+            );
+            const collectionRoute = await readFile(
+              new URL(
+                "../app/collections/[slug]/[representation]/route.ts",
+                import.meta.url,
+              ),
+              "utf8",
+            );
+            for (const route of [sourceRoute, collectionRoute]) {
+              assert.match(route, /dynamicParams = false/u);
+              assert.match(route, /generateStaticParams/u);
+              assert.doesNotMatch(
+                route,
+                /localStorage|cookies\(|process\.env|fetch\(|ProjectBoard/u,
+              );
+            }
+            assert.match(sourceRoute, /getSourceProfile/u);
+            assert.match(collectionRoute, /getPublishedCollection/u);
+          });
+
+          test("formatter has no clock, network, storage, cookie, or environment dependency", async () => {
+            const source = await readFile(
+              new URL("../lib/public-representations.mjs", import.meta.url),
+              "utf8",
+            );
+            assert.doesNotMatch(
+              source,
+              /Date\.now\(|new Date\(|fetch\(|XMLHttpRequest|localStorage|cookies\(|process\.env/u,
+            );
+          });
+          ''',
+          }
+
+          for path, content in files.items():
+              target = Path(path)
+              target.parent.mkdir(parents=True, exist_ok=True)
+              target.write_text(content)
+
+          sitemap_path = Path("web/app/sitemap.ts")
+          sitemap = sitemap_path.read_text()
+          old = '''    ...getPublishedCollections().map((collection) => ({
+                url: `${origin}/collections/${collection.slug}`,
+              })),
+              ...getAllSourceProfiles().map((profile) => ({
+                url: `${origin}/resources/${profile.slug}`,
+              })),
+          '''
+          new = '''    ...getPublishedCollections().flatMap((collection) => [
+                { url: `${origin}/collections/${collection.slug}` },
+                { url: `${origin}/collections/${collection.slug}/collection.json` },
+                { url: `${origin}/collections/${collection.slug}/collection.md` },
+              ]),
+              ...getAllSourceProfiles().flatMap((profile) => [
+                { url: `${origin}/resources/${profile.slug}` },
+                { url: `${origin}/resources/${profile.slug}/profile.json` },
+                { url: `${origin}/resources/${profile.slug}/profile.md` },
+              ]),
+          '''
+          if sitemap.count(old) != 1:
+              raise SystemExit("sitemap target not found exactly once")
+          sitemap_path.write_text(sitemap.replace(old, new, 1))
+
+          browser_path = Path("web/tests/release-gate-browser.mjs")
+          browser = browser_path.read_text()
+          marker = '''const visualCases = [
+          '''
+          addition = '''const machineRouteChecks = [
+            {
+              path: "/resources/designindex/profile.json",
+              contentType: "application/json",
+              expectedText: '"contract": "tessli.public-source.v1"',
+            },
+            {
+              path: "/resources/designindex/profile.md",
+              contentType: "text/markdown",
+              expectedText: "# Tessli Source Profile — DesignIndex",
+            },
+            {
+              path: "/collections/saas-landing-pages/collection.json",
+              contentType: "application/json",
+              expectedText: '"contract": "tessli.public-collection.v1"',
+            },
+            {
+              path: "/collections/saas-landing-pages/collection.md",
+              contentType: "text/markdown",
+              expectedText: "# Tessli Collection — SaaS landing-page references",
+            },
+          ];
+
+          for (const check of machineRouteChecks) {
+            const response = await fetch(`${origin}${check.path}`);
+            const body = await response.text();
+            assert.equal(response.status, 200, `${check.path} status`);
+            assert.match(
+              response.headers.get("content-type") ?? "",
+              new RegExp(`^${check.contentType}`),
+              `${check.path} content type`,
+            );
+            assert.equal(
+              response.headers.get("access-control-allow-origin"),
+              "*",
+              `${check.path} CORS`,
+            );
+            assert.equal(
+              response.headers.get("x-content-type-options"),
+              "nosniff",
+              `${check.path} nosniff`,
+            );
+            assert.match(
+              response.headers.get("link") ?? "",
+              /rel="canonical"/u,
+              `${check.path} canonical link`,
+            );
+            assert.match(body, new RegExp(check.expectedText, "i"), `${check.path} body`);
+          }
+
+          ''' + marker
+          if browser.count(marker) != 1:
+              raise SystemExit("browser insertion marker not found exactly once")
+          browser_path.write_text(browser.replace(marker, addition, 1))
+
+      - name: Commit implementation
+        shell: bash
+        run: |
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/lib/public-representations.mjs web/lib/public-representations.d.mts web/app/resources/'[slug]'/'[representation]'/route.ts web/app/collections/'[slug]'/'[representation]'/route.ts web/tests/public-representations.test.mjs web/app/sitemap.ts web/tests/release-gate-browser.mjs
+          git commit -m "feat: add public source and collection representations"
+          git push origin HEAD:feat/public-machine-readable-representations
