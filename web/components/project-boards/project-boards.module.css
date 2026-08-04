@@ -26,7 +26,8 @@
   padding: 0.75rem 1rem;
   text-decoration: none;
 }
-.createForm {
+.createForm,
+.questionForm {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 1rem;
@@ -39,14 +40,19 @@
 .fields label,
 .editorHeader label,
 .items label,
-.resourcePicker label {
+.resourcePicker label,
+.questionForm label,
+.questions label,
+.decisionFields label {
   display: grid;
   gap: 0.45rem;
 }
 .createForm input,
 .editor input,
 .editor textarea,
-.resourcePicker input {
+.editor select,
+.resourcePicker input,
+.questionForm input {
   width: 100%;
   border: 1px solid var(--color-border, #c9c2b8);
   background: transparent;
@@ -61,7 +67,8 @@
 .createForm button,
 .sidebar button,
 .editor button,
-.resourcePicker button {
+.resourcePicker button,
+.questionForm button {
   min-height: 44px;
   border: 1px solid currentColor;
   background: transparent;
@@ -70,7 +77,8 @@
   font: inherit;
   cursor: pointer;
 }
-.createForm button:disabled {
+.createForm button:disabled,
+.questionForm button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
@@ -119,28 +127,41 @@
   border-color: #8f2d23 !important;
   color: #8f2d23 !important;
 }
-.fields {
+.fields,
+.decisionFields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin: 1.5rem 0 2rem;
 }
+.decisionFields {
+  grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 1fr);
+  margin: 0 0 1rem;
+}
 .sectionHeading {
-  margin-bottom: 1rem;
+  margin: 2rem 0 1rem;
 }
 .sectionHeading h2 {
   margin: 0.2rem 0 0;
 }
-.items {
+.items,
+.questions {
   display: grid;
   gap: 1rem;
   list-style: none;
   margin: 0 0 1.5rem;
   padding: 0;
 }
-.items li {
+.items li,
+.questions li {
   border-top: 1px solid var(--color-border, #c9c2b8);
   padding-top: 1rem;
+}
+.questions li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
 }
 .itemHeader p {
   margin: 0.2rem 0 1rem;
@@ -194,8 +215,11 @@
     flex-direction: column;
   }
   .createForm,
+  .questionForm,
   .workspace,
-  .fields {
+  .fields,
+  .decisionFields,
+  .questions li {
     grid-template-columns: 1fr;
   }
   .sidebar {
