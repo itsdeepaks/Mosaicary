@@ -36,7 +36,7 @@ const routeChecks = [
   ],
   ["/resources", 200, "Browse design sources"],
   ["/resources/designindex", 200, "What this profile supports"],
-  ["/saved", 200, "Your saves stay in this browser"],
+  ["/saved", 200, "Search and refine the references kept in this browser"],
   ["/about", 200, "Keep reading"],
   ["/curation", 200, "Keep reading"],
   ["/privacy", 200, "Keep reading"],
