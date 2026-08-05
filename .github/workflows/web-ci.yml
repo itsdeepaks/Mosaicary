@@ -65,7 +65,12 @@ jobs:
         working-directory: .
         shell: bash
         run: |
-          cat .github/scripts/playbooks-patch.part00 .github/scripts/playbooks-patch.part01 \
+          cat \
+            .github/scripts/playbooks-patch.part00a0 \
+            .github/scripts/playbooks-patch.part00a1 \
+            .github/scripts/playbooks-patch.part00b0 \
+            .github/scripts/playbooks-patch.part00b1 \
+            .github/scripts/playbooks-patch.part01 \
             | base64 --decode \
             | gzip --decompress \
             > /tmp/tessli-playbooks.patch
