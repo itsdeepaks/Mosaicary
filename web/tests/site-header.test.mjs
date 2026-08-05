@@ -24,6 +24,10 @@ test("public navigation separates primary research routes from utilities", async
   );
   assert.match(
     navigation,
+    /label: "For AI"[\s\S]*?href: "\/for-ai"[\s\S]*?available: true/,
+  );
+  assert.match(
+    navigation,
     /label: "Search"[\s\S]*?href: "\/resources#browse-search"[\s\S]*?match: "none"/,
   );
   assert.match(
