@@ -31,12 +31,12 @@ test("Slice 1.3 is one deterministic ten-profile source", () => {
   assert.equal(new Set(expectedIdentifiers).size, 10);
 });
 
-test("the shared registry exposes every Slice 1.3 profile exactly once", () => {
-  assert.equal(getAllIntelligenceProfiles().length, 30);
+test("the shared registry continues to expose every Slice 1.3 profile exactly once", () => {
+  assert.equal(getAllIntelligenceProfiles().length, 40);
   assert.equal(
     new Set(getAllIntelligenceProfiles().map((profile) => profile.resourceId))
       .size,
-    30,
+    40,
   );
 
   for (const profile of batch13.profiles) {
