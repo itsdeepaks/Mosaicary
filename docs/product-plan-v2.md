@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 6; Phase 5 proof blocked**  
+Status: **active execution plan — Phase 5 proof blocked; no independent NEXT slice**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -46,8 +46,8 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 |     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account               |
 |     4 | Research-Pack Export                        | DONE     | Deterministic, model-independent project context                           |
 |     5 | Real OSS Proof Project                      | BLOCKED  | Safe review setup complete; genuine human judgment still required          |
-|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | Independent public-shell work can continue while the proof is blocked      |
-|     7 | Reviewed Pattern Candidates                 | PLANNED  | Small human-reviewed pattern knowledge derived from real work              |
+|     6 | Homepage, Navigation, Playbooks, and For AI | BLOCKED  | Navigation, Playbooks, and For AI are complete; homepage waits for proof   |
+|     7 | Reviewed Pattern Candidates                 | BLOCKED  | Requires the completed Phase 5 outcome before pattern promotion begins     |
 |     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                |
 |     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow         |
 |    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims |
@@ -344,7 +344,7 @@ One proof cannot justify a broad public UI-taste claim.
 
 ## 10. Phase 6 — Homepage, Navigation, Playbooks, and For AI
 
-Status: **ACTIVE**
+Status: **BLOCKED — CURATED HOMEPAGE REQUIRES COMPLETED PHASE 5 OUTCOME**
 
 Goal: present the proven workflow clearly to humans and models.
 
@@ -399,16 +399,22 @@ Evidence: `docs/slices/6.3-collections-to-playbooks.md`, PR #93.
 
 ### 6.4 For AI
 
-Status: **NEXT**
+Status: **DONE**
 
-- current seven MCP tools;
-- coverage, limits, setup, evidence, governance, and exports;
-- no paid/private-library proxy claims;
-- model-independent export workflow.
+- one public, static `/for-ai` route for people using Tessli with or without MCP;
+- current seven read-only local stdio tools documented from metadata shared with the MCP server;
+- canonical 295 / 275 Listed / 20 Profiled / 0 Verified coverage derived from SourceProfiles;
+- executable confidence and freshness rules explained without live-provider claims;
+- real source-profile and Playbook JSON/Markdown examples;
+- browser-local Board research-pack workflow and privacy boundary;
+- no paid/private-library proxy, hosted MCP, provider crawl, account, write, or UI-taste claim;
+- desktop/mobile primary navigation, footer, sitemap, route smoke, and browser evidence.
+
+Evidence: `docs/slices/6.4-for-ai-product-page.md`, PR #94.
 
 ## 11. Phase 7 — Reviewed Pattern Candidates
 
-Status: **PLANNED**
+Status: **BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME**
 
 Goal: create the first small, evidence-linked layer of reusable UI judgment.
 

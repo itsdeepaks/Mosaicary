@@ -175,13 +175,19 @@ test("release history remains preserved under Product Plan v2", async () => {
       "3.3, 4.2",
       "`docs/slices/6.3-collections-to-playbooks.md`, PR #93",
     ],
-    ["6.4", "For AI product page", "NEXT", "2.4, 4.3", "—"],
+    [
+      "6.4",
+      "For AI product page",
+      "DONE",
+      "2.4, 4.3",
+      "`docs/slices/6.4-for-ai-product-page.md`, PR #94",
+    ],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.4 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; no independent NEXT slice\*\*/,
   );
   assert.match(
     plan,
@@ -234,7 +240,15 @@ test("release history remains preserved under Product Plan v2", async () => {
     plan,
     /### 6\.3 Collections become playbooks\n\nStatus: \*\*DONE\*\*/,
   );
-  assert.match(plan, /### 6\.4 For AI\n\nStatus: \*\*NEXT\*\*/);
+  assert.match(
+    plan,
+    /## 10\. Phase 6 — Homepage, Navigation, Playbooks, and For AI\n\nStatus: \*\*BLOCKED — CURATED HOMEPAGE REQUIRES COMPLETED PHASE 5 OUTCOME\*\*/,
+  );
+  assert.match(plan, /### 6\.4 For AI\n\nStatus: \*\*DONE\*\*/);
+  assert.match(
+    plan,
+    /## 11\. Phase 7 — Reviewed Pattern Candidates\n\nStatus: \*\*BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME\*\*/,
+  );
   assert.match(
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,

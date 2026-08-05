@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.4 NEXT**  
+Status: **active delivery plan — Slice 5.3 BLOCKED; no independent NEXT slice**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -113,8 +113,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
 |     5 | Real OSS Proof Project                      | BLOCKED  | 5.3 human review           |
-|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.4 NEXT                   |
-|     7 | Reviewed Pattern Candidates                 | PLANNED  | 7.1 after Phase 5          |
+|     6 | Homepage, Navigation, Playbooks, and For AI | BLOCKED  | 6.2 after Phase 5          |
+|     7 | Reviewed Pattern Candidates                 | BLOCKED  | 7.1 after Phase 5          |
 |     8 | Authentication and Cloud Workspace          | DEFERRED | 8.1 after local proof      |
 |     9 | Community and Moderation                    | DEFERRED | 9.1 after auth/owner       |
 |    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | 10.1 after multiple proofs |
@@ -144,7 +144,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 6.1  | Global navigation and naming cleanup                  | DONE     | 2.2                     | `docs/slices/6.1-global-navigation-cleanup.md`, PR #92               |
 | 6.2  | Curated homepage built around proven workflow         | BLOCKED  | 5.4, 6.1                | —                                                                    |
 | 6.3  | Collections-to-playbooks conversion                   | DONE     | 3.3, 4.2                | `docs/slices/6.3-collections-to-playbooks.md`, PR #93                |
-| 6.4  | For AI product page                                   | NEXT     | 2.4, 4.3                | —                                                                    |
+| 6.4  | For AI product page                                   | DONE     | 2.4, 4.3                | `docs/slices/6.4-for-ai-product-page.md`, PR #94                     |
 | 7.1  | Pattern Candidate schema                              | PLANNED  | 5.4                     | —                                                                    |
 | 7.2  | First 5–10 reviewed candidates                        | PLANNED  | 7.1                     | —                                                                    |
 | 7.3  | Pattern retrieval for website/export/MCP              | PLANNED  | 7.2                     | —                                                                    |
@@ -314,6 +314,6 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 ## 11. Current continuation boundary
 
-After Slice 6.1 merges, refresh `main` and begin Phase 6 / Slice 6.3 on a new branch. Slice 5.4 and Slice 6.2 remain blocked until a genuine completed human-review artifact is returned.
+All currently independent Product Plan v2 slices are complete. The next product action is to return a genuine completed Slice 5.3 human-review artifact. Until then, Slices 5.4 and 6.2 and Phase 7 remain blocked; Phase 8 and later work remain deferred. Do not create substitute scores, skip the proof boundary, or start a dependency-blocked slice.
 
 No recurring scheduled development task is enabled or permitted for this workflow.
