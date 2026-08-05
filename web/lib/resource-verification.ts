@@ -20,6 +20,12 @@ export class ResourceVerificationError extends Error {
 type JsonValue =
   null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
+type VerificationAgentInterface = ResourceIntelligenceProfile["agentInterfaces"][number] & {
+  authentication?: string;
+  credentialOwner?: string;
+  persistencePolicy?: string;
+};
+
 export type VerificationDecision =
   "pending" | "verified" | "needs-review" | "rejected";
 
@@ -189,17 +195,30 @@ function verificationTarget(identifier: string): {
   return { source, intelligence };
 }
 
+function verificationInterface(
+  profile: ResourceIntelligenceProfile["agentInterfaces"][number],
+): VerificationAgentInterface {
+  return profile as VerificationAgentInterface;
+}
+
 function credentialHandling(
   profile: ResourceIntelligenceProfile["agentInterfaces"][number],
 ): ResourceVerificationRecord["interfaceChecks"][number]["credentialHandling"] {
-  if (profile.credentialOwner === "none" || profile.authentication === "none") {
+  const detail = verificationInterface(profile);
+  if (detail.credentialOwner === "none" || detail.authentication === "none") {
     return "none-required";
   }
-  if (profile.credentialOwner === "user") return "user-owned-not-recorded";
-  if (profile.credentialOwner === "workspace") {
+  if (detail.credentialOwner === "user") return "user-owned-not-recorded";
+  if (detail.credentialOwner === "workspace") {
     return "workspace-owned-not-recorded";
   }
   return "unknown";
+}
+
+function persistencePolicy(
+  profile: ResourceIntelligenceProfile["agentInterfaces"][number],
+): string {
+  return verificationInterface(profile).persistencePolicy ?? "unknown";
 }
 
 export function createResourceVerificationDraft(input: {
@@ -255,7 +274,7 @@ export function createResourceVerificationDraft(input: {
       method: "not-run" as const,
       checkedAt: null,
       credentialHandling: credentialHandling(item),
-      persistencePolicy: item.persistencePolicy ?? "unknown",
+      persistencePolicy: persistencePolicy(item),
       notes: "",
     })),
     governanceCheck: {
@@ -334,8 +353,7 @@ function exactInterfaceSet(
       return (
         check.type === agentInterface.type &&
         check.transport === (agentInterface.transport ?? "in-product") &&
-        check.persistencePolicy ===
-          (agentInterface.persistencePolicy ?? "unknown") &&
+        check.persistencePolicy === persistencePolicy(agentInterface) &&
         check.credentialHandling === credentialHandling(agentInterface)
       );
     })
@@ -463,7 +481,11 @@ export function validateResourceVerificationRecord(
     };
   }
 
-  const completedAt = requireDate(record.completedAt, "completedAt", errors);
+  const completedAt = requireDate(
+    record.completedAt,
+    "completedAt",
+    errors,
+  );
   if (startedAt !== null && completedAt !== null && completedAt < startedAt) {
     errors.push("completedAt cannot be earlier than startedAt.");
   }
@@ -565,7 +587,11 @@ export function validateResourceVerificationRecord(
       "freshness.recheckBy",
       errors,
     );
-    if (completedAt !== null && recheckBy !== null && recheckBy < completedAt) {
+    if (
+      completedAt !== null &&
+      recheckBy !== null &&
+      recheckBy < completedAt
+    ) {
       errors.push("freshness.recheckBy cannot be earlier than completedAt.");
     }
   }
