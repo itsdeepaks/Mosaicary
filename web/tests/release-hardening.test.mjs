@@ -168,13 +168,20 @@ test("release history remains preserved under Product Plan v2", async () => {
       "5.4, 6.1",
       "—",
     ],
-    ["6.3", "Collections-to-playbooks conversion", "NEXT", "3.3, 4.2", "—"],
+    [
+      "6.3",
+      "Collections-to-playbooks conversion",
+      "DONE",
+      "3.3, 4.2",
+      "`docs/slices/6.3-collections-to-playbooks.md`, PR #93",
+    ],
+    ["6.4", "For AI product page", "NEXT", "2.4, 4.3", "—"],
   ]) {
     assert.match(slices, tableRow(...row));
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.3 NEXT\*\*/,
+    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; Phase 6 \/ Slice 6\.4 NEXT\*\*/,
   );
   assert.match(
     plan,
@@ -225,8 +232,9 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /### 6\.3 Collections become playbooks\n\nStatus: \*\*NEXT\*\*/,
+    /### 6\.3 Collections become playbooks\n\nStatus: \*\*DONE\*\*/,
   );
+  assert.match(plan, /### 6\.4 For AI\n\nStatus: \*\*NEXT\*\*/);
   assert.match(
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,

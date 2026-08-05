@@ -386,7 +386,7 @@ Status: **BLOCKED — REQUIRES COMPLETED PHASE 5 OUTCOME**
 
 ### 6.3 Collections become playbooks
 
-Status: **NEXT**
+Status: **DONE**
 
 - outcome and audience;
 - staged research sequence;
@@ -395,9 +395,11 @@ Status: **NEXT**
 - Save/add-to-Board/export where available;
 - last reviewed date.
 
+Evidence: `docs/slices/6.3-collections-to-playbooks.md`, PR #93.
+
 ### 6.4 For AI
 
-Status: **PLANNED**
+Status: **NEXT**
 
 - current seven MCP tools;
 - coverage, limits, setup, evidence, governance, and exports;

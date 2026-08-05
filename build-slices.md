@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.3 NEXT**  
+Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.4 NEXT**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -90,7 +90,7 @@ Unless an approved slice changes them, Tessli already has:
 - truthful 275 Listed / 20 Profiled / 0 Verified coverage;
 - enriched Profiled intelligence detail and explainable Similar Sources;
 - resource-media fallbacks and provenance tooling;
-- six repository-maintained collections;
+- six repository-maintained staged Playbooks;
 - browser-local Saved with search, filters, sorting, removal, and undo;
 - browser-local project Boards with goals, audience, constraints, source notes, decisions, rationale, and unresolved questions;
 - deterministic browser-local Markdown research-pack copy and download;
@@ -113,7 +113,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
 |     5 | Real OSS Proof Project                      | BLOCKED  | 5.3 human review           |
-|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.3 NEXT                   |
+|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.4 NEXT                   |
 |     7 | Reviewed Pattern Candidates                 | PLANNED  | 7.1 after Phase 5          |
 |     8 | Authentication and Cloud Workspace          | DEFERRED | 8.1 after local proof      |
 |     9 | Community and Moderation                    | DEFERRED | 9.1 after auth/owner       |
@@ -139,12 +139,12 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 4.3  | Safe public machine-readable representations          | DONE     | 2.4, 4.2                | `docs/slices/4.3-public-machine-readable-representations.md`, PR #88 |
 | 5.1  | OSS proof brief and research Board                    | DONE     | 4.3                     | `docs/slices/5.1-oss-proof-research-setup.md`, PR #89                |
 | 5.2  | Agent implementation from exported pack               | DONE     | 5.1                     | `docs/slices/5.2-oss-homepage-candidate.md`, PR #90                  |
-| 5.3  | Browser and human review                              | BLOCKED  | 5.2                     | `docs/slices/5.3-oss-homepage-human-review.md`, PR #91                |
+| 5.3  | Browser and human review                              | BLOCKED  | 5.2                     | `docs/slices/5.3-oss-homepage-human-review.md`, PR #91               |
 | 5.4  | Outcome/evidence report                               | BLOCKED  | 5.3 human artifact      | —                                                                    |
-| 6.1  | Global navigation and naming cleanup                  | DONE     | 2.2                     | `docs/slices/6.1-global-navigation-cleanup.md`, PR #92                |
+| 6.1  | Global navigation and naming cleanup                  | DONE     | 2.2                     | `docs/slices/6.1-global-navigation-cleanup.md`, PR #92               |
 | 6.2  | Curated homepage built around proven workflow         | BLOCKED  | 5.4, 6.1                | —                                                                    |
-| 6.3  | Collections-to-playbooks conversion                   | NEXT     | 3.3, 4.2                | —                                                                    |
-| 6.4  | For AI product page                                   | PLANNED  | 2.4, 4.3                | —                                                                    |
+| 6.3  | Collections-to-playbooks conversion                   | DONE     | 3.3, 4.2                | `docs/slices/6.3-collections-to-playbooks.md`, PR #93                |
+| 6.4  | For AI product page                                   | NEXT     | 2.4, 4.3                | —                                                                    |
 | 7.1  | Pattern Candidate schema                              | PLANNED  | 5.4                     | —                                                                    |
 | 7.2  | First 5–10 reviewed candidates                        | PLANNED  | 7.1                     | —                                                                    |
 | 7.3  | Pattern retrieval for website/export/MCP              | PLANNED  | 7.2                     | —                                                                    |
