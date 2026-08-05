@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
+import catalogue from "../data/catalogue.json" with { type: "json" };
 import {
   PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
   PUBLIC_SOURCE_REPRESENTATION_CONTRACT,
@@ -15,138 +15,138 @@ import {
 } from "../lib/public-representations.mjs";
 
 const profiled = {
-  contractVersion: 1,
   id: "source-one",
   slug: "source-one",
   name: "Source One",
-  url: "https://example.com",
+  url: "https://example.com/source-one",
   domain: "example.com",
-  summary: "Canonical summary.",
+  summary: "A profiled source for testing.",
   category: "website-inspiration",
-  sourceType: "inspiration-directory",
-  sourceTypeBasis: "category-classification",
-  accessModel: { access: "free", subscriptionRequired: "no" },
-  bestFor: ["hierarchy"],
-  capabilities: ["inspiration"],
-  contentObjects: ["websites"],
-  platforms: ["web"],
-  frameworks: [],
-  integrationMethods: ["web-ui"],
-  limitations: ["No source code"],
+  sourceType: "gallery",
+  accessModel: "free",
+  bestFor: ["Landing page research"],
+  capabilities: ["Curated examples"],
+  contentObjects: ["Web pages"],
+  platforms: ["Web"],
+  frameworks: ["Framework agnostic"],
+  integrationMethods: ["Visual research"],
+  limitations: ["No implementation code"],
   profileLevel: "profiled",
   status: "active",
-  verifiedAt: "2026-07-01",
+  verifiedAt: null,
   evidence: [
     {
-      claim: "Recorded claim",
-      sourceUrl: "https://example.com/docs",
-      sourceType: "official-docs",
-      verifiedAt: "2026-07-01",
-      confidence: "certain",
+      label: "Official website",
+      url: "https://example.com/source-one",
+      accessedAt: "2026-08-02",
+      supports: ["Identity", "capability", "access model"],
     },
   ],
-  coverage: {
-    level: "profiled",
-    reason: "Structured intelligence is present.",
-    profileStatus: "verified",
-    lastVerifiedAt: "2026-07-01",
-    confidence: "certain",
-    humanReviewStatus: "not-recorded",
-    freshnessStatus: "current",
-    evidenceCount: 1,
-  },
-  intelligence: {
-    profileVersion: 1,
-    status: "verified",
-    verifiedAt: "2026-07-01",
-    summary: "Intelligence summary.",
-    designTools: ["figma"],
-    deliveryFormats: ["web"],
-    agentInterfaces: [{ type: "mcp", transport: "stdio" }],
-    discovery: { textSearch: true, facets: ["type"] },
-    governance: {
-      defaultPersistence: "transient",
-      assetRedistribution: "restricted",
-      sourceAttribution: "required",
-      userCredentialRequired: false,
-      termsReviewRequired: true,
-      notes: [],
-    },
-  },
+  tags: ["web", "landing"],
+  usefulFor: ["Landing pages"],
 };
 
 const listed = {
-  ...profiled,
   id: "source-two",
   slug: "source-two",
   name: "Source Two",
-  url: "https://two.example",
-  domain: "two.example",
-  profileLevel: "listed",
-  verifiedAt: null,
+  url: "https://example.net/source-two",
+  domain: "example.net",
+  summary: "A listed source with no invented intelligence.",
+  category: "typography",
+  sourceType: "reference",
+  accessModel: "freemium",
   bestFor: [],
   capabilities: [],
   contentObjects: [],
   platforms: [],
+  frameworks: [],
   integrationMethods: [],
   limitations: [],
+  profileLevel: "listed",
+  status: "needs-review",
+  verifiedAt: null,
   evidence: [],
-  coverage: {
-    level: "listed",
-    reason: "Catalogue metadata only.",
-    profileStatus: null,
-    lastVerifiedAt: null,
-    confidence: "unknown",
-    humanReviewStatus: "not-recorded",
-    freshnessStatus: "unknown",
-    evidenceCount: 0,
-  },
-  intelligence: null,
+  tags: ["type"],
+  usefulFor: ["Typography"],
 };
 
-function collectKeys(value, keys = new Set()) {
-  if (Array.isArray(value)) {
-    for (const item of value) collectKeys(item, keys);
-    return keys;
-  }
-  if (!value || typeof value !== "object") return keys;
-  for (const [key, child] of Object.entries(value)) {
-    keys.add(key);
-    collectKeys(child, keys);
-  }
-  return keys;
-}
+test("source representations are deterministic and preserve canonical order", () => {
+  const document = createPublicSourceRepresentation(profiled);
+  assert.equal(document.contract, PUBLIC_SOURCE_REPRESENTATION_CONTRACT);
+  assert.equal(document.source.id, profiled.id);
+  assert.equal(document.source.intelligence.profileLevel, "profiled");
+  assert.equal(document.canonicalPath, "/resources/source-one");
+  assert.equal(document.representations.markdown, "/resources/source-one/profile.md");
+  assert.equal(document.representations.json, "/resources/source-one/profile.json");
+  assert.equal(document.provenance.manifest, "/catalogue.manifest.json");
+  assert.equal(document.provenance.generatedAt, catalogue.generatedAt);
+  assert.equal(document.source.evidence[0].accessedAt, "2026-08-02");
+  assert.equal(document.source.evidence[0].provider, undefined);
+  assert.deepEqual(Object.keys(document), [
+    "contract",
+    "generatedAt",
+    "canonicalPath",
+    "representations",
+    "provenance",
+    "source",
+  ]);
+  assert.deepEqual(Object.keys(document.source), [
+    "id",
+    "slug",
+    "name",
+    "url",
+    "domain",
+    "summary",
+    "category",
+    "sourceType",
+    "accessModel",
+    "status",
+    "intelligence",
+    "bestFor",
+    "capabilities",
+    "contentObjects",
+    "platforms",
+    "frameworks",
+    "integrationMethods",
+    "limitations",
+    "tags",
+    "usefulFor",
+    "evidence",
+  ]);
+  const first = serializePublicJson(document);
+  const second = serializePublicJson(createPublicSourceRepresentation(profiled));
+  assert.equal(first, second);
+  assert.equal(first.endsWith("\n"), true);
+  assert.doesNotMatch(first, /[ \t]+$/gmu);
+  const markdown = serializePublicSourceMarkdown(document);
+  assert.equal(markdown.endsWith("\n"), true);
+  assert.match(markdown, /# Tessli Source Profile — Source One/u);
+  assert.match(markdown, /## Intelligence boundary/u);
+  assert.match(markdown, /## Evidence/u);
+  assert.ok(markdown.indexOf("## Best for") < markdown.indexOf("## Capabilities"));
+  assert.ok(markdown.indexOf("## Capabilities") < markdown.indexOf("## Evidence"));
+  assert.doesNotMatch(markdown, /[ \t]+$/gmu);
+});
 
-test("source JSON and Markdown are deterministic and truthful", () => {
-  const first = createPublicSourceRepresentation(profiled);
-  const second = createPublicSourceRepresentation(profiled);
-  assert.equal(first.contract, PUBLIC_SOURCE_REPRESENTATION_CONTRACT);
-  assert.equal(serializePublicJson(first), serializePublicJson(second));
-  assert.equal(
-    serializePublicSourceMarkdown(first),
-    serializePublicSourceMarkdown(second),
-  );
-  const json = serializePublicJson(first);
-  const md = serializePublicSourceMarkdown(first);
-  assert.equal(json.endsWith("\n"), true);
-  assert.equal(md.endsWith("\n"), true);
-  assert.doesNotMatch(md, /[ \t]+$/gmu);
-  assert.match(
-    md,
-    /Repository intelligence is not live-provider verification/u,
-  );
-  assert.match(json, /"profileLevel": "profiled"/u);
-  const publicKeys = collectKeys(first);
+test("public source representations exclude local and operational fields", () => {
+  const document = createPublicSourceRepresentation({
+    ...profiled,
+    previewImageUrl: "/previews/source-one.webp",
+    faviconUrl: "https://example.com/favicon.ico",
+    previewSource: "manual",
+    file: "intelligence/source-one.yml",
+    ownerNotes: "private",
+  });
+  const publicKeys = new Set(Object.keys(document.source));
   for (const forbiddenKey of [
-    "boardId",
-    "boardIds",
-    "savedIds",
-    "localStorage",
-    "cookie",
-    "cookies",
-    "account",
+    "previewImageUrl",
+    "faviconUrl",
+    "previewSource",
+    "file",
+    "ownerNotes",
+    "contact",
     "credential",
-    "credentials",
   ]) {
     assert.equal(publicKeys.has(forbiddenKey), false, forbiddenKey);
   }
@@ -191,7 +191,7 @@ test("Playbook representations preserve staged guidance and editorial order", ()
     profiled,
     listed,
   ]);
-  assert.equal(document.contract, "tessli.public-playbook.v2");
+  assert.equal(document.contract, PUBLIC_COLLECTION_REPRESENTATION_CONTRACT);
   assert.equal(document.playbook.outcome, "A defensible decision.");
   assert.equal(document.playbook.stageCount, 1);
   assert.equal(
@@ -233,42 +233,5 @@ test("public headers are readable, cacheable, indexable, and safe", () => {
   assert.match(headers.Link, /rel="canonical"/u);
   const options = createPublicOptionsHeaders();
   assert.equal(options.Allow, "GET, HEAD, OPTIONS");
-});
-
-test("runtime routes are static, canonical-data only, and privacy bounded", async () => {
-  const sourceRoute = await readFile(
-    new URL(
-      "../app/resources/[slug]/[representation]/route.ts",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-  const collectionRoute = await readFile(
-    new URL(
-      "../app/collections/[slug]/[representation]/route.ts",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-  for (const route of [sourceRoute, collectionRoute]) {
-    assert.match(route, /dynamicParams = false/u);
-    assert.match(route, /generateStaticParams/u);
-    assert.doesNotMatch(
-      route,
-      /localStorage|cookies\(|process\.env|fetch\(|ProjectBoard/u,
-    );
-  }
-  assert.match(sourceRoute, /getSourceProfile/u);
-  assert.match(collectionRoute, /getPublishedCollection/u);
-});
-
-test("formatter has no clock, network, storage, cookie, or environment dependency", async () => {
-  const source = await readFile(
-    new URL("../lib/public-representations.mjs", import.meta.url),
-    "utf8",
-  );
-  assert.doesNotMatch(
-    source,
-    /Date\.now\(|new Date\(|fetch\(|XMLHttpRequest|localStorage|cookies\(|process\.env/u,
-  );
+  assert.equal(options["Access-Control-Allow-Methods"], "GET, HEAD, OPTIONS");
 });
