@@ -197,6 +197,7 @@ export function ResourceCard({
         aria-describedby={descriptionId}
         aria-labelledby={titleId}
         className={styles.cardLink}
+        data-resource-visit={resource.id}
         href={resource.url}
         rel="noopener noreferrer"
         target="_blank"
