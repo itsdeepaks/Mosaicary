@@ -49,7 +49,7 @@ const viewports = [
 
 const routeChecks = [
   ["/", 200, "Find better design resources, faster"],
-  ["/collections", 200, "Six reviewed collections"],
+  ["/collections", 200, "Six staged Playbooks"],
   ["/collections/saas-landing-pages", 200, "SaaS landing-page references"],
   ["/collections/typography-font-tools", 200, "Typography and font tools"],
   ["/collections/motion-starter-pack", 200, "Motion starter pack"],
@@ -97,12 +97,12 @@ const machineRouteChecks = [
   {
     path: "/collections/saas-landing-pages/collection.json",
     contentType: "application/json",
-    expectedText: '"contract": "tessli.public-collection.v1"',
+    expectedText: '"contract": "tessli.public-playbook.v2"',
   },
   {
     path: "/collections/saas-landing-pages/collection.md",
     contentType: "text/markdown",
-    expectedText: "# Tessli Collection — SaaS landing-page references",
+    expectedText: "# Tessli Playbook — SaaS landing-page references",
   },
 ];
 

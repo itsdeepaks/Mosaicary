@@ -18,7 +18,7 @@ export const footerGroups: readonly FooterGroup[] = [
     label: "Research",
     links: [
       { label: "Browse sources", href: "/resources" },
-      { label: "Collections", href: "/collections" },
+      { label: "Playbooks", href: "/collections" },
       { label: "Saved sources", href: "/saved" },
       { label: "Project boards", href: "/boards" },
     ],

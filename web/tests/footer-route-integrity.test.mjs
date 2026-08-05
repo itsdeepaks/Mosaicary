@@ -103,7 +103,7 @@ test("header exposes only working primary and utility routes", async () => {
   const navigation = await read("components/site-header/navigation.ts");
 
   assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
-  assert.match(navigation, /label: "Collections"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Playbooks"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Search"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
   assert.doesNotMatch(

@@ -20,7 +20,7 @@ test("public navigation separates primary research routes from utilities", async
   );
   assert.match(
     navigation,
-    /label: "Collections"[\s\S]*?href: "\/collections"[\s\S]*?available: true/,
+    /label: "Playbooks"[\s\S]*?href: "\/collections"[\s\S]*?available: true/,
   );
   assert.match(
     navigation,
