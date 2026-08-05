@@ -33,6 +33,15 @@ function validIsoDate(value) {
   );
 }
 
+function validUri(value) {
+  try {
+    const parsed = new URL(value);
+    return Boolean(parsed.protocol && parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function loadProfileRecords(report) {
   const records = [];
   const filenames = fs
@@ -122,7 +131,7 @@ export function validateIntelligenceProfiles() {
   const ajv = new Ajv({
     allErrors: true,
     schemaId: "auto",
-    formats: { date: validIsoDate },
+    formats: { date: validIsoDate, uri: validUri },
   });
   const validate = ajv.compile(schema);
 
