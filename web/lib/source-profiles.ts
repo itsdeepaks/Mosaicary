@@ -7,6 +7,10 @@ import {
 
 export const SOURCE_PROFILE_CONTRACT_VERSION = 1 as const;
 export const SOURCE_PROFILE_REVIEWED_AT = "2026-08-04" as const;
+export const SOURCE_FRESHNESS_WINDOWS = Object.freeze({
+  currentMaxDays: 90,
+  agingMaxDays: 180,
+});
 
 export const SOURCE_TYPES = Object.freeze([
   "inspiration-directory",
@@ -116,8 +120,8 @@ export function deriveFreshnessStatus(
   );
 
   if (ageDays < 0) return "unknown";
-  if (ageDays <= 90) return "current";
-  if (ageDays <= 180) return "aging";
+  if (ageDays <= SOURCE_FRESHNESS_WINDOWS.currentMaxDays) return "current";
+  if (ageDays <= SOURCE_FRESHNESS_WINDOWS.agingMaxDays) return "aging";
   return "stale";
 }
 
