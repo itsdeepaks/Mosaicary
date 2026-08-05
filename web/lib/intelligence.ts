@@ -1,3 +1,4 @@
+import batch13 from "../data/intelligence-profile-batches/1.3.json" with { type: "json" };
 import p21stDev from "../data/intelligence-profiles/21st-dev.json" with { type: "json" };
 import pAntDesign from "../data/intelligence-profiles/ant-design.json" with { type: "json" };
 import pCoolors from "../data/intelligence-profiles/coolors.json" with { type: "json" };
@@ -85,11 +86,17 @@ const rawProfiles: ResourceIntelligenceProfile[] = [
   pTypewolf as ResourceIntelligenceProfile,
   pV0 as ResourceIntelligenceProfile,
   pWhoCanUse as ResourceIntelligenceProfile,
+  ...(batch13.profiles as unknown as ResourceIntelligenceProfile[]),
 ];
 
 const profilesByResourceId = new Map<string, ResourceIntelligenceProfile>();
 
 for (const profile of rawProfiles) {
+  if (profilesByResourceId.has(profile.resourceId)) {
+    throw new Error(
+      `Duplicate intelligence profile resourceId: ${profile.resourceId}`,
+    );
+  }
   profilesByResourceId.set(profile.resourceId, profile);
 }
 

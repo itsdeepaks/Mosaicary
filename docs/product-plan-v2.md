@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 1 / Slice 1.3 NEXT; Phase 5 proof remains blocked**  
+Status: **active execution plan — Phase 1 / Slice 1.4 NEXT; Phase 5 proof remains blocked**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -125,17 +125,21 @@ Foundation criteria already met:
 
 ### 1.3 Priority Source Profile Expansion — Batch 1
 
-Status: **NEXT**
+Status: **DONE**
 
 - select ten high-value Listed sources from Playbook use, Board/research value, MCP retrieval value, and real OSS workflows;
 - complete every required Profiled field without inventing optional claims;
 - preserve stable IDs, slugs, URLs, membership, and provenance;
 - update website, JSON, Markdown, MCP, coverage counts, validators, and tests from the same canonical records;
-- expected boundary: `265 Listed / 30 Profiled / 0 Verified`.
+- delivered boundary: `265 Listed / 30 Profiled / 0 Verified`;
+- ten evidence-linked profiles are consumed by website, public representations, and MCP from one canonical batch;
+- no human-review or Verified promotion was invented.
+
+Evidence: `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96.
 
 ### 1.4 Priority Source Profile Expansion — Batch 2
 
-Status: **PLANNED**
+Status: **NEXT**
 
 - enrich ten additional high-value sources through the same evidence-bounded process;
 - expected boundary: `255 Listed / 40 Profiled / 0 Verified`.

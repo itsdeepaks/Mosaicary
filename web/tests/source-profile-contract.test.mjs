@@ -24,6 +24,19 @@ const schemaPath = path.join(
   "../../schemas/source-profile.schema.json",
 );
 
+const batch13Identifiers = [
+  "google-fonts",
+  "radix-ui",
+  "headless-ui",
+  "react-aria",
+  "gsap",
+  "lottiefiles",
+  "rive",
+  "spline",
+  "react-three-fiber",
+  "lucide",
+];
+
 const requiredSourceFields = [
   "id",
   "slug",
@@ -69,7 +82,7 @@ test("source profile schema defines the complete canonical v1 contract", () => {
     "profiled",
     "verified",
   ]);
-  assert.equal(SOURCE_PROFILE_REVIEWED_AT, "2026-08-04");
+  assert.equal(SOURCE_PROFILE_REVIEWED_AT, "2026-08-05");
 });
 
 test("all 295 catalogue resources have one deterministic source profile", () => {
@@ -96,20 +109,20 @@ test("all 295 catalogue resources have one deterministic source profile", () => 
   }
 });
 
-test("coverage baseline is truthful: 275 Listed, 20 Profiled, 0 Verified", () => {
+test("coverage baseline is truthful: 265 Listed, 30 Profiled, 0 Verified", () => {
   assert.deepEqual(getSourceCoverageCounts(), {
-    listed: 275,
-    profiled: 20,
+    listed: 265,
+    profiled: 30,
     verified: 0,
   });
   assert.deepEqual(getSourceContractSummary(), {
     contractVersion: 1,
-    reviewedAt: "2026-08-04",
+    reviewedAt: "2026-08-05",
     resourceCount: 295,
-    intelligenceProfileCount: 20,
+    intelligenceProfileCount: 30,
     coverageCounts: {
-      listed: 275,
-      profiled: 20,
+      listed: 265,
+      profiled: 30,
       verified: 0,
     },
   });
@@ -142,11 +155,30 @@ test("Profiled records expose normalized intelligence without losing evidence", 
   );
 });
 
+test("Slice 1.3 records are complete Profiled sources without invented verification", () => {
+  for (const identifier of batch13Identifiers) {
+    const profile = getSourceProfile(identifier);
+    assert.ok(profile?.intelligence, `${identifier} must have intelligence`);
+    assert.equal(profile.profileLevel, "profiled");
+    assert.equal(profile.coverage.level, "profiled");
+    assert.equal(profile.coverage.profileStatus, "needs-review");
+    assert.equal(profile.coverage.humanReviewStatus, "not-recorded");
+    assert.equal(profile.coverage.freshnessStatus, "current");
+    assert.equal(profile.coverage.confidence, "certain");
+    assert.equal(profile.verifiedAt, "2026-08-05");
+    assert.ok(profile.bestFor.length > 0);
+    assert.ok(profile.capabilities.length > 0);
+    assert.ok(profile.contentObjects.length > 0);
+    assert.ok(profile.limitations.length > 0);
+    assert.ok(profile.evidence.length > 0);
+  }
+});
+
 test("Listed records expose no invented intelligence, evidence, or timestamps", () => {
   const listed = getAllSourceProfiles().filter(
     (profile) => profile.profileLevel === "listed",
   );
-  assert.equal(listed.length, 275);
+  assert.equal(listed.length, 265);
   for (const profile of listed) {
     assert.equal(profile.intelligence, null);
     assert.deepEqual(profile.bestFor, []);
@@ -176,25 +208,27 @@ test("source type is a deterministic category classification, not provider fact"
 });
 
 test("website-ready source profiles and MCP preserve the same source identity", () => {
-  const sourceProfile = getSourceProfile("relume");
-  const nativeProfile = getNativeResourceProfile("relume");
-  assert.ok(sourceProfile);
-  assert.equal(nativeProfile.resource.id, sourceProfile.id);
-  assert.equal(nativeProfile.resource.slug, sourceProfile.slug);
-  assert.equal(
-    nativeProfile.intelligenceProfile?.resourceId,
-    sourceProfile.intelligence?.resourceId,
-  );
+  for (const identifier of ["relume", ...batch13Identifiers]) {
+    const sourceProfile = getSourceProfile(identifier);
+    const nativeProfile = getNativeResourceProfile(identifier);
+    assert.ok(sourceProfile);
+    assert.equal(nativeProfile.resource.id, sourceProfile.id);
+    assert.equal(nativeProfile.resource.slug, sourceProfile.slug);
+    assert.equal(
+      nativeProfile.intelligenceProfile?.resourceId,
+      sourceProfile.intelligence?.resourceId,
+    );
+  }
 });
 
 test("source profile validator accepts the complete deterministic baseline", () => {
   const report = validateSourceProfileContract();
   assert.equal(report.valid, true, JSON.stringify(report.errors, null, 2));
   assert.equal(report.resourceCount, 295);
-  assert.equal(report.intelligenceProfileCount, 20);
+  assert.equal(report.intelligenceProfileCount, 30);
   assert.deepEqual(report.coverageCounts, {
-    listed: 275,
-    profiled: 20,
+    listed: 265,
+    profiled: 30,
     verified: 0,
   });
 });

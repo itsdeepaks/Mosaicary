@@ -126,7 +126,7 @@ const tableAudit = await evaluate(`(() => ({
   levels: [...document.querySelectorAll('[data-browse-view=table] tbody tr td:nth-child(4)')]
     .every((cell) => cell.textContent.trim() === 'profiled'),
 }))()`);
-assert.equal(tableAudit.rows, 20);
+assert.equal(tableAudit.rows, 30);
 assert.equal(tableAudit.caption, true);
 assert.equal(tableAudit.levels, true);
 

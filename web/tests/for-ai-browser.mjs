@@ -144,7 +144,7 @@ assert.equal(
 );
 assert.equal(
   await evaluate(
-    'document.body.textContent.includes("275") && document.body.textContent.includes("20") && document.body.textContent.includes("None currently meet the full contract")',
+    'document.body.textContent.includes("265") && document.body.textContent.includes("30") && document.body.textContent.includes("None currently meet the full contract")',
   ),
   true,
 );

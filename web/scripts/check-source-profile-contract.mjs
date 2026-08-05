@@ -326,24 +326,24 @@ export function validateSourceProfileContract() {
       ),
     );
   }
-  if (summary.intelligenceProfileCount !== 20) {
+  if (summary.intelligenceProfileCount !== 30) {
     errors.push(
       issue(
         "intelligence-count",
-        "The current reviewed intelligence pilot must contain exactly 20 profiles.",
+        "The reviewed intelligence dataset must contain exactly 30 profiles after Slice 1.3.",
         { actual: summary.intelligenceProfileCount },
       ),
     );
   }
   if (
-    summary.coverageCounts.listed !== 275 ||
-    summary.coverageCounts.profiled !== 20 ||
+    summary.coverageCounts.listed !== 265 ||
+    summary.coverageCounts.profiled !== 30 ||
     summary.coverageCounts.verified !== 0
   ) {
     errors.push(
       issue(
         "coverage-composition",
-        "Coverage composition is not the truthful Slice 14.1 baseline.",
+        "Coverage composition is not the truthful Slice 1.3 baseline.",
         { actual: summary.coverageCounts },
       ),
     );
