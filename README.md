@@ -28,8 +28,8 @@ The current application now includes the first reusable Tessli research loop:
 
 - one canonical paginated `/resources` browser;
 - truthful internal profiles for all 295 sources;
-- 265 Listed, 30 Profiled, and 0 Verified coverage;
-- enriched intelligence for the 30 Profiled sources;
+- 255 Listed, 40 Profiled, and 0 Verified coverage;
+- enriched intelligence for the 40 Profiled sources;
 - explainable Similar Sources;
 - browser-local Saved with search, filters, sorting, removal, and undo;
 - browser-local project Boards with goals, audience, constraints, source notes, selected/rejected/undecided decisions, rationale, and unresolved questions;
@@ -51,13 +51,12 @@ Tessli now separates independent foundation work from the evidence-dependent pro
 ### Product Foundation — active
 
 ```text
-30 Profiled
-→ Slice 1.4: 40 Profiled
-→ verification contract and operator workflow
+40 Profiled
+→ Slice 1.5: verification contract and operator workflow
 → first bounded Verified batch
 ```
 
-The next repository slice is **1.4 Priority Source Profile Expansion — Batch 2**. It improves the shared website/export/MCP source truth and does not claim that the OSS proof succeeded.
+The next repository slice is **1.5 Verification Contract and Operator Workflow**. It improves the shared website/export/MCP source truth and does not claim that the OSS proof succeeded.
 
 ### Proof and UI Judgment — blocked
 
@@ -74,7 +73,7 @@ The existing OSS candidate and safe review workspace remain preserved until a re
 
 ```text
 Phase 0  Direction Reset                         DONE
-Phase 1  Source Intelligence Foundation          ACTIVE — 1.4 NEXT
+Phase 1  Source Intelligence Foundation          ACTIVE — 1.5 NEXT
 Phase 2  Browse and Source Detail                DONE
 Phase 3  Local Saved and Project Boards          DONE
 Phase 4  Research-Pack Export                    DONE
@@ -86,7 +85,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next repository slice is **Phase 1 / Slice 1.4 — Priority Source Profile Expansion, Batch 2**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
+The approved next repository slice is **Phase 1 / Slice 1.5 — Verification Contract and Operator Workflow**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
 
 ## Source coverage levels
 
@@ -99,8 +98,8 @@ Tessli distinguishes research depth honestly:
 Current canonical baseline:
 
 ```text
-265 Listed
-30 Profiled
+255 Listed
+40 Profiled
 0 Verified
 ```
 

@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 1 / Slice 1.4 NEXT; proof track remains BLOCKED**  
+Status: **active delivery plan — Phase 1 / Slice 1.5 NEXT; proof track remains BLOCKED**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -87,7 +87,7 @@ Unless an approved slice changes them, Tessli already has:
 - a validated 295-source catalogue across 11 categories;
 - one canonical paginated `/resources` browser;
 - internal source-detail routes for all 295 sources;
-- truthful 265 Listed / 30 Profiled / 0 Verified coverage;
+- truthful 255 Listed / 40 Profiled / 0 Verified coverage;
 - enriched Profiled intelligence detail and explainable Similar Sources;
 - resource-media fallbacks and provenance tooling;
 - six repository-maintained staged Playbooks;
@@ -108,7 +108,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | Phase | Name                                        | Status   | Active/next slice          |
 | ----: | ------------------------------------------- | -------- | -------------------------- |
 |     0 | Direction Reset                             | DONE     | —                          |
-|     1 | Source Intelligence Foundation              | ACTIVE   | 1.4 priority profile batch |
+|     1 | Source Intelligence Foundation              | ACTIVE   | 1.5 verification contract  |
 |     2 | Browse and Source Detail                    | DONE     | —                          |
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
@@ -128,8 +128,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 1.1  | Canonical source-profile contract                     | DONE     | 0.1                     | legacy `14.1`                                                          |
 | 1.2  | Coverage mapping and intelligence adapter             | DONE     | 1.1                     | `docs/slices/14.1-source-profile-contract.md`                          |
 | 1.3  | Priority source profile expansion — Batch 1           | DONE     | 0.2, 1.2                | `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96 |
-| 1.4  | Priority source profile expansion — Batch 2           | NEXT     | 1.3                     | —                                                                      |
-| 1.5  | Verification contract and operator workflow           | PLANNED  | 1.4                     | —                                                                      |
+| 1.4  | Priority source profile expansion — Batch 2           | DONE     | 1.3                     | `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97 |
+| 1.5  | Verification contract and operator workflow           | NEXT     | 1.4                     | —                                                                      |
 | 1.6  | First evidence-backed Verified batch                  | PLANNED  | 1.5                     | —                                                                      |
 | 2.1  | Canonical Browse architecture and pagination contract | DONE     | 1.2                     | legacy `14.2`, PR #77                                                  |
 | 2.2  | Canonical `/resources` implementation                 | DONE     | 2.1                     | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79           |
@@ -187,8 +187,8 @@ Status: **ACTIVE**
 The canonical source-profile schema and deterministic adapter remain complete with the truthful baseline:
 
 ```text
-265 Listed
-30 Profiled
+255 Listed
+40 Profiled
 0 Verified
 ```
 
@@ -196,14 +196,14 @@ The active continuation expands high-value Listed sources to complete Profiled r
 
 ```text
 1.3  Priority Profile Expansion, Batch 1   DONE      → 265 Listed / 30 Profiled / 0 Verified
-1.4  Priority Profile Expansion, Batch 2   NEXT      → 255 Listed / 40 Profiled / 0 Verified
-1.5  Verification contract/workflow        PLANNED
+1.4  Priority Profile Expansion, Batch 2   DONE      → 255 Listed / 40 Profiled / 0 Verified
+1.5  Verification contract/workflow        NEXT
 1.6  First evidence-backed Verified batch  PLANNED
 ```
 
 Selection follows Playbook use, Board/research value, MCP retrieval value, and real OSS workflows—not alphabetical order. Website, representations, MCP, counts, and tests must continue to read the same canonical truth.
 
-Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76; realignment PR #95; `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96.
+Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76; realignment PR #95; `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96; `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97.
 
 ### Phase 2 — Browse and Source Detail
 
@@ -340,9 +340,9 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 Two execution tracks now operate with explicit dependencies:
 
-- **Product Foundation:** Phase 1 / Slice 1.4 is NEXT. It may improve canonical Source Intelligence without claiming evaluated UI judgment.
+- **Product Foundation:** Phase 1 / Slice 1.5 is NEXT. It defines verification evidence and operator workflow without promoting any source yet.
 - **Proof and UI Judgment:** Slice 5.3 remains BLOCKED on a genuine human-review artifact; Slices 5.4 and 6.2 and Phase 7 remain blocked behind that evidence.
 
-The next repository slice is **1.4 Priority Source Profile Expansion — Batch 2**. It must end at `255 Listed / 40 Profiled / 0 Verified`, preserve stable source identity, and update website/export/MCP truth together. Do not create substitute review scores, promote Verified records without the later verification workflow, skip the proof boundary, or start another dependency-blocked slice.
+The next repository slice is **1.5 Verification Contract and Operator Workflow**. It must define claim-level evidence, dates, confidence, freshness, reviewer identity, provider-interface checks, credential, persistence, redistribution, and safe-failure rules without promoting any source. Do not create substitute review scores, promote Verified records without the later verification workflow, skip the proof boundary, or start another dependency-blocked slice.
 
 No recurring scheduled development task is enabled or permitted for this workflow.
