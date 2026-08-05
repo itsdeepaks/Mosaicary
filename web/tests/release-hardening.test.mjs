@@ -23,6 +23,7 @@ function tableRow(...cells) {
 test("release history remains preserved under Product Plan v2", async () => {
   const slices = await readRepositoryFile("build-slices.md");
   const plan = await readRepositoryFile("docs/product-plan-v2.md");
+  const readme = await readRepositoryFile("README.md");
   const cutover = await readRepositoryFile(
     "docs/slices/9.3-production-replacement.md",
   );
@@ -44,6 +45,16 @@ test("release history remains preserved under Product Plan v2", async () => {
   assert.match(
     slices,
     tableRow(
+      "0.2",
+      "Execution-track realignment",
+      "DONE",
+      "0.1",
+      "`docs/slices/0.2-execution-track-realignment.md`, PR #95",
+    ),
+  );
+  assert.match(
+    slices,
+    tableRow(
       "1.1",
       "Canonical source-profile contract",
       "DONE",
@@ -51,6 +62,32 @@ test("release history remains preserved under Product Plan v2", async () => {
       "legacy `14.1`",
     ),
   );
+  for (const row of [
+    [
+      "1.3",
+      "Priority source profile expansion — Batch 1",
+      "NEXT",
+      "0.2, 1.2",
+      "—",
+    ],
+    [
+      "1.4",
+      "Priority source profile expansion — Batch 2",
+      "PLANNED",
+      "1.3",
+      "—",
+    ],
+    [
+      "1.5",
+      "Verification contract and operator workflow",
+      "PLANNED",
+      "1.4",
+      "—",
+    ],
+    ["1.6", "First evidence-backed Verified batch", "PLANNED", "1.5", "—"],
+  ]) {
+    assert.match(slices, tableRow(...row));
+  }
   assert.match(
     slices,
     tableRow(
@@ -187,11 +224,27 @@ test("release history remains preserved under Product Plan v2", async () => {
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Slice 5\.3 BLOCKED; no independent NEXT slice\*\*/,
+    /Status: \*\*active delivery plan — Phase 1 \/ Slice 1\.3 NEXT; proof track remains BLOCKED\*\*/,
   );
   assert.match(
     plan,
     /(?:\*\*)?Phases 1–10(?:\*\*)? are the ten development phases/i,
+  );
+  assert.match(
+    plan,
+    /Status: \*\*active execution plan — Phase 1 \/ Slice 1\.3 NEXT; Phase 5 proof remains blocked\*\*/,
+  );
+  assert.match(
+    plan,
+    /## 5\. Phase 1 — Source Intelligence Foundation\n\nStatus: \*\*ACTIVE\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 1\.3 Priority Source Profile Expansion — Batch 1\n\nStatus: \*\*NEXT\*\*/,
+  );
+  assert.match(
+    plan,
+    /### 1\.5 Verification Contract and Operator Workflow\n\nStatus: \*\*PLANNED\*\*/,
   );
   assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
   assert.match(
@@ -252,6 +305,17 @@ test("release history remains preserved under Product Plan v2", async () => {
   assert.match(
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,
+  );
+  assert.match(slices, /Product Foundation:.*Phase 1 \/ Slice 1\.3 is NEXT/is);
+  assert.match(slices, /Proof and UI Judgment:.*Slice 5\.3 remains BLOCKED/is);
+  assert.match(readme, /Product Foundation — active/i);
+  assert.match(
+    readme,
+    /approved next repository slice is \*\*Phase 1 \/ Slice 1\.3/i,
+  );
+  assert.match(
+    readme,
+    /Slice 5\.3 remains the next action in the separate proof track/i,
   );
   assert.match(
     slices,
