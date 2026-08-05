@@ -5,115 +5,148 @@ on:
     paths:
       - "web/**"
       - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
       - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/**"
+      - "docs/data-and-media-contract.md"
+      - "docs/product-plan-v2.md"
+      - "docs/slices/**"
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/web-ci.yml"
+      - ".gitignore"
+      - "README.md"
+      - "build-slices.md"
+      - "lib_data/design-resource-library-295.csv"
+      - "lib_data/tessli-launch-collections.json"
+      - "schemas/**"
+      - "docs/data-and-media-contract.md"
       - "docs/product-plan-v2.md"
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: web-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
     defaults:
       run:
         working-directory: web
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: feat/collections-to-playbooks
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: web/package-lock.json
 
-      - run: npm ci
+      - name: Install locked dependencies
+        run: npm ci
 
-      - name: Commit Slice 6.3 authority
+      - name: Verify approved hero asset
         shell: bash
         run: |
-          cd ..
-          python - <<'PY'
-          from pathlib import Path
+          test -s public/brand/tessli-hero-geometry.webp
+          echo "0bf8d0fcea17d10b041b2bc08422679acf4fffd7c54fc70c1b18aba9d1d85583  public/brand/tessli-hero-geometry.webp" | sha256sum -c -
 
-          def replace_once(path_string, old, new):
-              path = Path(path_string)
-              source = path.read_text()
-              count = source.count(old)
-              if count != 1:
-                  raise SystemExit(f"{path}: expected one occurrence, found {count}: {old!r}")
-              path.write_text(source.replace(old, new, 1))
+      - name: Check formatting
+        run: npm run format:check
 
-          replace_once(
-              "build-slices.md",
-              "Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.3 NEXT**",
-              "Status: **active delivery plan — Slice 5.3 BLOCKED; Phase 6 / Slice 6.4 NEXT**",
-          )
-          replace_once(
-              "build-slices.md",
-              "- six repository-maintained collections;",
-              "- six repository-maintained staged Playbooks;",
-          )
-          replace_once(
-              "build-slices.md",
-              "|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.3 NEXT                   |",
-              "|     6 | Homepage, Navigation, Playbooks, and For AI | ACTIVE   | 6.4 NEXT                   |",
-          )
-          replace_once(
-              "build-slices.md",
-              "| 6.3  | Collections-to-playbooks conversion                   | NEXT     | 3.3, 4.2                | —                                                                    |\n| 6.4  | For AI product page                                   | PLANNED  | 2.4, 4.3                | —                                                                    |",
-              "| 6.3  | Collections-to-playbooks conversion                   | DONE     | 3.3, 4.2                | `docs/slices/6.3-collections-to-playbooks.md`, PR #93                 |\n| 6.4  | For AI product page                                   | NEXT     | 2.4, 4.3                | —                                                                    |",
-          )
+      - name: Check types
+        run: npm run typecheck
 
-          replace_once(
-              "docs/product-plan-v2.md",
-              "### 6.3 Collections become playbooks\n\nStatus: **NEXT**",
-              "### 6.3 Collections become playbooks\n\nStatus: **DONE**",
-          )
-          replace_once(
-              "docs/product-plan-v2.md",
-              "- last reviewed date.\n\n### 6.4 For AI\n\nStatus: **PLANNED**",
-              "- last reviewed date.\n\nEvidence: `docs/slices/6.3-collections-to-playbooks.md`, PR #93.\n\n### 6.4 For AI\n\nStatus: **NEXT**",
-          )
+      - name: Lint
+        run: npm run lint
 
-          replace_once(
-              "docs/slices/6.3-collections-to-playbooks.md",
-              "Status: **IN PROGRESS**",
-              "Status: **DONE**",
-          )
-          replace_once(
-              "docs/slices/6.3-collections-to-playbooks.md",
-              "## Rollback\n\nRestore version-1 collection schema/data, prior collection rendering and terminology, and the version-1 public collection representation.",
-              "## Delivered\n\n- all six existing Collections now validate as version-2 staged Playbooks;\n- the existing 60-source membership and editorial order are preserved exactly across 18 stages;\n- outcome, audience, inspection objective, supported decision, and source role come from canonical repository data;\n- website pages and public JSON/Markdown share the same Playbook truth;\n- `/collections` URLs, IDs, slugs, Saved data, Boards, and provider links remain compatible;\n- Playbook index/detail routes expose responsive, accessible Save, Board, Markdown, and JSON paths;\n- navigation and footer terminology use Playbooks without introducing a redirect or a seventh Playbook.\n\n## Validation evidence\n\n- formatting, typecheck, lint, 197 unit/contract tests, catalogue drift, and production build passed;\n- Web CI and Phase 1 Release Gate passed on the read-only implementation head before the final authority update;\n- Playbook browser checks passed for index, stage guidance, public exports, Save behavior, source visits, and responsive layouts;\n- reviewed screenshots cover the 1440×900 index/detail and 390×844 detail compositions with no horizontal overflow or duplicated result tree;\n- no homepage, auth, cloud, provider, Pattern Candidate, ranking, verification, or UI-taste scope was added.\n\nEvidence PR: #93.\n\n## Rollback\n\nRestore version-1 collection schema/data, prior collection rendering and terminology, and the version-1 public collection representation.",
-          )
+      - name: Test
+        run: npm test
 
-          replace_once(
-              "web/tests/release-hardening.test.mjs",
-              '["6.3", "Collections-to-playbooks conversion", "NEXT", "3.3, 4.2", "—"],',
-              '[\n      "6.3",\n      "Collections-to-playbooks conversion",\n      "DONE",\n      "3.3, 4.2",\n      "`docs/slices/6.3-collections-to-playbooks.md`, PR #93",\n    ],\n    ["6.4", "For AI product page", "NEXT", "2.4, 4.3", "—"],',
-          )
-          replace_once(
-              "web/tests/release-hardening.test.mjs",
-              "/Status: \\*\\*active delivery plan — Slice 5\\.3 BLOCKED; Phase 6 \\/ Slice 6\\.3 NEXT\\*\\*/",
-              "/Status: \\*\\*active delivery plan — Slice 5\\.3 BLOCKED; Phase 6 \\/ Slice 6\\.4 NEXT\\*\\*/",
-          )
-          replace_once(
-              "web/tests/release-hardening.test.mjs",
-              "/### 6\\.3 Collections become playbooks\\n\\nStatus: \\*\\*NEXT\\*\\*/",
-              "/### 6\\.3 Collections become playbooks\\n\\nStatus: \\*\\*DONE\\*\\*/",
-          )
-          replace_once(
-              "web/tests/release-hardening.test.mjs",
-              "  assert.match(\n    slices,\n    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,\n  );",
-              "  assert.match(\n    plan,\n    /### 6\\.4 For AI\\n\\nStatus: \\*\\*NEXT\\*\\*/,\n  );\n  assert.match(\n    slices,\n    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,\n  );",
-          )
-          PY
-          cd web
-          npx prettier --write ../build-slices.md ../docs/product-plan-v2.md ../docs/slices/6.3-collections-to-playbooks.md tests/release-hardening.test.mjs
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ../build-slices.md ../docs/product-plan-v2.md ../docs/slices/6.3-collections-to-playbooks.md tests/release-hardening.test.mjs
-          git commit -m "docs: complete Slice 6.3 and advance 6.4"
-          git push origin HEAD:feat/collections-to-playbooks
+      - name: Check catalogue drift
+        run: npm run catalogue:check
+
+      - name: Build
+        run: npm run build
+
+      - name: Measure OSS proof handoff
+        run: node scripts/measure-oss-proof-handoff.mjs
+
+      - name: Run canonical route and browser matrix
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 > /tmp/tessli-next.log 2>&1 &
+          server_pid=$!
+          chrome_pid=""
+          cleanup() {
+            if [ -n "$chrome_pid" ]; then kill "$chrome_pid" 2>/dev/null || true; fi
+            kill "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          curl --fail --silent --show-error --retry 20 --retry-connrefused --retry-delay 1 \
+            http://127.0.0.1:3000/resources > /tmp/tessli-resources.html
+          grep -q "Browse design sources" /tmp/tessli-resources.html
+          grep -q 'data-browse-view="cards"' /tmp/tessli-resources.html
+          grep -q "Inspect Tessli profile" /tmp/tessli-resources.html
+
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/resources/designindex > /tmp/tessli-profile.html
+          grep -q "What this profile supports" /tmp/tessli-profile.html
+
+          chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$chrome_bin"
+          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation artifacts/playbooks
+          "$chrome_bin" \
+            --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --disable-dev-shm-usage \
+            --remote-allow-origins=* \
+            --remote-debugging-port=9222 \
+            --user-data-dir=/tmp/tessli-cdp \
+            about:blank > artifacts/search-browser/chrome.log 2>&1 &
+          chrome_pid=$!
+
+          node tests/explore-search-browser.mjs 2>&1 | tee artifacts/search-browser/interaction.log
+          node tests/discovery-controls-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/explore-results-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/resource-card-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/collections-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/full-reference-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/saved-resources-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/release-gate-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/global-navigation-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+
+      - name: Upload browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tessli-browser-diagnostics
+          path: |
+            web/artifacts/search-browser/*
+            web/artifacts/responsive-ui/*.png
+            web/artifacts/phase-1-release/*.png
+            web/artifacts/oss-proof-candidate/*.png
+            web/artifacts/oss-human-review/*.png
+            web/artifacts/global-navigation/*.png
+            web/artifacts/playbooks/*.png
+            web/artifacts/oss-proof-metrics.json
+          if-no-files-found: warn
+          retention-days: 7
