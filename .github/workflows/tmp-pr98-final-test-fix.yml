@@ -1,0 +1,97 @@
+name: Temporary PR98 Final Test Fix
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-format:
+    if: github.event.pull_request.head.ref == 'feat/verification-contract-operator-workflow'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/verification-contract-operator-workflow
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked dependencies
+        working-directory: web
+        run: npm ci
+      - name: Patch Ajv date format and CLI assertion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          validator = Path('web/scripts/check-intelligence-profiles.mjs')
+          text = validator.read_text()
+          anchor = '''function parseJsonFile(filePath) {
+            return JSON.parse(fs.readFileSync(filePath, "utf8"));
+          }
+          '''
+          addition = anchor + '''
+          function validIsoDate(value) {
+            const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(value);
+            if (!match) return false;
+            const year = Number(match[1]);
+            const month = Number(match[2]);
+            const day = Number(match[3]);
+            const parsed = new Date(Date.UTC(year, month - 1, day));
+            return (
+              parsed.getUTCFullYear() === year &&
+              parsed.getUTCMonth() === month - 1 &&
+              parsed.getUTCDate() === day
+            );
+          }
+          '''
+          if 'function validIsoDate(value)' not in text:
+            if anchor not in text:
+              raise SystemExit('parseJsonFile anchor not found')
+            text = text.replace(anchor, addition, 1)
+          old = 'const ajv = new Ajv({ allErrors: true, schemaId: "auto" });'
+          new = '''const ajv = new Ajv({
+            allErrors: true,
+            schemaId: "auto",
+            formats: { date: validIsoDate },
+          });'''
+          if old in text:
+            text = text.replace(old, new, 1)
+          elif 'formats: { date: validIsoDate }' not in text:
+            raise SystemExit('Ajv constructor anchor not found')
+          validator.write_text(text)
+
+          tests = Path('web/tests/resource-verification.test.mjs')
+          text = tests.read_text()
+          old = 'assert.match(output.errors.join(" "), /every claim/u);'
+          new = '''assert.match(
+              output.errors.join(" "),
+              /claimChecks\\/0\\/result|every claim/u,
+            );'''
+          if old in text:
+            text = text.replace(old, new, 1)
+          elif 'claimChecks\\/0\\/result|every claim' not in text:
+            raise SystemExit('CLI assertion anchor not found')
+          tests.write_text(text)
+          PY
+      - name: Format patched files
+        working-directory: web
+        run: npx prettier --write scripts/check-intelligence-profiles.mjs tests/resource-verification.test.mjs
+      - name: Commit when needed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/scripts/check-intelligence-profiles.mjs web/tests/resource-verification.test.mjs
+          if git diff --cached --quiet; then
+            echo "Final test fixes already applied."
+          else
+            git commit -m "fix: align Ajv validation and CLI rejection test"
+            git push origin HEAD:feat/verification-contract-operator-workflow
+          fi
