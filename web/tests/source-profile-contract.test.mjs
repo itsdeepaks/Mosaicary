@@ -50,10 +50,7 @@ const batch14Identifiers = [
   "autoanimate",
 ];
 
-const expandedBatchIdentifiers = [
-  ...batch13Identifiers,
-  ...batch14Identifiers,
-];
+const expandedBatchIdentifiers = [...batch13Identifiers, ...batch14Identifiers];
 
 const requiredSourceFields = [
   "id",
