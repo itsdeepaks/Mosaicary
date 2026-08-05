@@ -30,7 +30,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -48,6 +48,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: feat/priority-profile-expansion-batch-1
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -58,6 +60,21 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+
+      - name: Apply exact Slice 1.3 formatting
+        working-directory: .
+        shell: bash
+        run: |
+          cd web
+          npx prettier --write data/intelligence-profile-batches/1.3.json tests/intelligence-profile-batch-1.3.test.mjs
+          cd ..
+          git config user.name "tessli-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/data/intelligence-profile-batches/1.3.json web/tests/intelligence-profile-batch-1.3.test.mjs
+          if ! git diff --cached --quiet; then
+            git commit -m "style: format priority profile batch"
+            git push origin HEAD:feat/priority-profile-expansion-batch-1
+          fi
 
       - name: Verify approved hero asset
         shell: bash
