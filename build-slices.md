@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 1 / Slice 1.5 NEXT; proof track remains BLOCKED**  
+Status: **active delivery plan — Phase 1 / Slice 1.6 NEXT; proof track remains BLOCKED**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -108,7 +108,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | Phase | Name                                        | Status   | Active/next slice          |
 | ----: | ------------------------------------------- | -------- | -------------------------- |
 |     0 | Direction Reset                             | DONE     | —                          |
-|     1 | Source Intelligence Foundation              | ACTIVE   | 1.5 verification contract  |
+|     1 | Source Intelligence Foundation              | ACTIVE   | 1.6 first Verified batch   |
 |     2 | Browse and Source Detail                    | DONE     | —                          |
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
@@ -129,8 +129,8 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 1.2  | Coverage mapping and intelligence adapter             | DONE     | 1.1                     | `docs/slices/14.1-source-profile-contract.md`                          |
 | 1.3  | Priority source profile expansion — Batch 1           | DONE     | 0.2, 1.2                | `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96 |
 | 1.4  | Priority source profile expansion — Batch 2           | DONE     | 1.3                     | `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97 |
-| 1.5  | Verification contract and operator workflow           | NEXT     | 1.4                     | —                                                                      |
-| 1.6  | First evidence-backed Verified batch                  | PLANNED  | 1.5                     | —                                                                      |
+| 1.5  | Verification contract and operator workflow           | DONE     | 1.4                     | `docs/slices/1.5-verification-contract-operator-workflow.md`, PR #98   |
+| 1.6  | First evidence-backed Verified batch                  | NEXT     | 1.5                     | —                                                                      |
 | 2.1  | Canonical Browse architecture and pagination contract | DONE     | 1.2                     | legacy `14.2`, PR #77                                                  |
 | 2.2  | Canonical `/resources` implementation                 | DONE     | 2.1                     | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79           |
 | 2.3  | Source Detail foundation for all 295 sources          | DONE     | 1.2, 2.2                | `docs/slices/2.3-source-detail-foundation.md`, PR #80                  |
@@ -192,18 +192,18 @@ The canonical source-profile schema and deterministic adapter remain complete wi
 0 Verified
 ```
 
-The active continuation expands high-value Listed sources to complete Profiled records before defining and operating the Verified workflow:
+The active continuation now moves from the completed verification contract into the first bounded operator-reviewed Verified batch:
 
 ```text
 1.3  Priority Profile Expansion, Batch 1   DONE      → 265 Listed / 30 Profiled / 0 Verified
 1.4  Priority Profile Expansion, Batch 2   DONE      → 255 Listed / 40 Profiled / 0 Verified
-1.5  Verification contract/workflow        NEXT
-1.6  First evidence-backed Verified batch  PLANNED
+1.5  Verification contract/workflow        DONE
+1.6  First evidence-backed Verified batch  NEXT
 ```
 
 Selection follows Playbook use, Board/research value, MCP retrieval value, and real OSS workflows—not alphabetical order. Website, representations, MCP, counts, and tests must continue to read the same canonical truth.
 
-Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76; realignment PR #95; `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96; `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97.
+Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76; realignment PR #95; `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96; `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97; `docs/slices/1.5-verification-contract-operator-workflow.md`, PR #98.
 
 ### Phase 2 — Browse and Source Detail
 
@@ -340,9 +340,9 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 Two execution tracks now operate with explicit dependencies:
 
-- **Product Foundation:** Phase 1 / Slice 1.5 is NEXT. It defines verification evidence and operator workflow without promoting any source yet.
+- **Product Foundation:** Phase 1 / Slice 1.6 is NEXT. It begins the first bounded operator-reviewed Verified batch while preserving the distinction between repository profiling, current provider evidence, and promotion.
 - **Proof and UI Judgment:** Slice 5.3 remains BLOCKED on a genuine human-review artifact; Slices 5.4 and 6.2 and Phase 7 remain blocked behind that evidence.
 
-The next repository slice is **1.5 Verification Contract and Operator Workflow**. It must define claim-level evidence, dates, confidence, freshness, reviewer identity, provider-interface checks, credential, persistence, redistribution, and safe-failure rules without promoting any source. Do not create substitute review scores, promote Verified records without the later verification workflow, skip the proof boundary, or start another dependency-blocked slice.
+The next repository slice is **1.6 First Evidence-Backed Verified Batch**. It must select a small bounded set, create current human-operator records through the Slice 1.5 workflow, and promote only records that satisfy every schema and semantic gate. Do not invent provider checks, reuse stale profile fingerprints, store credentials or private provider content, overstate availability, or expand the batch before the first records are independently reviewable.
 
 No recurring scheduled development task is enabled or permitted for this workflow.

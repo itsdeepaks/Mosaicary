@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 1 / Slice 1.5 NEXT; Phase 5 proof remains blocked**  
+Status: **active execution plan — Phase 1 / Slice 1.6 NEXT; Phase 5 proof remains blocked**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -151,14 +151,21 @@ Evidence: `docs/slices/1.4-priority-source-profile-expansion-batch-2.md`, PR #97
 
 ### 1.5 Verification Contract and Operator Workflow
 
-Status: **NEXT**
+Status: **DONE**
 
-- define claim-level evidence, dates, confidence, freshness, reviewer identity, provider-interface checks, credentials, persistence, redistribution, and safe failure behavior;
-- schema availability alone does not promote a source.
+- added the versioned `tessli.resource-verification.v1` Draft 2020-12 schema;
+- bound records to canonical source identity and exact intelligence-profile fingerprints;
+- added deterministic network-free draft and check commands;
+- enforced human-operator, availability, claim, interface, governance, limitation, freshness, date-ordering, and decision gates;
+- tested draft, needs-review, rejected, and verified-eligible paths without promoting any source;
+- preserved the privacy boundary: no credentials, cookies, private provider content, or workspace data are read or stored;
+- preserved `255 Listed / 40 Profiled / 0 Verified`.
+
+Evidence: `docs/slices/1.5-verification-contract-operator-workflow.md`, PR #98.
 
 ### 1.6 First Evidence-Backed Verified Batch
 
-Status: **PLANNED**
+Status: **NEXT**
 
 - promote only a small bounded set after Slice 1.5 works;
 - require current evidence and human/operator review;
