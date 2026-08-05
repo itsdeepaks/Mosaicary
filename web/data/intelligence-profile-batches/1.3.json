@@ -451,7 +451,12 @@
         "documentation",
         "web-page"
       ],
-      "integrationMethods": ["website", "npm-package", "sdk", "manual-download"],
+      "integrationMethods": [
+        "website",
+        "npm-package",
+        "sdk",
+        "manual-download"
+      ],
       "agentInterfaces": [],
       "discovery": {
         "textSearch": true,
@@ -584,7 +589,12 @@
         "declarative-3d",
         "interactive-webgl"
       ],
-      "contentObjects": ["code", "component", "documentation", "motion-example"],
+      "contentObjects": [
+        "code",
+        "component",
+        "documentation",
+        "motion-example"
+      ],
       "platforms": ["web", "mobile"],
       "frameworks": ["react", "three-js"],
       "designTools": [],
