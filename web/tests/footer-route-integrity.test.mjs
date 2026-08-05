@@ -14,6 +14,7 @@ async function read(relativePath) {
 const footerRoutes = [
   "/resources",
   "/collections",
+  "/for-ai",
   "/saved",
   "/boards",
   "/submit",
@@ -28,6 +29,7 @@ const footerRoutes = [
 const implementedRoutes = new Set([
   "/resources",
   "/collections",
+  "/for-ai",
   "/saved",
   "/boards",
   "/about",
@@ -62,6 +64,7 @@ test("footer contains truthful research groups and safe external links", async (
   }
 
   assert.match(navigation, /label: "Browse sources", href: "\/resources"/);
+  assert.match(navigation, /label: "For AI", href: "\/for-ai"/);
   assert.match(navigation, /label: "Saved sources", href: "\/saved"/);
   assert.match(navigation, /label: "Project boards", href: "\/boards"/);
   assert.doesNotMatch(
@@ -104,11 +107,12 @@ test("header exposes only working primary and utility routes", async () => {
 
   assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Playbooks"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "For AI"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Search"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
   assert.doesNotMatch(
     navigation,
-    /label: "Explore"|label: "Resources"|label: "About"|label: "For AI"|\/auth/,
+    /label: "Explore"|label: "Resources"|label: "About"|\/auth/,
   );
 });
 
