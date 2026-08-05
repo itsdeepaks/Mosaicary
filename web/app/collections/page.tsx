@@ -57,7 +57,7 @@ export default function CollectionsPage() {
             </div>
             <p>
               The sequence is editorial guidance, not a ranking. Recheck each
-              provider's current access, licensing, and terms before use.
+              provider&apos;s current access, licensing, and terms before use.
             </p>
           </div>
 
