@@ -19,6 +19,29 @@ function parseJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
+function validIsoDate(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return false;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  return (
+    parsed.getUTCFullYear() === year &&
+    parsed.getUTCMonth() === month - 1 &&
+    parsed.getUTCDate() === day
+  );
+}
+
+function validUri(value) {
+  try {
+    const parsed = new URL(value);
+    return Boolean(parsed.protocol && parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function loadProfileRecords(report) {
   const records = [];
   const filenames = fs
@@ -105,7 +128,11 @@ export function validateIntelligenceProfiles() {
     schema.definitions = schema.$defs;
   }
 
-  const ajv = new Ajv({ allErrors: true, schemaId: "auto" });
+  const ajv = new Ajv({
+    allErrors: true,
+    schemaId: "auto",
+    formats: { date: validIsoDate, uri: validUri },
+  });
   const validate = ajv.compile(schema);
 
   const catalogue = parseJsonFile(cataloguePath);
