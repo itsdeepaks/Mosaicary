@@ -93,8 +93,8 @@ test("For AI coverage and freshness copy derive from executable source truth", (
   const summary = getSourceContractSummary();
 
   assert.deepEqual(summary.coverageCounts, {
-    listed: 265,
-    profiled: 30,
+    listed: 255,
+    profiled: 40,
     verified: 0,
   });
   assert.equal(summary.resourceCount, 295);

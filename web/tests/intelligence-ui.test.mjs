@@ -6,9 +6,9 @@ import {
   getIntelligenceProfile,
 } from "../lib/intelligence.ts";
 
-test("getIntelligenceProfile resolves all 30 reviewed resource profiles", () => {
+test("getIntelligenceProfile resolves all 40 reviewed resource profiles", () => {
   const all = getAllIntelligenceProfiles();
-  assert.equal(all.length, 30, "Must have 30 intelligence profiles");
+  assert.equal(all.length, 40, "Must have 40 intelligence profiles");
 
   for (const profile of all) {
     const resolved = getIntelligenceProfile(profile.resourceId);

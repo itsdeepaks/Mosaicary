@@ -1,4 +1,5 @@
 import batch13 from "../data/intelligence-profile-batches/1.3.json" with { type: "json" };
+import batch14 from "../data/intelligence-profile-batches/1.4.json" with { type: "json" };
 import p21stDev from "../data/intelligence-profiles/21st-dev.json" with { type: "json" };
 import pAntDesign from "../data/intelligence-profiles/ant-design.json" with { type: "json" };
 import pCoolors from "../data/intelligence-profiles/coolors.json" with { type: "json" };
@@ -87,6 +88,7 @@ const rawProfiles: ResourceIntelligenceProfile[] = [
   pV0 as ResourceIntelligenceProfile,
   pWhoCanUse as ResourceIntelligenceProfile,
   ...(batch13.profiles as unknown as ResourceIntelligenceProfile[]),
+  ...(batch14.profiles as unknown as ResourceIntelligenceProfile[]),
 ];
 
 const profilesByResourceId = new Map<string, ResourceIntelligenceProfile>();

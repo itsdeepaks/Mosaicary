@@ -37,6 +37,21 @@ const batch13Identifiers = [
   "lucide",
 ];
 
+const batch14Identifiers = [
+  "fonts-in-use",
+  "font-squirrel",
+  "free-faces",
+  "open-foundry",
+  "fontpair",
+  "velvetyne",
+  "adobe-fonts",
+  "theatre-js",
+  "anime-js",
+  "autoanimate",
+];
+
+const expandedBatchIdentifiers = [...batch13Identifiers, ...batch14Identifiers];
+
 const requiredSourceFields = [
   "id",
   "slug",
@@ -109,20 +124,20 @@ test("all 295 catalogue resources have one deterministic source profile", () => 
   }
 });
 
-test("coverage baseline is truthful: 265 Listed, 30 Profiled, 0 Verified", () => {
+test("coverage baseline is truthful: 255 Listed, 40 Profiled, 0 Verified", () => {
   assert.deepEqual(getSourceCoverageCounts(), {
-    listed: 265,
-    profiled: 30,
+    listed: 255,
+    profiled: 40,
     verified: 0,
   });
   assert.deepEqual(getSourceContractSummary(), {
     contractVersion: 1,
     reviewedAt: "2026-08-05",
     resourceCount: 295,
-    intelligenceProfileCount: 30,
+    intelligenceProfileCount: 40,
     coverageCounts: {
-      listed: 265,
-      profiled: 30,
+      listed: 255,
+      profiled: 40,
       verified: 0,
     },
   });
@@ -155,8 +170,8 @@ test("Profiled records expose normalized intelligence without losing evidence", 
   );
 });
 
-test("Slice 1.3 records are complete Profiled sources without invented verification", () => {
-  for (const identifier of batch13Identifiers) {
+test("expanded batch records are complete Profiled sources without invented verification", () => {
+  for (const identifier of expandedBatchIdentifiers) {
     const profile = getSourceProfile(identifier);
     assert.ok(profile?.intelligence, `${identifier} must have intelligence`);
     assert.equal(profile.profileLevel, "profiled");
@@ -178,7 +193,7 @@ test("Listed records expose no invented intelligence, evidence, or timestamps", 
   const listed = getAllSourceProfiles().filter(
     (profile) => profile.profileLevel === "listed",
   );
-  assert.equal(listed.length, 265);
+  assert.equal(listed.length, 255);
   for (const profile of listed) {
     assert.equal(profile.intelligence, null);
     assert.deepEqual(profile.bestFor, []);
@@ -208,7 +223,7 @@ test("source type is a deterministic category classification, not provider fact"
 });
 
 test("website-ready source profiles and MCP preserve the same source identity", () => {
-  for (const identifier of ["relume", ...batch13Identifiers]) {
+  for (const identifier of ["relume", ...expandedBatchIdentifiers]) {
     const sourceProfile = getSourceProfile(identifier);
     const nativeProfile = getNativeResourceProfile(identifier);
     assert.ok(sourceProfile);
@@ -225,10 +240,10 @@ test("source profile validator accepts the complete deterministic baseline", () 
   const report = validateSourceProfileContract();
   assert.equal(report.valid, true, JSON.stringify(report.errors, null, 2));
   assert.equal(report.resourceCount, 295);
-  assert.equal(report.intelligenceProfileCount, 30);
+  assert.equal(report.intelligenceProfileCount, 40);
   assert.deepEqual(report.coverageCounts, {
-    listed: 265,
-    profiled: 30,
+    listed: 255,
+    profiled: 40,
     verified: 0,
   });
 });
