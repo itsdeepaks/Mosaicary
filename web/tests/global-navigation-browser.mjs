@@ -140,6 +140,7 @@ const desktop = await evaluate(`(() => {
 assert.deepEqual(desktop.primary, [
   ["Browse", "/resources"],
   ["Playbooks", "/collections"],
+  ["For AI", "/for-ai"],
 ]);
 assert.deepEqual(desktop.utilities, [
   ["Search", "/resources#browse-search"],
@@ -170,6 +171,7 @@ const mobileOpen = await evaluate(`(() => {
     dialog: sheet?.getAttribute('role'),
     modal: sheet?.getAttribute('aria-modal'),
     primary: Array.from(sheet.querySelectorAll('nav[aria-label="Mobile primary navigation"] a')).map((link) => link.textContent.trim()),
+    current: Array.from(sheet.querySelectorAll('nav[aria-label="Mobile primary navigation"] a[aria-current="page"]')).map((link) => link.textContent.trim()),
     utilities: Array.from(sheet.querySelectorAll('nav[aria-label="Mobile utilities"] a')).map((link) => link.textContent.trim().replace(/→/g, '').trim()),
     authLinks: sheet.querySelectorAll('a[href^="/auth"]').length,
     bodyOverflow: document.body.style.overflow,
@@ -180,7 +182,8 @@ const mobileOpen = await evaluate(`(() => {
 
 assert.equal(mobileOpen.dialog, "dialog");
 assert.equal(mobileOpen.modal, "true");
-assert.deepEqual(mobileOpen.primary, ["Browse", "Playbooks"]);
+assert.deepEqual(mobileOpen.primary, ["Browse", "Playbooks", "For AI"]);
+assert.deepEqual(mobileOpen.current, ["Playbooks"]);
 assert.deepEqual(mobileOpen.utilities, ["Search", "Saved"]);
 assert.equal(mobileOpen.authLinks, 0);
 assert.equal(mobileOpen.bodyOverflow, "hidden");
