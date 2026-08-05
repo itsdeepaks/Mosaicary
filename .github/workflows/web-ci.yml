@@ -42,6 +42,30 @@ jobs:
       - name: Complete and format Slice 1.4 authority
         shell: bash
         run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("web/tests/release-hardening.test.mjs")
+          content = path.read_text(encoding="utf-8")
+          old = '''    ["1.4", "Priority source profile expansion — Batch 2", "NEXT", "1.3", "—"],
+              [
+                "1.5",
+                "Verification contract and operator workflow",
+                "PLANNED",
+                "1.4",
+                "—",
+              ],'''.replace("              ", "    ")
+          new = '''    [
+                "1.4",
+                "Priority source profile expansion — Batch 2",
+                "NEXT",
+                "1.3",
+                "—",
+              ],
+              ["1.5", "Verification contract and operator workflow", "PLANNED", "1.4", "—"],'''.replace("              ", "    ")
+          if content.count(old) != 1:
+              raise SystemExit(f"release marker count: {content.count(old)}")
+          path.write_text(content.replace(old, new, 1), encoding="utf-8")
+          PY
           python -m py_compile scripts/complete-slice-1.4.py
           python scripts/complete-slice-1.4.py
           cd web
