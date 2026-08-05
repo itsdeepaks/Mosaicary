@@ -90,30 +90,135 @@ replace_once(
 
 replace_once(
     "web/tests/release-hardening.test.mjs",
-    "  const plan = await readRepositoryFile(\"docs/product-plan-v2.md\");\n  const cutover = await readRepositoryFile(",
-    "  const plan = await readRepositoryFile(\"docs/product-plan-v2.md\");\n  const readme = await readRepositoryFile(\"README.md\");\n  const cutover = await readRepositoryFile(",
+    '  const plan = await readRepositoryFile("docs/product-plan-v2.md");\n  const cutover = await readRepositoryFile(',
+    '  const plan = await readRepositoryFile("docs/product-plan-v2.md");\n  const readme = await readRepositoryFile("README.md");\n  const cutover = await readRepositoryFile(',
 )
 replace_once(
     "web/tests/release-hardening.test.mjs",
-    "  assert.match(\n    slices,\n    tableRow(\n      \"1.1\",\n      \"Canonical source-profile contract\",\n      \"DONE\",\n      \"0.1\",\n      \"legacy `14.1`\",\n    ),\n  );",
-    "  assert.match(\n    slices,\n    tableRow(\n      \"0.2\",\n      \"Execution-track realignment\",\n      \"DONE\",\n      \"0.1\",\n      \"`docs/slices/0.2-execution-track-realignment.md`, PR #95\",\n    ),\n  );\n  assert.match(\n    slices,\n    tableRow(\n      \"1.1\",\n      \"Canonical source-profile contract\",\n      \"DONE\",\n      \"0.1\",\n      \"legacy `14.1`\",\n    ),\n  );\n  for (const row of [\n    [\n      \"1.3\",\n      \"Priority source profile expansion — Batch 1\",\n      \"NEXT\",\n      \"0.2, 1.2\",\n      \"—\",\n    ],\n    [\n      \"1.4\",\n      \"Priority source profile expansion — Batch 2\",\n      \"PLANNED\",\n      \"1.3\",\n      \"—\",\n    ],\n    [\n      \"1.5\",\n      \"Verification contract and operator workflow\",\n      \"PLANNED\",\n      \"1.4\",\n      \"—\",\n    ],\n    [\n      \"1.6\",\n      \"First evidence-backed Verified batch\",\n      \"PLANNED\",\n      \"1.5\",\n      \"—\",\n    ],\n  ]) {\n    assert.match(slices, tableRow(...row));\n  }",
+    '''  assert.match(
+    slices,
+    tableRow(
+      "1.1",
+      "Canonical source-profile contract",
+      "DONE",
+      "0.1",
+      "legacy `14.1`",
+    ),
+  );''',
+    '''  assert.match(
+    slices,
+    tableRow(
+      "0.2",
+      "Execution-track realignment",
+      "DONE",
+      "0.1",
+      "`docs/slices/0.2-execution-track-realignment.md`, PR #95",
+    ),
+  );
+  assert.match(
+    slices,
+    tableRow(
+      "1.1",
+      "Canonical source-profile contract",
+      "DONE",
+      "0.1",
+      "legacy `14.1`",
+    ),
+  );
+  for (const row of [
+    [
+      "1.3",
+      "Priority source profile expansion — Batch 1",
+      "NEXT",
+      "0.2, 1.2",
+      "—",
+    ],
+    [
+      "1.4",
+      "Priority source profile expansion — Batch 2",
+      "PLANNED",
+      "1.3",
+      "—",
+    ],
+    [
+      "1.5",
+      "Verification contract and operator workflow",
+      "PLANNED",
+      "1.4",
+      "—",
+    ],
+    [
+      "1.6",
+      "First evidence-backed Verified batch",
+      "PLANNED",
+      "1.5",
+      "—",
+    ],
+  ]) {
+    assert.match(slices, tableRow(...row));
+  }''',
 )
 replace_once(
     "web/tests/release-hardening.test.mjs",
-    "    /Status: \\\*\\\*active delivery plan — Slice 5\\.3 BLOCKED; no independent NEXT slice\\\*\\\*/,
-",
-    "    /Status: \\\*\\\*active delivery plan — Phase 1 \\/ Slice 1\\.3 NEXT; proof track remains BLOCKED\\\*\\\*/,
-",
+    '''    /Status: \\*\\*active delivery plan — Slice 5\\.3 BLOCKED; no independent NEXT slice\\*\\*/,
+''',
+    '''    /Status: \\*\\*active delivery plan — Phase 1 \\/ Slice 1\\.3 NEXT; proof track remains BLOCKED\\*\\*/,
+''',
 )
 replace_once(
     "web/tests/release-hardening.test.mjs",
-    "  assert.match(\n    plan,\n    /(?:\\*\\*)?Phases 1–10(?:\\*\\*)? are the ten development phases/i,\n  );",
-    "  assert.match(\n    plan,\n    /(?:\\*\\*)?Phases 1–10(?:\\*\\*)? are the ten development phases/i,\n  );\n  assert.match(\n    plan,\n    /Status: \\*\\*active execution plan — Phase 1 \\/ Slice 1\\.3 NEXT; Phase 5 proof remains blocked\\*\\*/,\n  );\n  assert.match(\n    plan,\n    /## 5\\. Phase 1 — Source Intelligence Foundation\\n\\nStatus: \\*\\*ACTIVE\\*\\*/,\n  );\n  assert.match(\n    plan,\n    /### 1\\.3 Priority Source Profile Expansion — Batch 1\\n\\nStatus: \\*\\*NEXT\\*\\*/,\n  );\n  assert.match(\n    plan,\n    /### 1\\.5 Verification Contract and Operator Workflow\\n\\nStatus: \\*\\*PLANNED\\*\\*/,\n  );",
+    '''  assert.match(
+    plan,
+    /(?:\\*\\*)?Phases 1–10(?:\\*\\*)? are the ten development phases/i,
+  );''',
+    '''  assert.match(
+    plan,
+    /(?:\\*\\*)?Phases 1–10(?:\\*\\*)? are the ten development phases/i,
+  );
+  assert.match(
+    plan,
+    /Status: \\*\\*active execution plan — Phase 1 \\/ Slice 1\\.3 NEXT; Phase 5 proof remains blocked\\*\\*/,
+  );
+  assert.match(
+    plan,
+    /## 5\\. Phase 1 — Source Intelligence Foundation\\n\\nStatus: \\*\\*ACTIVE\\*\\*/,
+  );
+  assert.match(
+    plan,
+    /### 1\\.3 Priority Source Profile Expansion — Batch 1\\n\\nStatus: \\*\\*NEXT\\*\\*/,
+  );
+  assert.match(
+    plan,
+    /### 1\\.5 Verification Contract and Operator Workflow\\n\\nStatus: \\*\\*PLANNED\\*\\*/,
+  );''',
 )
 replace_once(
     "web/tests/release-hardening.test.mjs",
-    "  assert.match(\n    slices,\n    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,\n  );",
-    "  assert.match(\n    slices,\n    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,\n  );\n  assert.match(\n    slices,\n    /Product Foundation:.*Phase 1 \\/ Slice 1\\.3 is NEXT/is,\n  );\n  assert.match(\n    slices,\n    /Proof and UI Judgment:.*Slice 5\\.3 remains BLOCKED/is,\n  );\n  assert.match(readme, /Product Foundation — active/i);\n  assert.match(\n    readme,\n    /approved next repository slice is \\*\\*Phase 1 \\/ Slice 1\\.3/i,\n  );\n  assert.match(readme, /Slice 5\\.3 remains the next action in the separate proof track/i);",
+    '''  assert.match(
+    slices,
+    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,
+  );''',
+    '''  assert.match(
+    slices,
+    /ten selected references, four rejected directions, a deterministic `tessli\\.board-research-pack\\.v1` handoff/i,
+  );
+  assert.match(
+    slices,
+    /Product Foundation:.*Phase 1 \\/ Slice 1\\.3 is NEXT/is,
+  );
+  assert.match(
+    slices,
+    /Proof and UI Judgment:.*Slice 5\\.3 remains BLOCKED/is,
+  );
+  assert.match(readme, /Product Foundation — active/i);
+  assert.match(
+    readme,
+    /approved next repository slice is \\*\\*Phase 1 \\/ Slice 1\\.3/i,
+  );
+  assert.match(
+    readme,
+    /Slice 5\\.3 remains the next action in the separate proof track/i,
+  );''',
 )
 
 replace_once(
