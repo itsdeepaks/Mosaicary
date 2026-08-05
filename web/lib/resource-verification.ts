@@ -20,11 +20,12 @@ export class ResourceVerificationError extends Error {
 type JsonValue =
   null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
-type VerificationAgentInterface = ResourceIntelligenceProfile["agentInterfaces"][number] & {
-  authentication?: string;
-  credentialOwner?: string;
-  persistencePolicy?: string;
-};
+type VerificationAgentInterface =
+  ResourceIntelligenceProfile["agentInterfaces"][number] & {
+    authentication?: string;
+    credentialOwner?: string;
+    persistencePolicy?: string;
+  };
 
 export type VerificationDecision =
   "pending" | "verified" | "needs-review" | "rejected";
@@ -481,11 +482,7 @@ export function validateResourceVerificationRecord(
     };
   }
 
-  const completedAt = requireDate(
-    record.completedAt,
-    "completedAt",
-    errors,
-  );
+  const completedAt = requireDate(record.completedAt, "completedAt", errors);
   if (startedAt !== null && completedAt !== null && completedAt < startedAt) {
     errors.push("completedAt cannot be earlier than startedAt.");
   }
@@ -587,11 +584,7 @@ export function validateResourceVerificationRecord(
       "freshness.recheckBy",
       errors,
     );
-    if (
-      completedAt !== null &&
-      recheckBy !== null &&
-      recheckBy < completedAt
-    ) {
+    if (completedAt !== null && recheckBy !== null && recheckBy < completedAt) {
       errors.push("freshness.recheckBy cannot be earlier than completedAt.");
     }
   }
