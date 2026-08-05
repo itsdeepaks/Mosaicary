@@ -726,16 +726,14 @@ export async function buildCatalogue(options = {}) {
     );
   }
 
-  const categories = CATEGORY_DEFINITIONS.map(
-    ({ sourceLabel, expectedCount, ...category }) => ({
-      id: category.id,
-      label: sourceLabel,
-      shortLabel: category.shortLabel,
-      description: category.description,
-      icon: category.icon,
-      order: category.order,
-    }),
-  );
+  const categories = CATEGORY_DEFINITIONS.map((category) => ({
+    id: category.id,
+    label: category.sourceLabel,
+    shortLabel: category.shortLabel,
+    description: category.description,
+    icon: category.icon,
+    order: category.order,
+  }));
 
   const catalogue = {
     version: 1,
