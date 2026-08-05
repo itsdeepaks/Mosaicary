@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Slice 5.3 BLOCKED; no independent NEXT slice**  
+Status: **active delivery plan — Phase 1 / Slice 1.3 NEXT; proof track remains BLOCKED**  
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -108,7 +108,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | Phase | Name                                        | Status   | Active/next slice          |
 | ----: | ------------------------------------------- | -------- | -------------------------- |
 |     0 | Direction Reset                             | DONE     | —                          |
-|     1 | Source Intelligence Foundation              | DONE     | —                          |
+|     1 | Source Intelligence Foundation              | ACTIVE   | 1.3 priority profile batch |
 |     2 | Browse and Source Detail                    | DONE     | —                          |
 |     3 | Local Saved and Project Boards              | DONE     | —                          |
 |     4 | Research-Pack Export                        | DONE     | —                          |
@@ -124,8 +124,13 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | ID   | Slice                                                 | Status   | Depends on              | Historical alias/evidence                                            |
 | ---- | ----------------------------------------------------- | -------- | ----------------------- | -------------------------------------------------------------------- |
 | 0.1  | Product direction and operating reset                 | DONE     | previous baseline       | legacy `14.0`, PR #74                                                |
+| 0.2  | Execution-track realignment                           | DONE     | 0.1                     | `docs/slices/0.2-execution-track-realignment.md`, PR #95             |
 | 1.1  | Canonical source-profile contract                     | DONE     | 0.1                     | legacy `14.1`                                                        |
 | 1.2  | Coverage mapping and intelligence adapter             | DONE     | 1.1                     | `docs/slices/14.1-source-profile-contract.md`                        |
+| 1.3  | Priority source profile expansion — Batch 1           | NEXT     | 0.2, 1.2                | —                                                                    |
+| 1.4  | Priority source profile expansion — Batch 2           | PLANNED  | 1.3                     | —                                                                    |
+| 1.5  | Verification contract and operator workflow           | PLANNED  | 1.4                     | —                                                                    |
+| 1.6  | First evidence-backed Verified batch                  | PLANNED  | 1.5                     | —                                                                    |
 | 2.1  | Canonical Browse architecture and pagination contract | DONE     | 1.2                     | legacy `14.2`, PR #77                                                |
 | 2.2  | Canonical `/resources` implementation                 | DONE     | 2.1                     | `docs/slices/2.2-canonical-browse-implementation.md`, PR #79         |
 | 2.3  | Source Detail foundation for all 295 sources          | DONE     | 1.2, 2.2                | `docs/slices/2.3-source-detail-foundation.md`, PR #80                |
@@ -169,9 +174,17 @@ Established Source Index, Research Intelligence, UI Judgment, shared website/exp
 
 Evidence: PR #74.
 
+### Slice 0.2 — Execution-track realignment
+
+Separated independent Product Foundation work from the blocked Proof and UI Judgment track. The OSS human-review dependency still blocks Phase 5 outcome work, the evidence-led homepage, Pattern Candidates, and UI-taste claims; it no longer blocks canonical Source Intelligence expansion.
+
+Evidence: `docs/slices/0.2-execution-track-realignment.md`, PR #95.
+
 ### Phase 1 — Source Intelligence Foundation
 
-Delivered the canonical source-profile schema and deterministic adapter with the truthful baseline:
+Status: **ACTIVE**
+
+The canonical source-profile schema and deterministic adapter remain complete with the truthful baseline:
 
 ```text
 275 Listed
@@ -179,7 +192,18 @@ Delivered the canonical source-profile schema and deterministic adapter with the
 0 Verified
 ```
 
-Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76.
+The active continuation expands high-value Listed sources to complete Profiled records before defining and operating the Verified workflow:
+
+```text
+1.3  Priority Profile Expansion, Batch 1   NEXT      → 265 Listed / 30 Profiled / 0 Verified
+1.4  Priority Profile Expansion, Batch 2   PLANNED   → 255 Listed / 40 Profiled / 0 Verified
+1.5  Verification contract/workflow        PLANNED
+1.6  First evidence-backed Verified batch  PLANNED
+```
+
+Selection follows Playbook use, Board/research value, MCP retrieval value, and real OSS workflows—not alphabetical order. Website, representations, MCP, counts, and tests must continue to read the same canonical truth.
+
+Evidence: `docs/slices/14.1-source-profile-contract.md`, PR #76; realignment PR #95.
 
 ### Phase 2 — Browse and Source Detail
 
@@ -314,6 +338,11 @@ Requires multiple proof projects, permission-aware precedent retrieval, pattern 
 
 ## 11. Current continuation boundary
 
-All currently independent Product Plan v2 slices are complete. The next product action is to return a genuine completed Slice 5.3 human-review artifact. Until then, Slices 5.4 and 6.2 and Phase 7 remain blocked; Phase 8 and later work remain deferred. Do not create substitute scores, skip the proof boundary, or start a dependency-blocked slice.
+Two execution tracks now operate with explicit dependencies:
+
+- **Product Foundation:** Phase 1 / Slice 1.3 is NEXT. It may improve canonical Source Intelligence without claiming evaluated UI judgment.
+- **Proof and UI Judgment:** Slice 5.3 remains BLOCKED on a genuine human-review artifact; Slices 5.4 and 6.2 and Phase 7 remain blocked behind that evidence.
+
+The next repository slice is **1.3 Priority Source Profile Expansion — Batch 1**. It must end at `265 Listed / 30 Profiled / 0 Verified`, preserve stable source identity, and update website/export/MCP truth together. Do not create substitute review scores, promote Verified records without the later verification workflow, skip the proof boundary, or start another dependency-blocked slice.
 
 No recurring scheduled development task is enabled or permitted for this workflow.

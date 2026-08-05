@@ -1,6 +1,6 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 5 proof blocked; no independent NEXT slice**  
+Status: **active execution plan — Phase 1 / Slice 1.3 NEXT; Phase 5 proof remains blocked**  
 Approved direction: `docs/product-direction.md`  
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
@@ -41,7 +41,7 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 | Phase | Name                                        | Status   | Outcome                                                                    |
 | ----: | ------------------------------------------- | -------- | -------------------------------------------------------------------------- |
 |     0 | Direction Reset                             | DONE     | One approved product truth and operating contract                          |
-|     1 | Source Intelligence Foundation              | DONE     | One canonical source/profile model shared by website, exports, and MCP     |
+|     1 | Source Intelligence Foundation              | ACTIVE   | Expand high-value canonical profiles, then establish truthful verification |
 |     2 | Browse and Source Detail                    | DONE     | One paginated browser and useful internal profile for every source         |
 |     3 | Local Saved and Project Boards              | DONE     | Reusable browser-local research without requiring an account               |
 |     4 | Research-Pack Export                        | DONE     | Deterministic, model-independent project context                           |
@@ -51,6 +51,24 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 |     8 | Authentication and Cloud Workspace          | DEFERRED | Google/email accounts and cross-device research persistence                |
 |     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow         |
 |    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims |
+
+### Parallel execution tracks
+
+The OSS proof is the prerequisite for evaluated UI Judgment, not for every remaining product-foundation improvement.
+
+**Product Foundation track** may continue through evidence-bounded source profiling, freshness, verification workflow, and website/export/MCP parity.
+
+**Proof and UI Judgment track** remains dependency-locked:
+
+```text
+5.3 genuine human review
+→ 5.4 outcome/evidence report
+→ 6.2 evidence-led homepage
+→ Phase 7 reviewed Pattern Candidates
+→ Phase 10 UI-taste claims
+```
+
+No work in the foundation track may imply that the blocked proof succeeded.
 
 ## 4. Phase 0 — Direction Reset
 
@@ -73,9 +91,9 @@ Historical mapping:
 
 ## 5. Phase 1 — Source Intelligence Foundation
 
-Status: **DONE**
+Status: **ACTIVE**
 
-Goal: define the smallest truthful source model that Browse, Source Detail, exports, and MCP can share.
+Goal: define and progressively deepen the truthful source model that Browse, Source Detail, exports, and MCP share.
 
 ### 1.1 Canonical source-profile contract
 
@@ -94,16 +112,50 @@ Status: **DONE**
 
 - 275 Listed;
 - 20 Profiled;
-- 0 Verified until completed human-review provenance exists;
+- 0 Verified until the Verified contract and operator review exist;
 - existing evidence preserved;
 - website and MCP compatibility retained.
 
-Exit criteria met:
+Foundation criteria already met:
 
 - schema validation;
 - deterministic network-free generation;
 - truthful coverage for every record;
 - focused and full CI.
+
+### 1.3 Priority Source Profile Expansion — Batch 1
+
+Status: **NEXT**
+
+- select ten high-value Listed sources from Playbook use, Board/research value, MCP retrieval value, and real OSS workflows;
+- complete every required Profiled field without inventing optional claims;
+- preserve stable IDs, slugs, URLs, membership, and provenance;
+- update website, JSON, Markdown, MCP, coverage counts, validators, and tests from the same canonical records;
+- expected boundary: `265 Listed / 30 Profiled / 0 Verified`.
+
+### 1.4 Priority Source Profile Expansion — Batch 2
+
+Status: **PLANNED**
+
+- enrich ten additional high-value sources through the same evidence-bounded process;
+- expected boundary: `255 Listed / 40 Profiled / 0 Verified`.
+
+### 1.5 Verification Contract and Operator Workflow
+
+Status: **PLANNED**
+
+- define claim-level evidence, dates, confidence, freshness, reviewer identity, provider-interface checks, credentials, persistence, redistribution, and safe failure behavior;
+- schema availability alone does not promote a source.
+
+### 1.6 First Evidence-Backed Verified Batch
+
+Status: **PLANNED**
+
+- promote only a small bounded set after Slice 1.5 works;
+- require current evidence and human/operator review;
+- preserve the distinction between repository profiling, provider availability, and verification.
+
+Execution-track evidence: `docs/slices/0.2-execution-track-realignment.md`, PR #95.
 
 ## 6. Phase 2 — Browse and Source Detail
 

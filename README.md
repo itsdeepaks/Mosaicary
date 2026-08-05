@@ -37,45 +37,57 @@ The current application now includes the first reusable Tessli research loop:
 - deterministic public Markdown/JSON for every source and published collection;
 - a reproducible Online Scope Studio homepage proof brief, Board, baseline, and research pack;
 - an isolated, browser-tested OSS homepage candidate with retained implementation evidence;
-- six repository-maintained collections;
+- six repository-maintained staged Playbooks;
+- a working For AI route documenting the seven read-only MCP tools, representations, coverage, and governance;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
 
 Authentication, cloud workspaces, submissions, moderation, Pattern Candidates, and public UI-taste claims remain deferred until their prerequisites are demonstrated.
 
-## Active next product loop
+## Active execution tracks
 
-The next milestone is:
+Tessli now separates independent foundation work from the evidence-dependent proof track.
+
+### Product Foundation — active
 
 ```text
-Search
-→ inspect an internal source profile
-→ save to a browser-local project board
-→ record selected and rejected directions
-→ export a compact Markdown research pack
-→ use the pack with an LLM
-→ build and evaluate one real OSS page
+20 Profiled
+→ Slice 1.3: 30 Profiled
+→ Slice 1.4: 40 Profiled
+→ verification contract and operator workflow
+→ first bounded Verified batch
 ```
 
-The first proof project is expected to use a real Online Scope Studio page and compare research time, context quality, rebuild loops, responsive quality, coherence, accessibility, restraint, and ship readiness.
+The next repository slice is **1.3 Priority Source Profile Expansion — Batch 1**. It improves the shared website/export/MCP source truth and does not claim that the OSS proof succeeded.
+
+### Proof and UI Judgment — blocked
+
+```text
+5.3 genuine human review
+→ 5.4 outcome report
+→ 6.2 evidence-led homepage
+→ reviewed Pattern Candidates
+```
+
+The existing OSS candidate and safe review workspace remain preserved until a real reviewer supplies the required artifact.
 
 ## Product Plan v2 status
 
 ```text
 Phase 0  Direction Reset                         DONE
-Phase 1  Source Intelligence Foundation          DONE
+Phase 1  Source Intelligence Foundation          ACTIVE — 1.3 NEXT
 Phase 2  Browse and Source Detail                DONE
 Phase 3  Local Saved and Project Boards          DONE
 Phase 4  Research-Pack Export                    DONE
-Phase 5  Real OSS Proof Project                  ACTIVE
-Phase 6  Homepage, Navigation, Playbooks, For AI PLANNED
-Phase 7  Reviewed Pattern Candidates             PLANNED
+Phase 5  Real OSS Proof Project                  BLOCKED — human review
+Phase 6  Homepage, Navigation, Playbooks, For AI BLOCKED — 6.2 waits for proof
+Phase 7  Reviewed Pattern Candidates             BLOCKED — waits for proof
 Phase 8  Authentication and Cloud Workspace      DEFERRED
 Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next slice is **Phase 5 / Slice 5.3 — browser and genuine human review of the retained OSS candidate**.
+The approved next repository slice is **Phase 1 / Slice 1.3 — Priority Source Profile Expansion, Batch 1**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
 
 ## Source coverage levels
 
