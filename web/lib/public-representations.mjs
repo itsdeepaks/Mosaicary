@@ -1,6 +1,6 @@
 export const PUBLIC_SOURCE_REPRESENTATION_CONTRACT = "tessli.public-source.v1";
 export const PUBLIC_COLLECTION_REPRESENTATION_CONTRACT =
-  "tessli.public-collection.v1";
+  "tessli.public-playbook.v2";
 
 const CACHE_CONTROL =
   "public, max-age=0, s-maxage=86400, stale-while-revalidate=604800";
@@ -153,37 +153,48 @@ export function createPublicCollectionRepresentation(
   sourceProfiles,
 ) {
   if (!isPlainObject(collection) || typeof collection.slug !== "string") {
-    throw new TypeError("A published Tessli collection is required.");
+    throw new TypeError("A published Tessli Playbook is required.");
   }
   const byId = new Map(sourceProfiles.map((profile) => [profile.id, profile]));
-  const resources = collection.resourceIds.map((resourceId, index) => {
-    const profile = byId.get(resourceId);
-    if (!profile) {
-      throw new Error(
-        `Collection ${collection.slug} references missing source ${resourceId}.`,
-      );
-    }
-    return {
-      order: index + 1,
-      id: profile.id,
-      slug: profile.slug,
-      name: profile.name,
-      url: profile.url,
-      domain: profile.domain,
-      summary: profile.summary,
-      category: profile.category,
-      sourceType: profile.sourceType,
-      accessModel: {
-        access: profile.accessModel.access,
-        subscriptionRequired: profile.accessModel.subscriptionRequired,
-      },
-      profileLevel: profile.profileLevel,
-      status: profile.status,
-      tessliPath: `/resources/${profile.slug}`,
-      jsonPath: `/resources/${profile.slug}/profile.json`,
-      markdownPath: `/resources/${profile.slug}/profile.md`,
-    };
-  });
+  let order = 0;
+  const resources = collection.stages.flatMap((stage, stageIndex) =>
+    stage.resources.map((item, itemIndex) => {
+      const resourceId = item.resource?.id ?? item.resourceId;
+      const role = item.role;
+      const profile = byId.get(resourceId);
+      if (!profile) {
+        throw new Error(
+          `Playbook ${collection.slug} references missing source ${resourceId}.`,
+        );
+      }
+      order += 1;
+      return {
+        order,
+        stageOrder: stageIndex + 1,
+        stageItemOrder: itemIndex + 1,
+        stageId: stage.id,
+        stageTitle: stage.title,
+        role,
+        id: profile.id,
+        slug: profile.slug,
+        name: profile.name,
+        url: profile.url,
+        domain: profile.domain,
+        summary: profile.summary,
+        category: profile.category,
+        sourceType: profile.sourceType,
+        accessModel: {
+          access: profile.accessModel.access,
+          subscriptionRequired: profile.accessModel.subscriptionRequired,
+        },
+        profileLevel: profile.profileLevel,
+        status: profile.status,
+        tessliPath: `/resources/${profile.slug}`,
+        jsonPath: `/resources/${profile.slug}/profile.json`,
+        markdownPath: `/resources/${profile.slug}/profile.md`,
+      };
+    }),
+  );
   const canonicalPath = `/collections/${collection.slug}`;
   const jsonPath = `${canonicalPath}/collection.json`;
   const markdownPath = `${canonicalPath}/collection.md`;
@@ -191,18 +202,31 @@ export function createPublicCollectionRepresentation(
     contract: PUBLIC_COLLECTION_REPRESENTATION_CONTRACT,
     canonicalPath,
     representations: { json: jsonPath, markdown: markdownPath },
-    collection: {
+    playbook: {
       id: collection.id,
       slug: collection.slug,
       title: collection.title,
       description: collection.description,
+      outcome: collection.outcome,
+      audience: collection.audience,
       status: collection.status,
       lastReviewedAt: collection.lastReviewedAt,
+      stageCount: collection.stages.length,
       resourceCount: resources.length,
     },
+    stages: collection.stages.map((stage, index) => ({
+      order: index + 1,
+      id: stage.id,
+      title: stage.title,
+      inspect: stage.inspect,
+      decision: stage.decision,
+      resourceIds: stage.resources.map(
+        (item) => item.resource?.id ?? item.resourceId,
+      ),
+    })),
     resources,
     boundaries: [
-      "Resource order is editorial and does not represent popularity, sponsorship, or universal quality.",
+      "Playbook order is editorial guidance and does not represent popularity, sponsorship, or universal quality.",
       "Repository intelligence is not live-provider verification.",
       "Revalidate provider access, pricing, licensing, terms, availability, and time-sensitive claims.",
       "No browser-local Board, Saved, account, cookie, or credential data is included.",
@@ -305,42 +329,61 @@ export function serializePublicSourceMarkdown(document) {
 }
 
 export function serializePublicCollectionMarkdown(document) {
-  const collection = document.collection;
+  const playbook = document.playbook;
   const lines = [
-    `# Tessli Collection — ${inline(collection.title)}`,
+    `# Tessli Playbook — ${inline(playbook.title)}`,
     "",
     `Contract: ${document.contract}`,
     `Canonical Tessli path: ${document.canonicalPath}`,
     `JSON representation: ${document.representations.json}`,
     `Markdown representation: ${document.representations.markdown}`,
     "",
-    "## Collection",
+    "## Playbook",
     "",
-    inline(collection.description),
+    inline(playbook.description),
     "",
-    `- **ID:** ${inline(collection.id)}`,
-    `- **Status:** ${inline(collection.status)}`,
-    `- **Last reviewed:** ${inline(collection.lastReviewedAt)}`,
-    `- **Resource count:** ${collection.resourceCount}`,
+    `- **ID:** ${inline(playbook.id)}`,
+    `- **Outcome:** ${inline(playbook.outcome)}`,
+    `- **Audience:** ${inline(playbook.audience)}`,
+    `- **Status:** ${inline(playbook.status)}`,
+    `- **Last reviewed:** ${inline(playbook.lastReviewedAt)}`,
+    `- **Stage count:** ${playbook.stageCount}`,
+    `- **Resource count:** ${playbook.resourceCount}`,
     "",
-    "## Ordered resources",
+    "## Stages",
     "",
   ];
-  for (const resource of document.resources) {
+
+  for (const stage of document.stages) {
     lines.push(
-      `### ${resource.order}. ${inline(resource.name)}`,
+      `### ${stage.order}. ${inline(stage.title)}`,
       "",
-      `- **Source ID:** ${inline(resource.id)}`,
-      `- **Provider URL:** ${inline(resource.url)}`,
-      `- **Tessli profile:** ${inline(resource.tessliPath)}`,
-      `- **Category:** ${inline(resource.category)}`,
-      `- **Source type:** ${inline(resource.sourceType)}`,
-      `- **Access:** ${inline(resource.accessModel.access)}`,
-      `- **Profile level:** ${inline(resource.profileLevel)}`,
-      `- **Summary:** ${inline(resource.summary)}`,
+      `- **Inspect:** ${inline(stage.inspect)}`,
+      `- **Decision supported:** ${inline(stage.decision)}`,
       "",
     );
+
+    const stageResources = document.resources.filter(
+      (resource) => resource.stageId === stage.id,
+    );
+    for (const resource of stageResources) {
+      lines.push(
+        `#### ${resource.order}. ${inline(resource.name)}`,
+        "",
+        `- **Why included:** ${inline(resource.role)}`,
+        `- **Source ID:** ${inline(resource.id)}`,
+        `- **Provider URL:** ${inline(resource.url)}`,
+        `- **Tessli profile:** ${inline(resource.tessliPath)}`,
+        `- **Category:** ${inline(resource.category)}`,
+        `- **Source type:** ${inline(resource.sourceType)}`,
+        `- **Access:** ${inline(resource.accessModel.access)}`,
+        `- **Profile level:** ${inline(resource.profileLevel)}`,
+        `- **Summary:** ${inline(resource.summary)}`,
+        "",
+      );
+    }
   }
+
   lines.push("## Interpretation boundaries", "");
   for (const boundary of document.boundaries) {
     lines.push(`- ${inline(boundary)}`);

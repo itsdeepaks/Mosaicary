@@ -4621,7 +4621,75 @@
       ],
       "coverStyle": "editorial",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A defensible SaaS landing-page direction covering positioning, page structure, proof, pricing, and iteration signals.",
+      "audience": "Founders, product marketers, and designers preparing or revising a SaaS marketing site.",
+      "stages": [
+        {
+          "id": "frame-the-market",
+          "title": "Frame the market",
+          "inspect": "Compare positioning, information hierarchy, and recurring page structures before choosing a direction.",
+          "decision": "Choose which category conventions to follow, adapt, or deliberately reject.",
+          "items": [
+            {
+              "resourceId": "resource-1ef2bbb67602",
+              "role": "SaaS Pages anchors the first scan with examples that combine visual structure and copywriting."
+            },
+            {
+              "resourceId": "resource-f52b14528531",
+              "role": "SaaS Landing Page broadens the comparison set across recognizable SaaS companies."
+            },
+            {
+              "resourceId": "resource-385af8e671b2",
+              "role": "SaaSpo provides another curated market lens for identifying repeated conventions without treating them as rules."
+            }
+          ]
+        },
+        {
+          "id": "assemble-the-page",
+          "title": "Assemble the page",
+          "inspect": "Inspect section-level composition, proof placement, copy patterns, and reusable landing-page structures.",
+          "decision": "Decide the page sequence and which sections deserve custom design versus established patterns.",
+          "items": [
+            {
+              "resourceId": "resource-be31b989dbbe",
+              "role": "SaaS Websites supports screenshot-level comparison of complete pages and recurring patterns."
+            },
+            {
+              "resourceId": "resource-8071ca23bfc4",
+              "role": "SaaS Examples adds product and email references when the marketing journey extends beyond the homepage."
+            },
+            {
+              "resourceId": "resource-c6ead4379d56",
+              "role": "Landingfolio helps inspect individual sections and templates before composing the full page."
+            }
+          ]
+        },
+        {
+          "id": "validate-conversion",
+          "title": "Validate conversion decisions",
+          "inspect": "Study pricing communication, commercial evidence, and visible website experiments.",
+          "decision": "Decide how to present price, proof, and iteration hypotheses before implementation.",
+          "items": [
+            {
+              "resourceId": "resource-068a498e5c53",
+              "role": "Landings supplies a broader landing-page reference set for checking whether the chosen structure is too narrow."
+            },
+            {
+              "resourceId": "resource-4aeb8a54737a",
+              "role": "Pricing Pages isolates pricing architecture, plan comparison, and purchase-friction patterns."
+            },
+            {
+              "resourceId": "resource-3028e7238961",
+              "role": "Pages That Print adds examples connected to reported revenue outcomes while remaining directional evidence only."
+            },
+            {
+              "resourceId": "resource-6482b53e4e09",
+              "role": "Glance exposes visible experiments and changes so the team can define what to test after launch."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "collection-typography-font-tools",
@@ -4642,7 +4710,75 @@
       ],
       "coverStyle": "typography",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A practical typography direction with licensed candidate fonts, real-world references, pairing rationale, and implementation options.",
+      "audience": "Designers and frontend teams choosing type for a brand, marketing site, or product interface.",
+      "stages": [
+        {
+          "id": "source-candidates",
+          "title": "Source viable candidates",
+          "inspect": "Start with broad, implementable libraries and distinguish open, free, and subscription options.",
+          "decision": "Choose the licensing and delivery boundary for the shortlist.",
+          "items": [
+            {
+              "resourceId": "resource-75ecf91b7063",
+              "role": "Google Fonts provides a broad web-ready baseline with straightforward delivery."
+            },
+            {
+              "resourceId": "resource-25a6040823a7",
+              "role": "Fontshare offers free professional families that can raise the quality of the initial shortlist."
+            },
+            {
+              "resourceId": "resource-7ff8dc33fe5e",
+              "role": "Typewolf supplies editorial recommendations and category context for narrowing candidates."
+            }
+          ]
+        },
+        {
+          "id": "study-in-context",
+          "title": "Study type in context",
+          "inspect": "Inspect real uses, editorial tone, hierarchy, and category conventions before judging isolated specimens.",
+          "decision": "Decide which type qualities support the intended brand and reading experience.",
+          "items": [
+            {
+              "resourceId": "resource-e50e8d1ec69c",
+              "role": "Fonts In Use shows typography in real artifacts rather than isolated specimen pages."
+            },
+            {
+              "resourceId": "resource-098d155d3888",
+              "role": "Font Squirrel helps check commercial-use free options and practical licensing constraints."
+            },
+            {
+              "resourceId": "resource-3b9d710cd447",
+              "role": "Free Faces adds a curated view of freely licensed typefaces."
+            }
+          ]
+        },
+        {
+          "id": "pair-and-finalize",
+          "title": "Pair and finalize",
+          "inspect": "Compare pairings and more distinctive open or commercial options after the core direction is clear.",
+          "decision": "Select the primary and supporting families to prototype and test.",
+          "items": [
+            {
+              "resourceId": "resource-07d9b88ef5af",
+              "role": "Open Foundry focuses the search on open-source families and their presentation."
+            },
+            {
+              "resourceId": "resource-42936db47b6a",
+              "role": "FontPair supports explicit headline-and-body pairing comparisons."
+            },
+            {
+              "resourceId": "resource-bfe4ba65c95b",
+              "role": "Velvetyne introduces experimental libre options when the direction needs more character."
+            },
+            {
+              "resourceId": "resource-35c3f2fef142",
+              "role": "Adobe Fonts provides a subscription-backed comparison set for teams already using Creative Cloud."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "collection-motion-starter-pack",
@@ -4663,7 +4799,75 @@
       ],
       "coverStyle": "motion",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A motion approach matched to the interaction goal, runtime constraints, authoring workflow, and team stack.",
+      "audience": "Designers and frontend engineers deciding how to add purposeful interface motion, vector animation, or browser 3D.",
+      "stages": [
+        {
+          "id": "define-motion-scope",
+          "title": "Define the motion scope",
+          "inspect": "Compare general-purpose animation libraries with automatic transitions to separate essential interaction feedback from spectacle.",
+          "decision": "Choose whether the project needs timeline control, lightweight transitions, or both.",
+          "items": [
+            {
+              "resourceId": "resource-374543d4f72b",
+              "role": "Motion provides a production-oriented JavaScript and React baseline for interface animation."
+            },
+            {
+              "resourceId": "resource-9042d48e084f",
+              "role": "GSAP represents high-control timeline animation when sequencing and performance are central."
+            },
+            {
+              "resourceId": "resource-eae789634e34",
+              "role": "LottieFiles supports asset-based vector animation workflows and handoff."
+            }
+          ]
+        },
+        {
+          "id": "choose-asset-workflow",
+          "title": "Choose the asset workflow",
+          "inspect": "Inspect vector and browser-based 3D authoring workflows, runtime ownership, and handoff needs.",
+          "decision": "Decide whether motion should be authored as interactive vectors, 3D scenes, or code.",
+          "items": [
+            {
+              "resourceId": "resource-a69034dde468",
+              "role": "Rive adds stateful interactive vector animation rather than playback-only assets."
+            },
+            {
+              "resourceId": "resource-631345718892",
+              "role": "Spline provides a collaborative browser 3D authoring route for teams avoiding low-level scene code."
+            },
+            {
+              "resourceId": "resource-e5c348f9190f",
+              "role": "Three.js establishes the lower-level WebGL option and its engineering cost."
+            }
+          ]
+        },
+        {
+          "id": "match-the-stack",
+          "title": "Match the implementation stack",
+          "inspect": "Compare low-level rendering, React integration, sequencing, and lightweight alternatives.",
+          "decision": "Select the implementation layer that fits the framework, performance budget, and maintenance capacity.",
+          "items": [
+            {
+              "resourceId": "resource-c873b7d6cf1d",
+              "role": "React Three Fiber shows how Three.js integrates with React component architecture."
+            },
+            {
+              "resourceId": "resource-e0917de2c7a9",
+              "role": "Theatre.js supports authored sequencing and motion-design control for web scenes."
+            },
+            {
+              "resourceId": "resource-23cc7dc75f79",
+              "role": "Anime.js offers a smaller code-driven animation alternative for targeted interactions."
+            },
+            {
+              "resourceId": "resource-9ab2847bb0d5",
+              "role": "AutoAnimate covers low-configuration layout transitions where a full motion system is unnecessary."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "collection-open-source-ui-libraries",
@@ -4684,7 +4888,75 @@
       ],
       "coverStyle": "systems",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A component-library strategy that balances accessibility, styling ownership, speed, animation needs, and long-term maintenance.",
+      "audience": "React product teams selecting primitives, copyable components, or higher-level UI building blocks.",
+      "stages": [
+        {
+          "id": "choose-the-foundation",
+          "title": "Choose the foundation",
+          "inspect": "Compare accessible primitives, hooks, and copy-owned components before evaluating visual libraries.",
+          "decision": "Decide how much behavior, styling, and source ownership the team wants.",
+          "items": [
+            {
+              "resourceId": "resource-affc29967a7c",
+              "role": "shadcn/ui demonstrates copy-owned React components built on accessible primitives."
+            },
+            {
+              "resourceId": "resource-01db82f90e23",
+              "role": "Radix UI represents unstyled accessible primitives with strong behavior ownership."
+            },
+            {
+              "resourceId": "resource-3bfbe7e95242",
+              "role": "Headless UI offers an alternative unstyled model across React and Vue."
+            }
+          ]
+        },
+        {
+          "id": "accelerate-common-ui",
+          "title": "Accelerate common UI",
+          "inspect": "Inspect styled and composable component sets that can extend the chosen foundation.",
+          "decision": "Decide which higher-level components are safe to adopt rather than rebuild.",
+          "items": [
+            {
+              "resourceId": "resource-9ad947201ac6",
+              "role": "React Aria provides accessibility-focused hooks and components for teams needing deeper behavior control."
+            },
+            {
+              "resourceId": "resource-1cd898a493ab",
+              "role": "Park UI shows a styled system built on headless primitives."
+            },
+            {
+              "resourceId": "resource-efc9a91db0cb",
+              "role": "Kibo UI extends shadcn-oriented projects with more composable application components."
+            }
+          ]
+        },
+        {
+          "id": "add-expression-carefully",
+          "title": "Add expression carefully",
+          "inspect": "Review community, interactive, and motion-heavy components only after the accessibility and ownership boundary is fixed.",
+          "decision": "Choose where expressive components add value without fragmenting the system.",
+          "items": [
+            {
+              "resourceId": "resource-ea2802bd8265",
+              "role": "Float UI supplies responsive Tailwind sections and components for faster assembly."
+            },
+            {
+              "resourceId": "resource-2210207ad328",
+              "role": "Uiverse provides community-made visual elements that require selective quality review."
+            },
+            {
+              "resourceId": "resource-d94d49dfe5a3",
+              "role": "React Bits adds animated and interactive React components for targeted expressive moments."
+            },
+            {
+              "resourceId": "resource-1f691e6fcca8",
+              "role": "Motion Primitives focuses specifically on reusable animated interface building blocks."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "collection-accessible-colour-tools",
@@ -4705,7 +4977,75 @@
       ],
       "coverStyle": "systems",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A colour system that communicates the intended brand while surviving contrast, visual-impairment, component-state, and page-level checks.",
+      "audience": "Designers and frontend teams defining or auditing interface colour systems.",
+      "stages": [
+        {
+          "id": "build-the-system",
+          "title": "Build the system",
+          "inspect": "Generate candidate palettes and scales with explicit accessibility constraints rather than choosing isolated swatches.",
+          "decision": "Choose the tonal structure and semantic colour roles to prototype.",
+          "items": [
+            {
+              "resourceId": "resource-a2f7775b8c79",
+              "role": "Adobe Color supports early palette exploration and basic accessibility checks."
+            },
+            {
+              "resourceId": "resource-fe952dd7c89c",
+              "role": "Leonardo helps generate adaptive, contrast-aware colour systems."
+            },
+            {
+              "resourceId": "resource-9b8e899f4893",
+              "role": "InclusiveColors creates WCAG-aware scales suitable for tokenized interfaces."
+            }
+          ]
+        },
+        {
+          "id": "test-human-impact",
+          "title": "Test human impact",
+          "inspect": "Inspect contrast ratios and how combinations affect people with different visual impairments.",
+          "decision": "Decide which colour pairs and text treatments are safe for the intended content.",
+          "items": [
+            {
+              "resourceId": "resource-9aca4d63712d",
+              "role": "Who Can Use translates contrast choices into human-impact context."
+            },
+            {
+              "resourceId": "resource-4eee7a21dbf7",
+              "role": "WebAIM Contrast Checker provides a focused standards-based foreground/background test."
+            },
+            {
+              "resourceId": "resource-b44930562cf2",
+              "role": "Stark supports collaborative accessibility review across design and development tools."
+            }
+          ]
+        },
+        {
+          "id": "verify-in-context",
+          "title": "Verify in context",
+          "inspect": "Preview the system on interfaces, then run page- and component-level accessibility checks.",
+          "decision": "Approve, revise, or reject the colour implementation based on contextual evidence.",
+          "items": [
+            {
+              "resourceId": "resource-3cfed5eefb62",
+              "role": "Realtime Colors previews palette and typography choices in a page-like context."
+            },
+            {
+              "resourceId": "resource-06ff97d405dd",
+              "role": "Open Color offers an interface-oriented open colour scale for comparison or adoption."
+            },
+            {
+              "resourceId": "resource-9829cb4f86f3",
+              "role": "Accessibility Insights supports structured automated and guided implementation checks."
+            },
+            {
+              "resourceId": "resource-2f7f7a4aa766",
+              "role": "WAVE provides a second page-level evaluation lens for issues automation and visual inspection reveal."
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "collection-design-systems-worth-studying",
@@ -4726,7 +5066,75 @@
       ],
       "coverStyle": "systems",
       "lastReviewedAt": "2026-07-29",
-      "status": "published"
+      "status": "published",
+      "outcome": "A documented set of design-system decisions grounded in relevant public systems rather than copied visual conventions.",
+      "audience": "Product designers, design-system teams, and frontend leads defining foundations, components, content, and governance.",
+      "stages": [
+        {
+          "id": "compare-foundations",
+          "title": "Compare foundations",
+          "inspect": "Study broad platform and enterprise systems to compare tokens, foundations, component scope, and documentation structure.",
+          "decision": "Choose the foundation categories and documentation depth the project actually needs.",
+          "items": [
+            {
+              "resourceId": "resource-a3911f1d6257",
+              "role": "Material Design 3 provides a broad reference for tokens, adaptive foundations, and component guidance."
+            },
+            {
+              "resourceId": "resource-d99ec836c0db",
+              "role": "Apple Human Interface Guidelines shows platform-specific interaction and presentation constraints."
+            },
+            {
+              "resourceId": "resource-da29edad8096",
+              "role": "IBM Carbon demonstrates enterprise component architecture and documentation breadth."
+            }
+          ]
+        },
+        {
+          "id": "study-product-context",
+          "title": "Study product context",
+          "inspect": "Inspect systems shaped by commerce, collaboration, creative tools, and productivity products.",
+          "decision": "Decide which product-specific patterns transfer and which are context-bound.",
+          "items": [
+            {
+              "resourceId": "resource-ea00ff19bb49",
+              "role": "Shopify Polaris shows a design system shaped by commerce workflows and product language."
+            },
+            {
+              "resourceId": "resource-2a6274dc58f9",
+              "role": "Atlassian Design System provides patterns for dense collaborative software."
+            },
+            {
+              "resourceId": "resource-f9a5dce2d302",
+              "role": "Adobe Spectrum demonstrates cross-platform consistency for creative applications."
+            }
+          ]
+        },
+        {
+          "id": "learn-public-service-rigor",
+          "title": "Learn from public-service rigor",
+          "inspect": "Review systems where accessibility, content, service consistency, and contribution governance are explicit.",
+          "decision": "Define the accessibility, content, and governance standards required for the project.",
+          "items": [
+            {
+              "resourceId": "resource-5df16e75e20e",
+              "role": "Microsoft Fluent 2 offers another large-scale foundation and component model."
+            },
+            {
+              "resourceId": "resource-5c3090a40968",
+              "role": "GitHub Primer connects components, CSS, product patterns, and open contribution."
+            },
+            {
+              "resourceId": "resource-d3111f212292",
+              "role": "GOV.UK Design System foregrounds accessible service patterns, content, and evidence."
+            },
+            {
+              "resourceId": "resource-d4ea74da16b8",
+              "role": "U.S. Web Design System adds public-sector tokens, components, and implementation guidance."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

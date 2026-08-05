@@ -18,6 +18,7 @@ import styles from "./collection-resource-list.module.css";
 type CollectionResource = Readonly<{
   resource: ResourceCardData;
   categoryLabel: string;
+  role: string;
 }>;
 
 type CollectionResourceListProps = Readonly<{
@@ -80,8 +81,12 @@ export function CollectionResourceList({
   return (
     <>
       <ol className={className} data-collection-resource-grid>
-        {resources.map(({ resource, categoryLabel }) => (
-          <li key={resource.id}>
+        {resources.map(({ resource, categoryLabel, role }) => (
+          <li data-playbook-resource-role key={resource.id}>
+            <p className={styles.role}>
+              <strong>Why included</strong>
+              <span>{role}</span>
+            </p>
             <ResourceCard
               categoryLabel={categoryLabel}
               onSavedChange={handleSavedChange}

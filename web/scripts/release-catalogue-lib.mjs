@@ -377,6 +377,9 @@ export function validateCollectionSource(source, schema, resources) {
   const identifierPattern = new RegExp(schema.$defs.identifier.pattern);
   const collectionSchema = schema.$defs.collection;
   const resourceIdSchema = collectionSchema.properties.resourceIds;
+  const stageArraySchema = collectionSchema.properties.stages;
+  const stageSchema = schema.$defs.stage;
+  const stageItemSchema = schema.$defs.stageItem;
   const coverStyles = new Set(collectionSchema.properties.coverStyle.enum);
   const publishedStatus = collectionSchema.properties.status.const;
   const availableResourceIds = new Set(
@@ -436,7 +439,7 @@ export function validateCollectionSource(source, schema, resources) {
     }
     collectionSlugs.add(collection.slug);
 
-    for (const field of ["title", "description"]) {
+    for (const field of ["title", "description", "outcome", "audience"]) {
       if (
         !validBoundedString(
           collection[field],
@@ -500,6 +503,160 @@ export function validateCollectionSource(source, schema, resources) {
           );
         }
         memberIds.add(resourceId);
+      }
+    }
+
+    if (!Array.isArray(collection.stages)) {
+      errors.push(
+        issue("playbook-stage-array", `${label} stages must be an array.`),
+      );
+    } else {
+      if (
+        collection.stages.length < stageArraySchema.minItems ||
+        collection.stages.length > stageArraySchema.maxItems
+      ) {
+        errors.push(
+          issue(
+            "playbook-stage-count",
+            `${label} must contain between ${stageArraySchema.minItems} and ${stageArraySchema.maxItems} stages.`,
+            { actual: collection.stages.length },
+          ),
+        );
+      }
+
+      const stageIds = new Set();
+      const stagedResourceIds = [];
+      const stagedResourceSet = new Set();
+
+      for (const [stageIndex, stage] of collection.stages.entries()) {
+        const stageLabel = `${label} stage ${stage?.id ?? stageIndex + 1}`;
+        errors.push(
+          ...objectShapeIssues(
+            stage,
+            stageSchema.required,
+            Object.keys(stageSchema.properties),
+            stageLabel,
+          ),
+        );
+
+        if (!stage || typeof stage !== "object" || Array.isArray(stage)) {
+          continue;
+        }
+
+        if (!identifierPattern.test(stage.id ?? "")) {
+          errors.push(
+            issue("playbook-stage-id", `${stageLabel} has an invalid ID.`),
+          );
+        } else if (stageIds.has(stage.id)) {
+          errors.push(
+            issue(
+              "duplicate-playbook-stage-id",
+              `${label} contains duplicate stage ID ${stage.id}.`,
+            ),
+          );
+        }
+        stageIds.add(stage.id);
+
+        for (const field of ["title", "inspect", "decision"]) {
+          if (
+            !validBoundedString(stage[field], stageSchema.properties[field])
+          ) {
+            errors.push(
+              issue(
+                `playbook-stage-${field}`,
+                `${stageLabel} has an invalid ${field}.`,
+              ),
+            );
+          }
+        }
+
+        if (!Array.isArray(stage.items)) {
+          errors.push(
+            issue(
+              "playbook-stage-items",
+              `${stageLabel} items must be an array.`,
+            ),
+          );
+          continue;
+        }
+
+        const itemArraySchema = stageSchema.properties.items;
+        if (
+          stage.items.length < itemArraySchema.minItems ||
+          stage.items.length > itemArraySchema.maxItems
+        ) {
+          errors.push(
+            issue(
+              "playbook-stage-item-count",
+              `${stageLabel} has an invalid item count.`,
+              { actual: stage.items.length },
+            ),
+          );
+        }
+
+        for (const [itemIndex, item] of stage.items.entries()) {
+          const itemLabel = `${stageLabel} item ${itemIndex + 1}`;
+          errors.push(
+            ...objectShapeIssues(
+              item,
+              stageItemSchema.required,
+              Object.keys(stageItemSchema.properties),
+              itemLabel,
+            ),
+          );
+          if (!item || typeof item !== "object" || Array.isArray(item)) {
+            continue;
+          }
+
+          if (!identifierPattern.test(item.resourceId ?? "")) {
+            errors.push(
+              issue(
+                "playbook-stage-resource-id",
+                `${itemLabel} has an invalid resource ID.`,
+              ),
+            );
+          }
+          if (!validBoundedString(item.role, stageItemSchema.properties.role)) {
+            errors.push(
+              issue("playbook-stage-role", `${itemLabel} has an invalid role.`),
+            );
+          }
+          if (!collection.resourceIds?.includes(item.resourceId)) {
+            errors.push(
+              issue(
+                "playbook-stage-nonmember",
+                `${itemLabel} references a resource outside the Playbook membership.`,
+                { resourceId: item.resourceId },
+              ),
+            );
+          }
+          if (stagedResourceSet.has(item.resourceId)) {
+            errors.push(
+              issue(
+                "duplicate-playbook-stage-resource",
+                `${label} assigns ${item.resourceId} to more than one stage.`,
+                { resourceId: item.resourceId },
+              ),
+            );
+          }
+          stagedResourceSet.add(item.resourceId);
+          stagedResourceIds.push(item.resourceId);
+        }
+      }
+
+      if (
+        Array.isArray(collection.resourceIds) &&
+        (stagedResourceIds.length !== collection.resourceIds.length ||
+          stagedResourceIds.some(
+            (resourceId, index) => resourceId !== collection.resourceIds[index],
+          ))
+      ) {
+        errors.push(
+          issue(
+            "playbook-stage-order",
+            `${label} stage items must reproduce resourceIds exactly once and in editorial order.`,
+          ),
+        );
       }
     }
 

@@ -10,6 +10,16 @@ export type CollectionCoverStyle =
 export type CollectionResource = Readonly<{
   resource: ResourceCardData;
   categoryLabel: string;
+  role: string;
+  stageId: string;
+}>;
+
+export type PlaybookStage = Readonly<{
+  id: string;
+  title: string;
+  inspect: string;
+  decision: string;
+  resources: readonly CollectionResource[];
 }>;
 
 export type PublishedCollection = Readonly<{
@@ -17,7 +27,10 @@ export type PublishedCollection = Readonly<{
   slug: string;
   title: string;
   description: string;
+  outcome: string;
+  audience: string;
   resourceIds: readonly string[];
+  stages: readonly PlaybookStage[];
   coverStyle: CollectionCoverStyle;
   lastReviewedAt: string;
   status: "published";
@@ -52,29 +65,49 @@ function toResourceCardData(
   };
 }
 
+function resolveResource(
+  collectionSlug: string,
+  stageId: string,
+  item: (typeof catalogue.collections)[number]["stages"][number]["items"][number],
+): CollectionResource {
+  const source = resourceById.get(item.resourceId);
+  if (!source) {
+    throw new Error(
+      `Playbook ${collectionSlug} references missing resource ${item.resourceId}.`,
+    );
+  }
+
+  return {
+    resource: toResourceCardData(source),
+    categoryLabel: categoryLabelById.get(source.category) ?? source.category,
+    role: item.role,
+    stageId,
+  };
+}
+
 function resolveCollection(
   collection: (typeof catalogue.collections)[number],
 ): PublishedCollection {
-  const resources = collection.resourceIds.map((resourceId) => {
-    const source = resourceById.get(resourceId);
-    if (!source) {
-      throw new Error(
-        `Collection ${collection.slug} references missing resource ${resourceId}.`,
-      );
-    }
-
-    return {
-      resource: toResourceCardData(source),
-      categoryLabel: categoryLabelById.get(source.category) ?? source.category,
-    };
-  });
+  const stages = collection.stages.map((stage) => ({
+    id: stage.id,
+    title: stage.title,
+    inspect: stage.inspect,
+    decision: stage.decision,
+    resources: stage.items.map((item) =>
+      resolveResource(collection.slug, stage.id, item),
+    ),
+  }));
+  const resources = stages.flatMap((stage) => stage.resources);
 
   return {
     id: collection.id,
     slug: collection.slug,
     title: collection.title,
     description: collection.description,
+    outcome: collection.outcome,
+    audience: collection.audience,
     resourceIds: collection.resourceIds,
+    stages,
     coverStyle: collection.coverStyle as CollectionCoverStyle,
     lastReviewedAt: collection.lastReviewedAt,
     status: collection.status as "published",

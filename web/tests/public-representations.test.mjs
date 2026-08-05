@@ -163,29 +163,56 @@ test("Listed sources remain sparse without invented intelligence", () => {
   );
 });
 
-test("collection representations preserve editorial order and stay bounded", () => {
+test("Playbook representations preserve staged guidance and editorial order", () => {
   const collection = {
     id: "collection-one",
     slug: "collection-one",
-    title: "Collection One",
-    description: "A reviewed collection.",
+    title: "Playbook One",
+    description: "A reviewed research path.",
+    outcome: "A defensible decision.",
+    audience: "Product teams.",
     status: "published",
     lastReviewedAt: "2026-08-01",
     resourceIds: ["source-two", "source-one"],
+    stages: [
+      {
+        id: "compare",
+        title: "Compare",
+        inspect: "Inspect the available evidence.",
+        decision: "Choose the direction to prototype.",
+        resources: [
+          { resource: { id: "source-two" }, role: "Establish the baseline." },
+          { resource: { id: "source-one" }, role: "Test the richer option." },
+        ],
+      },
+    ],
   };
   const document = createPublicCollectionRepresentation(collection, [
     profiled,
     listed,
   ]);
-  assert.equal(document.contract, PUBLIC_COLLECTION_REPRESENTATION_CONTRACT);
+  assert.equal(document.contract, "tessli.public-playbook.v2");
+  assert.equal(document.playbook.outcome, "A defensible decision.");
+  assert.equal(document.playbook.stageCount, 1);
+  assert.equal(
+    document.stages[0].decision,
+    "Choose the direction to prototype.",
+  );
   assert.deepEqual(
     document.resources.map((resource) => resource.id),
     ["source-two", "source-one"],
+  );
+  assert.deepEqual(
+    document.resources.map((resource) => resource.role),
+    ["Establish the baseline.", "Test the richer option."],
   );
   assert.equal(document.resources[0].order, 1);
   assert.equal(document.resources[1].order, 2);
   assert.equal(document.resources[0].intelligence, undefined);
   const md = serializePublicCollectionMarkdown(document);
+  assert.match(md, /# Tessli Playbook — Playbook One/u);
+  assert.match(md, /## Stages/u);
+  assert.match(md, /Why included:\*\* Establish the baseline/u);
   assert.ok(md.indexOf("1. Source Two") < md.indexOf("2. Source One"));
   assert.doesNotMatch(md, /[ \t]+$/gmu);
 });

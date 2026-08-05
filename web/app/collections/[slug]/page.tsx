@@ -28,15 +28,15 @@ export async function generateMetadata({
   params,
 }: CollectionDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const collection = getPublishedCollection(slug);
+  const playbook = getPublishedCollection(slug);
 
-  if (!collection) {
-    return { title: "Collection not found" };
+  if (!playbook) {
+    return { title: "Playbook not found" };
   }
 
   return {
-    title: collection.title,
-    description: collection.description,
+    title: playbook.title,
+    description: playbook.outcome,
   };
 }
 
@@ -44,83 +44,147 @@ export default async function CollectionDetailPage({
   params,
 }: CollectionDetailPageProps) {
   const { slug } = await params;
-  const collection = getPublishedCollection(slug);
+  const playbook = getPublishedCollection(slug);
 
-  if (!collection) {
+  if (!playbook) {
     notFound();
   }
 
   return (
     <main
       className={styles.page}
-      data-collection-detail={collection.slug}
-      data-collection-resource-count={collection.resources.length}
+      data-collection-detail={playbook.slug}
+      data-collection-resource-count={playbook.resources.length}
+      data-playbook-stage-count={playbook.stages.length}
       id="main-content"
     >
       <div className="tessli-container">
-        <nav aria-label="Collection breadcrumb" className={styles.breadcrumb}>
-          <Link href="/collections">Collections</Link>
+        <nav aria-label="Playbook breadcrumb" className={styles.breadcrumb}>
+          <Link href="/collections">Playbooks</Link>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{collection.title}</span>
+          <span aria-current="page">{playbook.title}</span>
         </nav>
 
         <header className={styles.hero}>
           <div className={styles.coverFrame}>
             <CollectionCover
-              style={collection.coverStyle}
-              title={collection.title}
+              style={playbook.coverStyle}
+              title={playbook.title}
             />
           </div>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Curated collection</p>
-            <h1>{collection.title}</h1>
-            <p className={styles.description}>{collection.description}</p>
+            <p className={styles.eyebrow}>Research Playbook</p>
+            <h1>{playbook.title}</h1>
+            <p className={styles.description}>{playbook.description}</p>
+            <div className={styles.intentGrid}>
+              <section aria-labelledby="outcome-title">
+                <p className={styles.intentLabel} id="outcome-title">
+                  Outcome
+                </p>
+                <p>{playbook.outcome}</p>
+              </section>
+              <section aria-labelledby="audience-title">
+                <p className={styles.intentLabel} id="audience-title">
+                  For
+                </p>
+                <p>{playbook.audience}</p>
+              </section>
+            </div>
             <dl className={styles.facts}>
               <div>
-                <dt>Resources</dt>
-                <dd>{collection.resources.length}</dd>
+                <dt>Stages</dt>
+                <dd>{playbook.stages.length}</dd>
+              </div>
+              <div>
+                <dt>Sources</dt>
+                <dd>{playbook.resources.length}</dd>
               </div>
               <div>
                 <dt>Last reviewed</dt>
                 <dd>
-                  <time dateTime={collection.lastReviewedAt}>
-                    {formatCollectionReviewDate(collection.lastReviewedAt)}
+                  <time dateTime={playbook.lastReviewedAt}>
+                    {formatCollectionReviewDate(playbook.lastReviewedAt)}
                   </time>
                 </dd>
               </div>
-              <div>
-                <dt>Maintenance</dt>
-                <dd>Repository</dd>
-              </div>
             </dl>
             <div className={styles.actions}>
-              <Link className={styles.primaryAction} href="/collections">
-                Browse all collections
+              <Link className={styles.primaryAction} href="/boards">
+                Open project Boards
               </Link>
-              <Link className={styles.secondaryAction} href="/suggest">
-                Suggest an improvement
+              <Link className={styles.secondaryAction} href="/collections">
+                Browse all Playbooks
               </Link>
+              <a
+                className={styles.secondaryAction}
+                href={`/collections/${playbook.slug}/collection.md`}
+              >
+                Markdown
+              </a>
+              <a
+                className={styles.secondaryAction}
+                href={`/collections/${playbook.slug}/collection.json`}
+              >
+                JSON
+              </a>
             </div>
           </div>
         </header>
 
-        <section className={styles.resources} aria-labelledby="resources-title">
+        <section className={styles.resources} aria-labelledby="stages-title">
           <header className={styles.resourcesHeading}>
             <div>
-              <p className={styles.eyebrow}>Editorial order</p>
-              <h2 id="resources-title">Resources in this collection</h2>
+              <p className={styles.eyebrow}>Ordered research sequence</p>
+              <h2 id="stages-title">Work through the stages</h2>
             </div>
             <p>
-              The order is maintained in repository data and does not represent
-              popularity or sponsorship.
+              Save useful sources as you inspect them, then move the evidence
+              into a project Board. The sequence is guidance, not a ranking.
             </p>
           </header>
 
-          <CollectionResourceList
-            className={styles.grid}
-            resources={collection.resources}
-          />
+          <div className={styles.stageList}>
+            {playbook.stages.map((stage, index) => (
+              <article
+                className={styles.stage}
+                data-playbook-stage={stage.id}
+                key={stage.id}
+              >
+                <header className={styles.stageHeader}>
+                  <div>
+                    <p className={styles.stageNumber}>Stage {index + 1}</p>
+                    <h3>{stage.title}</h3>
+                  </div>
+                  <dl className={styles.stageGuidance}>
+                    <div>
+                      <dt>Inspect</dt>
+                      <dd>{stage.inspect}</dd>
+                    </div>
+                    <div>
+                      <dt>Decision supported</dt>
+                      <dd>{stage.decision}</dd>
+                    </div>
+                  </dl>
+                </header>
+
+                <CollectionResourceList
+                  className={styles.grid}
+                  resources={stage.resources}
+                />
+              </article>
+            ))}
+          </div>
         </section>
+
+        <aside className={styles.improvement}>
+          <div>
+            <p className={styles.eyebrow}>Repository maintained</p>
+            <h2>Found a missing source or weak stage?</h2>
+          </div>
+          <Link className={styles.secondaryAction} href="/suggest">
+            Suggest an improvement
+          </Link>
+        </aside>
       </div>
     </main>
   );

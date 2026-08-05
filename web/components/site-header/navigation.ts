@@ -8,7 +8,7 @@ export type NavigationItem = Readonly<{
 export const primaryNavigationItems: readonly NavigationItem[] = [
   { label: "Browse", href: "/resources", available: true, match: "prefix" },
   {
-    label: "Collections",
+    label: "Playbooks",
     href: "/collections",
     available: true,
     match: "prefix",

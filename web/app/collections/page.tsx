@@ -4,15 +4,19 @@ import { getPublishedCollections } from "@/lib/collections";
 import styles from "./collections.module.css";
 
 export const metadata = {
-  title: "Collections",
+  title: "Playbooks",
   description:
-    "Browse six repository-maintained Tessli collections organised around practical design and frontend workflows.",
+    "Follow six staged Tessli Playbooks for researching practical design and frontend decisions.",
 };
 
 export default function CollectionsPage() {
-  const collections = getPublishedCollections();
-  const membershipCount = collections.reduce(
-    (sum, collection) => sum + collection.resources.length,
+  const playbooks = getPublishedCollections();
+  const membershipCount = playbooks.reduce(
+    (sum, playbook) => sum + playbook.resources.length,
+    0,
+  );
+  const stageCount = playbooks.reduce(
+    (sum, playbook) => sum + playbook.stages.length,
     0,
   );
 
@@ -21,44 +25,44 @@ export default function CollectionsPage() {
       <div className="tessli-container">
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Curated workflows</p>
-            <h1>Useful starting points, assembled from real catalogue data.</h1>
+            <p className={styles.eyebrow}>Research Playbooks</p>
+            <h1>Move from source discovery to a defensible decision.</h1>
             <p className={styles.lede}>
-              Each Tessli collection is a reviewed, repository-maintained path
-              through a practical design or frontend task. There are no trend
-              scores, fictional curators, or popularity rankings.
+              Each Playbook turns a reviewed source set into an ordered research
+              path. Follow the stages, inspect the stated evidence, and record
+              the decision each source helps you make.
             </p>
           </div>
-          <dl className={styles.facts} aria-label="Collection catalogue facts">
+          <dl className={styles.facts} aria-label="Playbook catalogue facts">
             <div>
-              <dt>Published collections</dt>
-              <dd>{collections.length}</dd>
+              <dt>Published Playbooks</dt>
+              <dd>{playbooks.length}</dd>
             </div>
             <div>
-              <dt>Ordered memberships</dt>
+              <dt>Research stages</dt>
+              <dd>{stageCount}</dd>
+            </div>
+            <div>
+              <dt>Ordered source roles</dt>
               <dd>{membershipCount}</dd>
-            </div>
-            <div>
-              <dt>Data source</dt>
-              <dd>Repository</dd>
             </div>
           </dl>
         </header>
 
-        <section className={styles.section} aria-labelledby="collections-title">
+        <section className={styles.section} aria-labelledby="playbooks-title">
           <div className={styles.sectionHeading}>
             <div>
-              <p className={styles.eyebrow}>Launch catalogue</p>
-              <h2 id="collections-title">Six reviewed collections</h2>
+              <p className={styles.eyebrow}>Repository maintained</p>
+              <h2 id="playbooks-title">Six staged Playbooks</h2>
             </div>
             <p>
-              Visual size indicates page rhythm only. Every collection is
-              published and maintained through the same repository workflow.
+              The sequence is editorial guidance, not a ranking. Recheck each
+              provider's current access, licensing, and terms before use.
             </p>
           </div>
 
-          <ul className={styles.grid} data-collections-grid>
-            {collections.map((collection, index) => {
+          <ul className={styles.grid} data-collections-grid data-playbooks-grid>
+            {playbooks.map((playbook, index) => {
               const variant = index < 2 ? "featured" : "compact";
 
               return (
@@ -68,9 +72,9 @@ export default function CollectionsPage() {
                       ? styles.featuredItem
                       : styles.compactItem
                   }
-                  key={collection.id}
+                  key={playbook.id}
                 >
-                  <CollectionCard collection={collection} variant={variant} />
+                  <CollectionCard collection={playbook} variant={variant} />
                 </li>
               );
             })}

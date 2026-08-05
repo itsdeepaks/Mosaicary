@@ -68,6 +68,7 @@ export function CollectionCard({ collection, variant }: CollectionCardProps) {
       data-collection-card
       data-collection-slug={collection.slug}
       data-collection-variant={variant}
+      data-playbook-stage-count={collection.stages.length}
     >
       <Link
         aria-describedby={descriptionId}
@@ -84,7 +85,8 @@ export function CollectionCard({ collection, variant }: CollectionCardProps) {
           <div className={styles.headingRow}>
             <div>
               <p className={styles.meta}>
-                {collection.resources.length} resources · Reviewed{" "}
+                {collection.stages.length} stages ·{" "}
+                {collection.resources.length} sources · Reviewed{" "}
                 {formatCollectionReviewDate(collection.lastReviewedAt)}
               </p>
               <h2 id={titleId}>{collection.title}</h2>
@@ -92,7 +94,7 @@ export function CollectionCard({ collection, variant }: CollectionCardProps) {
             <ArrowIcon />
           </div>
           <p className={styles.description} id={descriptionId}>
-            {collection.description}
+            {collection.outcome}
           </p>
         </div>
       </Link>

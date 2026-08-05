@@ -35,55 +35,65 @@ async function collectionInputs() {
   };
 }
 
-test("release catalogue contains the six approved published launch collections", async () => {
-  const { catalogue, report } = await releaseBuild();
+test("release catalogue contains six version-2 published Playbooks", async () => {
+  const [{ catalogue, report }, { source, schema }] = await Promise.all([
+    releaseBuild(),
+    collectionInputs(),
+  ]);
 
+  assert.equal(source.version, 2);
+  assert.equal(schema.properties.version.const, 2);
   assert.equal(report.issues.errors.length, 0);
   assert.equal(catalogue.collections.length, 6);
   assert.equal(report.summary.collections, 6);
   assert.equal(report.summary.collectionItems, 60);
-  assert.deepEqual(
-    catalogue.collections.map((collection) => collection.slug),
-    [
-      "saas-landing-pages",
-      "typography-font-tools",
-      "motion-starter-pack",
-      "open-source-ui-libraries",
-      "accessible-colour-tools",
-      "design-systems-worth-studying",
-    ],
-  );
 
-  for (const collection of catalogue.collections) {
-    assert.equal(collection.status, "published");
-    assert.equal(collection.lastReviewedAt, "2026-07-29");
-    assert.equal(collection.resourceIds.length, 10);
-    assert.equal(new Set(collection.resourceIds).size, 10);
-    assert.equal(Object.hasOwn(collection, "curator"), false);
+  for (const playbook of catalogue.collections) {
+    assert.equal(playbook.status, "published");
+    assert.equal(playbook.lastReviewedAt, "2026-07-29");
+    assert.ok(playbook.outcome.trim());
+    assert.ok(playbook.audience.trim());
+    assert.equal(playbook.resourceIds.length, 10);
+    assert.equal(playbook.stages.length, 3);
+    const stagedIds = playbook.stages.flatMap((stage) =>
+      stage.items.map((item) => item.resourceId),
+    );
+    assert.deepEqual(stagedIds, playbook.resourceIds);
+    assert.equal(new Set(stagedIds).size, 10);
+    assert.equal(
+      playbook.stages.every(
+        (stage) =>
+          stage.title.trim() &&
+          stage.inspect.trim() &&
+          stage.decision.trim() &&
+          stage.items.every((item) => item.role.trim()),
+      ),
+      true,
+    );
+    assert.equal(Object.hasOwn(playbook, "curator"), false);
   }
 });
 
-test("launch collection membership matches each collection's stated workflow", async () => {
+test("Playbook membership still matches each stated workflow", async () => {
   const { catalogue } = await releaseBuild();
   const resources = new Map(
     catalogue.resources.map((resource) => [resource.id, resource]),
   );
-  const collections = new Map(
-    catalogue.collections.map((collection) => [collection.slug, collection]),
+  const playbooks = new Map(
+    catalogue.collections.map((playbook) => [playbook.slug, playbook]),
   );
 
   const assertMembers = (slug, predicate) => {
-    const collection = collections.get(slug);
-    assert.ok(collection, `Missing collection: ${slug}`);
-
-    for (const resourceId of collection.resourceIds) {
+    const playbook = playbooks.get(slug);
+    assert.ok(playbook, `Missing Playbook: ${slug}`);
+    for (const resourceId of playbook.resourceIds) {
       const resource = resources.get(resourceId);
       assert.ok(resource, `${slug} references unknown resource ${resourceId}`);
       assert.equal(resource.status, "active");
       assert.equal(
         predicate(resource),
         true,
-        `${resource.name} does not match ${slug}`,
+        `${resource.name} mismatches ${slug}`,
       );
     }
   };
@@ -115,7 +125,7 @@ test("launch collection membership matches each collection's stated workflow", a
   );
 });
 
-test("collection source provenance is deterministic and separate from CSV provenance", async () => {
+test("Playbook source provenance is deterministic and separate from CSV provenance", async () => {
   const [{ catalogue, report }, { sourceBuffer, source }] = await Promise.all([
     releaseBuild(),
     collectionInputs(),
@@ -130,19 +140,20 @@ test("collection source provenance is deterministic and separate from CSV proven
     sha256: sourceSha256,
     collectionCount: 6,
   });
-  assert.match(report.collectionSource.sha256, /^[a-f0-9]{64}$/);
 });
 
-test("collection source validator rejects duplicate and unknown relationships", async () => {
+test("validator rejects duplicated, missing, and reordered staged membership", async () => {
   const [{ catalogue }, { source, schema }] = await Promise.all([
     releaseBuild(),
     collectionInputs(),
   ]);
   const invalid = structuredClone(source);
-  invalid.collections[1].id = invalid.collections[0].id;
-  invalid.collections[2].slug = invalid.collections[0].slug;
-  invalid.collections[3].resourceIds[1] = invalid.collections[3].resourceIds[0];
-  invalid.collections[4].resourceIds[0] = "resource-does-not-exist";
+  invalid.collections[0].stages[1].id = invalid.collections[0].stages[0].id;
+  invalid.collections[1].stages[1].items[0].resourceId =
+    invalid.collections[1].stages[0].items[0].resourceId;
+  invalid.collections[2].stages[0].items[0].resourceId =
+    "resource-does-not-exist";
+  invalid.collections[3].stages[0].items.reverse();
 
   const codes = new Set(
     validateCollectionSource(invalid, schema, catalogue.resources).map(
@@ -150,26 +161,23 @@ test("collection source validator rejects duplicate and unknown relationships", 
     ),
   );
 
-  assert.equal(codes.has("duplicate-collection-id"), true);
-  assert.equal(codes.has("duplicate-collection-slug"), true);
-  assert.equal(codes.has("duplicate-collection-member"), true);
-  assert.equal(codes.has("unknown-collection-resource"), true);
+  assert.equal(codes.has("duplicate-playbook-stage-id"), true);
+  assert.equal(codes.has("duplicate-playbook-stage-resource"), true);
+  assert.equal(codes.has("playbook-stage-nonmember"), true);
+  assert.equal(codes.has("playbook-stage-order"), true);
 });
 
-test("collection source validator rejects malformed launch metadata", async () => {
+test("validator rejects malformed Playbook guidance", async () => {
   const [{ catalogue }, { source, schema }] = await Promise.all([
     releaseBuild(),
     collectionInputs(),
   ]);
   const invalid = structuredClone(source);
-  invalid.collections[0].lastReviewedAt = "2026-02-30";
-  invalid.collections[1].coverStyle = "gradient";
-  invalid.collections[2].status = "draft";
-  invalid.collections[3].resourceIds = invalid.collections[3].resourceIds.slice(
-    0,
-    7,
-  );
-  invalid.collections[4].curator = { name: "Imaginary curator" };
+  invalid.collections[0].outcome = "";
+  invalid.collections[1].audience = "";
+  invalid.collections[2].stages = invalid.collections[2].stages.slice(0, 1);
+  invalid.collections[3].stages[0].items[0].role = "";
+  invalid.collections[4].stages[0].extra = true;
 
   const codes = new Set(
     validateCollectionSource(invalid, schema, catalogue.resources).map(
@@ -177,20 +185,20 @@ test("collection source validator rejects malformed launch metadata", async () =
     ),
   );
 
-  assert.equal(codes.has("collection-review-date"), true);
-  assert.equal(codes.has("collection-cover-style"), true);
-  assert.equal(codes.has("collection-status"), true);
-  assert.equal(codes.has("collection-resource-count"), true);
+  assert.equal(codes.has("collection-outcome"), true);
+  assert.equal(codes.has("collection-audience"), true);
+  assert.equal(codes.has("playbook-stage-count"), true);
+  assert.equal(codes.has("playbook-stage-role"), true);
   assert.equal(codes.has("unexpected-keys"), true);
 });
 
-test("invalid collection source reports errors and publishes no collections", async () => {
+test("invalid Playbook source publishes no collections", async () => {
   const [{ catalogue }, { source, schema }] = await Promise.all([
     releaseBuild(),
     collectionInputs(),
   ]);
   const invalid = structuredClone(source);
-  invalid.collections[0].resourceIds = null;
+  invalid.collections[0].stages = null;
 
   const composition = prepareCollectionComposition(
     invalid,
@@ -202,14 +210,12 @@ test("invalid collection source reports errors and publishes no collections", as
   assert.equal(composition.sourceCollections.length, 6);
   assert.deepEqual(composition.collections, []);
   assert.equal(
-    composition.errors.some(
-      (error) => error.code === "collection-resource-array",
-    ),
+    composition.errors.some((error) => error.code === "playbook-stage-array"),
     true,
   );
 });
 
-test("release catalogue and collection report output are deterministic", async () => {
+test("release catalogue and Playbook report output are deterministic", async () => {
   const first = await buildReleaseCatalogue({ root: repoRoot });
   const second = await buildReleaseCatalogue({ root: repoRoot });
 
