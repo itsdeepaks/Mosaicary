@@ -54,9 +54,10 @@ test("Playbook cards expose stages, source count, and outcome", async () => {
 });
 
 test("Playbook detail exposes intent, stages, roles, Board, and exports", async () => {
-  const [detail, resourceList] = await Promise.all([
+  const [detail, resourceList, resourceCard] = await Promise.all([
     read("app/collections/[slug]/page.tsx"),
     read("components/collection-resources/collection-resource-list.tsx"),
+    read("components/resource-card/resource-card.tsx"),
   ]);
 
   assert.match(detail, /export const dynamicParams = false/);
@@ -80,6 +81,9 @@ test("Playbook detail exposes intent, stages, roles, Board, and exports", async 
   assert.match(resourceList, /\{role\}/);
   assert.match(resourceList, /onSavedChange=\{handleSavedChange\}/);
   assert.match(resourceList, /saved=\{savedIds\.includes\(resource\.id\)\}/);
+  assert.match(resourceCard, /data-resource-visit=\{resource\.id\}/);
+  assert.match(resourceCard, /target="_blank"/);
+  assert.match(resourceCard, /rel="noopener noreferrer"/);
 });
 
 test("Playbook layouts use bounded staged grids and responsive collapse", async () => {
