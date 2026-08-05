@@ -6,7 +6,7 @@ import {
 } from "./intelligence.ts";
 
 export const SOURCE_PROFILE_CONTRACT_VERSION = 1 as const;
-export const SOURCE_PROFILE_REVIEWED_AT = "2026-08-04" as const;
+export const SOURCE_PROFILE_REVIEWED_AT = "2026-08-05" as const;
 export const SOURCE_FRESHNESS_WINDOWS = Object.freeze({
   currentMaxDays: 90,
   agingMaxDays: 180,
