@@ -29,9 +29,7 @@ const resourceProfileTool = getTessliMcpToolMetadata("get_resource_profile");
 const compareResourcesTool = getTessliMcpToolMetadata("compare_resources");
 const collectionTool = getTessliMcpToolMetadata("get_collection");
 const researchPlanTool = getTessliMcpToolMetadata("build_research_plan");
-const referencePacketTool = getTessliMcpToolMetadata(
-  "create_reference_packet",
-);
+const referencePacketTool = getTessliMcpToolMetadata("create_reference_packet");
 const verificationTool = getTessliMcpToolMetadata("verify_resource");
 
 const readOnlyAnnotations = Object.freeze({

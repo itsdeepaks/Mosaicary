@@ -80,7 +80,10 @@ export default function ForAiPage() {
             </div>
           </div>
 
-          <dl className={styles.heroFacts} aria-label="Current Tessli model facts">
+          <dl
+            className={styles.heroFacts}
+            aria-label="Current Tessli model facts"
+          >
             <div>
               <dt>Read-only MCP tools</dt>
               <dd>{TESSLI_MCP_TOOL_CATALOGUE.length}</dd>
@@ -138,8 +141,8 @@ export default function ForAiPage() {
               <p className={styles.pathNumber}>02</p>
               <h3>With local MCP</h3>
               <p>
-                Run Tessli&apos;s repository-backed stdio server locally and let an
-                MCP client call the seven bounded tools directly.
+                Run Tessli&apos;s repository-backed stdio server locally and let
+                an MCP client call the seven bounded tools directly.
               </p>
               <ol>
                 <li>Search, inspect, and compare exact Tessli sources.</li>
@@ -302,7 +305,9 @@ export default function ForAiPage() {
               </p>
               <ul>
                 <li>
-                  <Link href={`/resources/${profiledExample.slug}/profile.json`}>
+                  <Link
+                    href={`/resources/${profiledExample.slug}/profile.json`}
+                  >
                     JSON representation
                   </Link>
                 </li>
@@ -318,8 +323,8 @@ export default function ForAiPage() {
               <p className={styles.cardLabel}>Listed fallback</p>
               <h3>{listedExample.name}</h3>
               <p>
-                Listed sources remain sparse. Missing intelligence, evidence, and
-                dates are not invented for a richer-looking document.
+                Listed sources remain sparse. Missing intelligence, evidence,
+                and dates are not invented for a richer-looking document.
               </p>
               <ul>
                 <li>
@@ -478,7 +483,9 @@ export default function ForAiPage() {
           <div className={styles.sectionHeading}>
             <div>
               <p className={styles.eyebrow}>Security and governance</p>
-              <h2 id="governance-title">Know exactly what the server does not do.</h2>
+              <h2 id="governance-title">
+                Know exactly what the server does not do.
+              </h2>
             </div>
             <p>
               Tessli MCP is a bounded metadata interface over the checked-out

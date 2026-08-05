@@ -78,8 +78,7 @@ export const TESSLI_MCP_TOOL_CATALOGUE = [
   },
 ] as const;
 
-export type TessliMcpToolMetadata =
-  (typeof TESSLI_MCP_TOOL_CATALOGUE)[number];
+export type TessliMcpToolMetadata = (typeof TESSLI_MCP_TOOL_CATALOGUE)[number];
 export type TessliMcpToolName = TessliMcpToolMetadata["name"];
 
 export const TESSLI_MCP_TOOL_NAMES = Object.freeze(

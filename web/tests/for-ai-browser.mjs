@@ -128,14 +128,8 @@ await navigate(
   'document.querySelectorAll("[data-for-ai-page] .toolCard").length === 7 || document.querySelectorAll("[data-for-ai-page] ol li code").length >= 7',
 );
 
-assert.equal(
-  await evaluate('document.querySelectorAll("main").length'),
-  1,
-);
-assert.equal(
-  await evaluate('document.querySelectorAll("h1").length'),
-  1,
-);
+assert.equal(await evaluate('document.querySelectorAll("main").length'), 1);
+assert.equal(await evaluate('document.querySelectorAll("h1").length'), 1);
 assert.equal(
   await evaluate(
     'document.querySelector("nav[aria-label=\\"Primary navigation\\"] a[aria-current=\\"page\\"]")?.textContent?.trim()',
@@ -155,15 +149,11 @@ assert.equal(
   true,
 );
 assert.equal(
-  await evaluate(
-    'document.querySelectorAll("a a, a button, button a").length',
-  ),
+  await evaluate('document.querySelectorAll("a a, a button, button a").length'),
   0,
 );
 assert.equal(
-  await evaluate(
-    'document.querySelectorAll("pre[tabindex=\\"0\\"]").length',
-  ),
+  await evaluate('document.querySelectorAll("pre[tabindex=\\"0\\"]").length'),
   2,
 );
 assert.equal(
@@ -227,4 +217,6 @@ for (const [width, height, mobile] of [
 
 socket.close();
 assert.deepEqual(browserFailures, []);
-console.log("For AI route, representations, responsive layout, and boundaries passed.");
+console.log(
+  "For AI route, representations, responsive layout, and boundaries passed.",
+);
