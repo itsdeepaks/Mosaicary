@@ -74,7 +74,7 @@ jobs:
             | base64 --decode \
             | gzip --decompress \
             > /tmp/tessli-playbooks.patch
-          patch --batch --forward -p2 < /tmp/tessli-playbooks.patch
+          patch --batch --forward -p3 < /tmp/tessli-playbooks.patch
 
           python - <<'PY'
           from pathlib import Path
