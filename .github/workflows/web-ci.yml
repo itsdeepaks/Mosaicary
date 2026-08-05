@@ -38,11 +38,9 @@ jobs:
           cd web
           npx prettier --write ../build-slices.md ../docs/product-plan-v2.md ../docs/page-contracts.md ../docs/slices/6.4-for-ai-product-page.md tests/release-hardening.test.mjs
           cd ..
-          git show 78342be0ba2d94027b11d126637a643d3dd7e42e:.github/workflows/web-ci.yml > .github/workflows/web-ci.yml
-          git show 78342be0ba2d94027b11d126637a643d3dd7e42e:.github/workflows/phase-1-release-gate.yml > .github/workflows/phase-1-release-gate.yml
-          rm -f web/scripts/apply-slice-6.4-authority.py docs/slices/.6.4-authority-trigger docs/slices/.6.4-authority-trigger-2
+          rm -f web/scripts/apply-slice-6.4-authority.py docs/slices/.6.4-authority-trigger docs/slices/.6.4-authority-trigger-2 docs/slices/.6.4-authority-trigger-3
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add build-slices.md docs/product-plan-v2.md docs/page-contracts.md docs/slices/6.4-for-ai-product-page.md web/tests/release-hardening.test.mjs web/scripts/apply-slice-6.4-authority.py docs/slices/.6.4-authority-trigger docs/slices/.6.4-authority-trigger-2 docs/slices/.6.4-authority-trigger-3
           git commit -m "docs: complete Slice 6.4 and lock proof boundary"
           git push origin HEAD:feat/for-ai-product-page
