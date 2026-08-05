@@ -52,11 +52,11 @@ Tessli now separates independent foundation work from the evidence-dependent pro
 
 ```text
 40 Profiled
-→ Slice 1.5: verification contract and operator workflow
-→ first bounded Verified batch
+→ Slice 1.5 verification contract/workflow DONE
+→ Slice 1.6 first bounded Verified batch NEXT
 ```
 
-The next repository slice is **1.5 Verification Contract and Operator Workflow**. It defines claim-level evidence, freshness, reviewer, credential, persistence, redistribution, and safe-failure rules without promoting a source or claiming that the OSS proof succeeded.
+The next repository slice is **1.6 First Evidence-Backed Verified Batch**. It must select a small bounded set, create current human-operator records through the Slice 1.5 workflow, and promote only records that satisfy every schema and semantic gate.
 
 ### Proof and UI Judgment — blocked
 
@@ -73,7 +73,7 @@ The existing OSS candidate and safe review workspace remain preserved until a re
 
 ```text
 Phase 0  Direction Reset                         DONE
-Phase 1  Source Intelligence Foundation          ACTIVE — 1.5 NEXT
+Phase 1  Source Intelligence Foundation          ACTIVE — 1.6 NEXT
 Phase 2  Browse and Source Detail                DONE
 Phase 3  Local Saved and Project Boards          DONE
 Phase 4  Research-Pack Export                    DONE
@@ -85,7 +85,7 @@ Phase 9  Community and Moderation                DEFERRED
 Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
 ```
 
-The approved next repository slice is **Phase 1 / Slice 1.5 — Verification Contract and Operator Workflow**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
+The approved next repository slice is **Phase 1 / Slice 1.6 — First Evidence-Backed Verified Batch**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
 
 ## Source coverage levels
 
