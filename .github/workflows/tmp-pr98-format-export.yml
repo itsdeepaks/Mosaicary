@@ -1,0 +1,39 @@
+name: Temporary PR98 Format Export
+
+on:
+  push:
+    branches:
+      - feat/verification-contract-operator-workflow
+
+permissions:
+  contents: read
+
+jobs:
+  format-export:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Format verification files
+        run: npx prettier --write lib/resource-verification.ts scripts/resource-verification.mjs tests/resource-verification.test.mjs
+      - name: Upload formatted files
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr98-formatted-files
+          path: |
+            web/lib/resource-verification.ts
+            web/scripts/resource-verification.mjs
+            web/tests/resource-verification.test.mjs
+          if-no-files-found: error
+          retention-days: 1
