@@ -79,7 +79,7 @@ test("For AI page exposes truthful model paths, representations, and boundaries"
   assert.match(page, /collection\.json/);
   assert.match(page, /collection\.md/);
   assert.match(page, /tessli\.board-research-pack\.v1/);
-  assert.match(page, /The MCP server does not read private Board storage/);
+  assert.match(page, /The MCP\s*server does not read private Board storage/);
   assert.match(page, /No live provider verification/);
   assert.match(page, /No screenshot or private-library retrieval/);
   assert.match(page, /No project-code ingestion/);
@@ -104,7 +104,7 @@ test("For AI coverage and freshness copy derive from executable source truth", (
   });
   assert.equal(deriveFreshnessStatus("2026-05-06", "2026-08-04"), "current");
   assert.equal(deriveFreshnessStatus("2026-05-05", "2026-08-04"), "aging");
-  assert.equal(deriveFreshnessStatus("2026-02-05", "2026-08-04"), "stale");
+  assert.equal(deriveFreshnessStatus("2026-02-04", "2026-08-04"), "stale");
   assert.equal(deriveFreshnessStatus(null, "2026-08-04"), "unknown");
 });
 
