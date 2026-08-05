@@ -18,18 +18,10 @@ export class ResourceVerificationError extends Error {
 }
 
 type JsonValue =
-  | null
-  | boolean
-  | number
-  | string
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+  null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
 export type VerificationDecision =
-  | "pending"
-  | "verified"
-  | "needs-review"
-  | "rejected";
+  "pending" | "verified" | "needs-review" | "rejected";
 
 export interface ResourceVerificationRecord {
   contract: typeof RESOURCE_VERIFICATION_CONTRACT;
@@ -148,11 +140,30 @@ export function intelligenceProfileSha256(
   return createHash("sha256").update(stableJson(profile), "utf8").digest("hex");
 }
 
-function requireIsoDate(value: string, field: string): string {
+function isoDateValue(value: string | null): number | null {
+  if (!value) return null;
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const timestamp = Date.UTC(year, month - 1, day);
+  const parsed = new Date(timestamp);
+
   if (
-    !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
-    !Number.isFinite(Date.parse(`${value}T00:00:00Z`))
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
   ) {
+    return null;
+  }
+
+  return timestamp;
+}
+
+function requireIsoDate(value: string, field: string): string {
+  if (isoDateValue(value) === null) {
     throw new ResourceVerificationError(`${field} must be a valid ISO date.`);
   }
   return value;
@@ -266,19 +277,32 @@ export function createResourceVerificationDraft(input: {
   };
 }
 
-function dateValue(value: string | null): number | null {
-  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const parsed = Date.parse(`${value}T00:00:00Z`);
-  return Number.isFinite(parsed) ? parsed : null;
-}
-
-function requireCompletedDate(
+function requireDate(
   value: string | null,
   field: string,
   errors: string[],
 ): number | null {
-  const parsed = dateValue(value);
+  const parsed = isoDateValue(value);
   if (parsed === null) errors.push(`${field} must be a valid ISO date.`);
+  return parsed;
+}
+
+function validateCheckDate(
+  value: string | null,
+  field: string,
+  startedAt: number | null,
+  completedAt: number | null,
+  errors: string[],
+): number | null {
+  if (value === null) return null;
+  const parsed = requireDate(value, field, errors);
+  if (parsed === null) return null;
+  if (startedAt !== null && parsed < startedAt) {
+    errors.push(`${field} cannot be earlier than startedAt.`);
+  }
+  if (completedAt !== null && parsed > completedAt) {
+    errors.push(`${field} cannot be later than completedAt.`);
+  }
   return parsed;
 }
 
@@ -311,7 +335,8 @@ function exactInterfaceSet(
         check.type === agentInterface.type &&
         check.transport === (agentInterface.transport ?? "in-product") &&
         check.persistencePolicy ===
-          (agentInterface.persistencePolicy ?? "unknown")
+          (agentInterface.persistencePolicy ?? "unknown") &&
+        check.credentialHandling === credentialHandling(agentInterface)
       );
     })
   );
@@ -329,7 +354,9 @@ export function validateResourceVerificationRecord(
     target = verificationTarget(record.resourceId);
   } catch (error) {
     errors.push(
-      error instanceof Error ? error.message : "Unknown source verification error.",
+      error instanceof Error
+        ? error.message
+        : "Unknown source verification error.",
     );
   }
 
@@ -337,14 +364,27 @@ export function validateResourceVerificationRecord(
     if (record.resourceSlug !== target.source.slug) {
       errors.push("resourceSlug does not match the canonical source.");
     }
-    if (record.profileReviewedAt !== target.intelligence.verifiedAt) {
-      errors.push("profileReviewedAt does not match the current profile record.");
+    if (record.availabilityCheck.observedUrl !== target.source.url) {
+      errors.push(
+        "availabilityCheck.observedUrl does not match the canonical source URL.",
+      );
     }
-    if (record.profileSha256 !== intelligenceProfileSha256(target.intelligence)) {
-      errors.push("profileSha256 is stale or does not match the current profile.");
+    if (record.profileReviewedAt !== target.intelligence.verifiedAt) {
+      errors.push(
+        "profileReviewedAt does not match the current profile record.",
+      );
+    }
+    if (
+      record.profileSha256 !== intelligenceProfileSha256(target.intelligence)
+    ) {
+      errors.push(
+        "profileSha256 is stale or does not match the current profile.",
+      );
     }
     if (!exactClaimSet(record, target.intelligence)) {
-      errors.push("claimChecks do not match the current profile evidence in order.");
+      errors.push(
+        "claimChecks do not match the current profile evidence in order.",
+      );
     }
     if (!exactInterfaceSet(record, target.intelligence)) {
       errors.push(
@@ -367,7 +407,7 @@ export function validateResourceVerificationRecord(
     errors.push("A non-blank human-operator reviewer ID is required.");
   }
 
-  const startedAt = requireCompletedDate(record.startedAt, "startedAt", errors);
+  const startedAt = requireDate(record.startedAt, "startedAt", errors);
 
   if (record.status === "draft") {
     if (record.completedAt !== null) {
@@ -376,6 +416,46 @@ export function validateResourceVerificationRecord(
     if (record.decision !== "pending") {
       errors.push("Draft records must keep decision as pending.");
     }
+
+    validateCheckDate(
+      record.availabilityCheck.checkedAt,
+      "availabilityCheck.checkedAt",
+      startedAt,
+      null,
+      errors,
+    );
+    record.claimChecks.forEach((check, index) => {
+      validateCheckDate(
+        check.checkedAt,
+        `claimChecks[${index}].checkedAt`,
+        startedAt,
+        null,
+        errors,
+      );
+    });
+    record.interfaceChecks.forEach((check, index) => {
+      validateCheckDate(
+        check.checkedAt,
+        `interfaceChecks[${index}].checkedAt`,
+        startedAt,
+        null,
+        errors,
+      );
+    });
+    validateCheckDate(
+      record.governanceCheck.checkedAt,
+      "governanceCheck.checkedAt",
+      startedAt,
+      null,
+      errors,
+    );
+    if (
+      record.freshness.recheckBy !== null &&
+      isoDateValue(record.freshness.recheckBy) === null
+    ) {
+      errors.push("freshness.recheckBy must be a valid ISO date.");
+    }
+
     return {
       valid: errors.length === 0,
       eligibleForPromotion: false,
@@ -383,7 +463,7 @@ export function validateResourceVerificationRecord(
     };
   }
 
-  const completedAt = requireCompletedDate(
+  const completedAt = requireDate(
     record.completedAt,
     "completedAt",
     errors,
@@ -400,36 +480,102 @@ export function validateResourceVerificationRecord(
   if (record.availabilityCheck.result === "pending") {
     errors.push("Completed records require an availability result.");
   }
+  if (record.availabilityCheck.method === "not-run") {
+    errors.push("Completed records require an availability check method.");
+  }
   if (record.availabilityCheck.checkedAt === null) {
     errors.push("Completed records require availability checkedAt.");
+  } else {
+    validateCheckDate(
+      record.availabilityCheck.checkedAt,
+      "availabilityCheck.checkedAt",
+      startedAt,
+      completedAt,
+      errors,
+    );
   }
-  if (record.claimChecks.some((check) => check.result === "pending")) {
-    errors.push("Completed records cannot contain pending claim checks.");
-  }
-  if (record.claimChecks.some((check) => check.checkedAt === null)) {
-    errors.push("Completed records require a date for every claim check.");
-  }
-  if (record.interfaceChecks.some((check) => check.result === "pending")) {
-    errors.push("Completed records cannot contain pending interface checks.");
-  }
-  if (record.interfaceChecks.some((check) => check.checkedAt === null)) {
-    errors.push("Completed records require a date for every interface check.");
-  }
+
+  record.claimChecks.forEach((check, index) => {
+    if (check.result === "pending") {
+      errors.push(`claimChecks[${index}] cannot remain pending.`);
+    }
+    if (check.method === "not-run") {
+      errors.push(`claimChecks[${index}] requires a review method.`);
+    }
+    if (check.checkedAt === null) {
+      errors.push(`claimChecks[${index}] requires checkedAt.`);
+    } else {
+      validateCheckDate(
+        check.checkedAt,
+        `claimChecks[${index}].checkedAt`,
+        startedAt,
+        completedAt,
+        errors,
+      );
+    }
+  });
+
+  record.interfaceChecks.forEach((check, index) => {
+    if (check.result === "pending") {
+      errors.push(`interfaceChecks[${index}] cannot remain pending.`);
+    }
+    if (check.method === "not-run") {
+      errors.push(`interfaceChecks[${index}] requires a review method.`);
+    }
+    if (check.checkedAt === null) {
+      errors.push(`interfaceChecks[${index}] requires checkedAt.`);
+    } else {
+      validateCheckDate(
+        check.checkedAt,
+        `interfaceChecks[${index}].checkedAt`,
+        startedAt,
+        completedAt,
+        errors,
+      );
+    }
+  });
+
   if (
-    Object.values(record.governanceCheck)
-      .slice(0, 4)
-      .some((value) => value === "pending")
+    [
+      record.governanceCheck.persistence,
+      record.governanceCheck.redistribution,
+      record.governanceCheck.attribution,
+      record.governanceCheck.terms,
+    ].some((value) => value === "pending")
   ) {
     errors.push("Completed records cannot contain pending governance checks.");
   }
   if (record.governanceCheck.checkedAt === null) {
     errors.push("Completed records require governance checkedAt.");
+  } else {
+    validateCheckDate(
+      record.governanceCheck.checkedAt,
+      "governanceCheck.checkedAt",
+      startedAt,
+      completedAt,
+      errors,
+    );
   }
   if (!record.limitationsReviewed) {
     errors.push("Completed records require limitationsReviewed=true.");
   }
   if (record.freshness.status === "pending" || !record.freshness.recheckBy) {
-    errors.push("Completed records require a freshness status and recheckBy date.");
+    errors.push(
+      "Completed records require a freshness status and recheckBy date.",
+    );
+  } else {
+    const recheckBy = requireDate(
+      record.freshness.recheckBy,
+      "freshness.recheckBy",
+      errors,
+    );
+    if (
+      completedAt !== null &&
+      recheckBy !== null &&
+      recheckBy < completedAt
+    ) {
+      errors.push("freshness.recheckBy cannot be earlier than completedAt.");
+    }
   }
 
   if (record.decision === "verified") {
@@ -440,7 +586,9 @@ export function validateResourceVerificationRecord(
       errors.push("Verified decisions require every claim to be confirmed.");
     }
     if (record.interfaceChecks.some((check) => check.result !== "passed")) {
-      errors.push("Verified decisions require every recorded interface to pass.");
+      errors.push(
+        "Verified decisions require every recorded interface to pass.",
+      );
     }
     for (const field of [
       "persistence",
@@ -449,26 +597,22 @@ export function validateResourceVerificationRecord(
       "terms",
     ] as const) {
       if (record.governanceCheck[field] !== "confirmed") {
-        errors.push(`Verified decisions require governance ${field}=confirmed.`);
+        errors.push(
+          `Verified decisions require governance ${field}=confirmed.`,
+        );
       }
+    }
+    if (!record.governanceCheck.termsUrl) {
+      errors.push("Verified decisions require a current governance termsUrl.");
     }
     if (record.freshness.status !== "current") {
       errors.push("Verified decisions require current freshness.");
-    }
-    const recheckBy = dateValue(record.freshness.recheckBy);
-    if (
-      completedAt !== null &&
-      recheckBy !== null &&
-      recheckBy < completedAt
-    ) {
-      errors.push("freshness.recheckBy cannot be earlier than completedAt.");
     }
   }
 
   return {
     valid: errors.length === 0,
-    eligibleForPromotion:
-      errors.length === 0 && record.decision === "verified",
+    eligibleForPromotion: errors.length === 0 && record.decision === "verified",
     errors,
   };
 }
