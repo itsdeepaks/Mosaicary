@@ -1,0 +1,699 @@
+{
+  "version": 1,
+  "slice": "1.3",
+  "reviewedAt": "2026-08-05",
+  "profiles": [
+    {
+      "profileVersion": 1,
+      "resourceId": "google-fonts",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Open font library with web stylesheet delivery and a developer API for family metadata.",
+      "capabilities": [
+        "font-discovery",
+        "web-font-delivery",
+        "font-metadata-api"
+      ],
+      "contentObjects": ["font", "documentation"],
+      "platforms": ["web", "cross-platform"],
+      "frameworks": [],
+      "designTools": [],
+      "deliveryFormats": [
+        "web-page",
+        "source-link",
+        "downloadable-asset",
+        "structured-data",
+        "documentation"
+      ],
+      "integrationMethods": ["website", "api", "manual-download"],
+      "agentInterfaces": [
+        {
+          "type": "api",
+          "transport": "http",
+          "endpoint": "https://www.googleapis.com/webfonts/v1/webfonts",
+          "authentication": "api-key",
+          "credentialOwner": "user",
+          "dataReturned": [
+            "font-family-metadata",
+            "font-variants",
+            "font-subsets"
+          ],
+          "persistencePolicy": "metadata-only",
+          "status": "documented",
+          "documentationUrl": "https://developers.google.com/fonts/docs/developer_api"
+        }
+      ],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["family", "category", "language", "properties"]
+      },
+      "workflowFit": [
+        "font-shortlisting",
+        "web-font-implementation",
+        "typography-prototyping"
+      ],
+      "limitations": [
+        "Font-family licences and supported scripts must be checked per family.",
+        "Developer API metadata requests require a user-owned API key.",
+        "Loading many families, styles, or subsets can increase page weight."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Retain each selected family's licence information.",
+          "Use the official stylesheet or self-host only within the font licence."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Google Fonts provides open-source fonts that can be applied to webpages through an official stylesheet API.",
+          "sourceUrl": "https://developers.google.com/fonts",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "The Developer API returns JSON metadata for available families and requires an API key.",
+          "sourceUrl": "https://developers.google.com/fonts/docs/developer_api",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "radix-ui",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Open-source, unstyled React primitives for accessible design systems and web applications.",
+      "capabilities": [
+        "accessible-primitives",
+        "component-library",
+        "design-system-foundation"
+      ],
+      "contentObjects": ["component", "code", "documentation"],
+      "platforms": ["web"],
+      "frameworks": ["react"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package", "github"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["component", "primitive", "utility", "accessibility"]
+      },
+      "workflowFit": [
+        "accessible-component-foundation",
+        "design-system-architecture",
+        "custom-react-ui"
+      ],
+      "limitations": [
+        "Radix supplies behavior and structure rather than a finished visual system.",
+        "Application authors remain responsible for accessible labels and context-specific semantics.",
+        "Teams must own styling, composition, and version compatibility."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Review package licence and version before shipping.",
+          "Preserve application-level accessibility testing."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Radix Primitives is an open-source low-level UI library focused on accessibility, customization, and developer experience.",
+          "sourceUrl": "https://www.radix-ui.com/primitives/docs/overview/introduction",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "Radix documents WAI-ARIA patterns, focus management, keyboard navigation, and assistive-technology testing.",
+          "sourceUrl": "https://www.radix-ui.com/primitives/docs/overview/accessibility",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "headless-ui",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Unstyled, accessible components for React and Vue designed to integrate with custom styling.",
+      "capabilities": [
+        "accessible-components",
+        "headless-components",
+        "component-library"
+      ],
+      "contentObjects": ["component", "code", "documentation"],
+      "platforms": ["web"],
+      "frameworks": ["react", "vue", "tailwind"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package", "github"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": false,
+        "semanticSearch": "no",
+        "facets": ["framework", "component", "form-control", "overlay"]
+      },
+      "workflowFit": [
+        "accessible-ui-implementation",
+        "tailwind-component-foundation",
+        "react-vue-interface-build"
+      ],
+      "limitations": [
+        "Components are intentionally unstyled and require a project-owned visual system.",
+        "Framework support is limited to the documented React and Vue packages.",
+        "Application-level keyboard, screen-reader, and responsive testing is still required."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Review package licence and supported framework versions.",
+          "Do not treat accessibility defaults as a substitute for product testing."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Headless UI provides completely unstyled, fully accessible components for React and Vue.",
+          "sourceUrl": "https://headlessui.com",
+          "sourceType": "official-product-page",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "react-aria",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Unstyled React components and hooks for accessible, internationalized, interaction-rich interfaces.",
+      "capabilities": [
+        "accessible-components",
+        "accessibility-hooks",
+        "internationalized-interactions"
+      ],
+      "contentObjects": ["component", "code", "documentation"],
+      "platforms": ["web"],
+      "frameworks": ["react"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package", "github"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["component", "hook", "interaction", "accessibility"]
+      },
+      "workflowFit": [
+        "accessible-design-system",
+        "complex-interaction-design",
+        "internationalized-react-ui"
+      ],
+      "limitations": [
+        "The library is React-specific.",
+        "Unstyled components require application-owned visual design and state styling.",
+        "Lower-level hooks increase implementation responsibility when the component API is bypassed."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Start with components and use hooks only when additional control is required.",
+          "Retain device and assistive-technology testing."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "React Aria provides unstyled React components and hooks with accessibility, internationalization, interactions, and behavior built in.",
+          "sourceUrl": "https://react-spectrum.adobe.com/react-aria/getting-started.html",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "gsap",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "JavaScript animation platform with tween, timeline, and plugin APIs for controlled web motion.",
+      "capabilities": [
+        "timeline-animation",
+        "interaction-animation",
+        "scroll-animation"
+      ],
+      "contentObjects": ["code", "documentation", "motion-example", "tool"],
+      "platforms": ["web"],
+      "frameworks": ["javascript"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["core", "timeline", "plugin", "method"]
+      },
+      "workflowFit": [
+        "sequenced-web-animation",
+        "interaction-prototyping",
+        "scroll-driven-motion"
+      ],
+      "limitations": [
+        "Complex timelines can increase maintenance and debugging cost.",
+        "Animation still requires reduced-motion, performance, and input-modality review.",
+        "Plugin and commercial-use terms must be checked for the intended project."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "restricted",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Review current GSAP licence and plugin terms before distribution.",
+          "Prefer purposeful interaction feedback over decorative motion."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "GSAP documents tween and timeline APIs for controlling animation playheads and sequencing.",
+          "sourceUrl": "https://gsap.com/docs/v3/GSAP/",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "GSAP plugins extend the animation core with additional capabilities.",
+          "sourceUrl": "https://gsap.com/docs/v3/Plugins/",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "lottiefiles",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Lottie creation, workspace, runtime, and developer platform with hosted and local MCP workflows.",
+      "capabilities": [
+        "vector-animation-creation",
+        "animation-workspace",
+        "lottie-runtime-workflow",
+        "mcp-integration"
+      ],
+      "contentObjects": ["motion-example", "asset", "tool", "documentation"],
+      "platforms": ["web", "mobile", "cross-platform"],
+      "frameworks": ["javascript"],
+      "designTools": [],
+      "deliveryFormats": [
+        "web-page",
+        "downloadable-asset",
+        "generated-output",
+        "documentation",
+        "structured-data"
+      ],
+      "integrationMethods": [
+        "website",
+        "mcp",
+        "npm-package",
+        "plugin",
+        "manual-download"
+      ],
+      "agentInterfaces": [
+        {
+          "type": "mcp",
+          "transport": "http",
+          "endpoint": "https://mcp.lottiefiles.com",
+          "authentication": "oauth",
+          "credentialOwner": "user",
+          "dataReturned": ["workspaces", "projects", "animations"],
+          "persistencePolicy": "transient",
+          "status": "documented",
+          "documentationUrl": "https://docs.lottiefiles.com/en/platform"
+        }
+      ],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "unknown",
+        "facets": ["animation", "style", "format", "platform"]
+      },
+      "workflowFit": [
+        "lottie-asset-workflow",
+        "vector-animation-handoff",
+        "animation-library-management",
+        "agent-assisted-animation"
+      ],
+      "limitations": [
+        "Marketplace and community assets may carry separate licences and usage restrictions.",
+        "Hosted MCP access requires the user's LottieFiles account through OAuth.",
+        "Lottie and dotLottie runtime support differs by target platform and feature."
+      ],
+      "governance": {
+        "defaultPersistence": "metadata-only",
+        "assetRedistribution": "restricted",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Keep user workspace content outside Tessli.",
+          "Review each animation asset licence before persistence or redistribution."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "LottieFiles documents a hosted MCP server for account workspaces, projects, and animations, authenticated through OAuth.",
+          "sourceUrl": "https://docs.lottiefiles.com/en/platform",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "Lottie Creator documents professional animation authoring, timelines, keyframes, import, and export workflows.",
+          "sourceUrl": "https://docs.lottiefiles.com/en/creator",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "rive",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Interactive vector animation editor with state machines and open-source runtimes across application platforms.",
+      "capabilities": [
+        "interactive-vector-animation",
+        "state-machine-animation",
+        "cross-platform-runtime"
+      ],
+      "contentObjects": [
+        "motion-example",
+        "asset",
+        "tool",
+        "code",
+        "documentation"
+      ],
+      "platforms": ["web", "mobile", "cross-platform"],
+      "frameworks": ["react", "react-native", "flutter"],
+      "designTools": [],
+      "deliveryFormats": [
+        "design-file",
+        "downloadable-asset",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package", "sdk", "manual-download"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "unknown",
+        "facets": ["editor", "runtime", "platform", "state-machine"]
+      },
+      "workflowFit": [
+        "interactive-animation-design",
+        "stateful-product-motion",
+        "cross-platform-animation-handoff"
+      ],
+      "limitations": [
+        "Advanced runtime features and renderer support vary by platform and package.",
+        "State-machine contracts require coordination between design and implementation.",
+        "Project files and community assets may have separate access and redistribution terms."
+      ],
+      "governance": {
+        "defaultPersistence": "metadata-only",
+        "assetRedistribution": "restricted",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Keep project files and user-owned assets outside Tessli.",
+          "Verify the selected runtime and renderer against the target platform."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Rive combines an editor with state machines and open-source runtimes for web, mobile, and game platforms.",
+          "sourceUrl": "https://rive.app/docs/getting-started/introduction",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "The React runtime provides components and hooks around Rive web renderers.",
+          "sourceUrl": "https://rive.app/docs/runtimes/react/react",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "spline",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Collaborative browser and desktop tool for authoring interactive 3D scenes and exporting them to the web.",
+      "capabilities": [
+        "browser-3d-authoring",
+        "interactive-3d",
+        "real-time-collaboration",
+        "web-export"
+      ],
+      "contentObjects": [
+        "asset",
+        "design-file",
+        "motion-example",
+        "code",
+        "tool",
+        "documentation"
+      ],
+      "platforms": ["web", "desktop"],
+      "frameworks": ["react"],
+      "designTools": [],
+      "deliveryFormats": [
+        "web-page",
+        "design-file",
+        "source-code",
+        "generated-output",
+        "downloadable-asset",
+        "documentation"
+      ],
+      "integrationMethods": ["website", "sdk", "manual-download"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "unknown",
+        "facets": ["feature", "interaction", "export", "integration"]
+      },
+      "workflowFit": [
+        "browser-3d-prototyping",
+        "interactive-scene-design",
+        "collaborative-3d-handoff",
+        "web-3d-export"
+      ],
+      "limitations": [
+        "Interactive scenes can add substantial runtime, asset, and performance cost.",
+        "Export options and collaboration features vary by plan and target.",
+        "Project scenes and uploaded assets remain user-owned content outside Tessli."
+      ],
+      "governance": {
+        "defaultPersistence": "metadata-only",
+        "assetRedistribution": "restricted",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Keep scene files and uploaded assets outside Tessli.",
+          "Review performance guidance before production embedding."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Spline supports real-time multi-user collaboration and web exports including public URLs, Spline Viewer, and code exports.",
+          "sourceUrl": "https://docs.spline.design/basics/what-is-spline",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "Spline documents events, states, actions, and interactive scene behavior.",
+          "sourceUrl": "https://docs.spline.design/interaction-states-events-and-actions/events-interactivity",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "react-three-fiber",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Declarative React renderer for Three.js scenes, interaction, and reusable 3D components.",
+      "capabilities": [
+        "react-three-rendering",
+        "declarative-3d",
+        "interactive-webgl"
+      ],
+      "contentObjects": ["code", "component", "documentation", "motion-example"],
+      "platforms": ["web", "mobile"],
+      "frameworks": ["react", "three-js"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["npm-package", "github", "website"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["api", "hook", "example", "ecosystem"]
+      },
+      "workflowFit": [
+        "react-3d-integration",
+        "declarative-three-js",
+        "interactive-scene-architecture"
+      ],
+      "limitations": [
+        "Teams need working knowledge of both React and Three.js.",
+        "3D scenes retain the performance, accessibility, and asset-management risks of Three.js.",
+        "React and React Three Fiber major versions must remain compatible."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Review package and Three.js compatibility before upgrades.",
+          "Treat canvas accessibility and non-3D fallbacks as application responsibilities."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "React Three Fiber is a React renderer for Three.js that expresses scenes as reusable declarative components.",
+          "sourceUrl": "https://github.com/pmndrs/react-three-fiber",
+          "sourceType": "repository",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        },
+        {
+          "claim": "Official getting-started guidance expects familiarity with both React and Three.js.",
+          "sourceUrl": "https://r3f.docs.pmnd.rs/getting-started/introduction",
+          "sourceType": "official-documentation",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    },
+    {
+      "profileVersion": 1,
+      "resourceId": "lucide",
+      "status": "needs-review",
+      "verifiedAt": "2026-08-05",
+      "summary": "Open-source, consistent SVG icon toolkit with framework packages and tree-shakable imports.",
+      "capabilities": ["icon-library", "svg-icons", "framework-packages"],
+      "contentObjects": ["icon", "code", "documentation"],
+      "platforms": ["web", "mobile", "cross-platform"],
+      "frameworks": ["react", "vue", "svelte"],
+      "designTools": [],
+      "deliveryFormats": [
+        "source-code",
+        "package",
+        "downloadable-asset",
+        "documentation",
+        "web-page"
+      ],
+      "integrationMethods": ["website", "npm-package", "github"],
+      "agentInterfaces": [],
+      "discovery": {
+        "textSearch": true,
+        "semanticSearch": "no",
+        "facets": ["icon", "category", "package", "framework"]
+      },
+      "workflowFit": [
+        "interface-icon-selection",
+        "design-system-icons",
+        "framework-icon-implementation"
+      ],
+      "limitations": [
+        "Icon meaning and accessible labelling remain application responsibilities.",
+        "Package and framework support should be checked for the target stack.",
+        "A consistent outline style may not fit every brand or dense data interface."
+      ],
+      "governance": {
+        "defaultPersistence": "persistent",
+        "assetRedistribution": "allowed",
+        "sourceAttribution": "recommended",
+        "userCredentialRequired": false,
+        "termsReviewRequired": true,
+        "notes": [
+          "Lucide states that the icon project is released under the ISC licence.",
+          "Provide accessible names for meaningful icons and hide decorative icons."
+        ]
+      },
+      "evidence": [
+        {
+          "claim": "Lucide provides optimized customizable SVG icons, framework packages, and tree-shakable imports under the ISC licence.",
+          "sourceUrl": "https://lucide.dev",
+          "sourceType": "official-product-page",
+          "verifiedAt": "2026-08-05",
+          "confidence": "certain"
+        }
+      ]
+    }
+  ]
+}
