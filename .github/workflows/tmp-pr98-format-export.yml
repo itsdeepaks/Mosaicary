@@ -1,6 +1,9 @@
 name: Temporary PR98 Format Export
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - feat/verification-contract-operator-workflow
