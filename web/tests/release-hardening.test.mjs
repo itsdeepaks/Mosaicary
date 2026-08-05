@@ -234,6 +234,10 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
+    /### 1\.3 Priority Source Profile Expansion — Batch 1\n\nStatus: \*\*DONE\*\*/,
+  );
+  assert.match(
+    plan,
     /### 1\.4 Priority Source Profile Expansion — Batch 2\n\nStatus: \*\*DONE\*\*/,
   );
   assert.match(

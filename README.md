@@ -56,7 +56,7 @@ Tessli now separates independent foundation work from the evidence-dependent pro
 → first bounded Verified batch
 ```
 
-The next repository slice is **1.5 Verification Contract and Operator Workflow**. It improves the shared website/export/MCP source truth and does not claim that the OSS proof succeeded.
+The next repository slice is **1.5 Verification Contract and Operator Workflow**. It defines claim-level evidence, freshness, reviewer, credential, persistence, redistribution, and safe-failure rules without promoting a source or claiming that the OSS proof succeeded.
 
 ### Proof and UI Judgment — blocked
 
