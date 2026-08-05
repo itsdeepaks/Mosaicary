@@ -30,7 +30,7 @@ on:
       - "docs/slices/**"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: web-ci-${{ github.workflow }}-${{ github.ref }}
@@ -48,8 +48,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -159,38 +157,3 @@ jobs:
             web/artifacts/oss-proof-metrics.json
           if-no-files-found: warn
           retention-days: 7
-
-      - name: Commit validated Slice 1.5 authority update
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'feat/verification-contract-operator-workflow'
-        working-directory: .
-        shell: bash
-        run: |
-          cp web/artifacts/search-browser/pr98-product-plan-v2.md docs/product-plan-v2.md
-          cp web/artifacts/search-browser/pr98-slice-1.5.md docs/slices/1.5-verification-contract-operator-workflow.md
-          cp web/artifacts/search-browser/pr98-build-slices.md build-slices.md
-          python - <<'PY'
-          from pathlib import Path
-          path = Path('build-slices.md')
-          text = path.read_text()
-          text = text.replace(
-              '- **Product Foundation:** Phase 1 / Slice 1.5 is NEXT. It defines verification evidence and operator workflow without promoting any source yet.',
-              '- **Product Foundation:** Phase 1 / Slice 1.6 is NEXT. It begins the first bounded operator-reviewed Verified batch while preserving the distinction between repository profiling, current provider evidence, and promotion.',
-          )
-          text = text.replace(
-              'The next repository slice is **1.5 Verification Contract and Operator Workflow**. It must define claim-level evidence, dates, confidence, freshness, reviewer identity, provider-interface checks, credential, persistence, redistribution, and safe-failure rules without promoting any source. Do not create substitute review scores, promote Verified records without the later verification workflow, skip the proof boundary, or start another dependency-blocked slice.',
-              'The next repository slice is **1.6 First Evidence-Backed Verified Batch**. It must select a small bounded set, create current human-operator records through the Slice 1.5 workflow, and promote only records that satisfy every schema and semantic gate. Do not invent provider checks, reuse stale profile fingerprints, store credentials or private provider content, overstate availability, or expand the batch before the first records are independently reviewable.',
-          )
-          path.write_text(text)
-          PY
-          cd web
-          npx prettier --write ../build-slices.md ../docs/product-plan-v2.md ../docs/slices/1.5-verification-contract-operator-workflow.md
-          cd ..
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add build-slices.md docs/product-plan-v2.md docs/slices/1.5-verification-contract-operator-workflow.md
-          if git diff --cached --quiet; then
-            echo "Authority documents already current."
-          else
-            git commit -m "docs: complete Slice 1.5 and advance 1.6"
-            git push origin HEAD:feat/verification-contract-operator-workflow
-          fi
