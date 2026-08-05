@@ -13,6 +13,7 @@ export const primaryNavigationItems: readonly NavigationItem[] = [
     available: true,
     match: "prefix",
   },
+  { label: "For AI", href: "/for-ai", available: true, match: "exact" },
 ] as const;
 
 export const utilityNavigationItems: readonly NavigationItem[] = [

@@ -3,6 +3,12 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod/v4";
 import {
+  TESSLI_MCP_SERVER_NAME,
+  TESSLI_MCP_SERVER_VERSION,
+  TESSLI_MCP_TOOL_NAMES,
+  getTessliMcpToolMetadata,
+} from "../lib/mcp-tool-catalogue.ts";
+import {
   NATIVE_ACCESS_VALUES,
   NATIVE_CATEGORY_IDS,
   NATIVE_MCP_LIMITS,
@@ -16,15 +22,15 @@ import {
   verifyNativeResource,
 } from "../lib/mcp-native-tools.ts";
 
-export const TESSLI_MCP_TOOL_NAMES = Object.freeze([
-  "search_resources",
-  "get_resource_profile",
-  "compare_resources",
-  "get_collection",
-  "build_research_plan",
-  "create_reference_packet",
-  "verify_resource",
-] as const);
+export { TESSLI_MCP_TOOL_NAMES };
+
+const searchResourcesTool = getTessliMcpToolMetadata("search_resources");
+const resourceProfileTool = getTessliMcpToolMetadata("get_resource_profile");
+const compareResourcesTool = getTessliMcpToolMetadata("compare_resources");
+const collectionTool = getTessliMcpToolMetadata("get_collection");
+const researchPlanTool = getTessliMcpToolMetadata("build_research_plan");
+const referencePacketTool = getTessliMcpToolMetadata("create_reference_packet");
+const verificationTool = getTessliMcpToolMetadata("verify_resource");
 
 const readOnlyAnnotations = Object.freeze({
   readOnlyHint: true,
@@ -103,8 +109,8 @@ function toErrorResult(error: unknown) {
 export function createTessliMcpServer(): McpServer {
   const server = new McpServer(
     {
-      name: "tessli-native-metadata",
-      version: "0.1.0",
+      name: TESSLI_MCP_SERVER_NAME,
+      version: TESSLI_MCP_SERVER_VERSION,
     },
     {
       instructions:
@@ -113,11 +119,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "search_resources",
+    searchResourcesTool.name,
     {
-      title: "Search Tessli resources",
-      description:
-        "Search committed Tessli catalogue and intelligence-profile metadata. Results preserve catalogue order and are capped at 25. No external search or live verification occurs.",
+      title: searchResourcesTool.title,
+      description: searchResourcesTool.description,
       inputSchema: {
         query: z.string().trim().max(200).optional(),
         category: z
@@ -160,11 +165,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "get_resource_profile",
+    resourceProfileTool.name,
     {
-      title: "Get Tessli resource profile",
-      description:
-        "Resolve one exact Tessli resource ID or slug and return its catalogue metadata plus the repository intelligence profile when available.",
+      title: resourceProfileTool.title,
+      description: resourceProfileTool.description,
       inputSchema: { identifier: identifierSchema },
       outputSchema: structuredOutputSchema,
       annotations: readOnlyAnnotations,
@@ -179,11 +183,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "compare_resources",
+    compareResourcesTool.name,
     {
-      title: "Compare Tessli resources",
-      description:
-        "Compare two to five unique Tessli resources in caller-supplied order using native capability, workflow, limitation, governance, and verification metadata.",
+      title: compareResourcesTool.title,
+      description: compareResourcesTool.description,
       inputSchema: {
         identifiers: z
           .array(identifierSchema)
@@ -203,11 +206,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "get_collection",
+    collectionTool.name,
     {
-      title: "Get Tessli collection",
-      description:
-        "Resolve one published Tessli collection by exact stable ID or slug and return its ordered native resource list.",
+      title: collectionTool.title,
+      description: collectionTool.description,
       inputSchema: { identifier: identifierSchema },
       outputSchema: structuredOutputSchema,
       annotations: readOnlyAnnotations,
@@ -222,11 +224,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "build_research_plan",
+    researchPlanTool.name,
     {
-      title: "Build Tessli research plan",
-      description:
-        "Build a deterministic source-review and originality plan from one to ten exact Tessli resources. No external model or provider is called.",
+      title: researchPlanTool.title,
+      description: researchPlanTool.description,
       inputSchema: {
         taskName: taskNameSchema,
         identifiers: z
@@ -248,11 +249,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "create_reference_packet",
+    referencePacketTool.name,
     {
-      title: "Create Tessli reference packet",
-      description:
-        "Create the deterministic Markdown handoff from Tessli's existing Slice 13.4 packet builder for one to ten exact resources.",
+      title: referencePacketTool.title,
+      description: referencePacketTool.description,
       inputSchema: {
         taskName: taskNameSchema,
         identifiers: z
@@ -274,11 +274,10 @@ export function createTessliMcpServer(): McpServer {
   );
 
   server.registerTool(
-    "verify_resource",
+    verificationTool.name,
     {
-      title: "Report Tessli verification state",
-      description:
-        "Return only repository-recorded catalogue/profile status, evidence, dates, and limitations for one resource. This tool performs no live request or current-provider verification.",
+      title: verificationTool.title,
+      description: verificationTool.description,
       inputSchema: { identifier: identifierSchema },
       outputSchema: structuredOutputSchema,
       annotations: readOnlyAnnotations,

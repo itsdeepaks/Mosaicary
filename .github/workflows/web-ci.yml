@@ -108,9 +108,14 @@ jobs:
             http://127.0.0.1:3000/resources/designindex > /tmp/tessli-profile.html
           grep -q "What this profile supports" /tmp/tessli-profile.html
 
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/for-ai > /tmp/tessli-for-ai.html
+          grep -q "Give models structured design research" /tmp/tessli-for-ai.html
+          grep -q "search_resources" /tmp/tessli-for-ai.html
+
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation artifacts/playbooks
+          mkdir -p artifacts/responsive-ui artifacts/search-browser artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation artifacts/playbooks artifacts/for-ai
           "$chrome_bin" \
             --headless=new \
             --no-sandbox \
@@ -133,6 +138,7 @@ jobs:
           node tests/oss-homepage-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
           node tests/global-navigation-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
+          node tests/for-ai-browser.mjs 2>&1 | tee -a artifacts/search-browser/interaction.log
 
       - name: Upload browser diagnostics
         if: always()
@@ -147,6 +153,7 @@ jobs:
             web/artifacts/oss-human-review/*.png
             web/artifacts/global-navigation/*.png
             web/artifacts/playbooks/*.png
+            web/artifacts/for-ai/*.png
             web/artifacts/oss-proof-metrics.json
           if-no-files-found: warn
           retention-days: 7

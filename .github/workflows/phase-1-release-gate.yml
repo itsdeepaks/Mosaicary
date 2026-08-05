@@ -101,10 +101,14 @@ jobs:
           curl --fail --silent --show-error \
             --retry 20 --retry-connrefused --retry-delay 1 \
             http://127.0.0.1:3000/ > /tmp/tessli-release-home.html
+          curl --fail --silent --show-error \
+            http://127.0.0.1:3000/for-ai > /tmp/tessli-release-for-ai.html
+          grep -q "Give models structured design research" /tmp/tessli-release-for-ai.html
+          grep -q "verify_resource" /tmp/tessli-release-for-ai.html
 
           chrome_bin="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
           test -n "$chrome_bin"
-          mkdir -p artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation artifacts/playbooks
+          mkdir -p artifacts/phase-1-release artifacts/oss-proof-candidate artifacts/oss-human-review artifacts/global-navigation artifacts/playbooks artifacts/for-ai
 
           "$chrome_bin" \
             --headless=new \
@@ -122,6 +126,7 @@ jobs:
           node tests/oss-human-review-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
           node tests/global-navigation-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
           node tests/collections-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
+          node tests/for-ai-browser.mjs 2>&1 | tee -a artifacts/phase-1-release/release-gate.log
 
       - name: Upload Phase 1 release evidence
         if: always()
@@ -134,6 +139,7 @@ jobs:
             web/artifacts/oss-human-review/*.png
             web/artifacts/global-navigation/*.png
             web/artifacts/playbooks/*.png
+            web/artifacts/for-ai/*.png
             web/artifacts/oss-proof-metrics.json
           if-no-files-found: error
           retention-days: 14

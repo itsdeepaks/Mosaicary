@@ -309,3 +309,48 @@ Required:
 - expired auth link;
 - access denied;
 - maintenance/data unavailable.
+
+## 14. For AI `/for-ai`
+
+### Purpose
+
+Explain how humans can give Tessli research context to language models with or without MCP, while keeping repository evidence, project judgment, privacy, and live-provider boundaries explicit.
+
+### Content order
+
+1. global header and one outcome-led hero;
+2. truthful facts for seven tools and current SourceProfile coverage;
+3. without-MCP and local-MCP paths;
+4. local stdio setup and client-configuration shape;
+5. seven tools from the shared MCP catalogue;
+6. real source and Playbook JSON/Markdown representations;
+7. browser-local Board research-pack boundary;
+8. Listed/Profiled/Verified, confidence, and freshness rules;
+9. security and governance exclusions;
+10. retrieval-versus-taste boundary;
+11. global footer.
+
+### Required behavior
+
+- static and indexable with one semantic `main` and one `h1`;
+- useful server-rendered content before client JavaScript;
+- primary navigation appears only while the route works;
+- tool names, titles, descriptions, and bounds share truth with the MCP server;
+- setup describes the existing local stdio server, Node.js 22+, and `npm run mcp` without implying a hosted endpoint;
+- public examples link to real source-profile and Playbook JSON/Markdown routes;
+- Board data remains browser-local until a user copies or downloads an export;
+- `create_reference_packet` is distinguished from `tessli.board-research-pack.v1`;
+- coverage derives from canonical SourceProfiles and keeps zero Verified explicit;
+- confidence and freshness copy matches executable rules;
+- no live-provider verification, crawling, screenshot retrieval, project-code ingestion, credentials, account access, or write operation;
+- retrieval is not described as design taste.
+
+### Responsive contract
+
+- desktop hero uses an editorial copy/facts split;
+- at tablet widths, facts move below the hero copy;
+- tool, representation, policy, and boundary grids collapse to one column below 768px;
+- primary actions become full width at narrow mobile widths;
+- code blocks scroll internally and never widen the document;
+- validate 1440, 1024, 768, 390, and 320 pixels with no horizontal overflow;
+- no essential hover-only behavior, continuous animation, glassmorphism, or oversized rounding.
