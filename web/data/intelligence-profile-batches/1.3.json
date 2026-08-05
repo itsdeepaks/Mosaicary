@@ -515,7 +515,6 @@
       ],
       "contentObjects": [
         "asset",
-        "design-file",
         "motion-example",
         "code",
         "tool",
