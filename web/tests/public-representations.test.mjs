@@ -77,8 +77,14 @@ test("source representations are deterministic and preserve canonical order", ()
   assert.equal(document.source.id, profiled.id);
   assert.equal(document.source.intelligence.profileLevel, "profiled");
   assert.equal(document.canonicalPath, "/resources/source-one");
-  assert.equal(document.representations.markdown, "/resources/source-one/profile.md");
-  assert.equal(document.representations.json, "/resources/source-one/profile.json");
+  assert.equal(
+    document.representations.markdown,
+    "/resources/source-one/profile.md",
+  );
+  assert.equal(
+    document.representations.json,
+    "/resources/source-one/profile.json",
+  );
   assert.equal(document.provenance.manifest, "/catalogue.manifest.json");
   assert.equal(document.provenance.generatedAt, catalogue.generatedAt);
   assert.equal(document.source.evidence[0].accessedAt, "2026-08-02");
@@ -115,7 +121,9 @@ test("source representations are deterministic and preserve canonical order", ()
     "evidence",
   ]);
   const first = serializePublicJson(document);
-  const second = serializePublicJson(createPublicSourceRepresentation(profiled));
+  const second = serializePublicJson(
+    createPublicSourceRepresentation(profiled),
+  );
   assert.equal(first, second);
   assert.equal(first.endsWith("\n"), true);
   assert.doesNotMatch(first, /[ \t]+$/gmu);
@@ -124,8 +132,12 @@ test("source representations are deterministic and preserve canonical order", ()
   assert.match(markdown, /# Tessli Source Profile — Source One/u);
   assert.match(markdown, /## Intelligence boundary/u);
   assert.match(markdown, /## Evidence/u);
-  assert.ok(markdown.indexOf("## Best for") < markdown.indexOf("## Capabilities"));
-  assert.ok(markdown.indexOf("## Capabilities") < markdown.indexOf("## Evidence"));
+  assert.ok(
+    markdown.indexOf("## Best for") < markdown.indexOf("## Capabilities"),
+  );
+  assert.ok(
+    markdown.indexOf("## Capabilities") < markdown.indexOf("## Evidence"),
+  );
   assert.doesNotMatch(markdown, /[ \t]+$/gmu);
 });
 
