@@ -476,7 +476,10 @@ test("CLI rejects unknown options, duplicate options, and invalid completed reco
     const output = JSON.parse(result.stdout);
     assert.equal(output.valid, false);
     assert.equal(output.eligibleForPromotion, false);
-    assert.match(output.errors.join(" "), /every claim/u);
+    assert.match(
+      output.errors.join(" "),
+      /claimChecks\/0\/result|every claim/u,
+    );
   } finally {
     fs.rmSync(tempRoot, { recursive: true, force: true });
   }
