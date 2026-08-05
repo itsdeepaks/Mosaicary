@@ -35,30 +35,34 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path("scripts/catalogue-lib.mjs")
           source = path.read_text()
-          old = '''  const categories = CATEGORY_DEFINITIONS.map(
-            ({ sourceLabel, expectedCount, ...category }) => ({
-              id: category.id,
-              label: sourceLabel,
-              shortLabel: category.shortLabel,
-              description: category.description,
-              icon: category.icon,
-              order: category.order,
-            }),
-          );'''
-          new = '''  const categories = CATEGORY_DEFINITIONS.map((category) => ({
+          pattern = re.compile(
+              r"  const categories = CATEGORY_DEFINITIONS\.map\(\n"
+              r"    \(\{ sourceLabel, expectedCount, \.\.\.category \}\) => \(\{\n"
+              r"      id: category\.id,\n"
+              r"      label: sourceLabel,\n"
+              r"      shortLabel: category\.shortLabel,\n"
+              r"      description: category\.description,\n"
+              r"      icon: category\.icon,\n"
+              r"      order: category\.order,\n"
+              r"    \}\),\n"
+              r"  \);"
+          )
+          replacement = """  const categories = CATEGORY_DEFINITIONS.map((category) => ({
             id: category.id,
             label: category.sourceLabel,
             shortLabel: category.shortLabel,
             description: category.description,
             icon: category.icon,
             order: category.order,
-          }));'''
-          if old not in source:
-              raise SystemExit("Expected category projection block not found")
-          path.write_text(source.replace(old, new))
+          }));"""
+          updated, count = pattern.subn(replacement, source, count=1)
+          if count != 1:
+              raise SystemExit(f"Expected one category projection block, found {count}")
+          path.write_text(updated)
           PY
           npm run catalogue:generate
           npx prettier --write scripts/catalogue-lib.mjs tests/public-representations.test.mjs
