@@ -66,17 +66,11 @@ test("release history remains preserved under Product Plan v2", async () => {
     [
       "1.3",
       "Priority source profile expansion — Batch 1",
-      "NEXT",
+      "DONE",
       "0.2, 1.2",
-      "—",
+      "`docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96",
     ],
-    [
-      "1.4",
-      "Priority source profile expansion — Batch 2",
-      "PLANNED",
-      "1.3",
-      "—",
-    ],
+    ["1.4", "Priority source profile expansion — Batch 2", "NEXT", "1.3", "—"],
     [
       "1.5",
       "Verification contract and operator workflow",
@@ -224,7 +218,7 @@ test("release history remains preserved under Product Plan v2", async () => {
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 1 \/ Slice 1\.3 NEXT; proof track remains BLOCKED\*\*/,
+    /Status: \*\*active delivery plan — Phase 1 \/ Slice 1\.4 NEXT; proof track remains BLOCKED\*\*/,
   );
   assert.match(
     plan,
@@ -232,7 +226,7 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /Status: \*\*active execution plan — Phase 1 \/ Slice 1\.3 NEXT; Phase 5 proof remains blocked\*\*/,
+    /Status: \*\*active execution plan — Phase 1 \/ Slice 1\.4 NEXT; Phase 5 proof remains blocked\*\*/,
   );
   assert.match(
     plan,
@@ -240,11 +234,11 @@ test("release history remains preserved under Product Plan v2", async () => {
   );
   assert.match(
     plan,
-    /### 1\.3 Priority Source Profile Expansion — Batch 1\n\nStatus: \*\*NEXT\*\*/,
+    /### 1\.3 Priority Source Profile Expansion — Batch 1\n\nStatus: \*\*DONE\*\*/,
   );
   assert.match(
     plan,
-    /### 1\.5 Verification Contract and Operator Workflow\n\nStatus: \*\*PLANNED\*\*/,
+    /### 1\.4 Priority Source Profile Expansion — Batch 2\n\nStatus: \*\*NEXT\*\*/,
   );
   assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
   assert.match(
@@ -306,12 +300,12 @@ test("release history remains preserved under Product Plan v2", async () => {
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,
   );
-  assert.match(slices, /Product Foundation:.*Phase 1 \/ Slice 1\.3 is NEXT/is);
+  assert.match(slices, /Product Foundation:.*Phase 1 \/ Slice 1\.4 is NEXT/is);
   assert.match(slices, /Proof and UI Judgment:.*Slice 5\.3 remains BLOCKED/is);
   assert.match(readme, /Product Foundation — active/i);
   assert.match(
     readme,
-    /approved next repository slice is \*\*Phase 1 \/ Slice 1\.3/i,
+    /approved next repository slice is \*\*Phase 1 \/ Slice 1\.4/i,
   );
   assert.match(
     readme,
