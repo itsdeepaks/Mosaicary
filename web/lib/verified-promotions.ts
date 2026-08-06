@@ -5,6 +5,8 @@ import {
   type VerifiedResourcePromotion,
 } from "./verification-promotions.ts";
 
+export type { VerifiedResourcePromotion } from "./verification-promotions.ts";
+
 if (registry.contract !== VERIFIED_PROMOTION_REGISTRY_CONTRACT) {
   throw new Error(
     `Unexpected verified promotion registry contract: ${registry.contract}.`,
