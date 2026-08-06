@@ -4,6 +4,10 @@ import {
   getIntelligenceProfile,
   type ResourceIntelligenceProfile,
 } from "./intelligence.ts";
+import {
+  getVerifiedPromotion,
+  type VerifiedResourcePromotion,
+} from "./verified-promotions.ts";
 
 export const SOURCE_PROFILE_CONTRACT_VERSION = 1 as const;
 export const SOURCE_PROFILE_REVIEWED_AT = "2026-08-05" as const;
@@ -142,7 +146,9 @@ export function deriveEvidenceConfidence(
 
 function deriveHumanReviewStatus(
   profile: ResourceIntelligenceProfile | null,
+  promotion: VerifiedResourcePromotion | null,
 ): HumanReviewStatus {
+  if (promotion) return "completed";
   const review = (profile as ReviewAwareIntelligenceProfile | null)
     ?.humanReview;
   return review?.status === "completed" && isIsoDate(review.reviewedAt)
@@ -152,7 +158,8 @@ function deriveHumanReviewStatus(
 
 export function deriveCoverageLevel(
   profile: ResourceIntelligenceProfile | null,
-  humanReviewStatus = deriveHumanReviewStatus(profile),
+  humanReviewStatus = deriveHumanReviewStatus(profile, null),
+  promotionRecorded = false,
 ): SourceCoverageLevel {
   if (!profile) return "listed";
 
@@ -165,6 +172,7 @@ export function deriveCoverageLevel(
   if (
     profile.status === "verified" &&
     humanReviewStatus === "completed" &&
+    promotionRecorded &&
     hasRecordedEvidence
   ) {
     return "verified";
@@ -181,12 +189,12 @@ function coverageReason(
     return "Catalogue identity and access metadata are present; no structured intelligence profile is linked.";
   }
   if (level === "verified") {
-    return "Structured intelligence, evidence, verification date, confidence, and explicit human review are recorded.";
+    return "Structured intelligence, evidence, verification date, confidence, explicit human review, and explicit promotion are recorded.";
   }
   if (humanReviewStatus === "not-recorded") {
     return "Structured intelligence and evidence are present; explicit human-review provenance is not recorded.";
   }
-  return "Structured intelligence is present but the full Verified coverage contract is incomplete.";
+  return "Structured intelligence and human review are present but the explicit Verified promotion contract is incomplete.";
 }
 
 function sourceStatus(status: string): SourceStatus {
@@ -204,9 +212,16 @@ function intelligenceForResource(
 
 function buildSourceProfile(resource: CatalogueResource): SourceProfile {
   const intelligence = intelligenceForResource(resource);
-  const humanReviewStatus = deriveHumanReviewStatus(intelligence);
-  const profileLevel = deriveCoverageLevel(intelligence, humanReviewStatus);
+  const promotion =
+    getVerifiedPromotion(resource.id) ?? getVerifiedPromotion(resource.slug);
+  const humanReviewStatus = deriveHumanReviewStatus(intelligence, promotion);
+  const profileLevel = deriveCoverageLevel(
+    intelligence,
+    humanReviewStatus,
+    promotion !== null,
+  );
   const sourceType = SOURCE_TYPE_BY_CATEGORY[resource.category];
+  const lastVerifiedAt = promotion?.completedAt ?? intelligence?.verifiedAt ?? null;
 
   if (!sourceType) {
     throw new Error(`No source type classification for ${resource.category}.`);
@@ -236,16 +251,16 @@ function buildSourceProfile(resource: CatalogueResource): SourceProfile {
     limitations: intelligence?.limitations ?? [],
     profileLevel,
     status: sourceStatus(resource.status),
-    verifiedAt: intelligence?.verifiedAt ?? null,
+    verifiedAt: lastVerifiedAt,
     evidence: intelligence?.evidence ?? [],
     coverage: {
       level: profileLevel,
       reason: coverageReason(profileLevel, humanReviewStatus),
       profileStatus: intelligence?.status ?? null,
-      lastVerifiedAt: intelligence?.verifiedAt ?? null,
+      lastVerifiedAt,
       confidence: deriveEvidenceConfidence(intelligence),
       humanReviewStatus,
-      freshnessStatus: deriveFreshnessStatus(intelligence?.verifiedAt ?? null),
+      freshnessStatus: deriveFreshnessStatus(lastVerifiedAt),
       evidenceCount: intelligence?.evidence.length ?? 0,
     },
     intelligence,
