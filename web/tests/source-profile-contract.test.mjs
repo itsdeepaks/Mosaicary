@@ -16,6 +16,7 @@ import {
   getSourceCoverageCounts,
   getSourceProfile,
 } from "../lib/source-profiles.ts";
+import { getAllVerifiedPromotions } from "../lib/verified-promotions.ts";
 import { validateSourceProfileContract } from "../scripts/check-source-profile-contract.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -125,6 +126,7 @@ test("all 295 catalogue resources have one deterministic source profile", () => 
 });
 
 test("coverage baseline is truthful: 255 Listed, 40 Profiled, 0 Verified", () => {
+  assert.deepEqual(getAllVerifiedPromotions(), []);
   assert.deepEqual(getSourceCoverageCounts(), {
     listed: 255,
     profiled: 40,
@@ -166,6 +168,10 @@ test("Profiled records expose normalized intelligence without losing evidence", 
   assert.deepEqual(relume.evidence, relume.intelligence.evidence);
   assert.equal(
     deriveCoverageLevel(relume.intelligence, "completed"),
+    "profiled",
+  );
+  assert.equal(
+    deriveCoverageLevel(relume.intelligence, "completed", true),
     "verified",
   );
 });
