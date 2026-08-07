@@ -152,7 +152,7 @@ assert.equal(
   await evaluate(
     `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
   ),
-  "Playbooks",
+  "Collections",
 );
 assert.equal(
   await evaluate("document.documentElement.scrollWidth <= window.innerWidth"),
@@ -229,7 +229,7 @@ for (const [index, slug] of collectionSlugs.entries()) {
     await evaluate(
       `document.querySelector('nav[aria-label="Primary navigation"] a[aria-current="page"]')?.textContent?.trim()`,
     ),
-    "Playbooks",
+    "Collections",
   );
   assert.equal(
     await evaluate("document.documentElement.scrollWidth <= window.innerWidth"),
