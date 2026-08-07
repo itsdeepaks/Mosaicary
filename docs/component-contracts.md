@@ -7,10 +7,8 @@ Each component must be implemented, browser-tested, and approved independently b
 ### Anatomy
 
 - Tessli wordmark;
-- desktop navigation;
-- Saved shortcut;
-- theme control;
-- sign-in or account control;
+- working desktop navigation: Browse, Collections, and For AI;
+- utility controls: Search and Saved;
 - mobile search shortcut;
 - mobile menu button.
 
@@ -21,17 +19,14 @@ Each component must be implemented, browser-tested, and approved independently b
 - active route;
 - keyboard focus;
 - mobile sheet open;
-- signed out;
-- signed in;
-- session loading;
-- session expired.
+- account states only after the approved authentication/cloud slice.
 
 ### Behaviour
 
 - desktop header height: approximately `64px`;
 - sticky only after visual testing; no heavy blur;
 - active route uses orange underline, not filled pill;
-- Phase 1 shows only routes and utilities that work: the Saved shortcut appears after the browser-local Saved page is delivered; sign-in/account waits for the real auth slice; a theme control waits for two genuinely designed themes;
+- show only working routes and utilities; Browse is the canonical catalogue route, Saved is browser-local, and no public Sign in/account control appears before the approved authentication/cloud slice;
 - mobile navigation opens a full-height sheet;
 - Escape closes open menus/sheets;
 - focus returns to the trigger.
@@ -137,12 +132,13 @@ On mobile, use a two-by-two grid. Do not create horizontal overflow for these it
 
 ## 7. Tabs
 
-Used for `All resources`, `Saved`, and `Full reference`.
+Used for the `/resources` view selector: cards, compact list, and table.
 
 - underline treatment;
 - no filled segmented-control appearance;
 - `role="tablist"` only when switching panels without navigation;
 - use normal links when tabs represent routes;
+- do not use tabs to split the catalogue into competing routes;
 - counts use tabular numerals.
 
 ## 8. Resource card
@@ -152,17 +148,18 @@ Used for `All resources`, `Saved`, and `Full reference`.
 - media area;
 - image/fallback;
 - save control;
-- title;
-- optional external arrow;
+- title linking to the internal source profile;
+- explicit `Visit source` external action;
 - description;
 - category and useful-for tags;
 - access model;
-- optional details action.
+- coverage level when available.
 
 ### Interaction
 
-- full card external link implemented through a stretched anchor;
-- save button sits above the stretched link in stacking order;
+- the title, identity, or whole-card stretched anchor navigates to `/resources/[slug]`, never directly to the provider;
+- `Visit source` is a separate external action with a clear label and safe new-tab behavior;
+- save and Visit controls sit above the profile-link hit area in stacking order;
 - middle-click and modifier-click must work;
 - selection of text remains possible;
 - hover and focus-within share a visual treatment.
@@ -247,15 +244,17 @@ Authenticated:
 - local import prompt;
 - trash/undo.
 
-## 12. Full-reference row
+## 12. Browse compact/table row
 
 Desktop columns:
 
 - resource;
 - category;
 - access;
-- last verified;
+- coverage level or real verification date when one exists;
 - save.
+
+The resource identity opens `/resources/[slug]`; `Visit source` is a separate external action. Do not present a universal or invented verification date.
 
 Mobile becomes a compact card row. Never force the desktop table into horizontal scrolling as the primary experience.
 
@@ -286,7 +285,9 @@ All controls:
 - loading state does not change width;
 - no placeholder-only labels.
 
-## 14. Authentication shell
+## 14. Deferred authentication shell
+
+This is future-only guidance. Authentication and cloud persistence remain unavailable publicly until local Boards and research-pack export demonstrate value and the approved security prerequisites exist.
 
 ### Desktop
 

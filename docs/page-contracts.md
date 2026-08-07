@@ -32,26 +32,28 @@
 - large tables transform to rows/cards;
 - no essential hover-only behaviour.
 
-## 1. Explore `/`
+## 1. Homepage `/` — curated entry (Slice 6.2 remains blocked)
 
 ### Purpose
 
-Help a visitor find a relevant resource quickly.
+Introduce the research workflow and route a visitor to the canonical Browse experience. It is not a second resource browser.
 
 ### Desktop order
 
 1. Header
 2. Two-column hero
    - headline and supporting copy
-   - global search
+   - task-based search routed to `/resources`
    - geometric artwork
 3. Truthful four-slot value/stat row
-4. Category navigation
-5. Resource-view navigation
-6. result count, sort, filters
-7. resource-card grid
-8. pagination/load more
-9. footer
+4. Research-goal entry points or featured playbooks
+5. Bounded linked source previews only when backed by canonical data
+6. Research-pack or human/MCP explanation
+7. footer
+
+When Slice 6.2 is implemented, do not render Browse filters, sorting, pagination, view controls, or a complete catalogue result set on the homepage. A source preview links to `/resources/[slug]`; external provider navigation remains the separate `Visit source` action on the profile.
+
+Until blocked Slice 6.2 begins, the existing root may retain bounded preview category, sort, and filter controls. It must not recreate competing Browse, Saved, or legacy catalogue-route navigation, or render a complete catalogue.
 
 ### Hero
 
@@ -73,7 +75,7 @@ Visual target:
 
 - the hero artwork is large enough to counterbalance the display headline, with generous empty space around both;
 - the search field and truthful fact row stay aligned to the copy column;
-- at desktop widths, contain category navigation within its own full-width surface: primary categories remain visible and overflow moves behind `More` rather than being clipped.
+- source previews, if present, remain a small editorial selection rather than a resource-view switcher or paginated result set.
 
 ### Tablet
 
@@ -86,7 +88,7 @@ Visual target:
 - headline and search first;
 - artwork becomes a smaller centred band after search or is hidden below 390px;
 - four stats use 2×2 grid;
-- category navigation follows immediately.
+- research-goal entry points follow immediately; any source previews remain bounded and link internally.
 
 ## 2. Collections `/collections`
 
@@ -123,9 +125,9 @@ Examples must be maintained in repository data:
 - maintainers/curators only when real;
 - collection description;
 - resource cards;
-- save collection after auth exists;
+- source Save works browser-locally; Add to board appears where available;
 - last reviewed date;
-- contribution/correction link.
+- contribution/correction action only when its real workflow is available.
 
 ## 4. Saved `/saved`
 
@@ -136,7 +138,7 @@ Examples must be maintained in repository data:
 - clear saved with confirmation;
 - empty state;
 - no fake folders unless local folders are implemented;
-- sign-in sync callout appears only after Phase 2 exists.
+- sign-in/cloud-sync callout appears only after the approved authentication and cloud-workspace slice exists.
 
 ### Authenticated state
 
@@ -152,46 +154,55 @@ Examples must be maintained in repository data:
 - recent saves stay first;
 - collections appear as compact cards.
 
-## 5. Full Reference `/resources`
+## 5. Canonical Browse `/resources`
 
 ### Purpose
 
-Dense, research-oriented catalogue view.
+The one paginated, research-oriented source browser.
 
 ### Desktop
 
 - compact title area;
-- search and real statistics;
-- left category/filter sidebar;
-- central resource list/table;
-- right supporting panel for curation, popular tags, and contribution links.
+- URL-backed search, filters, sorting, view, and page state;
+- current coverage summary derived from canonical SourceProfiles: **255 Listed / 40 Profiled / 0 Verified**;
+- cards, compact list, or table rendered from one responsive result path;
+- pagination: 24 cards or 50 compact/table rows;
+- optional category/filter sidebar and contextual curation support only when they do not duplicate result rendering.
 
 ### Tablet
 
-- both sidebars collapse;
+- sidebars collapse;
 - filters open in sheet;
-- supporting panel becomes an inline disclosure.
+- supporting material becomes an inline disclosure.
 
 ### Mobile
 
 - search;
 - filter/sort row;
-- compact resource rows;
-- no three-column layout;
-- metadata shown progressively.
+- recomposed cards, compact rows, or table-derived rows from the same result state;
+- no three-column layout or duplicate complete result tree;
+- metadata shown progressively;
+- no horizontal overflow at 320px.
+
+### Navigation and actions
+
+- selecting a source identity, title, or card opens `/resources/[slug]`;
+- `Visit source` is a separate external action;
+- Save is independent and available in every view;
+- Compare appears only for meaningful peer groups; Similar Sources is the normal alternative-discovery path;
+- verification-date sort appears only when real dates exist.
 
 ## 6. Resource detail `/resources/[slug]`
 
-Optional for the first release but defined now.
+Required for every stable source slug.
 
-- name, domain, and external CTA;
-- description;
-- category, access, task tags;
-- favicon/preview;
-- last verified;
-- save;
-- report incorrect information;
-- related resources;
+- source identity, purpose, domain, concise sourced description, and coverage level;
+- current foundation: access, availability, limitations, evidence/freshness where recorded, collection membership, and truthful coverage state;
+- progressive profile requirements: best for and not ideal for, capabilities, content objects, discovery, platforms/frameworks, integrations and agent access, workflow fit, and governance when truthful profile data exists;
+- truthful Listed fallbacks and progressive Profiled/Verified sections without invented fields;
+- Similar Sources and collection memberships;
+- current actions: Save and separate `Visit source`; Add to board is required when the Board integration exposes it here;
+- contextual report action only after that workflow exists;
 - no embedded copy of the destination site.
 
 ## 7. About `/about`
@@ -213,57 +224,13 @@ Optional for the first release but defined now.
 - screenshot/logo policy;
 - disclosure that availability and pricing can change.
 
-## 9. Submit `/submit`
+## 9. Deferred submissions, corrections, and reports
 
-### Fields
+`/submit`, `/suggest`, and `/report/[resourceId]` are not public route contracts until Phase 9 has server-side validation, URL normalization, duplicate detection, rate limiting, moderation ownership, audit state, and a real submission/reporting workflow. Do not expose placeholder public actions.
 
-- URL;
-- website name;
-- description/use case;
-- category;
-- access model;
-- useful-for tags;
-- reason for inclusion;
-- submitter email;
-- agreement to guidelines.
+## 10. Deferred authentication pages
 
-### Flow states
-
-- idle;
-- URL validating;
-- metadata preview;
-- duplicate detected;
-- validation error;
-- submitting;
-- success;
-- moderation pending.
-
-## 10. Suggest `/suggest`
-
-Use the label **Suggest an improvement**.
-
-Fields:
-
-- title;
-- problem;
-- proposed improvement;
-- who benefits;
-- optional reference;
-- email.
-
-## 11. Report `/report/[resourceId]`
-
-Fast correction flow:
-
-- broken link;
-- wrong category;
-- pricing/access changed;
-- resource unavailable;
-- misleading description;
-- other;
-- optional note.
-
-## 12. Authentication pages
+Authentication pages are not public route contracts until Phase 8 has proven cloud-workspace value, complete flows, custom SMTP, and RLS/session review.
 
 ### Sign in
 
@@ -297,7 +264,7 @@ Fast correction flow:
 - password requirements;
 - session validation.
 
-## 13. System pages
+## 11. System pages
 
 Required:
 
@@ -310,7 +277,7 @@ Required:
 - access denied;
 - maintenance/data unavailable.
 
-## 14. For AI `/for-ai`
+## 12. For AI `/for-ai`
 
 ### Purpose
 
@@ -340,7 +307,7 @@ Explain how humans can give Tessli research context to language models with or w
 - public examples link to real source-profile and Playbook JSON/Markdown routes;
 - Board data remains browser-local until a user copies or downloads an export;
 - `create_reference_packet` is distinguished from `tessli.board-research-pack.v1`;
-- coverage derives from canonical SourceProfiles and keeps zero Verified explicit;
+- coverage derives from canonical SourceProfiles and currently reports **255 Listed / 40 Profiled / 0 Verified**;
 - confidence and freshness copy matches executable rules;
 - no live-provider verification, crawling, screenshot retrieval, project-code ingestion, credentials, account access, or write operation;
 - retrieval is not described as design taste.

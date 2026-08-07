@@ -12,6 +12,7 @@ The legacy Tessli roadmap used continuously increasing slice numbers from the or
 Product Plan v2 provides the active execution frame:
 
 - **Phase 0** records the completed direction reset;
+- **Slice 0.3** completes the documentation reconciliation for the active execution frame;
 - **Phases 1–10** are the ten development phases;
 - each phase contains independently reviewable vertical slices;
 - legacy `14.x` identifiers remain only as historical aliases for completed work;
@@ -70,6 +71,14 @@ The OSS proof is the prerequisite for evaluated UI Judgment, not for every remai
 
 No work in the foundation track may imply that the blocked proof succeeded.
 
+### Execution roles
+
+- **Terra-high:** bounded implementation within the approved slice, branch, and draft PR.
+- **Luna-max:** independent, bounded audit/review of evidence, contracts, and diffs.
+- **Human owner:** the source of genuine human-review artifacts and provider-verification evidence.
+
+Keep one slice, one branch, and one draft PR active at a time. Agent review never substitutes for the human or provider evidence that blocks the proof track.
+
 ## 4. Phase 0 — Direction Reset
 
 Status: **DONE**
@@ -88,6 +97,15 @@ Historical mapping:
 - Product Plan v2 Phase 0 / Slice 0.1;
 - legacy ID `14.0`;
 - merged PR #74.
+
+### 0.3 Documentation reconciliation
+
+Status: **DONE — documentation-only**
+
+- align active contracts to the canonical Browse → Source Detail → Board → Export loop;
+- preserve historical evidence while stating the current coverage baseline: **255 Listed / 40 Profiled / 0 Verified**;
+- keep 1.6 as NEXT and 5.3 as BLOCKED;
+- make no product, catalogue, provider, authentication, or cloud-state change.
 
 ## 5. Phase 1 — Source Intelligence Foundation
 
@@ -109,6 +127,8 @@ Status: **DONE**
 ### 1.2 Coverage mapping and intelligence adapter
 
 Status: **DONE**
+
+At Slice 1.2 completion:
 
 - 275 Listed;
 - 20 Profiled;
@@ -177,7 +197,7 @@ Execution-track evidence: `docs/slices/0.2-execution-track-realignment.md`, PR #
 
 Status: **DONE**
 
-Goal: replace the competing Explore/Full Reference catalogue experiences with one canonical, paginated source browser and a useful internal profile for every source.
+Goal: maintain one canonical, paginated source browser and a useful internal profile for every source.
 
 ### 2.1 Canonical Browse contract
 
@@ -225,7 +245,7 @@ Evidence: `docs/slices/2.3-source-detail-foundation.md`, PR #80.
 
 Status: **DONE**
 
-- capabilities, objects, platforms, frameworks, integrations, formats, tools, governance, and evidence for the 20 Profiled sources;
+- capabilities, objects, platforms, frameworks, integrations, formats, tools, governance, and evidence for the then-current 20 Profiled sources;
 - explainable Similar Sources based on category, source type, and recorded metadata overlap;
 - explicit repository-intelligence versus live-provider-verification boundary;
 - no popularity, rating, trend, aesthetic, or universal-best scoring.
@@ -471,7 +491,7 @@ Status: **DONE**
 
 - one public, static `/for-ai` route for people using Tessli with or without MCP;
 - current seven read-only local stdio tools documented from metadata shared with the MCP server;
-- canonical 295 / 275 Listed / 20 Profiled / 0 Verified coverage derived from SourceProfiles;
+- at Slice 6.4 completion, canonical 295 / 275 Listed / 20 Profiled / 0 Verified coverage derived from SourceProfiles; current coverage is **255 Listed / 40 Profiled / 0 Verified** and must continue to derive from SourceProfiles;
 - executable confidence and freshness rules explained without live-provider claims;
 - real source-profile and Playbook JSON/Markdown examples;
 - browser-local Board research-pack workflow and privacy boundary;
