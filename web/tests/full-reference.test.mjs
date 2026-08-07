@@ -32,6 +32,11 @@ test("canonical Browse derives one paginated result set from source profiles", a
   assert.match(filters, /data-browse-filter-sheet/);
   assert.match(filters, /aria-expanded=\{isOpen\}/);
   assert.match(filters, /browseHref\(\{ \.\.\.defaultBrowseState/);
+  assert.match(filters, /allLabel="All categories"/);
+  assert.match(filters, /allLabel="All access models"/);
+  assert.match(filters, /allLabel="All source types"/);
+  assert.match(filters, /allLabel="All coverage levels"/);
+  assert.match(filters, /<option value="">\{allLabel\}<\/option>/);
   assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
 });
 

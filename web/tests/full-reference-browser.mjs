@@ -99,6 +99,18 @@ await send("Emulation.setDeviceMetricsOverride", {
 });
 
 await navigate("/resources");
+const defaultFilterAudit = await evaluate(`(() => ({
+  values: [...document.querySelectorAll('select')].map((select) => select.value),
+  labels: [...document.querySelectorAll('select')].map((select) => select.selectedOptions[0]?.textContent.trim()),
+}))()`);
+assert.deepEqual(defaultFilterAudit.values, ["", "", "", "", "curated"]);
+assert.deepEqual(defaultFilterAudit.labels, [
+  "All categories",
+  "All access models",
+  "All source types",
+  "All coverage levels",
+  "Curated order",
+]);
 const cardAudit = await evaluate(`(() => ({
   cards: document.querySelectorAll('[data-browse-view=cards] article').length,
   internalLinks: [...document.querySelectorAll('[data-browse-view=cards] article > a')]
@@ -173,10 +185,15 @@ const mobileFilterOpenAudit = await evaluate(`(() => ({
   dialog: document.querySelector('[data-browse-filter-sheet]')?.getAttribute('role'),
   bodyOverflow: document.body.style.overflow,
   focusInside: document.querySelector('[data-browse-filter-sheet]')?.contains(document.activeElement),
+  closeSize: (() => {
+    const rect = document.querySelector('[aria-label="Close filters"]')?.getBoundingClientRect();
+    return rect ? { width: rect.width, height: rect.height } : null;
+  })(),
 }))()`);
 assert.equal(mobileFilterOpenAudit.dialog, "dialog");
 assert.equal(mobileFilterOpenAudit.bodyOverflow, "hidden");
 assert.equal(mobileFilterOpenAudit.focusInside, true);
+assert.deepEqual(mobileFilterOpenAudit.closeSize, { width: 44, height: 44 });
 
 await pressKey({ code: "Escape", key: "Escape", virtualKeyCode: 27 });
 await waitFor(
