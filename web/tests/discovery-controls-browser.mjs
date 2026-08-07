@@ -166,18 +166,14 @@ await evaluate(`(() => {
   trigger?.click();
 })()`);
 await waitFor(
-  'Boolean(document.querySelector("[data-more-categories-panel]"))',
-  "More categories opening",
-);
-assert.equal(
-  await evaluate(`(() => {
+  `(() => {
     const panel = document.querySelector('[data-more-categories-panel]');
+    if (!panel) return false;
     const rect = panel.getBoundingClientRect();
     const hit = document.elementFromPoint(rect.left + 16, rect.top + 16);
     return rect.width > 0 && rect.height > 0 && panel.contains(hit);
-  })()`),
-  true,
-  "More categories must be visible rather than clipped by the category scroller.",
+  })()`,
+  "visible More categories above the category scroller",
 );
 await pressKey({ code: "Escape", key: "Escape", virtualKeyCode: 27 });
 await waitFor(
