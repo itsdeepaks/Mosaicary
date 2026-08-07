@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { BrowseResults } from "@/components/browse/browse-results";
+import { BrowseFilters } from "@/components/browse/browse-filters";
 import styles from "@/components/browse/browse.module.css";
 import type {
   ResourceCardAccess,
@@ -126,79 +127,34 @@ export default async function ResourcesPage({
           </p>
         </header>
 
-        <form action="/resources" className={styles.controls} method="get">
-          <label>
-            Search
-            <input
-              id="browse-search"
-              defaultValue={state.query}
-              maxLength={160}
-              name="q"
-              placeholder="Name, task, framework…"
-              type="search"
-            />
-          </label>
-          <label>
-            Category
-            <select defaultValue={state.category ?? ""} name="category">
-              <option value="">All categories</option>
-              {catalogue.categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Access
-            <select defaultValue={state.access[0] ?? ""} name="access">
-              <option value="">All access</option>
-              {browseAccessValues.map((access) => (
-                <option key={access} value={access}>
-                  {accessLabels[access]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Source type
-            <select defaultValue={state.sourceType ?? ""} name="sourceType">
-              <option value="">All source types</option>
-              {SOURCE_TYPES.map((sourceType) => (
-                <option key={sourceType} value={sourceType}>
-                  {sourceTypeLabels[sourceType]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Coverage
-            <select defaultValue={state.profileLevel ?? ""} name="profileLevel">
-              <option value="">All coverage</option>
-              {browseProfileLevelValues.map((level) => (
-                <option key={level} value={level}>
-                  {profileLevelLabels[level]}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Sort
-            <select defaultValue={state.sort} name="sort">
-              {browseSortValues.map((sort) => (
-                <option key={sort} value={sort}>
-                  {sort === "curated"
-                    ? "Curated order"
-                    : sort === "name-asc"
-                      ? "Name A–Z"
-                      : "Name Z–A"}
-                </option>
-              ))}
-            </select>
-          </label>
-          <input name="view" type="hidden" value={state.view} />
-          <button type="submit">Apply filters</button>
-        </form>
+        <BrowseFilters
+          accessOptions={browseAccessValues.map((access) => ({
+            value: access,
+            label: accessLabels[access],
+          }))}
+          categories={catalogue.categories.map((category) => ({
+            value: category.id,
+            label: category.label,
+          }))}
+          profileLevelOptions={browseProfileLevelValues.map((level) => ({
+            value: level,
+            label: profileLevelLabels[level],
+          }))}
+          sortOptions={browseSortValues.map((sort) => ({
+            value: sort,
+            label:
+              sort === "curated"
+                ? "Curated order"
+                : sort === "name-asc"
+                  ? "Name A–Z"
+                  : "Name Z–A",
+          }))}
+          sourceTypeOptions={SOURCE_TYPES.map((sourceType) => ({
+            value: sourceType,
+            label: sourceTypeLabels[sourceType],
+          }))}
+          state={state}
+        />
 
         <section aria-labelledby="browse-results-title">
           <div className={styles.summary}>

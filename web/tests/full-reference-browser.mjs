@@ -49,6 +49,17 @@ function send(method, params = {}) {
   });
 }
 
+async function pressKey({ code, key, virtualKeyCode }) {
+  const params = {
+    code,
+    key,
+    nativeVirtualKeyCode: virtualKeyCode,
+    windowsVirtualKeyCode: virtualKeyCode,
+  };
+  await send("Input.dispatchKeyEvent", { ...params, type: "keyDown" });
+  await send("Input.dispatchKeyEvent", { ...params, type: "keyUp" });
+}
+
 async function evaluate(expression) {
   const response = await send("Runtime.evaluate", {
     awaitPromise: true,
@@ -129,6 +140,66 @@ const tableAudit = await evaluate(`(() => ({
 assert.equal(tableAudit.rows, 40);
 assert.equal(tableAudit.caption, true);
 assert.equal(tableAudit.levels, true);
+
+await send("Emulation.setDeviceMetricsOverride", {
+  width: 390,
+  height: 844,
+  deviceScaleFactor: 1,
+  mobile: true,
+});
+
+await navigate("/resources?category=website-inspiration&sort=name-asc");
+const mobileFilterAudit = await evaluate(`(() => ({
+  trigger: document.querySelector('[data-browse-filter-trigger]')?.textContent.trim(),
+  layer: document.querySelector('[data-browse-filter-layer]')?.getAttribute('data-browse-filter-layer'),
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+}))()`);
+assert.equal(mobileFilterAudit.trigger, "Filter (2 active)");
+assert.equal(mobileFilterAudit.layer, "closed");
+assert.equal(mobileFilterAudit.overflow, false);
+
+await evaluate(
+  "document.querySelector('[data-browse-filter-trigger]')?.click()",
+);
+await waitFor(
+  `document.querySelector('[data-browse-filter-layer]')?.getAttribute('data-browse-filter-layer') === 'open'`,
+  "mobile Browse filter sheet",
+);
+const mobileFilterOpenAudit = await evaluate(`(() => ({
+  dialog: document.querySelector('[data-browse-filter-sheet]')?.getAttribute('role'),
+  bodyOverflow: document.body.style.overflow,
+  focusInside: document.querySelector('[data-browse-filter-sheet]')?.contains(document.activeElement),
+}))()`);
+assert.equal(mobileFilterOpenAudit.dialog, "dialog");
+assert.equal(mobileFilterOpenAudit.bodyOverflow, "hidden");
+assert.equal(mobileFilterOpenAudit.focusInside, true);
+
+await pressKey({ code: "Escape", key: "Escape", virtualKeyCode: 27 });
+await waitFor(
+  `document.querySelector('[data-browse-filter-layer]')?.getAttribute('data-browse-filter-layer') === 'closed'`,
+  "mobile Browse filter close",
+);
+await waitFor(
+  "document.activeElement?.matches('[data-browse-filter-trigger]')",
+  "mobile Browse filter focus restoration",
+);
+
+await navigate("/resources?view=table");
+const mobileTableAudit = await evaluate(`(() => ({
+  overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+  tableDisplay: getComputedStyle(document.querySelector('[data-browse-view=table] table')).display,
+  rowDisplay: getComputedStyle(document.querySelector('[data-browse-view=table] tbody tr')).display,
+  labels: [...document.querySelectorAll('[data-browse-view=table] tbody td')].slice(0, 4).map((cell) => cell.getAttribute('data-label')),
+}))()`);
+assert.equal(mobileTableAudit.overflow, false);
+assert.equal(mobileTableAudit.tableDisplay, "block");
+assert.equal(mobileTableAudit.rowDisplay, "grid");
+assert.deepEqual(mobileTableAudit.labels, [
+  "Type",
+  "Access",
+  "Coverage",
+  "Actions",
+]);
 
 await send("Page.navigate", { url: `${origin}/resources?sort=verified` });
 await waitFor(

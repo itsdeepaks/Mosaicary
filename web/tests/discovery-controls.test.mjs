@@ -147,9 +147,10 @@ test("search supports controlled URL state and live result counts", async () => 
 });
 
 test("Saved and canonical Browse use repository data without remote state", async () => {
-  const [saved, resources, navigation] = await Promise.all([
+  const [saved, resources, filters, navigation] = await Promise.all([
     read("app/saved/page.tsx"),
     read("app/resources/page.tsx"),
+    read("components/browse/browse-filters.tsx"),
     read("components/site-header/navigation.ts"),
   ]);
 
@@ -164,5 +165,6 @@ test("Saved and canonical Browse use repository data without remote state", asyn
   assert.doesNotMatch(resources, /RoutePlaceholder|localStorage|fetch\(/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
-  assert.match(resources, /id="browse-search"/);
+  assert.match(filters, /id="browse-search"/);
+  assert.match(filters, /name="q"/);
 });

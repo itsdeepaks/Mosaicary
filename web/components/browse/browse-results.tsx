@@ -152,10 +152,12 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
                     </Link>
                     <small>{profile.domain}</small>
                   </th>
-                  <td>{profile.sourceType.replaceAll("-", " ")}</td>
-                  <td>{accessLabels[card.access]}</td>
-                  <td>{profile.profileLevel}</td>
-                  <td>
+                  <td data-label="Type">
+                    {profile.sourceType.replaceAll("-", " ")}
+                  </td>
+                  <td data-label="Access">{accessLabels[card.access]}</td>
+                  <td data-label="Coverage">{profile.profileLevel}</td>
+                  <td data-label="Actions">
                     <div className={styles.rowActions}>
                       <button
                         aria-label={saveLabel(

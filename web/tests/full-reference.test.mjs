@@ -12,9 +12,10 @@ async function read(relativePath) {
 }
 
 test("canonical Browse derives one paginated result set from source profiles", async () => {
-  const [page, browse] = await Promise.all([
+  const [page, browse, filters] = await Promise.all([
     read("app/resources/page.tsx"),
     read("lib/browse.ts"),
+    read("components/browse/browse-filters.tsx"),
   ]);
 
   assert.match(page, /getAllSourceProfiles\(\)/);
@@ -27,6 +28,10 @@ test("canonical Browse derives one paginated result set from source profiles", a
   );
   assert.match(browse, /state\.view === "cards" \? 24 : 50/);
   assert.match(browse, /filtered\.slice\(start, start \+ pageSize\)/);
+  assert.match(page, /<BrowseFilters/);
+  assert.match(filters, /data-browse-filter-sheet/);
+  assert.match(filters, /aria-expanded=\{isOpen\}/);
+  assert.match(filters, /browseHref\(\{ \.\.\.defaultBrowseState/);
   assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
 });
 
@@ -96,6 +101,8 @@ test("canonical Browse renders one responsive result tree without duplicate desk
   assert.match(css, /@media \(max-width: 700px\)/);
   assert.match(css, /grid-template-columns:\s*minmax\(0, 1fr\)/);
   assert.match(css, /overflow-x:\s*auto/);
+  assert.match(css, /\.filterFieldsOpen\s*\{/);
+  assert.match(css, /\.table tbody\s*\{[\s\S]*?display:\s*grid/);
 });
 
 test("minimum source profile routes cover all source slugs without overstating enrichment", async () => {
