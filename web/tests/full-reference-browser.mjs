@@ -179,11 +179,9 @@ await waitFor(
   `document.querySelector('[data-browse-filter-layer]')?.getAttribute('data-browse-filter-layer') === 'closed'`,
   "mobile Browse filter close",
 );
-assert.equal(
-  await evaluate(
-    "document.activeElement?.matches('[data-browse-filter-trigger]')",
-  ),
-  true,
+await waitFor(
+  "document.activeElement?.matches('[data-browse-filter-trigger]')",
+  "mobile Browse filter focus restoration",
 );
 
 await navigate("/resources?view=table");
