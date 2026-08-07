@@ -1,8 +1,9 @@
 # Tessli V3 — Human-Curated, AI-Native Product Realignment
 
-Status: **proposal for authority reconciliation**  
-Planning slice: **V3.0 — product and interface plan only**  
-Implementation state: **not started**
+Status: **active product and execution plan**
+Planning slice: **complete**
+Authority reconciliation: **V3.0 DONE — 2026-08-08**
+Next implementation slice: **V3.1 — Public IA hygiene**
 
 ## 1. Product definition
 
@@ -290,7 +291,7 @@ Remote Streamable HTTP MCP follows only after task retrieval and compact outputs
 
 | ID    | Slice                             | Outcome                                                                                                          | Primary ownership                                              | Depends on              |
 | ----- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------- |
-| V3.0  | Authority reconciliation          | Product direction, PRD, build plan, page/component contracts, README agree on the human-curated AI-native router | Documentation only                                             | This proposal approval  |
+| V3.0  | Authority reconciliation          | Product direction, PRD, build plan, page/component contracts, README agree on the human-curated AI-native router | Documentation only                                             | DONE                    |
 | V3.1  | Public IA hygiene                 | Only useful public routes and navigation remain; placeholders and internal routes are unpromoted/noindex         | Header, footer, sitemap, route metadata                        | V3.0                    |
 | V3.2  | AccessRoute contract pilot        | One canonical access vocabulary for ten high-value sources using existing evidence                               | Schema, profile adapter, data fixtures, contract tests         | V3.0                    |
 | V3.3  | Source guide vertical proof       | Motion becomes the reference human page and Listed pages degrade honestly                                        | Source Detail page/components/styles, Board action integration | V3.2                    |
@@ -429,4 +430,4 @@ Complete V3.16–V3.17. The same read-only retrieval works through supported Ope
 
 ## 16. Immediate next slice
 
-Start **V3.0 Authority reconciliation** after this proposal is approved. It is documentation-only and replaces the current verification-first `NEXT` state before any visible or machine implementation begins.
+Start **V3.1 Public IA hygiene**. It removes public promotion of non-functional routes, makes internal proof/lab surfaces non-indexable and unlinked, and leaves visible page redesign for later dedicated slices.

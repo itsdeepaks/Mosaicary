@@ -1,7 +1,7 @@
 # Tessli Product Plan v2
 
-Status: **active execution plan — Phase 1 / Slice 1.6 NEXT; Phase 5 proof remains blocked**  
-Approved direction: `docs/product-direction.md`  
+Status: **historical V2 execution record — superseded for new work by V3.0**
+Approved direction: `docs/product-realignment-v3.md`
 Operational ledger: `build-slices.md`  
 Effective date: 2026-08-04
 
@@ -9,7 +9,7 @@ Effective date: 2026-08-04
 
 The legacy Tessli roadmap used continuously increasing slice numbers from the original directory build. That history remains valid, but it makes the direction reset look like another extension of the old product.
 
-Product Plan v2 provides the active execution frame:
+Product Plan v2 recorded the execution frame before V3.0:
 
 - **Phase 0** records the completed direction reset;
 - **Slice 0.3** completes the documentation reconciliation for the active execution frame;
@@ -18,9 +18,11 @@ Product Plan v2 provides the active execution frame:
 - legacy `14.x` identifiers remain only as historical aliases for completed work;
 - no merged history or evidence is rewritten.
 
-`build-slices.md` is the operational source of truth for the active and next slice. This document defines the phase outcomes, dependencies, proof boundaries, and completion rules.
+V3.0 makes `docs/product-realignment-v3.md` and the reconciled `build-slices.md` authoritative for all new work. The remaining V2 statuses, dependencies, and `NEXT` declarations are preserved as historical evidence only; they must not be used to select a new repository slice.
 
-## 2. North-star workflow
+`build-slices.md` is the operational source of truth for the active V3 slice. This document retains the V2 phase outcomes, dependencies, proof boundaries, and completion rules as historical evidence.
+
+## 2. Historical V2 north-star workflow
 
 ```text
 Search
@@ -37,7 +39,7 @@ Search
 
 The first five phases prove this workflow. Later phases improve presentation, persistence, contribution, and the evidence-backed UI-taste layer.
 
-## 3. Phase map
+## 3. Historical V2 phase map
 
 | Phase | Name                                        | Status   | Outcome                                                                    |
 | ----: | ------------------------------------------- | -------- | -------------------------------------------------------------------------- |
@@ -53,11 +55,11 @@ The first five phases prove this workflow. Later phases improve presentation, pe
 |     9 | Community and Moderation                    | DEFERRED | Safe source submissions, corrections, reports, and review workflow         |
 |    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | Evaluated precedents, pattern promotion, design packs, and truthful claims |
 
-### Parallel execution tracks
+### Historical execution tracks
 
 The OSS proof is the prerequisite for evaluated UI Judgment, not for every remaining product-foundation improvement.
 
-**Product Foundation track** may continue through evidence-bounded source profiling, freshness, verification workflow, and website/export/MCP parity.
+**Product Foundation track** could continue through evidence-bounded source profiling, freshness, verification workflow, and website/export/MCP parity.
 
 **Proof and UI Judgment track** remains dependency-locked:
 
@@ -77,7 +79,7 @@ No work in the foundation track may imply that the blocked proof succeeded.
 - **Luna-max:** independent, bounded audit/review of evidence, contracts, and diffs.
 - **Human owner:** the source of genuine human-review artifacts and provider-verification evidence.
 
-Keep one slice, one branch, and one draft PR active at a time. Agent review never substitutes for the human or provider evidence that blocks the proof track.
+Keep one slice, one branch, and one draft PR active at a time. Agent review never substitutes for the human or provider evidence that blocks the proof track. V3 changes the active delivery order without weakening these evidence boundaries.
 
 ## 4. Phase 0 — Direction Reset
 
@@ -104,12 +106,12 @@ Status: **DONE — documentation-only**
 
 - align active contracts to the canonical Browse → Source Detail → Board → Export loop;
 - preserve historical evidence while stating the current coverage baseline: **255 Listed / 40 Profiled / 0 Verified**;
-- keep 1.6 as NEXT and 5.3 as BLOCKED;
+- recorded 1.6 as `NEXT` and 5.3 as `BLOCKED` at the time;
 - make no product, catalogue, provider, authentication, or cloud-state change.
 
 ## 5. Phase 1 — Source Intelligence Foundation
 
-Status: **ACTIVE**
+Historical status: **ACTIVE before V3.0**
 
 Goal: define and progressively deepen the truthful source model that Browse, Source Detail, exports, and MCP share.
 
@@ -185,7 +187,7 @@ Evidence: `docs/slices/1.5-verification-contract-operator-workflow.md`, PR #98.
 
 ### 1.6 First Evidence-Backed Verified Batch
 
-Status: **NEXT**
+Historical status: **NEXT before V3.0; not an active V3 slice**
 
 - promote only a small bounded set after Slice 1.5 works;
 - require current evidence and human/operator review;
@@ -649,7 +651,7 @@ Only after sufficient evidence, decide whether Tessli may truthfully claim:
 
 Do not claim that Tessli gives AI taste merely because it has sources, screenshots, embeddings, patterns, or MCP tools.
 
-## 15. Execution rules
+## 15. Historical execution rules
 
 Development proceeds one vertical slice at a time in the active conversation and repository loop:
 
@@ -671,7 +673,7 @@ Development proceeds one vertical slice at a time in the active conversation and
 
 No recurring scheduled development automation is part of this process.
 
-## 16. Stop conditions
+## 16. Historical stop conditions retained in V3
 
 Stop and record a blocker rather than:
 
@@ -692,7 +694,7 @@ When blocked:
 4. identify the smallest external action required;
 5. continue only with independent work after the current slice is resolved.
 
-## 17. Definition of phase completion
+## 17. Historical phase-completion definition
 
 A phase is complete only when:
 

@@ -7,13 +7,13 @@ This document is the concise source of truth for Tessli's visual identity. Page 
 
 ## 1. Product character
 
-Tessli is a curated design-resource index for designers, developers, and product builders.
+Tessli is a human-curated, AI-native design-source router for designers, developers, product builders, and coding agents.
 
 It should feel:
 
 - editorial, not like a generic SaaS dashboard;
 - warm, not clinically white;
-- curated, not crowded;
+- curated, task-led, and never crowded;
 - useful before decorative;
 - confident without feeling elitist;
 - calm enough for research, but memorable enough to become a brand.
@@ -36,7 +36,7 @@ The references define the **composition, atmosphere, hierarchy, and component la
 
 ## 3. Non-negotiable design principles
 
-1. **Search first.** Search is the fastest route to value and must remain prominent.
+1. **Task-led discovery first.** Task search is the fastest route to value and must remain prominent; taxonomy is a refinement, not the primary answer.
 2. **Editorial hierarchy.** Display serif is reserved for brand and page-level storytelling; product UI stays sans-serif.
 3. **Warm restraint.** Off-white surfaces, charcoal text, fine borders, and sparse orange accents.
 4. **One primary action per surface.** Resource card opens the destination; save remains a separate control.
@@ -245,16 +245,11 @@ Motion is functional and restrained.
 - no scroll-jacking;
 - honour `prefers-reduced-motion` by removing non-essential transforms and transitions.
 
-## 11. Hero statistics
+## 11. Homepage evidence and imagery
 
-Use truthful content instead of generated placeholders:
+The V3 homepage does not use a statistics or coverage row. Its hierarchy is task question, task search, task starters, the find → decide → handoff explanation, selected Collections, and a concise For AI path.
 
-1. `295` — Curated resources
-2. `11` — Practical categories
-3. `Private` — Browser-local saves
-4. `Open` — Community-built project
-
-These slots may change when cloud sync and community activity become real. Do not display user counts, weekly additions, or popularity claims until measured.
+Do not use the catalogue count, coverage levels, verification status, user counts, activity, popularity, or community claims as hero evidence. Real Tessli product UI is the preferred marketing imagery when a later approved page contract calls for imagery. The legacy geometric hero artwork is not prescribed for the V3 homepage.
 
 ## 12. Breakpoints
 

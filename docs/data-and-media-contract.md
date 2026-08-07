@@ -27,6 +27,8 @@ type Resource = {
 
 The current CSV is migrated into deterministic typed JSON under `web/data/`. The migration preserves all 295 entries, records source SHA-256 provenance, and reports invalid URLs, missing descriptions, exact duplicate URLs, duplicate domains, slug collisions, or unknown source labels.
 
+`Resource.url` remains the canonical provider destination. Planned `AccessRoute` values belong to the richer SourceProfile contract, not this catalogue record: V3.2 will add that vocabulary without duplicating routes or claiming provider access that has not been recorded.
+
 Approved media is a separate, repository-managed sidecar at `lib_data/resource-media.json`, validated by `schemas/resource-media.schema.json`. It is keyed by stable resource ID and deterministically merged into the generated catalogue. Its approval count and SHA-256 are included in `web/data/catalogue-validation.json`; this preserves the CSV as catalogue truth while keeping media review explicit.
 
 `free-trial` is preserved as its own access value because the source contains one explicitly researched free-trial resource. It must not be silently converted to freemium or paid.
@@ -69,7 +71,7 @@ Do not invent curators. Repository-maintained collections may use “Curated by 
 
 ## 4. User data model
 
-Phase 2:
+Saved and Boards are currently browser-local. The following is inactive future cloud-schema groundwork, not a public feature or current persistence contract:
 
 ```text
 profiles
@@ -86,7 +88,7 @@ Every user-owned table includes `user_id` and Row Level Security policies so use
 
 ## 5. Search model
 
-At 295 resources, client-side search is sufficient.
+Catalogue Browse search remains deterministic over repository-managed data. It supports filtering and query recovery without network enrichment.
 
 Search index includes:
 
@@ -99,6 +101,8 @@ Search index includes:
 - tags.
 
 Precompute one normalized searchable string per entry. Debounce UI input. Keep filters in URL state.
+
+V3.7 adds a separate deterministic task-retrieval contract rather than replacing Browse search: structured task input returns at most eight explained sources with fit reasons, caveats, alternatives, and recorded access routes. It does not introduce embeddings, LLM ranking, provider calls, or a public endpoint.
 
 Move to Postgres full-text search only when catalogue size, moderation, or server-driven ranking justifies it.
 
@@ -151,7 +155,7 @@ A first-party media proxy/cache may be introduced with:
 - caching in object storage;
 - takedown and refresh support.
 
-Discovery, refresh, screenshot capture, proxying, and caching are intentionally deferred. They require a separate security and operational review rather than being introduced as part of the static source contract.
+Discovery, refresh, screenshot capture, proxying, and caching are intentionally deferred. They require a separate security and operational review rather than being introduced as part of the static source contract. An optional live iframe enhancement is separately deferred to V3.15; it requires an approved small allowlist, sandbox/security/performance/mobile checks, and the same complete static fallback. It is never an agent access mechanism.
 
 ## 8. Metadata enrichment
 
@@ -166,7 +170,7 @@ For each approved resource, attempt:
 7. last checked;
 8. HTTP status.
 
-Do not scrape or redistribute destination content beyond necessary metadata and approved previews.
+Do not scrape, mirror, or redistribute destination content beyond necessary metadata and approved previews. Agents receive the canonical provider URL and recorded access route; Tessli does not substitute a provider browser, API, MCP, registry, or source repository.
 
 ## 9. Hero and reference assets
 

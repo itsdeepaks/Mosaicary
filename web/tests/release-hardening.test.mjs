@@ -20,7 +20,7 @@ function tableRow(...cells) {
   );
 }
 
-test("release history remains preserved under Product Plan v2", async () => {
+test("release history remains preserved while V3 drives active execution", async () => {
   const slices = await readRepositoryFile("build-slices.md");
   const plan = await readRepositoryFile("docs/product-plan-v2.md");
   const readme = await readRepositoryFile("README.md");
@@ -224,35 +224,25 @@ test("release history remains preserved under Product Plan v2", async () => {
   }
   assert.match(
     slices,
-    /Status: \*\*active delivery plan — Phase 1 \/ Slice 1\.6 NEXT; proof track remains BLOCKED\*\*/,
+    /Status: \*\*active delivery plan — V3\.1 Public IA hygiene NEXT\*\*/,
+  );
+  assert.match(
+    slices,
+    tableRow("V3.0", "Authority reconciliation", "DONE", "V3 approval"),
+  );
+  assert.match(slices, tableRow("V3.1", "Public IA hygiene", "NEXT", "V3.0"));
+  assert.match(slices, /## 7\. Historical V2 phase status/);
+  assert.match(
+    plan,
+    /Status: \*\*historical V2 execution record — superseded for new work by V3\.0\*\*/,
   );
   assert.match(
     plan,
-    /(?:\*\*)?Phases 1–10(?:\*\*)? are the ten development phases/i,
+    /V3\.0 makes `docs\/product-realignment-v3\.md` and the reconciled `build-slices\.md` authoritative for all new work\./,
   );
   assert.match(
     plan,
-    /Status: \*\*active execution plan — Phase 1 \/ Slice 1\.6 NEXT; Phase 5 proof remains blocked\*\*/,
-  );
-  assert.match(
-    plan,
-    /## 5\. Phase 1 — Source Intelligence Foundation\n\nStatus: \*\*ACTIVE\*\*/,
-  );
-  assert.match(
-    plan,
-    /### 1\.3 Priority Source Profile Expansion — Batch 1\n\nStatus: \*\*DONE\*\*/,
-  );
-  assert.match(
-    plan,
-    /### 1\.4 Priority Source Profile Expansion — Batch 2\n\nStatus: \*\*DONE\*\*/,
-  );
-  assert.match(
-    plan,
-    /### 1\.5 Verification Contract and Operator Workflow\n\nStatus: \*\*DONE\*\*/,
-  );
-  assert.match(
-    plan,
-    /### 1\.6 First Evidence-Backed Verified Batch\n\nStatus: \*\*NEXT\*\*/,
+    /Historical status: \*\*NEXT before V3\.0; not an active V3 slice\*\*/,
   );
   assert.match(plan, /Phase 10 — Evidence-Backed UI-Taste Layer/i);
   assert.match(
@@ -314,16 +304,15 @@ test("release history remains preserved under Product Plan v2", async () => {
     slices,
     /ten selected references, four rejected directions, a deterministic `tessli\.board-research-pack\.v1` handoff/i,
   );
-  assert.match(slices, /Product Foundation:.*Phase 1 \/ Slice 1\.6 is NEXT/is);
-  assert.match(slices, /Proof and UI Judgment:.*Slice 5\.3 remains BLOCKED/is);
-  assert.match(readme, /Product Foundation — active/i);
   assert.match(
-    readme,
-    /approved next repository slice is \*\*Phase 1 \/ Slice 1\.6/i,
+    slices,
+    /V3\.0 replaced this continuation boundary\. The next repository slice is \*\*V3\.1 Public IA hygiene\*\*/,
   );
+  assert.match(slices, /Proof and UI Judgment:.*Slice 5\.3 remains BLOCKED/is);
+  assert.match(readme, /V3\.0 authority reconciliation is complete\./);
   assert.match(
     readme,
-    /Slice 5\.3 remains the next action in the separate proof track/i,
+    /next independently reviewable slice is \*\*V3\.1 — Public IA hygiene\*\*/i,
   );
   assert.match(
     slices,

@@ -1,7 +1,7 @@
 # Tessli Architecture and Authentication Plan
 
-Status: **active architecture direction after the 2026-08-04 reset**  
-Authoritative product direction: `docs/product-direction.md`
+Status: **active architecture direction under V3.0 reconciliation**
+Authoritative product direction: `docs/product-realignment-v3.md`
 
 ## 1. Architecture principle
 
@@ -49,13 +49,15 @@ Profiles enrich catalogue sources with:
 - platforms/frameworks;
 - discovery methods;
 - workflow fit;
-- integrations and agent interfaces;
+- planned access routes;
 - limitations;
 - governance;
 - evidence;
 - verification dates.
 
 Profile fields are optional unless required by the coverage level. Missing data must not be invented.
+
+V3.2 introduces the `AccessRoute` vocabulary for browser, documentation, package-registry, source-code, API, MCP, CLI, and plugin access. It replaces overlapping future integration/agent-interface terminology, but does not change the current schema or claim populated routes before that slice.
 
 ### 3.3 Coverage levels
 
@@ -107,9 +109,11 @@ Requirements:
 
 Listed pages render minimum truthful metadata. Profiled and Verified pages progressively expose richer sections.
 
-### Machine-readable output
+### Machine-readable output and discovery
 
-Future approved outputs may include:
+Current public source and Collection representations are static, deterministic, and derive from canonical source/profile truth. V3.9 may introduce compact action-oriented revisions only after V3.7 retrieval is stable. V3.10 may make supported public interfaces discoverable through `robots.txt`, `llms.txt`, sitemap, and For AI links; it must not create a bulk catalogue endpoint or expose Saved or Board data.
+
+Approved outputs include or may include:
 
 ```text
 /resources/[slug].json
@@ -123,7 +127,7 @@ These outputs must share source/profile truth and must not expose private local/
 
 ## 5. Search architecture
 
-Initial search remains deterministic over the local catalogue/profile index.
+Browse search remains deterministic over the repository catalogue/profile index.
 
 Search should support task intent through structured fields, not only raw substring matching.
 
@@ -134,28 +138,30 @@ Potential fields:
 - best-for/workflow fit;
 - capabilities/content objects;
 - platforms/frameworks;
-- integrations/agent interfaces;
+- planned access routes;
 - limitations/access.
 
-A vector/semantic index may be evaluated later, but it does not replace curated metadata, evidence, access constraints, or deterministic fallback search.
+A vector/semantic index may be evaluated later, but it does not replace curated metadata, evidence, access constraints, or deterministic fallback search. V3.7 is a separate deterministic task-retrieval contract: structured task input yields at most eight explained source choices, including fit reasons, caveats, alternatives, and available access routes. It does not add embeddings, LLM ranking, or a public endpoint.
 
 ## 6. MCP architecture
 
-The existing MCP remains read-only and repository-backed.
+The current native MCP remains a local, read-only, repository-backed stdio server.
 
 Requirements:
 
 - same profile truth as the website;
 - bounded result counts;
 - deterministic output where possible;
-- explicit freshness and verification state;
+- compact task-fit output with optional diagnostic provenance, freshness, and verification state;
 - evidence-linked claims;
 - explicit limitations/governance;
-- no live website verification unless a future tool is explicitly designed and approved;
+- no live website verification, provider browsing, or provider proxying;
 - no provider credentials stored by Tessli;
 - no proxying or persistence of paid/private content.
 
-Future MCP tools require stable underlying data objects and real user tasks before implementation.
+V3.8 follows V3.7 and migrates the local server to five focused capabilities: `find_sources`, `get_source`, `find_alternatives`, `get_collection`, and `create_research_brief`. Existing tool names remain temporary compatibility aliases during that migration; no exact alias mapping is implied before V3.8. `verify_resource` remains a diagnostic compatibility path rather than a normal agent workflow.
+
+Remote Streamable HTTP MCP is deferred to V3.16, after local task retrieval and compact public outputs stabilise. It must use the same pure tool layer and public data only, with read-only allowlists, bounded input, origin validation, rate limits, safe logs, timeouts, and monitoring. It must not read browser-local Boards, write Tessli state, fetch providers, proxy paid/private content, or accept provider credentials.
 
 ## 7. Local Boards architecture
 
@@ -182,6 +188,7 @@ Requirements:
 - no silent deletion;
 - clear local-only copy;
 - deterministic Markdown export;
+- compact JSON agent handoff only after V3.13;
 - no auth dependency.
 
 ## 8. Authentication timing
@@ -419,6 +426,8 @@ Do not expose placeholder forms as working product actions.
 - do not persist/redistribute proprietary screenshots without permission;
 - keep fetch/capture as explicit operator workflows, not normal build/runtime behaviour.
 
+Approved repository-managed previews and the existing fallback chain are the default human preview mode. A live iframe is not an agent interface and remains deferred to V3.15: it requires separate approval, a small allowlist, sandbox/security/performance/mobile checks, and a complete static fallback.
+
 ## 22. Deployment environments
 
 - local;
@@ -443,3 +452,4 @@ OAuth redirects must account for local, preview strategy, and production.
 - payments;
 - analytics/consent;
 - recommendation learning/ranking.
+- hosted remote MCP before V3.16.

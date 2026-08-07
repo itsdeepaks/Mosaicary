@@ -1,26 +1,22 @@
 # Tessli
 
-Tessli is a design-research system for humans and language models.
+Tessli is a **human-curated, AI-native design-source router**. It helps people and coding agents find the right design or frontend source for a task, understand why it fits, choose how to access it, and retain the useful project decisions.
 
-It begins with a searchable index of **295 curated sources** for web design, product design, frontend development, motion, typography, accessibility, components, assets, and visual inspiration. The directory is the starting layer—not the finished product.
+The current 295-source catalogue is the identity layer—not the entire product. Tessli joins:
 
-Tessli's active direction connects:
-
-1. a **Source Index** for finding where to research;
-2. **Research Intelligence** for understanding task fit, capabilities, limitations, integrations, evidence, and freshness;
-3. future **UI Judgment** built from reviewed patterns, project constraints, selected/rejected references, browser verification, and human-evaluated outcomes.
-
-The website, model-independent research packs, and native MCP are intended to use the same canonical source/profile truth.
+1. task-led source discovery for people;
+2. concise source guidance, previews, limitations, alternatives, and project decisions;
+3. machine-readable source data, local MCP, and later remote agent access over the same canonical truth.
 
 Read the authoritative direction and execution plan first:
 
+- [`docs/product-realignment-v3.md`](docs/product-realignment-v3.md)
 - [`docs/product-direction.md`](docs/product-direction.md)
-- [`docs/product-plan-v2.md`](docs/product-plan-v2.md)
 - [`PRD.md`](PRD.md)
 - [`build-slices.md`](build-slices.md)
 - [`AGENTS.md`](AGENTS.md)
 
-Product Plan v2 records Phase 0 as the completed direction reset and Phases 1–10 as the ten development phases. Legacy slice numbers remain only as historical aliases for already merged work.
+`docs/product-realignment-v3.md` is the active V3 implementation map. [`docs/product-plan-v2.md`](docs/product-plan-v2.md) preserves V2 execution evidence only; it is not a second active roadmap.
 
 ## Current application baseline
 
@@ -38,54 +34,40 @@ The current application now includes the first reusable Tessli research loop:
 - a reproducible Online Scope Studio homepage proof brief, Board, baseline, and research pack;
 - an isolated, browser-tested OSS homepage candidate with retained implementation evidence;
 - six repository-maintained staged Playbooks;
-- a working For AI route documenting the seven read-only MCP tools, representations, coverage, and governance;
+- a working For AI route documenting current local MCP and public representations;
 - public About, curation, privacy, terms, and content-policy pages;
 - responsive and browser-tested interaction states.
 
-Authentication, cloud workspaces, submissions, moderation, Pattern Candidates, and public UI-taste claims remain deferred until their prerequisites are demonstrated.
+Authentication, cloud workspaces, submissions, moderation, large pattern catalogues, provider proxying, and public UI-taste claims remain deferred.
 
-## Active execution tracks
+## Active V3 execution loop
 
-Tessli now separates independent foundation work from the evidence-dependent proof track.
-
-### Product Foundation — active
+V3.0 authority reconciliation is complete. The next independently reviewable slice is **V3.1 — Public IA hygiene**.
 
 ```text
-40 Profiled
-→ Slice 1.5 verification contract/workflow DONE
-→ Slice 1.6 first bounded Verified batch NEXT
+V3.1 Public IA hygiene
+→ V3.2 AccessRoute contract pilot
+→ V3.3 Motion source-guide proof
+→ V3.4 Canonical Browse focus
+→ V3.5 Homepage task entry
 ```
 
-The next repository slice is **1.6 First Evidence-Backed Verified Batch**. It must select a small bounded set, create current human-operator records through the Slice 1.5 workflow, and promote only records that satisfy every schema and semantic gate.
-
-### Proof and UI Judgment — blocked
+Machine work follows the stable source-guide contract:
 
 ```text
-5.3 genuine human review
-→ 5.4 outcome report
-→ 6.2 evidence-led homepage
-→ reviewed Pattern Candidates
+V3.7 deterministic task retrieval
+→ V3.8 local MCP v2
+→ V3.9 compact public representations
+→ V3.10 machine discovery
+→ V3.16 remote MCP
+→ V3.17 supported cross-model validation
 ```
 
-The existing OSS candidate and safe review workspace remain preserved until a real reviewer supplies the required artifact.
+The full ordered sequence, dependencies, acceptance criteria, and explicit deferrals are in [`docs/product-realignment-v3.md`](docs/product-realignment-v3.md).
 
-## Product Plan v2 status
+## Current V2 baseline
 
-```text
-Phase 0  Direction Reset                         DONE
-Phase 1  Source Intelligence Foundation          ACTIVE — 1.6 NEXT
-Phase 2  Browse and Source Detail                DONE
-Phase 3  Local Saved and Project Boards          DONE
-Phase 4  Research-Pack Export                    DONE
-Phase 5  Real OSS Proof Project                  BLOCKED — human review
-Phase 6  Homepage, Navigation, Playbooks, For AI BLOCKED — 6.2 waits for proof
-Phase 7  Reviewed Pattern Candidates             BLOCKED — waits for proof
-Phase 8  Authentication and Cloud Workspace      DEFERRED
-Phase 9  Community and Moderation                DEFERRED
-Phase 10 Evidence-Backed UI-Taste Layer          DEFERRED
-```
-
-The approved next repository slice is **Phase 1 / Slice 1.6 — First Evidence-Backed Verified Batch**. Slice 5.3 remains the next action in the separate proof track when a genuine reviewer is available.
+V2 delivered the canonical catalogue, Browse, source profiles, Saved, Boards, public representations, current local MCP, and preserved proof artifacts. Those are the V3 foundation. Historical V2 evidence remains accurate, but it does not define the next implementation slice.
 
 ## Source coverage levels
 
@@ -105,15 +87,15 @@ Current canonical baseline:
 
 All 295 sources must not imply equal intelligence depth.
 
-## Model access
+## Model access today
 
 ### Without MCP
 
-Tessli supports stable semantic source pages, deterministic Board research packs, and public source/collection Markdown and JSON that can be searched, shared, pasted, or uploaded to models.
+Tessli supports stable semantic source pages, deterministic Board research packs, and public source/Collection Markdown and JSON that can be searched, shared, pasted, or uploaded to models. V3.9–V3.10 will make these compact, action-oriented, and discoverable.
 
 ### With MCP
 
-The repository already contains seven read-only native tools:
+The repository currently contains seven read-only local-MCP-v1 tools:
 
 - `search_resources`;
 - `get_resource_profile`;
@@ -123,7 +105,7 @@ The repository already contains seven read-only native tools:
 - `create_reference_packet`;
 - `verify_resource`.
 
-Future pattern/project tools will be added only after stable reviewed data exists.
+V3.8 will migrate the normal workflow to task retrieval, source guidance, alternatives, Collections, and research briefs. A hosted remote MCP does not exist yet; it is deferred to V3.16 after the local contract is stable.
 
 ## Boundaries
 
@@ -137,7 +119,7 @@ It is not:
 - permission to copy another product's interface;
 - proof of AI taste based on catalogue size alone.
 
-The UI-taste direction must be earned through real project research, generated implementation, browser verification, human review, and retained approved/rejected outcomes.
+The UI-taste direction remains a later evidence-backed possibility, not the current public promise.
 
 ## Next.js application workspace
 
@@ -203,8 +185,8 @@ The new product direction does not rewrite or erase the verified Phase 1 deploym
 Every implementation slice follows:
 
 1. current `main`;
-2. `docs/product-direction.md`;
-3. `docs/product-plan-v2.md`;
+2. `docs/product-realignment-v3.md`;
+3. `docs/product-direction.md`;
 4. `PRD.md`;
 5. `build-slices.md`;
 6. `AGENTS.md`;

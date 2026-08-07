@@ -1,336 +1,193 @@
 # Tessli Component Contracts
 
-Each component must be implemented, browser-tested, and approved independently before it is used to compose full pages.
+Status: **V3 human-interface contract**
+
+Each reusable component is implemented and browser-tested in its approved vertical slice before composing it into full pages. These contracts describe working public interfaces only; deferred components do not authorize public routes or calls to action.
 
 ## 1. Global header
 
 ### Anatomy
 
 - Tessli wordmark;
-- working desktop navigation: Browse, Collections, and For AI;
-- utility controls: Search and Saved;
-- mobile search shortcut;
-- mobile menu button.
-
-### States
-
-- transparent/default;
-- scrolled with subtle canvas backdrop;
-- active route;
-- keyboard focus;
-- mobile sheet open;
-- account states only after the approved authentication/cloud slice.
+- working primary navigation: Browse, Collections, For AI;
+- personal utilities: Search, Saved, Boards;
+- mobile menu and search shortcut.
 
 ### Behaviour
 
-- desktop header height: approximately `64px`;
-- sticky only after visual testing; no heavy blur;
-- active route uses orange underline, not filled pill;
-- show only working routes and utilities; Browse is the canonical catalogue route, Saved is browser-local, and no public Sign in/account control appears before the approved authentication/cloud slice;
-- mobile navigation opens a full-height sheet;
-- Escape closes open menus/sheets;
-- focus returns to the trigger.
+- desktop height approximately `64px`;
+- active route uses a restrained orange underline, not a filled pill;
+- show only working routes/utilities;
+- Browse is canonical, Saved and Boards are browser-local;
+- no public Sign in, account, Submit, Suggest, Lab, proof, or review control before its approved slice;
+- mobile navigation opens a full-height accessible sheet;
+- Escape closes sheets/menus and focus returns to their triggers.
 
 ## 2. Wordmark
 
 - text-based Newsreader wordmark for version one;
-- link to `/`;
+- links to `/`;
 - no icon beside the wordmark;
-- desktop approximately `34–38px`;
-- mobile approximately `30–32px`;
-- must remain readable in dark mode;
-- later custom lettering may replace the font rendering without changing dimensions.
+- desktop approximately `34–38px`; mobile approximately `30–32px`;
+- remains readable in dark/forced-colour contexts.
 
-## 3. Account menu
-
-### Signed out
-
-Show `Sign in`, not a fake avatar.
-
-### Signed in trigger
-
-- avatar image when available;
-- generated initial fallback;
-- visible focus ring;
-- minimum `40×40px` target.
-
-### Menu
-
-- name and email;
-- Saved resources;
-- My collections;
-- Submissions;
-- Account settings;
-- Theme;
-- Sign out.
-
-### Accessibility
-
-- use a proven menu primitive;
-- arrow-key navigation;
-- Escape close;
-- click-outside close;
-- no hover-only access.
-
-## 4. Search field
+## 3. Search field
 
 ### Anatomy
 
-- search icon;
-- input;
-- optional keyboard hint;
-- clear button when populated;
-- optional loading indicator.
+- visible label or equivalent accessible name;
+- search icon, input, clear action when populated;
+- optional platform-neutral keyboard hint;
+- result status through an `aria-live` region.
 
-### States
+### States and behaviour
 
-- empty;
-- focused;
-- typing;
-- loading;
-- results;
-- no results;
-- error;
-- disabled.
-
-### Behaviour
-
-- `/` or `Ctrl/Command + K` may focus global search;
-- when a visible hint is used, it must be platform-neutral (for example, `Ctrl / ⌘ K`) rather than presenting the Mac Command symbol as universal;
+- empty, focused, typing, loading, results, no-results, error, disabled;
+- `/` or `Ctrl / ⌘ K` may focus global search;
 - Escape clears first, then removes focus;
-- debounce `80–120ms` for local filtering;
-- no network call for the initial 295-entry catalogue;
-- visible result count updates through an `aria-live` region.
+- local catalogue filtering may debounce `80–120ms` without a network call;
+- a task search on Home submits to `/resources?q=...`.
 
-## 5. Hero statistics row
+## 4. Task starter
 
-Four truthful slots:
+Used on Home only.
 
-- 295 / Curated resources
-- 11 / Practical categories
-- Private / Browser-local saves
-- Open / Community-built project
+- concise task label and optional one-line context;
+- links to a meaningful `/resources` query;
+- three to six items maximum;
+- visible focus and minimum touch target;
+- never becomes a category rail, result set, or decorative pill cloud.
 
-On mobile, use a two-by-two grid. Do not create horizontal overflow for these items.
+## 5. Browse refinement controls
 
-## 6. Category navigation
+Controls may include category, source type, access, and platform/framework only where canonical data supports them. Active filters have a clear summary and one clear-all action. URL state is shareable.
 
-### Desktop
+Desktop can use concise inline controls or a sidebar. Tablet/mobile use an accessible filter sheet. Coverage level, evidence count, human-review state, and verification/audit mechanics are not primary refinement controls.
 
-- horizontal bordered surface;
-- category icon, label, and optional count;
-- active item uses orange text/underline;
-- primary categories stay contained within the page frame; “More” opens remaining categories only when necessary instead of clipping the rail.
-
-### Mobile
-
-- horizontally scrollable chips or a compact category sheet;
-- first and last items receive edge padding;
-- active item is always scrolled into view;
-- a visible edge/overflow affordance communicates that more categories are available; scrollbar may be visually hidden only when that affordance remains;
-- scrolling remains available by touch, wheel, keyboard, and assistive technology.
-
-## 7. Tabs
-
-Used for the `/resources` view selector: cards, compact list, and table.
-
-- underline treatment;
-- no filled segmented-control appearance;
-- `role="tablist"` only when switching panels without navigation;
-- use normal links when tabs represent routes;
-- do not use tabs to split the catalogue into competing routes;
-- counts use tabular numerals.
-
-## 8. Resource card
+## 6. Resource card and compact row
 
 ### Anatomy
 
-- media area;
-- image/fallback;
-- save control;
-- title linking to the internal source profile;
-- explicit `Visit source` external action;
-- description;
-- category and useful-for tags;
-- access model;
-- coverage level when available.
+- fixed-ratio approved preview or complete fallback;
+- source identity/title linking to the internal Source Guide;
+- one-line purpose;
+- two or three high-value task cues;
+- independent Save control;
+- explicit external `Visit source` action;
+- optional compact `Inspect` affordance when title/card treatment alone is not sufficient.
 
 ### Interaction
 
-- the title, identity, or whole-card stretched anchor navigates to `/resources/[slug]`, never directly to the provider;
-- `Visit source` is a separate external action with a clear label and safe new-tab behavior;
-- save and Visit controls sit above the profile-link hit area in stacking order;
-- middle-click and modifier-click must work;
-- selection of text remains possible;
-- hover and focus-within share a visual treatment.
-
-### Grouped-grid treatment
-
-- dense catalogue grids may use a shared border and zero visual gutters so adjacent cards read as one composed reference frame;
-- use collapsed interior borders or a single-pixel overlap so joining edges never double in weight;
-- preserve a clear focus treatment that is visible across neighbouring cards;
-- responsive column changes recompute the shared frame rather than reintroducing arbitrary card gaps.
+- title, identity, or whole-card profile link navigates to `/resources/[slug]`, never directly to the provider;
+- Visit has a clear label and safe external-link behaviour;
+- Save and Visit sit above the profile-link hit area in stacking order;
+- modifier-click and text selection continue to work;
+- hover and `:focus-within` communicate the same hierarchy.
 
 ### States
 
-- default;
-- hover;
-- keyboard focus;
-- saved;
-- image loading;
-- image failed;
-- missing description;
+- default, hover, keyboard focus, saved;
+- preview loading, preview failed, missing preview;
+- missing description/task cues;
 - long title;
-- long category;
-- unavailable/broken resource.
+- unavailable/broken provider.
 
-### Content limits
+Coverage level, evidence, freshness, and governance can be available in a quiet secondary treatment but are not card focal points. Cards or compact rows are the standard Browse forms; a table requires a documented research benefit and must recompose on mobile rather than horizontally scroll.
 
-- title: two lines maximum;
-- description: two or three lines depending on density;
-- no more than three visible tags;
-- access model remains visible;
-- use fixed media ratio to prevent layout shift.
+## 7. Source Guide sections
 
-## 9. Collection card
+Source Guide composition follows this fixed reading hierarchy:
 
-Variants:
+1. identity/purpose and preview;
+2. Visit, Save, Add to Board;
+3. Use it when and What to explore;
+4. How to access and useful compatibility;
+5. Important limitations;
+6. differentiated alternatives and containing Collections;
+7. quiet source details/references.
 
-- featured;
-- compact/trending;
-- personal/private.
+The component family must support honest Listed fallbacks and omit unsupported optional fields. It must not promote raw schema, evidence counts, review state, or verification mechanics above the source guidance.
 
-Required:
+## 8. Collection card and stage item
 
-- cover composition;
-- title;
-- description;
-- item count;
-- save action;
-- curator attribution only when real;
-- updated date only when real.
+### Collection card
 
-No fake avatars or contributor names.
+- goal;
+- audience;
+- stage count;
+- expected decision;
+- factual cover/fallback when available;
+- no fake curator, contributor, usage, or trend data.
 
-## 10. Filters
+### Stage item
 
-Controls:
+- stage name and intended outcome;
+- source role;
+- what to inspect;
+- decision prompt;
+- Save and Add to Board where applicable.
 
-- category;
-- access model;
-- useful-for/task tags;
-- sort;
-- clear all.
+## 9. Saved shortlist
 
-Desktop may use inline controls or sidebars. Mobile uses a filter sheet.
+- browser-local privacy explanation;
+- search and filtering;
+- resource cards/compact rows;
+- remove with undo;
+- Add to Board;
+- clear empty/query-recovery states.
 
-State must be reflected in URL parameters so a filtered view can be shared.
+Do not add account promotion, folders, tags, cloud sync, or a heavy management surface before their approved slices.
 
-## 11. Saved workspace
+## 10. Board workspace
 
-Guest:
+### Board index
 
-- browser-local explanation;
-- recent saves;
-- optional locally defined groups;
-- sign-in prompt appears only after auth exists.
+- browser-local context;
+- Board name/goal and updated context;
+- create/select using the existing local data contract;
+- helpful empty state without account promotion.
 
-Authenticated:
+### Board detail
 
-- synced resources;
-- collections;
-- tags;
-- notes;
-- local import prompt;
-- trash/undo.
+- project goal, audience, constraints;
+- source intake, notes, and rationale;
+- selected/rejected/undecided decision controls;
+- unresolved questions;
+- deterministic Markdown and compact JSON handoff;
+- accessible save/remove/copy/export feedback.
 
-## 12. Browse compact/table row
+Boards must never imply cloud sync, collaboration, or automatic model access to browser-local data.
 
-Desktop columns:
+## 11. Preview fallback
 
-- resource;
-- category;
-- access;
-- coverage level or real verification date when one exists;
-- save.
+- fixed aspect ratio prevents layout shift;
+- existing repository-managed Open Graph/manual preview and favicon/letter fallback order remains canonical;
+- below-fold media loads lazily;
+- preview failure still leaves identity, purpose, and actions usable;
+- live framed previews are not a default component and need a later allowlisted security/performance slice.
 
-The resource identity opens `/resources/[slug]`; `Visit source` is a separate external action. Do not present a universal or invented verification date.
+## 12. Deferred account and form components
 
-Mobile becomes a compact card row. Never force the desktop table into horizontal scrolling as the primary experience.
+Authentication, account menus, Submit/Suggest/report forms, and cloud-management components remain future-only guidance. They must not cause an enabled route, navigation item, promotional callout, or placeholder success state until the approved operational slice exists.
 
-## 13. Form controls
+When approved, controls require visible labels, descriptive errors, `44px` minimum touch height, focus rings independent of border colour, stable loading dimensions, and no placeholder-only labels. A future OTP UI uses one semantic input with paste support and clear errors.
 
-Required primitives:
+## 13. Footer
 
-- text input;
-- URL input;
-- email input;
-- password input;
-- OTP input;
-- textarea;
-- select/combobox;
-- checkbox;
-- radio group;
-- field message;
-- submit button;
-- success panel;
-- error summary.
-
-All controls:
-
-- visible labels;
-- descriptive errors;
-- `44px` minimum touch height;
-- focus ring independent of border colour;
-- loading state does not change width;
-- no placeholder-only labels.
-
-## 14. Deferred authentication shell
-
-This is future-only guidance. Authentication and cloud persistence remain unavailable publicly until local Boards and research-pack export demonstrate value and the approved security prerequisites exist.
-
-### Desktop
-
-- left: restrained Tessli artwork and one short value statement;
-- right: form area;
-- no oversized marketing carousel;
-- form maximum width approximately `420px`.
-
-### Mobile
-
-- logo;
-- title and supporting copy;
-- form;
-- help/legal text;
-- decorative image hidden or reduced.
-
-### Sign-in hierarchy
-
-1. Continue with Google
-2. divider
-3. email field
-4. Continue
-5. choose password or one-time code when relevant
-
-Do not show password and OTP forms simultaneously.
-
-## 15. Footer
-
-- Tessli statement;
-- four link groups;
+- concise Tessli statement;
+- footer-only links: About, Curation, Privacy, Terms, Content policy;
+- responsive groups that stack simply on mobile;
 - no newsletter until operational;
-- responsive columns;
-- mobile may use simple stacked groups, not necessarily accordions;
-- legal and open-source/data licence copy must not conflict.
+- no Auth, Submit, Suggest, Lab, proof, or review destination.
 
-## 16. Toasts and feedback
+## 14. Toasts and announcements
 
-Use to confirm:
+Use accessible feedback for:
 
-- saved/removed;
-- copied filter URL;
-- submission received;
-- local saves imported;
-- error with retry.
+- saved/removed and undo;
+- added to/removed from Board;
+- copied/downloaded handoff;
+- search/filter recovery;
+- retryable errors.
 
-Toasts never contain the only explanation of an error and must be screen-reader announced.
+Toasts never contain the only error explanation. Dynamic result, Save, Board, copy, and export status changes are announced to assistive technology.
