@@ -82,6 +82,7 @@ test("cards, list, and table expose internal profiles plus independent save and 
   assert.match(results, /data-browse-view="cards"/);
   assert.match(results, /data-browse-view="table"/);
   assert.match(results, /data-browse-view="list"/);
+  assert.match(results, /<ResourceCard/);
   assert.match(results, /href=\{`\/resources\/\$\{profile\.slug\}`\}/);
   assert.match(results, /Visit source ↗/);
   assert.match(results, /target="_blank"/);
@@ -91,6 +92,10 @@ test("cards, list, and table expose internal profiles plus independent save and 
   assert.match(results, /<table className=\{styles\.table\}>/);
   assert.match(results, /<caption className=\{styles\.srOnly\}>/);
   assert.doesNotMatch(results, /fetch\(|sessionStorage/);
+  assert.doesNotMatch(
+    results,
+    /browseCardPrimary|browseCardActions|inspectAction/,
+  );
 });
 
 test("canonical Browse renders one responsive result tree without duplicate desktop and mobile catalogues", async () => {

@@ -30,6 +30,7 @@ test("resource card keeps provider navigation native and supports internal profi
   assert.match(component, /data-resource-save=\{resource\.id\}/);
   assert.match(component, /profileHref\?: string/);
   assert.match(component, /data-resource-primary-link/);
+  assert.match(component, /Inspect Tessli profile/);
   assert.match(component, /Visit source ↗/);
   assert.match(component, /onSavedChange\(resource\.id, !saved\)/);
   assert.doesNotMatch(component, /window\.open|router\.push|preventDefault/);

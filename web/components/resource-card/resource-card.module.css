@@ -258,18 +258,24 @@
 
 .profileAction {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
   border-top: 1px solid var(--line-subtle);
   padding: 0 var(--space-5) var(--space-4);
   background: var(--surface);
 }
 
+.profileLabel,
 .profileAction a,
 .unavailableAction {
   color: var(--text-strong);
   font-size: var(--text-label);
   font-weight: 700;
   text-decoration: none;
+}
+
+.profileLabel {
+  color: var(--accent-text);
 }
 
 .profileAction a:hover,

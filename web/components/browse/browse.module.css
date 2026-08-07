@@ -119,59 +119,6 @@
   gap: 1rem;
 }
 
-.browseCard {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  min-width: 0;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface, #fffdf8);
-}
-
-.browseCardPrimary {
-  display: grid;
-  align-content: start;
-  gap: 0.75rem;
-  min-width: 0;
-  min-height: 18rem;
-  padding: 1.25rem;
-  color: inherit;
-  text-decoration: none;
-}
-
-.browseCardPrimary h2,
-.browseCardPrimary p {
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-
-.browseCardPrimary h2 {
-  font-size: 1.35rem;
-}
-
-.browseCardPrimary:focus-visible,
-.browseCardPrimary:hover {
-  outline: 2px solid currentColor;
-  outline-offset: -2px;
-}
-
-.inspectAction {
-  margin-top: auto;
-  font-weight: 650;
-}
-
-.browseCardActions {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.75rem;
-  align-items: center;
-  min-height: 3.25rem;
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.browseCardActions button,
 .rowActions button {
   border: 1px solid var(--color-border);
   border-radius: 6px;

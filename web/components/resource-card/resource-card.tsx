@@ -280,6 +280,9 @@ export function ResourceCard({
 
       {internalProfileHref ? (
         <div className={styles.profileAction}>
+          <span className={styles.profileLabel}>
+            Inspect Tessli profile <span aria-hidden="true">→</span>
+          </span>
           {resource.status === "unavailable" ? (
             <span className={styles.unavailableAction}>
               Provider unavailable
