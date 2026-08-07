@@ -41,5 +41,7 @@ test("public content frame is semantic and responsive", async () => {
   assert.match(styles, /grid-template-columns: repeat\(12/);
   assert.match(styles, /@media \(max-width: 1024px\)/);
   assert.match(styles, /@media \(max-width: 720px\)/);
+  assert.match(styles, /@media \(max-width: 420px\)/);
+  assert.match(styles, /font-size: clamp\(2\.8rem, 14vw, 4\.2rem\)/);
   assert.doesNotMatch(styles, /backdrop-filter|border-radius: 1[2-9]px/);
 });
