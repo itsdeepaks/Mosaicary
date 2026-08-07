@@ -37,6 +37,10 @@
   min-width: 0;
 }
 
+.searchField {
+  min-width: 0;
+}
+
 .controls label {
   display: grid;
   gap: 0.35rem;
@@ -64,6 +68,23 @@
   cursor: pointer;
   background: var(--color-text, #20201e);
   color: #fff;
+}
+
+.mobileFilterTrigger,
+.filterFields,
+.filterSheet,
+.filterGrid,
+.filterActions {
+  display: contents;
+}
+
+.mobileFilterTrigger,
+.filterBackdrop,
+.filterSheetHeader,
+.filterClose,
+.filterSheetKicker,
+.clearFilters {
+  display: none;
 }
 
 .summary {
@@ -266,7 +287,11 @@
 
 @media (max-width: 1100px) {
   .controls {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .searchField {
+    grid-column: span 2;
   }
 
   .cardGrid {
@@ -283,8 +308,211 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .searchField {
+    grid-column: auto;
+  }
+
+  .mobileFilterTrigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    border-color: var(--color-border);
+    background: var(--color-surface, #fffdf8);
+    color: var(--color-text, #20201e);
+    text-align: left;
+  }
+
+  .filterFields {
+    position: fixed;
+    z-index: 70;
+    inset: 0;
+    display: none;
+  }
+
+  .filterFieldsOpen {
+    display: block;
+  }
+
+  .filterBackdrop {
+    position: absolute;
+    display: block;
+    inset: 0;
+    width: 100%;
+    min-height: 100%;
+    border: 0;
+    border-radius: 0;
+    background: rgb(21 20 18 / 0.2);
+    cursor: default;
+    padding: 0;
+  }
+
+  .filterSheet {
+    position: relative;
+    display: flex;
+    width: min(420px, 100%);
+    height: 100%;
+    margin-left: auto;
+    flex-direction: column;
+    border-left: 1px solid var(--color-border);
+    background: var(--color-surface, #fffdf8);
+    box-shadow: 0 1rem 3rem rgb(21 20 18 / 0.16);
+  }
+
+  .filterSheetHeader {
+    display: flex;
+    min-height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 1.25rem;
+  }
+
+  .filterSheetHeader h2 {
+    margin: 0.2rem 0 0;
+    font-family: var(--font-display), serif;
+    font-size: 1.65rem;
+    line-height: 1;
+  }
+
+  .filterSheetKicker {
+    display: block;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .filterClose {
+    display: inline-flex;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface, #fffdf8);
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .filterGrid {
+    display: grid;
+    overflow-y: auto;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .filterGrid label {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .filterActions {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    padding: 1rem 1.25rem;
+  }
+
+  .filterActions button,
+  .clearFilters {
+    min-height: 2.75rem;
+  }
+
+  .clearFilters {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: inherit;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
   .cardGrid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tableScroller {
+    overflow: visible;
+    border: 0;
+  }
+
+  .table {
+    display: block;
+    min-width: 0;
+  }
+
+  .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .table tbody {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    padding: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    display: block;
+    min-width: 0;
+    padding: 0.65rem;
+    border: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .table tbody th {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .table tbody td {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .table tbody td::before {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--color-text-muted);
+    content: attr(data-label);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .table tbody td:last-child {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+  }
+
+  .table tbody td:last-child::before {
+    margin-bottom: 0.5rem;
+  }
+
+  .table .rowActions {
+    justify-content: flex-start;
   }
 
   .compactList li {
