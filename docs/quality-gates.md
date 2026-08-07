@@ -7,12 +7,10 @@ No page is complete because it “looks close” in one desktop screenshot.
 Capture at minimum:
 
 - 1440×900;
-- 1280×800;
 - 1024×768;
 - 768×1024;
-- 430×932;
 - 390×844;
-- 360×800.
+- 320px width overflow gate where the surface can compress that far.
 
 Check:
 
@@ -69,7 +67,20 @@ Check:
 - last-verified dates only shown when tracked;
 - broken resources degrade clearly.
 
-## 6. Media resilience
+Routine source pages and agent packets foreground task fit, access action, important limitation, and differentiated alternatives. Sourced facts, curator judgment, project decisions, and unresolved questions remain distinct. Provenance, freshness, governance, and operational verification are available as secondary diagnostics; repository evidence is not live provider verification.
+
+## 6. Machine contracts and discovery
+
+For every data or machine slice, verify:
+
+- deterministic output, stable IDs/slugs, and all 295 catalogue rows preserved;
+- website, JSON, Markdown, and MCP consume the same canonical truth where applicable;
+- task retrieval returns no more than eight explained results with stable ordering;
+- recorded access routes state an action and auth boundary without invented provider capabilities;
+- public static discovery (`robots.txt`, `llms.txt`, sitemap, and For AI links) advertises only implemented public interfaces;
+- no remote calls during normal build/test, no secrets, and no browser-local Board exposure.
+
+## 7. Media resilience
 
 Test:
 
@@ -85,7 +96,9 @@ Test:
 
 Cards must retain dimensions and usefulness in every case.
 
-## 7. Performance targets
+Approved repository-managed previews and the fallback chain are the default. A live iframe is optional only after the separately approved V3.15 pilot: allowlist, sandbox/security/performance/mobile checks, fixed-ratio fallback, and no agent dependency are mandatory.
+
+## 8. Performance targets
 
 Initial public route targets:
 
@@ -97,7 +110,7 @@ Initial public route targets:
 - avoid large client JavaScript for static catalogue filtering;
 - no Three.js for the initial hero.
 
-## 8. Security
+## 9. Security
 
 - no user HTML rendered unsanitised;
 - no arbitrary remote SVG injection;
@@ -108,7 +121,9 @@ Initial public route targets:
 - form rate limits;
 - external links protected.
 
-## 9. Browser support
+The local MCP remains local and read-only. A hosted remote MCP is not implied before V3.16 and, when approved, requires origin validation, input limits, rate limits, timeouts, safe logs, monitoring, and public-data-only access.
+
+## 10. Browser support
 
 Minimum test:
 
@@ -127,7 +142,7 @@ Pay special attention to:
 - WebP transparency;
 - focus-visible behaviour.
 
-## 10. Definition of done
+## 11. Definition of done
 
 A slice is done only when:
 

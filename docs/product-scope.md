@@ -1,335 +1,152 @@
 # Tessli Product Scope and Decisions
 
-Status: **active scope after the 2026-08-04 direction reset**  
-Repository: `itsdeepaks/tessli`  
-Product name: **Tessli**  
+Status: **active V3 scope**
+Repository: `itsdeepaks/tessli`
 Authoritative direction: `docs/product-direction.md`
+Execution plan: `docs/product-realignment-v3.md`
 
-## 1. Product definition
+## 1. Active definition
 
-Tessli is a design-research system for humans and language models.
+Tessli is a **human-curated, AI-native design-source router**. The 295-source catalogue is its Source Index: it tells people and agents where to research, but does not itself prove judgment or taste.
 
-It starts with a curated Source Index of 295 design and frontend resources. It then adds structured source intelligence, guided playbooks, local project research, model-independent exports, MCP retrieval, and later evidence-backed pattern knowledge.
+The active product connects:
 
-The directory is the starting surface, not the finished UI-taste product.
+1. **Source Index** — where to research;
+2. **Research Intelligence** — which source fits, why, and with what limitations;
+3. **UI Judgment** — reviewed project decisions and evaluated outcomes, only when real evidence exists.
 
-## 2. Initial promise
+Tessli routes rather than mirrors provider content. It is not an iframe browser, screenshot warehouse, private-content proxy, or universal source ranking.
 
-> Find the right design source and research path before you build.
+## 2. Current product promise
 
-Tessli should help a user:
+> Find the right design source, understand what it offers, and keep useful decisions for your project.
 
-- search by task;
-- inspect a source before leaving Tessli;
-- understand fit and limitations;
-- distinguish Listed, Profiled, and Verified sources;
-- save sources from any research surface;
-- organise selected and rejected references by project;
-- export compact context to any LLM;
-- follow a guided research playbook;
-- preserve evidence and freshness.
-
-## 3. Long-term direction
-
-Tessli may support a stronger UI-taste claim only after it can demonstrate:
-
-- relevant source retrieval;
-- project-specific constraints;
-- reviewed pattern knowledge;
-- browser-verified implementations;
-- human evaluation;
-- retained approved and rejected outcomes;
-- measurable improvement against defined review dimensions.
-
-## 4. Product layers
-
-### Source Index
-
-Where should I look?
-
-### Research Intelligence
-
-Which source fits, why, and with what limitations?
-
-### UI Judgment
-
-What should the project learn, select, reject, and reuse—and did it improve the result?
-
-## 5. Active scope
-
-### Stage 1 — Trustworthy source research
-
-Required:
-
-- canonical `/resources` browser;
-- pagination;
-- URL-backed search/filter/sort/view/page;
-- cards, compact list, and table where useful;
-- Listed/Profiled/Verified coverage levels;
-- `/resources/[slug]` for every source;
-- internal profile as the primary route;
-- separate Visit source action;
-- universal browser-local Save;
-- Similar Sources;
-- truthful evidence and freshness.
-
-### Stage 2 — Reusable project research
-
-Required:
-
-- browser-local project Boards;
-- project goal and constraints;
-- selected and rejected references;
-- per-item notes;
-- unresolved questions;
-- guided playbooks;
-- deterministic Markdown research-pack export.
-
-### Stage 3 — Agent research and proof
-
-Required:
-
-- website and MCP using the same profile truth;
-- model-independent public pages/exports;
-- one real OSS proof project;
-- browser verification;
-- twelve-dimension human review;
-- 5–10 reviewed Pattern Candidates after the proof workflow.
-
-### Stage 4 — Persistence and scale
-
-Deferred until local usage proves value:
-
-- authentication;
-- cloud Saved/Boards;
-- local-to-cloud merge;
-- submissions/reports;
-- moderation;
-- expanded verified profiles and patterns.
-
-## 6. Current canonical routes
+The human and agent loop is:
 
 ```text
-/                         Curated homepage
+task
+→ small relevant source set with fit reasons
+→ Source Guide and best access route
+→ Save or Board
+→ compact project context
+→ implementation and browser verification
+```
+
+## 3. Information architecture
+
+Primary navigation:
+
+```text
+Browse | Collections | For AI
+```
+
+Personal utilities:
+
+```text
+Search | Saved | Boards
+```
+
+Footer-only:
+
+```text
+About | Curation | Privacy | Terms | Content policy
+```
+
+The public route model is:
+
+```text
+/                         Task-led entry
 /resources                Canonical source browser
-/resources/[slug]         Internal source profile
-/collections              Guided playbooks
-/collections/[slug]       Staged playbook detail
-/saved                    Browser-local Saved
-/boards                    Browser-local project Boards
-/boards/[id]               Project research workspace
-/for-ai                    MCP, exports, coverage, and governance
-/about                     About Tessli
-/curation                  Curation and verification process
-/privacy                  Privacy
-/terms                    Terms
-/content-policy           Content, attribution, media, and takedown policy
+/resources/[slug]         Source Guide
+/collections              Guided research paths
+/collections/[slug]       Ordered research checklist
+/saved                    Browser-local shortlist
+/boards                   Browser-local project Boards
+/boards/[id]              Project decision workspace
+/for-ai                   Human-to-agent workflow and setup truth
+/about, /curation, legal  Footer-only destinations
 ```
 
-Routes appear publicly only when their functionality works.
+`/auth`, `/submit`, `/suggest`, and report routes are unpublished until their real workflows are approved and operational. `/lab/*`, `/proofs/*`, Pattern Candidates, and human-review workspaces remain unlinked internal surfaces with `noindex`.
 
-Initial category browsing may use `/resources?category=...`. Dedicated category pages require meaningful editorial content.
+## 4. Page decisions
 
-## 7. Superseded product decisions
+### Home
 
-The following previous decisions are no longer authoritative:
+Home is a task-led entry, not a second browser. It contains task search, three to six task starters, a concise find → decide → handoff explanation, selected Collections, a concise For AI path, and footer.
 
-- treating `/` Explore and `/resources` Full Reference as separate catalogue products;
-- rendering the complete catalogue in a dense unpaginated reference page;
-- treating `/resources/[slug]` as optional;
-- making the entire resource card only an external link;
-- showing Save only on Explore;
-- promoting disabled Sign in;
-- promoting placeholder Submit or Suggest routes;
-- activating authentication before local workspace value is proven;
-- requiring email OTP after every password sign-in;
-- treating UI-intelligence research as unrelated to Tessli product delivery.
+It does not contain a category browser, source-result preview, sort/filter controls, a More menu, a coverage dashboard, fake metrics, or unfinished public actions.
 
-Existing code remains until replaced in approved slices.
+### Browse
 
-## 8. Public catalogue truth
+`/resources` is the one canonical Browse surface. It starts with task-focused search and supports category, source type, access, and truthful platform/framework refinement. It uses pagination and a single responsive result path. Cards or a compact list are normal; a table is optional only where it provides material research value.
 
-The repository remains the source of truth for the public source catalogue during the proof stages.
+Source identity leads to the internal Source Guide. Inspect, Save, and Visit source are independent actions. Similar Sources is the default alternative path; comparison is reserved for meaningful peer groups.
 
-- all 295 source rows remain preserved;
-- stable IDs/slugs remain stable;
-- generated output remains deterministic;
-- accepted changes remain reviewable through pull requests;
-- source/profile evidence retains provenance;
-- the catalogue is not duplicated in Supabase merely for browsing.
+### Source Guide
 
-## 9. Coverage levels
+`/resources/[slug]` is required for every stable source. Primary reading order is source identity/purpose, preview, Visit/Save/Add to Board, Use it when, What to explore, How to access it, useful compatibility, limitations, differentiated alternatives, containing Collections, and quiet details/references.
 
-### Listed
+Listed sources degrade honestly. Coverage, verification, evidence, freshness, review state, and governance remain accessible but are secondary diagnostics rather than prominent evaluation mechanics.
 
-Identity, category, type, access, concise sourced description, and status.
+### Collections
 
-### Profiled
+Collections are guided research paths. Their cards state goal, audience, stage count, and expected decision. Detail pages use staged checklists in which each source names its role, what to inspect, and the decision it supports. Save and Add to Board are available; public JSON/Markdown is secondary.
 
-Capabilities, best-for, content objects, platforms/frameworks, discovery, integrations, workflow fit, and limitations.
+### Saved and Boards
 
-### Verified
+Saved is a browser-local shortlist with search, filter, remove/undo, and Add to Board. Boards hold project goal, audience, constraints, source notes/rationale, selected/rejected/undecided decisions, unresolved questions, and compact Markdown/JSON handoff. Cloud persistence and accounts remain deferred.
 
-Evidence, verification date, confidence, agent-interface details, credential rules, persistence/redistribution rules, human review, and freshness.
+### For AI
 
-Do not imply equal research depth across all 295 sources.
+For AI explains the real human-to-agent workflow first: an example task/result, semantic pages/public representations/Board export, local MCP setup, only-real remote availability, access-route vocabulary, and concise privacy/provider boundaries. Tool inventories, coverage counts, and governance detail are supporting material.
 
-## 10. User-owned data direction
+### About, Curation, and legal
 
-Initial user-owned data remains browser-local:
+About tells the human-curated AI-native story and its boundaries. Curation covers selection principles, updates/correction routes, and quiet provenance; it must not turn verification bureaucracy into a public product promise. Legal pages remain factual and footer-only.
 
-- Saved;
-- Boards;
-- notes;
-- selected/rejected state;
-- constraints;
-- research-pack drafts.
+## 5. Source and data truth
 
-Supabase becomes authoritative only after cloud persistence is approved for:
+- Preserve all 295 source rows and stable identifiers/slugs.
+- Keep generated catalogue output deterministic and repository-managed during proof stages.
+- Never invent optional source fields, previews, evidence, status, prices, capabilities, integrations, or verification.
+- Website, public representations, MCP, and exports must share canonical facts.
+- Paid/private provider content is not copied or redistributed merely because it is indexed.
 
-- profiles;
-- cloud Saved/Boards;
-- Board items/notes/constraints;
-- local import state;
-- submissions/reports;
-- moderation;
-- export/deletion records.
+Coverage levels remain explicit and truthful:
 
-## 11. Resource navigation decision
+- **Listed:** identity, type, access, concise sourced description, status.
+- **Profiled:** capabilities, best-for, content objects, platforms/frameworks, discovery, workflow fit, limitations.
+- **Verified:** evidence, dates, confidence, agent-interface details, credential and persistence/redistribution rules, human review, freshness.
 
-Primary interaction:
+## 6. Deferred work
 
-- selecting the source identity/card opens the Tessli source profile;
-- Visit source is an explicit external action;
-- Save is independent and universal;
-- Add to board appears when Boards exist;
-- Compare appears only for meaningful peer groups;
-- Similar Sources is the general alternative-discovery action.
+Do not activate public authentication, cloud Saved/Boards, payments, teams, marketplace work, browser extensions, a Figma plugin, mass screenshot publishing, automatic aesthetic scoring, vector search as a substitute for curation, or unreviewed pattern publication.
 
-External links continue to open safely in a new tab.
+Pattern Candidates begin only after a real OSS proof workflow and remain internally reviewed until evidence supports promotion.
 
-## 12. Header direction
+## 7. V3 delivery sequence
 
-Before accounts:
+The approved sequence is:
 
 ```text
-Logo | Browse | Collections | For AI | Search | Saved
+V3.0 Authority reconciliation
+→ V3.1 Public IA hygiene
+→ V3.2 AccessRoute contract pilot
+→ V3.3 Source Guide proof
+→ V3.4 Canonical Browse focus
+→ V3.5 Homepage task entry
+→ shared cards, retrieval, local MCP, representations, Collections, Saved/Boards, and For AI
 ```
 
-After cloud workspace value and complete auth exist:
+V3.5 follows working Browse and Source Guide, not a verification-first or homepage-proof gate. Later live preview and hosted MCP work require their own approvals and safety checks.
+
+## 8. Evaluation boundary
+
+The future taste-evidence loop remains:
 
 ```text
-Logo | Browse | Collections | For AI | Search | Saved | Account
+brief → retrieval → research pack → agent build → browser verification → human review → approved/rejected decisions
 ```
 
-Do not show a public Sign in action while the flow is disabled or while there is no cloud-workspace benefit.
-
-## 13. Homepage direction
-
-The homepage is curated rather than exhaustive.
-
-It should eventually contain:
-
-- task-based hero search;
-- real coverage facts;
-- research-goal entry points;
-- featured playbooks;
-- recently verified profiles;
-- human/MCP demonstration;
-- research-pack explanation;
-- 8–12 source examples at most.
-
-Homepage redesign follows the working Browse → Profile → Board → Export loop.
-
-## 14. Collections direction
-
-Collections become guided playbooks.
-
-Each playbook explains:
-
-- goal;
-- audience;
-- stages;
-- why a source is included;
-- what to inspect;
-- what decision it supports;
-- optional checklist;
-- exportable research context.
-
-## 15. Model access
-
-Without MCP:
-
-- semantic public pages;
-- stable URLs;
-- sitemap;
-- Markdown/JSON exports where approved;
-- downloadable research packs.
-
-With MCP:
-
-- source search;
-- source profiles;
-- peer comparison;
-- collections;
-- research plans;
-- reference packets;
-- verification state.
-
-Future pattern/project tools require stable reviewed data first.
-
-## 16. Authentication direction
-
-Authentication is deferred until local Boards and export prove repeated value.
-
-Future signup:
-
-```text
-Google OAuth
-or
-first name + last name + email + password
-→ email verification OTP
-→ optional local-data merge
-```
-
-Future standard sign in:
-
-```text
-Google OAuth
-or
-email + password
-```
-
-Do not require email OTP after every normal password sign-in. Optional MFA uses authenticator TOTP.
-
-## 17. Explicit non-goals for current stages
-
-- mass screenshot scraping;
-- a mirror of Mobbin, Refero, or paid/private libraries;
-- unreviewed mass-generated profiles or patterns;
-- universal aesthetic scoring;
-- vector search as a substitute for curation;
-- cloud/auth complexity before local value;
-- a full Styles product;
-- payments or teams;
-- Figma/browser extensions;
-- more MCP tools without underlying data;
-- a homepage-led redesign before core research works.
-
-## 18. Immediate proof milestone
-
-Use Tessli to research one real OSS page, recommended as the Online Scope Studio homepage:
-
-```text
-brief
-→ source selection
-→ local Board
-→ selected/rejected notes
-→ Markdown research pack
-→ Codex implementation
-→ browser verification
-→ human review
-→ outcome comparison
-```
-
-The milestone succeeds when Tessli demonstrably improves context relevance, reduces wasted loops, or improves review outcomes—not when the architecture document is merely complete.
+Tessli does not claim outcome improvement before the loop produces retained evidence.

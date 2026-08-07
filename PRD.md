@@ -1,576 +1,205 @@
 # Tessli Product Requirements Document
 
-Status: **approved direction reset**  
-Last updated: 2026-08-04  
+Status: **authoritative V3 requirements**
+Last updated: 2026-08-08
 Authoritative strategy: `docs/product-direction.md`
+Execution plan: `docs/product-realignment-v3.md`
 
 ## 1. Product summary
 
-Tessli is a design-research system for humans and language models.
+Tessli is a **human-curated, AI-native design-source router** for people and coding agents. It routes a task to a small, explainable set of design and frontend sources, shows what to inspect and how to access each source, and retains useful project decisions for handoff and review.
 
-It begins with a curated catalogue of 295 design and frontend sources, but the catalogue is not the complete product. Tessli progressively adds structured source profiles, evidence, limitations, guided research playbooks, browser-local project boards, deterministic research-pack exports, MCP retrieval, and evaluated pattern knowledge.
-
-The product must help a person or model answer:
-
-1. Where should I research this task?
-2. Which source best fits the current constraints?
-3. Why does it fit?
-4. What are its access, implementation, freshness, and governance limitations?
-5. Which sources and decisions should be retained for the project?
-6. Did the resulting UI improve after using Tessli context?
+The 295-source catalogue is the Source Index, not the whole product. Tessli is not an iframe browser, a screenshot archive, a provider mirror, or an autonomous taste engine.
 
 ## 2. Product promise
 
-Initial public promise:
+For people:
 
-> Find the right design source and research path before you build.
+> Find the right design source, understand what it offers, and keep useful decisions for your project.
 
-Long-term direction:
+For agents:
 
-> Help humans and agents make better UI decisions using curated knowledge, project constraints, relevant precedents, and evaluated outcomes.
+> Find the right source for the task, understand why it fits, and know how to access and use it.
 
-Tessli must not publicly claim that it gives AI taste until outcome evidence supports that claim.
+The product must distinguish sourced facts, curator judgment, project decisions, and unresolved questions. It must not claim universal rankings, live provider verification, or outcome improvement without evidence.
 
 ## 3. Product layers
 
-### 3.1 Source Index
+1. **Source Index** — where to research.
+2. **Research Intelligence** — which source fits, why, and with what limitations.
+3. **UI Judgment** — reviewed patterns, project constraints, selected/rejected precedents, and evaluated outcomes.
 
-The repository-managed catalogue of sources, tools, libraries, galleries, systems, assets, and providers.
-
-### 3.2 Research Intelligence
-
-Structured capabilities, task fit, content objects, platforms, frameworks, integrations, agent interfaces, limitations, governance, evidence, and verification.
-
-### 3.3 UI Judgment
-
-Reviewed pattern candidates, project constraints, selected and rejected references, human review outcomes, and approved precedents.
+The first two layers support the current product. The third earns any future UI-taste claim through the documented evaluation loop.
 
 ## 4. Product principles
 
-1. **Curated, not crowded.** More URLs do not automatically create more value.
-2. **Task fit over universal ranking.** Recommendations are contextual and explainable.
-3. **One canonical truth.** Website pages, exports, and MCP use the same data.
-4. **Evidence before claims.** Distinguish sourced facts, curator judgment, and project decisions.
-5. **Profiles before outbound clicks.** Tessli should help users evaluate a source before leaving.
-6. **Local value before account complexity.** Prove Saved, Boards, and export before cloud sync.
-7. **Human-reviewed patterns.** Do not mass-generate taste claims from URLs or screenshots.
-8. **Accessible calm.** Preserve legibility, keyboard operation, focus, responsive composition, and restrained motion.
-9. **Original work.** Tessli is not permission to copy or redistribute third-party work.
-10. **Measured learning.** Retain approved and rejected outcomes from real projects.
+1. **Task fit before taxonomy.** Categories organise; task intent selects.
+2. **Route, do not mirror.** Point to permitted provider sites, docs, registries, source code, APIs, MCP, CLIs, and plugins rather than copying them.
+3. **Visual for humans, structured for agents.** Preview media aids people; machine access never depends on an iframe.
+4. **Compact default.** Show practical value and action first; make provenance and operational detail available second.
+5. **Small relevant sets.** Do not give people or agents an undifferentiated catalogue dump.
+6. **Project decisions matter.** Selected, rejected, and unresolved decisions carry more value than a saved-link pile.
+7. **Local value first.** Local Saved, Boards, and handoff precede cloud persistence.
+8. **Truthful curation.** Never invent facts, ratings, popularity, trends, users, or taste.
 
 ## 5. Non-goals
 
 Tessli is not:
 
-- only a styled bookmark directory;
-- a scraped mirror of paid or private design libraries;
-- a screenshot piracy archive;
+- a styled bookmark directory only;
+- a scraped mirror or screenshot archive for paid/private sources;
 - a universal aesthetic scoring engine;
 - an unreviewed AI-generated pattern dump;
-- a social feed;
-- a marketplace at the current stage;
-- a proxy for user credentials;
-- a promise that every one of the 295 sources has equal intelligence depth;
-- a replacement for source licences, terms, or current verification.
+- a proxy for provider credentials;
+- proof that every source has equal intelligence depth;
+- a public account, submission, or suggestion product before those flows work.
 
-## 6. Primary audiences
-
-1. Designers researching interfaces, systems, typography, accessibility, and visual direction.
-2. Frontend developers looking for implementation-compatible sources and components.
-3. Product builders and founders needing a repeatable shortlist instead of scattered bookmarks.
-4. OSS team members researching real client and product work.
-5. Language models using public Tessli pages, exported research packs, or MCP.
-6. Contributors improving source metadata and evidence through reviewed workflows.
-
-## 7. Core user jobs
+## 6. Core jobs
 
 ### Human jobs
 
-- Search for sources by task rather than knowing an exact provider name.
-- Understand what a source offers before opening it.
-- See whether a source is Listed, Profiled, or Verified.
-- Save a source from any research surface.
-- Organise selected and rejected references by project.
-- Export compact research context to any model.
-- Follow a staged research playbook.
-- Return to results without losing query, page, or position.
+- describe a task without knowing an exact provider;
+- inspect why a source fits before leaving Tessli;
+- see what to inspect, how to access it, and its important limitation;
+- Save and add sources to a local Board;
+- record selected, rejected, undecided, and unresolved decisions;
+- export compact Markdown and JSON project context.
 
-### Model jobs
+### Agent jobs
 
-- Retrieve relevant source profiles for a task.
-- Explain fit and limitations.
-- Compare genuinely comparable sources.
-- Build a research plan.
-- Create a compact evidence-linked reference pack.
-- Respect authentication, persistence, redistribution, and attribution boundaries.
-- Later retrieve reviewed pattern candidates and project constraints.
+- retrieve a small task-fit source set with reasons and caveats;
+- understand canonical provider URLs and useful access routes;
+- find differentiated alternatives;
+- consume compact source, Collection, and Board representations;
+- respect credentials, persistence, redistribution, attribution, and provider boundaries.
 
-## 8. Canonical data strategy
+## 7. Canonical truth and source levels
 
-### 8.1 Public catalogue
+The website, public representations, local MCP, later remote MCP, and exports consume the same repository-managed source and Collection truth. Stable IDs/slugs are preserved; normal generated data stays deterministic and network-free.
 
-The public source catalogue remains repository-managed during the initial proof stages.
+Coverage remains explicit, never invented:
 
-- `lib_data/design-resource-library-295.csv` remains traceable as the original release source.
-- Validated generated data remains deterministic.
-- Stable IDs and slugs must not change accidentally.
-- Accepted source/profile changes remain reviewable through pull requests.
-- The public catalogue is not duplicated in Supabase merely to support browsing.
+- **Listed:** identity, type, access, concise sourced description, status.
+- **Profiled:** adds capabilities, best-for, content objects, platforms/frameworks, discovery, workflow fit, limitations.
+- **Verified:** adds evidence, dates, confidence, agent-interface details, credential and persistence/redistribution rules, human review, freshness.
 
-### 8.2 Intelligence profiles
+Coverage, evidence, human-review status, verification mechanics, and governance are diagnostic detail in routine human interfaces—not a primary dashboard or reading flow. Repository verification does not imply live provider verification.
 
-Profiles enrich catalogue sources using structured, evidence-linked metadata.
+## 8. Required public information architecture
 
-The website and MCP must consume the same profile truth.
-
-### 8.3 Local project data
-
-Browser-local storage is the initial source of truth for:
-
-- Saved items;
-- project Boards;
-- notes;
-- selected/rejected state;
-- project constraints;
-- research-pack drafts.
-
-### 8.4 Future cloud data
-
-Supabase becomes the source of truth only after local workspace value is proven, for:
-
-- user profiles;
-- cloud Saved;
-- cloud Boards and items;
-- notes and constraints;
-- local-to-cloud import state;
-- submissions/reports;
-- moderation state;
-- account export/deletion records.
-
-## 9. Source coverage levels
-
-### Listed
-
-Required:
-
-- stable ID and slug;
-- name;
-- URL/domain;
-- category;
-- source type;
-- access model;
-- concise sourced description;
-- availability status.
-
-### Profiled
-
-Adds:
-
-- best for;
-- capabilities;
-- content objects;
-- platforms/frameworks;
-- discovery model;
-- integrations;
-- workflow fit;
-- limitations.
-
-### Verified
-
-Adds:
-
-- evidence;
-- verification date;
-- confidence;
-- agent-interface details;
-- credential requirements;
-- persistence/redistribution rules;
-- human review;
-- freshness status.
-
-The UI and MCP must clearly expose the coverage level.
-
-## 10. Initial product loop
-
-The first workflow to prove is:
+Primary navigation:
 
 ```text
-Search
-→ inspect source profile
-→ save to local project board
-→ record why it matters
-→ export research pack
-→ give pack to an LLM
-→ build
-→ review the result
+Browse | Collections | For AI
 ```
 
-No later platform feature may replace proving this loop.
-
-## 11. Active route direction
+Personal utilities:
 
 ```text
-/                         Curated homepage
+Search | Saved | Boards
+```
+
+Footer-only destinations:
+
+```text
+About | Curation | Privacy | Terms | Content policy
+```
+
+```text
+/                         Task-led entry
 /resources                Canonical Browse
-/resources/[slug]         Internal source profile
-/collections              Guided playbooks
-/collections/[slug]       Staged playbook detail
-/saved                    Browser-local Saved
-/boards                    Browser-local project Boards
-/boards/[id]               Project research workspace
-/for-ai                    MCP, exports, coverage, and governance
-/about                     About Tessli
-/curation                  Curation and verification process
-/privacy                  Privacy
-/terms                    Terms
-/content-policy           Source, media, attribution, and takedown policy
+/resources/[slug]         Source Guide
+/collections              Guided research paths
+/collections/[slug]       Ordered research checklist
+/saved                    Browser-local shortlist
+/boards                   Browser-local project Boards
+/boards/[id]              Project decision workspace
+/for-ai                   Human-to-agent workflow and setup truth
 ```
 
-Future routes appear only with working functionality.
+`/auth`, `/submit`, `/suggest`, and reporting routes are unpublished until complete approved flows exist. `/lab/*`, `/proofs/*`, Pattern Candidates, and human-review workspaces are unlinked internal surfaces and `noindex`.
 
-`/resources?category=...` may serve initial category browsing. Dedicated category pages require original editorial value.
+## 9. Page requirements
 
-## 12. Canonical Browse requirements
+### Home
 
-`/resources` replaces the competing Explore and Full Reference product models.
+Home asks what the visitor is trying to design. Its order is task search to `/resources?q=...`, three to six task starters, a short find → decide → handoff explanation, selected Collections, a concise For AI path, and footer. It must not duplicate Browse with source-result previews, category rails, sort/filter controls, coverage dashboards, a More menu, fake metrics, or unfinished actions.
 
-Required:
+### Browse
 
-- URL-backed query, filters, sorting, page, and view;
-- pagination rather than rendering all 295 results;
-- cards, compact list, and table where appropriate;
-- one responsive rendering path;
-- no duplicate complete mobile and desktop result trees;
-- source detail as primary navigation;
-- separate Visit source action;
-- Save from every view;
-- Similar Sources;
-- comparison only within meaningful peer groups;
-- truthful verification sorting using real dates only;
-- empty, error, loading, and no-JavaScript-safe content where practical;
-- back/forward and shared URLs restore state.
-
-Recommended initial page sizes:
-
-- 24 cards;
-- 50 compact/table rows.
-
-## 13. Source-detail requirements
-
-`/resources/[slug]` is required, not optional.
-
-Minimum page content:
-
-- identity, URL, and summary;
-- coverage/verification level;
-- best for / not ideal for;
-- access model;
-- capabilities;
-- content objects;
-- discovery/search model;
-- platforms/frameworks;
-- integrations and agent interfaces;
-- workflow fit;
-- limitations and governance;
-- evidence and freshness;
-- Similar Sources;
-- collection memberships;
-- Save, Add to board, and Visit source actions;
-- contextual report action once reporting works.
+`/resources` is the only source browser. It provides task-focused search, a result summary, category/source-type/access and truthful platform/framework refinement, active filters, pagination, and empty-query recovery. Cards or a compact list are default; a table is optional only where it has a clear research benefit.
 
-The entire card must not be only an external link.
+Every result provides source identity, one-line purpose, two or three task cues, approved preview/fallback, internal Inspect, independent Save, and independent Visit. URL state remains shareable and back/forward safe. Do not render duplicate complete result trees for mobile and desktop.
 
-## 14. Collections/playbooks
+### Source Guide
 
-Collections become outcome-oriented staged research paths.
+Every stable source slug has `/resources/[slug]`. Required primary order:
 
-Each playbook records:
+1. breadcrumb, identity, and one-line purpose;
+2. approved fixed-ratio preview or resilient fallback;
+3. Visit, Save, and Add to Board;
+4. Use it when;
+5. What to explore;
+6. How to access it;
+7. Works with, when useful;
+8. Important limitations;
+9. Consider instead, with a differentiated reason;
+10. Collections containing the source;
+11. quiet source details and references.
 
-- goal and audience;
-- stages;
-- source memberships;
-- why each source is included;
-- what to inspect;
-- what decision it supports;
-- optional checklist;
-- last reviewed date;
-- deterministic Markdown export.
+Listed profiles must degrade honestly; optional data is never fabricated. There is no embedded copy of a provider site.
 
-## 15. Saved and Boards
+### Collections, Saved, and Boards
 
-### Saved
+Collection cards show goal, audience, stage count, and expected decision. A Collection detail is an ordered checklist in which every source states its role, inspect prompt, and supported decision. Machine representations are secondary.
 
-- browser-local;
-- private to the current browser/device;
-- available without an account;
-- usable from Browse, source details, and playbooks;
-- searchable/filterable as the list grows.
-
-### Boards
-
-A local Board records:
-
-- project goal;
-- audience/product constraints;
-- selected sources;
-- rejected sources/directions;
-- per-item notes;
-- decisions;
-- unresolved questions;
-- deterministic Markdown research-pack export.
-
-Boards must be tested locally before authentication and cloud sync.
-
-## 16. Research-pack requirements
+Saved is a lightweight browser-local shortlist with search, filter, remove/undo, and Add to Board. Boards contain goal, audience, constraints, source notes and rationale, selected/rejected/undecided decisions, unresolved questions, deterministic Markdown, and compact JSON handoff. No account/cloud prompt appears before its separate approved slice.
 
-The export must distinguish:
-
-- sourced facts;
-- curator judgment;
-- project decisions;
-- rejected directions;
-- unresolved questions.
-
-Minimum sections:
-
-- task;
-- audience;
-- product constraints;
-- selected sources;
-- selection rationale;
-- capabilities;
-- limitations;
-- evidence/source URLs;
-- rejected directions;
-- pattern candidates;
-- implementation reminders;
-- open decisions.
-
-## 17. MCP and model access
-
-Existing read-only native tools remain supported:
-
-- search resources;
-- get resource profile;
-- compare resources;
-- get collection;
-- build research plan;
-- create reference packet;
-- verify resource.
-
-Machine access without MCP should be supported through semantic public pages and model-independent Markdown/JSON exports.
-
-Future pattern/project tools require approved data contracts and reviewed content before implementation.
+### For AI
 
-## 18. Pattern requirements
-
-Start with 5–10 manually reviewed Pattern Candidates used in real OSS projects.
-
-A candidate must define:
-
-- problem;
-- when to use;
-- when not to use;
-- key rules;
-- common failures;
-- example sources;
-- project usage;
-- review state/date.
+For AI leads with the human-to-agent workflow, one example task/result, no-MCP representations and Board export, local MCP setup, later remote availability only when real, access-route vocabulary, then concise boundaries. It must not lead with a tool inventory, coverage dashboard, or verification exposition.
 
-A candidate is promoted only after human review, multiple examples, documented limitations, and real implementation/evaluation evidence.
+### About, Curation, and legal
 
-## 19. Evaluation requirements
+About explains Tessli’s human-curated AI-native definition and boundaries. Curation explains selection, updates/corrections, and quiet provenance rather than verification bureaucracy. Legal pages are footer-only and factual.
 
-The first proof project should use Tessli to research and guide one real OSS page.
+## 10. Data, privacy, and safety requirements
 
-Retain where approved:
+- Preserve all 295 source rows and stable IDs/slugs.
+- Do not invent media, prices, status, capabilities, integrations, or verification claims.
+- Respect paid/private source terms; do not copy, proxy, or redistribute source content without permission.
+- Live previews are an optional later allowlisted enhancement; standard previews use approved repository-managed media and complete fallbacks.
+- Boards are browser-local; local MCP does not read Boards or write Tessli state.
+- Validate external URLs and retain evidence provenance and dates when claims require them.
 
-- project brief;
-- constraints;
-- selected and rejected sources;
-- exported research pack;
-- implementation screenshots;
-- browser-verification findings;
-- human scores and notes;
-- final decision;
-- changes after review.
+## 11. Evaluation and pattern requirements
 
-Review dimensions:
+The future learning loop is:
 
-- task fit;
-- hierarchy;
-- mobile usability;
-- discoverability;
-- density;
-- coherence;
-- consistency;
-- component reuse;
-- accessibility;
-- restraint;
-- regression risk;
-- ship readiness.
+```text
+brief → retrieval → research pack → agent build → browser verification → human review → approved/rejected decisions
+```
 
-## 20. Delivery stages
+Pattern Candidates start only after a real OSS proof workflow. They require a documented problem, use/non-use conditions, rules, common failures, examples where possible, project usage, review state, and review date. Do not mass-publish patterns or claim UI-taste results without real evidence.
 
-### Stage 1 — Trustworthy directory
+## 12. Delivery order
 
-- consolidate Browse;
-- paginate;
-- add coverage levels;
-- add source details;
-- make local Save universal.
+The V3 slice order in `docs/product-realignment-v3.md` is authoritative:
 
-### Stage 2 — Reusable research
+1. V3.0 authority reconciliation;
+2. V3.1 public IA hygiene;
+3. V3.2 access-route contract;
+4. V3.3 Source Guide proof;
+5. V3.4 canonical Browse;
+6. V3.5 task-led Home;
+7. later shared-card, retrieval, machine, Collection, Saved/Board, and For AI slices.
 
-- local Boards;
-- notes;
-- staged playbooks;
-- research-pack export;
-- Similar Sources;
-- limited peer comparison.
-
-### Stage 3 — Agent research
-
-- shared website/MCP truth;
-- project-specific packs;
-- evidence and limitations;
-- initial pattern candidates;
-- first OSS proof project.
-
-### Stage 4 — Taste evidence
-
-- browser verification;
-- human review;
-- outcome comparison;
-- approved/rejected precedent retention;
-- pattern promotion.
-
-### Stage 5 — Persistence and scale
-
-- authentication;
-- cloud Saved/Boards;
-- local-to-cloud merge;
-- submissions/reports;
-- expanded verified corpus and patterns.
-
-## 21. Authentication direction
-
-Authentication does not block the local research loop.
-
-When cloud persistence is approved:
-
-### Sign up
-
-- Google OAuth; or
-- first name, last name, email, password;
-- Terms and Privacy acceptance;
-- six-digit email verification OTP;
-- optional local-data merge after verification.
-
-### Standard sign in
-
-- Google OAuth; or
-- email and password.
-
-Do not require email OTP after every normal password sign-in.
-
-Optional MFA should use authenticator TOTP. Production auth requires custom SMTP, abuse controls, cookie-aware SSR clients, RLS, session/security review, recovery, export, and deletion.
-
-## 22. Visual direction
-
-`design.md` remains the visual contract.
-
-Preserve:
-
-- warm off-white canvas;
-- charcoal text;
-- restrained orange;
-- Newsreader display typography;
-- Instrument Sans interface typography;
-- subtle grain;
-- border-led hierarchy;
-- restrained motion;
-- real Tessli UI as primary product imagery.
-
-Avoid generic AI-purple branding, glassmorphism, meaningless 3D, continuous animation, oversized rounded wrappers, fake metrics, fake trends, and fake social proof.
-
-Research/database views may be denser than marketing surfaces.
-
-## 23. Accessibility and quality
-
-Required:
-
-- WCAG 2.2 AA targets;
-- semantic landmarks/headings;
-- full keyboard operation;
-- visible focus;
-- touch targets appropriate for mobile;
-- reduced-motion support;
-- no hover-only information;
-- valid interactive HTML;
-- screen-reader announcements for dynamic results and saves;
-- accessible dialogs and OTP controls;
-- responsive browser review at required widths;
-- no horizontal overflow;
-- deterministic data/build outputs;
-- complete diff review before merge.
-
-## 24. Security and governance
-
-- validate every external URL;
-- block SSRF/private-network access in operator fetchers;
-- never expose service-role keys;
-- do not inject arbitrary HTML or remote SVG;
-- preserve source attribution and evidence;
-- respect paid/private-source terms;
-- require user-owned credentials for external authenticated providers;
-- distinguish transient and persistent data;
-- do not redistribute content without permission;
-- use RLS for future user-owned cloud data;
-- apply server-side validation and abuse protection to future forms.
-
-## 25. Explicit deferrals
-
-Do not build yet:
-
-- public auth activation;
-- cloud Saved/Boards;
-- a large Pattern catalogue;
-- a Styles marketplace or generator;
-- payments;
-- team workspaces;
-- mass screenshot scraping;
-- automatic aesthetic scores;
-- a Figma plugin;
-- a browser extension;
-- extra MCP tools without stable data;
-- a homepage redesign before Browse, Source Detail, Save, Boards, and export work.
-
-## 26. Initial success criteria
-
-The next product milestone is ready when:
-
-- `/resources` is the one canonical, paginated browser;
-- query/filter/view/page state is shareable and restorable;
-- every source has an internal detail route;
-- coverage levels are truthful;
-- Save works across research surfaces;
-- a local project Board can retain selected/rejected references and notes;
-- a deterministic research pack can be exported;
-- one real OSS page is researched and built using that pack;
-- browser and human review evidence is recorded;
-- no unfinished public links or false product claims remain;
-- type, lint, tests, build, accessibility, responsive, security, and complete-diff checks pass.
-
-## 27. Supporting documents
-
-Read in this order:
-
-1. `docs/product-direction.md`
-2. `PRD.md`
-3. `build-slices.md`
-4. `AGENTS.md`
-5. `design.md`
-6. `docs/product-scope.md`
-7. `docs/architecture-and-auth.md`
-8. relevant contracts/schemas/slice evidence
+Authentication, cloud Boards, payments, teams, a marketplace, public screenshots, vector search as a curation substitute, browser extensions, and automatic aesthetic scoring remain deferred until separately approved prerequisites are met.
+
+## 13. Quality requirements
+
+All visible work preserves the approved visual system, semantic landmarks and headings, keyboard operation, focus visibility, touch targets, reduced motion, no hover-only information, responsive recomposition, and WCAG 2.2 AA targets. Browse and Source Guide work must pass 1440, 1024, 768, 390, and applicable 320px checks with no horizontal overflow.
+
+## 14. Success definition
+
+Tessli succeeds when a person or agent can move from a specific design question to a small relevant source set, understand what each source offers and how to access it, retain project decisions locally, and hand compact context to an implementation workflow without overclaiming taste or provider facts.

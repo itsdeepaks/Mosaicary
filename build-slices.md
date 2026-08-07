@@ -1,15 +1,14 @@
-# Tessli Product Plan v2 — Build Slices
+# Tessli V3 — Build Slices
 
-Status: **active delivery plan — Phase 1 / Slice 1.6 NEXT; proof track remains BLOCKED**
+Status: **active delivery plan — V3.1 Public IA hygiene NEXT**
 Rule: one independently reviewable vertical slice per branch and pull request.  
-Phase plan: `docs/product-plan-v2.md`
+Product direction: `docs/product-realignment-v3.md`
 
-The previous detailed Phase 1 ledger and legacy slice numbers remain available in Git history and under `docs/slices/`. Product Plan v2 does not rewrite history. It provides the active execution frame:
+The previous detailed Phase 1 ledger and legacy slice numbers remain available in Git history and under `docs/slices/`. `docs/product-plan-v2.md` is historical evidence; it does not define active or next work. This document preserves completed V2 evidence while using V3 identifiers for new slices.
 
-- Phase 0 is the completed direction reset;
-- Phases 1–10 are the ten development phases;
-- completed legacy `14.x` work is mapped to Product Plan v2;
-- new work uses Product Plan v2 phase/slice identifiers.
+- completed V2 and legacy `14.x` work remains traceable;
+- V3.0 reconciled authority documentation on 2026-08-08;
+- V3.1–V3.17 are the active ordered delivery sequence.
 
 ## 1. Mandatory read order
 
@@ -17,9 +16,9 @@ Before changing Tessli:
 
 1. refresh current `main`;
 2. read `docs/product-direction.md`;
-3. read `docs/product-plan-v2.md`;
-4. read `PRD.md`;
-5. read this file;
+3. read `PRD.md`;
+4. read this file;
+5. read `docs/product-realignment-v3.md`;
 6. read `AGENTS.md`;
 7. read `design.md` for visible work;
 8. read relevant contracts, schemas, code, tests, and completed slice evidence.
@@ -105,7 +104,32 @@ Unless an approved slice changes them, Tessli already has:
 
 Completed code is not automatically approval for later-phase functionality. Public auth, cloud workspaces, submissions, moderation, Pattern Candidates, and UI-taste claims remain deferred until their prerequisites are met.
 
-## 6. Phase status
+## 6. Active V3 slice status
+
+| ID    | Slice                             | Status   | Depends on              |
+| ----- | --------------------------------- | -------- | ----------------------- |
+| V3.0  | Authority reconciliation          | DONE     | V3 approval             |
+| V3.1  | Public IA hygiene                 | NEXT     | V3.0                    |
+| V3.2  | AccessRoute contract pilot        | PLANNED  | V3.0                    |
+| V3.3  | Source guide vertical proof       | PLANNED  | V3.2                    |
+| V3.4  | Canonical Browse focus            | PLANNED  | V3.2, V3.3              |
+| V3.5  | Homepage task entry               | PLANNED  | V3.4                    |
+| V3.6  | Resource-card consistency         | PLANNED  | V3.3, V3.4              |
+| V3.7  | Deterministic task retrieval      | PLANNED  | V3.2                    |
+| V3.8  | Local MCP v2                      | PLANNED  | V3.7                    |
+| V3.9  | Public machine representations v2 | PLANNED  | V3.7                    |
+| V3.10 | Machine discovery                 | PLANNED  | V3.9                    |
+| V3.11 | Collections as research paths     | PLANNED  | V3.3, V3.6              |
+| V3.12 | Saved-to-Board flow               | PLANNED  | V3.3, V3.6              |
+| V3.13 | Board agent handoff               | PLANNED  | V3.12                   |
+| V3.14 | For AI redesign                   | PLANNED  | V3.8–V3.10, V3.13       |
+| V3.15 | Live-preview pilot                | DEFERRED | V3.3; separate approval |
+| V3.16 | Hosted remote MCP                 | DEFERRED | V3.8–V3.10              |
+| V3.17 | Cross-model validation            | DEFERRED | V3.16; provider access  |
+
+The V3 descriptions, acceptance criteria, and exclusions are authoritative in `docs/product-realignment-v3.md`. Do not start a later V3 slice from an unmerged branch.
+
+## 7. Historical V2 phase status
 
 | Phase | Name                                        | Status   | Active/next slice          |
 | ----: | ------------------------------------------- | -------- | -------------------------- |
@@ -121,7 +145,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 |     9 | Community and Moderation                    | DEFERRED | 9.1 after auth/owner       |
 |    10 | Evidence-Backed UI-Taste Layer              | DEFERRED | 10.1 after multiple proofs |
 
-## 7. Slice status
+## 8. Historical V2 slice status
 
 | ID   | Slice                                                 | Status   | Depends on              | Historical alias/evidence                                              |
 | ---- | ----------------------------------------------------- | -------- | ----------------------- | ---------------------------------------------------------------------- |
@@ -169,7 +193,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | 10.4 | Repeated outcome evaluation                           | DEFERRED | 10.1–10.3               | —                                                                      |
 | 10.5 | Public UI-taste claim review                          | DEFERRED | 10.4                    | —                                                                      |
 
-## 8. Completed phase evidence
+## 9. Completed V2 evidence
 
 ### Phase 0 — Direction Reset
 
@@ -187,11 +211,11 @@ Evidence: `docs/slices/0.2-execution-track-realignment.md`, PR #95.
 
 Status: **DONE — documentation-only.**
 
-Reconciles the active plan and public component/page contracts with the canonical Browse → Source Detail → Board → Export loop. It preserves completed-slice evidence, records current coverage as **255 Listed / 40 Profiled / 0 Verified**, keeps Slice 1.6 as NEXT and Slice 5.3 as BLOCKED, and does not authorize product, data, or provider changes.
+Reconciled the then-active plan and public component/page contracts with the canonical Browse → Source Detail → Board → Export loop. It preserved completed-slice evidence and recorded **255 Listed / 40 Profiled / 0 Verified** coverage. Its former Slice 1.6 `NEXT` and Slice 5.3 `BLOCKED` declarations are historical, not V3 instructions.
 
 ### Phase 1 — Source Intelligence Foundation
 
-Status: **ACTIVE**
+Historical status: **ACTIVE before V3.0**
 
 The canonical source-profile schema and deterministic adapter remain complete with the truthful baseline:
 
@@ -201,13 +225,13 @@ The canonical source-profile schema and deterministic adapter remain complete wi
 0 Verified
 ```
 
-The active continuation now moves from the completed verification contract into the first bounded operator-reviewed Verified batch:
+The historical continuation proposed moving from the completed verification contract into the first bounded operator-reviewed Verified batch:
 
 ```text
 1.3  Priority Profile Expansion, Batch 1   DONE      → 265 Listed / 30 Profiled / 0 Verified
 1.4  Priority Profile Expansion, Batch 2   DONE      → 255 Listed / 40 Profiled / 0 Verified
 1.5  Verification contract/workflow        DONE
-1.6  First evidence-backed Verified batch  NEXT
+1.6  First evidence-backed Verified batch  historical NEXT
 ```
 
 Selection follows Playbook use, Board/research value, MCP retrieval value, and real OSS workflows—not alphabetical order. Website, representations, MCP, counts, and tests must continue to read the same canonical truth.
@@ -315,7 +339,7 @@ Delivered:
 
 Evidence: `docs/slices/4.3-public-machine-readable-representations.md`, PR #88.
 
-## 10. Later phase boundaries
+## 10. Historical V2 phase boundaries
 
 ### Operating flow and review roles
 
@@ -364,13 +388,13 @@ Requires contextual forms, server validation, duplicate detection, rate limiting
 
 Requires multiple proof projects, permission-aware precedent retrieval, pattern promotion, repeated evaluation, and a final public-claim review. Catalogue size, screenshots, embeddings, or one successful page cannot complete this phase.
 
-## 11. Current continuation boundary
+## 11. Superseded V2 continuation boundary
 
-Two execution tracks now operate with explicit dependencies:
+The following was the pre-V3 continuation state and is retained only as evidence:
 
-- **Product Foundation:** Phase 1 / Slice 1.6 is NEXT. It begins the first bounded operator-reviewed Verified batch while preserving the distinction between repository profiling, current provider evidence, and promotion.
+- **Product Foundation:** Phase 1 / Slice 1.6 was `NEXT`. It would have begun the first bounded operator-reviewed Verified batch while preserving the distinction between repository profiling, current provider evidence, and promotion.
 - **Proof and UI Judgment:** Slice 5.3 remains BLOCKED on a genuine human-review artifact; Slices 5.4 and 6.2 and Phase 7 remain blocked behind that evidence.
 
-The next repository slice is **1.6 First Evidence-Backed Verified Batch**. It must select a small bounded set, create current human-operator records through the Slice 1.5 workflow, and promote only records that satisfy every schema and semantic gate. Do not invent provider checks, reuse stale profile fingerprints, store credentials or private provider content, overstate availability, or expand the batch before the first records are independently reviewable.
+V3.0 replaced this continuation boundary. The next repository slice is **V3.1 Public IA hygiene**. Verification remains a maintenance and evidence concern, not the next public product milestone. Do not invent provider checks, reuse stale profile fingerprints, store credentials or private provider content, or overstate availability.
 
 No recurring scheduled development task is enabled or permitted for this workflow.
