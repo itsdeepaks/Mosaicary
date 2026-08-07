@@ -39,6 +39,8 @@ type ResourceCardProps = Readonly<{
   resource: ResourceCardData;
   categoryLabel: string;
   media?: ResourceCardMedia;
+  /** Use the Tessli profile as the primary destination when supplied. */
+  profileHref?: string;
   saved?: boolean;
   onSavedChange?: (resourceId: string, saved: boolean) => void;
 }>;
@@ -61,6 +63,14 @@ function ExternalArrowIcon() {
   return (
     <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
       <path d="M7 17 17 7M9 7h8v8" />
+    </svg>
+  );
+}
+
+function InternalArrowIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" focusable="false" viewBox="0 0 24 24">
+      <path d="M5 12h14M13 6l6 6-6 6" />
     </svg>
   );
 }
@@ -134,6 +144,7 @@ export function ResourceCard({
   resource,
   categoryLabel,
   media,
+  profileHref,
   saved = false,
   onSavedChange,
 }: ResourceCardProps) {
@@ -181,6 +192,9 @@ export function ResourceCard({
     getIntelligenceProfile(resource.slug) ||
     getIntelligenceProfile(resource.id);
   const badgeText = profile ? getIntelligenceBadge(profile) : null;
+  const internalProfileHref = profileHref?.trim() || null;
+  const primaryHref = internalProfileHref ?? resource.url;
+  const opensExternal = internalProfileHref === null;
 
   return (
     <article
@@ -190,6 +204,7 @@ export function ResourceCard({
       data-resource-card
       data-resource-category={resource.category}
       data-resource-name={resource.name}
+      data-resource-primary-link={opensExternal ? "external" : "profile"}
       data-resource-slug={resource.slug}
       data-resource-status={resource.status}
     >
@@ -198,9 +213,9 @@ export function ResourceCard({
         aria-labelledby={titleId}
         className={styles.cardLink}
         data-resource-visit={resource.id}
-        href={resource.url}
+        href={primaryHref}
         rel="noopener noreferrer"
-        target="_blank"
+        target={opensExternal ? "_blank" : undefined}
       >
         <div className={styles.media}>
           {activeMedia ? (
@@ -231,7 +246,7 @@ export function ResourceCard({
               <p className={styles.domain}>{resource.domain}</p>
               <h3 id={titleId}>{resource.name}</h3>
             </div>
-            <ExternalArrowIcon />
+            {opensExternal ? <ExternalArrowIcon /> : <InternalArrowIcon />}
           </div>
 
           <p className={styles.description} id={descriptionId}>
@@ -262,6 +277,20 @@ export function ResourceCard({
           </footer>
         </div>
       </a>
+
+      {internalProfileHref ? (
+        <div className={styles.profileAction}>
+          {resource.status === "unavailable" ? (
+            <span className={styles.unavailableAction}>
+              Provider unavailable
+            </span>
+          ) : (
+            <a href={resource.url} rel="noopener noreferrer" target="_blank">
+              Visit source ↗
+            </a>
+          )}
+        </div>
+      ) : null}
 
       {onSavedChange ? (
         <button

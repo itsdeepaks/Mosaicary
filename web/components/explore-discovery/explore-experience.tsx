@@ -33,6 +33,7 @@ type ExploreExperienceProps = {
   categories: readonly DiscoveryCategoryOption[];
   accessOptions: readonly DiscoveryAccessOption[];
   resources: readonly ResourceCardData[];
+  totalResourceCount: number;
   initialState: DiscoveryState;
 };
 
@@ -59,6 +60,7 @@ export function ExploreExperience({
   categories,
   accessOptions,
   resources,
+  totalResourceCount,
   initialState,
 }: ExploreExperienceProps) {
   const [state, setState] = useState(initialState);
@@ -240,7 +242,7 @@ export function ExploreExperience({
         saveAnnouncement={saveAnnouncement}
         savedResourceIds={savedResourceIdSet}
         state={state}
-        totalResourceCount={resources.length}
+        totalResourceCount={totalResourceCount}
         visibleCount={visibleCount}
       />
     </>

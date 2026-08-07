@@ -83,17 +83,25 @@ const previewAudit = await evaluate(`(() => ({
   visible: Number(document.querySelector('[data-explore-results]')?.getAttribute('data-visible-result-count')),
   cards: document.querySelectorAll('[data-resource-grid] > li').length,
   saves: document.querySelectorAll('[data-resource-grid] [data-resource-save]').length,
+  profileLinks: document.querySelectorAll('[data-resource-grid] [data-resource-primary-link="profile"]').length,
+  firstPrimaryHref: document.querySelector('[data-resource-grid] [data-resource-card] > a')?.getAttribute('href'),
+  providerLinks: document.querySelectorAll('[data-resource-grid] [data-resource-card] a[target="_blank"]').length,
+  browseAllHref: document.querySelector('[data-browse-all-resources]')?.getAttribute('href'),
   hasLoadMore: Boolean(document.querySelector('[data-load-more-resources]')),
   searchAction: document.querySelector('form[aria-label="Search Tessli resources"]')?.getAttribute('action'),
   searchName: document.querySelector('[data-explore-search-input]')?.getAttribute('name'),
   overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
 }))()`);
 
-assert.equal(previewAudit.total, 12);
+assert.equal(previewAudit.total, 295);
 assert.equal(previewAudit.results, 12);
 assert.equal(previewAudit.visible, 12);
 assert.equal(previewAudit.cards, 12);
 assert.equal(previewAudit.saves, 12);
+assert.equal(previewAudit.profileLinks, 12);
+assert.equal(previewAudit.firstPrimaryHref, "/resources/designindex");
+assert.equal(previewAudit.providerLinks, 12);
+assert.equal(previewAudit.browseAllHref, "/resources");
 assert.equal(previewAudit.hasLoadMore, false);
 assert.equal(previewAudit.searchAction, "/resources");
 assert.equal(previewAudit.searchName, "q");

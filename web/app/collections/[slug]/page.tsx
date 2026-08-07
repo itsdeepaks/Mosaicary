@@ -181,8 +181,8 @@ export default async function CollectionDetailPage({
             <p className={styles.eyebrow}>Repository maintained</p>
             <h2>Found a missing source or weak stage?</h2>
           </div>
-          <Link className={styles.secondaryAction} href="/suggest">
-            Suggest an improvement
+          <Link className={styles.secondaryAction} href="/curation#corrections">
+            Read the correction process
           </Link>
         </aside>
       </div>

@@ -197,7 +197,7 @@ export default async function ResourcesPage({
             </select>
           </label>
           <input name="view" type="hidden" value={state.view} />
-          <button type="submit">Apply</button>
+          <button type="submit">Apply filters</button>
         </form>
 
         <section aria-labelledby="browse-results-title">

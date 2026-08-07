@@ -111,11 +111,11 @@ export function ExploreSearch({
   let announcement = "Search is ready.";
 
   if (normalizedQuery && hasResultCount) {
-    announcement = `${resultCount} ${resultCount === 1 ? "resource matches" : "resources match"} “${normalizedQuery}”.`;
+    announcement = `${resultCount} featured ${resultCount === 1 ? "resource matches" : "resources match"} “${normalizedQuery}”.`;
   } else if (normalizedQuery) {
     announcement = "Search query entered.";
   } else if (hasResultCount) {
-    announcement = `${resultCount} resources available.`;
+    announcement = `${resultCount} featured resources shown.`;
   }
 
   return (

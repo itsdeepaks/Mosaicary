@@ -45,6 +45,12 @@ function ExternalLink({ resource }: { resource: ResourceCardData }) {
   );
 }
 
+function saveLabel(resourceName: string, saved: boolean) {
+  return saved
+    ? `Remove ${resourceName} from saved resources`
+    : `Save ${resourceName}`;
+}
+
 export function BrowseResults({ resources, view }: BrowseResultsProps) {
   const cards = useMemo(() => resources.map((item) => item.card), [resources]);
   const [savedIds, setSavedIds] = useState<readonly string[]>([]);
@@ -99,6 +105,7 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
               </Link>
               <footer className={styles.browseCardActions}>
                 <button
+                  aria-label={saveLabel(card.name, savedIds.includes(card.id))}
                   aria-pressed={savedIds.includes(card.id)}
                   onClick={() =>
                     handleSavedChange(card.id, !savedIds.includes(card.id))
@@ -151,6 +158,10 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
                   <td>
                     <div className={styles.rowActions}>
                       <button
+                        aria-label={saveLabel(
+                          card.name,
+                          savedIds.includes(card.id),
+                        )}
                         aria-pressed={savedIds.includes(card.id)}
                         onClick={() =>
                           handleSavedChange(
@@ -195,6 +206,7 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
             </div>
             <div className={styles.rowActions}>
               <button
+                aria-label={saveLabel(card.name, savedIds.includes(card.id))}
                 aria-pressed={savedIds.includes(card.id)}
                 onClick={() =>
                   handleSavedChange(card.id, !savedIds.includes(card.id))

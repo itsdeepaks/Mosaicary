@@ -23,14 +23,18 @@ type ExploreResultsProps = Readonly<{
   saveAnnouncement: string;
 }>;
 
-function resultSummary(count: number, state: DiscoveryState) {
+function resultSummary(
+  count: number,
+  state: DiscoveryState,
+  totalResourceCount: number,
+) {
   if (count === 0) {
     return "No catalogue entries match the current search and filters.";
   }
   if (state.query || state.category || state.access.length > 0) {
-    return `${count} ${count === 1 ? "resource matches" : "resources match"} the current view.`;
+    return `${count} featured ${count === 1 ? "resource matches" : "resources match"} this homepage preview. Browse the full catalogue for more.`;
   }
-  return `Browse all ${count} validated resources in the curated catalogue.`;
+  return `A curated preview from the ${totalResourceCount}-source catalogue.`;
 }
 
 export function ExploreResults({
@@ -117,10 +121,11 @@ export function ExploreResults({
           <div>
             <p className={styles.eyebrow}>Catalogue results</p>
             <h2 id="explore-results-title">
-              {resultCount} {resultCount === 1 ? "resource" : "resources"}
+              {resultCount} featured{" "}
+              {resultCount === 1 ? "resource" : "resources"}
             </h2>
             <p className={styles.summary}>
-              {resultSummary(resultCount, state)}
+              {resultSummary(resultCount, state, totalResourceCount)}
             </p>
           </div>
           <p aria-live="polite" className={styles.visibleSummary}>
@@ -134,12 +139,20 @@ export function ExploreResults({
               <ResourceCard
                 categoryLabel={categoryLabel}
                 onSavedChange={onSavedChange}
+                profileHref={`/resources/${resource.slug}`}
                 resource={resource}
                 saved={savedResourceIds.has(resource.id)}
               />
             </li>
           ))}
         </ul>
+
+        <div className={styles.browseAllFrame} data-browse-all-resources>
+          <Link className={styles.browseAllAction} href="/resources">
+            Browse all {totalResourceCount} sources
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
 
         <p aria-live="polite" className={styles.visuallyHidden}>
           {saveAnnouncement}

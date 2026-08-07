@@ -18,7 +18,7 @@ export const footerGroups: readonly FooterGroup[] = [
     label: "Research",
     links: [
       { label: "Browse sources", href: "/resources" },
-      { label: "Playbooks", href: "/collections" },
+      { label: "Collections", href: "/collections" },
       { label: "For AI", href: "/for-ai" },
       { label: "Saved sources", href: "/saved" },
       { label: "Project boards", href: "/boards" },
@@ -28,8 +28,6 @@ export const footerGroups: readonly FooterGroup[] = [
     id: "footer-contribute",
     label: "Contribute",
     links: [
-      { label: "Submit a resource", href: "/submit" },
-      { label: "Suggest an improvement", href: "/suggest" },
       { label: "GitHub repository", href: repositoryUrl, external: true },
     ],
   },
