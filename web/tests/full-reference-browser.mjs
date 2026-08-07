@@ -165,6 +165,10 @@ await waitFor(
   `document.querySelector('[data-browse-filter-layer]')?.getAttribute('data-browse-filter-layer') === 'open'`,
   "mobile Browse filter sheet",
 );
+await waitFor(
+  "document.querySelector('[data-browse-filter-sheet]')?.contains(document.activeElement)",
+  "mobile Browse filter focus",
+);
 const mobileFilterOpenAudit = await evaluate(`(() => ({
   dialog: document.querySelector('[data-browse-filter-sheet]')?.getAttribute('role'),
   bodyOverflow: document.body.style.overflow,

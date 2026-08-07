@@ -361,8 +361,7 @@ export function FullReferenceExperience({
             </p>
             <nav aria-label="Mobile reference support">
               <Link href="/curation">Read the curation process</Link>
-              <Link href="/submit">Submit a resource</Link>
-              <Link href="/suggest">Suggest an improvement</Link>
+              <Link href="/curation#corrections">Read correction guidance</Link>
             </nav>
           </details>
         </div>
@@ -713,8 +712,9 @@ export function FullReferenceExperience({
                 className={styles.supportLinks}
               >
                 <Link href="/curation">Read the curation process</Link>
-                <Link href="/submit">Submit a resource</Link>
-                <Link href="/suggest">Suggest an improvement</Link>
+                <Link href="/curation#corrections">
+                  Read correction guidance
+                </Link>
               </nav>
             </div>
           </aside>
