@@ -57,7 +57,7 @@ test("Explore state preserves Next history and restores popstate", async () => {
   assert.doesNotMatch(experience, /fetch\(|localStorage|sessionStorage/);
 });
 
-test("controls use route links, category buttons, validated access, and native dialog", async () => {
+test("controls use category buttons, validated access, and native dialog", async () => {
   const controls = await read(
     "components/explore-discovery/discovery-controls.tsx",
   );
@@ -73,11 +73,9 @@ test("controls use route links, category buttons, validated access, and native d
   assert.match(controls, /event\.key === "Escape"/);
   assert.match(controls, /moreTriggerRef\.current\?\.focus\(\)/);
   assert.doesNotMatch(controls, /scrollIntoView/);
-  assert.match(controls, /data-resource-view="all"/);
-  assert.match(controls, /data-resource-view="saved"/);
-  assert.match(controls, /data-resource-view="full-reference"/);
-  assert.match(controls, /discoveryHref\("\/saved", state\)/);
-  assert.match(controls, /discoveryHref\("\/resources", state\)/);
+  assert.match(controls, /data-more-categories-panel/);
+  assert.doesNotMatch(controls, /Resource views|data-resource-view/);
+  assert.doesNotMatch(controls, /Full reference/);
   assert.match(controls, /<dialog/);
   assert.match(controls, /dialog\.showModal\(\)/);
   assert.match(controls, /onCancel=/);
@@ -96,6 +94,7 @@ test("discovery controls remain sharp, scroll-safe, and touch complete", async (
   );
 
   assert.match(css, /overflow-x: auto/);
+  assert.match(css, /right: max\(48px, calc\(\(100% - 1280px\) \/ 2\)\)/);
   assert.match(css, /\.desktopCategoryList/);
   assert.match(css, /\.mobileCategoryList/);
   assert.match(css, /\.categorySurface::after/);

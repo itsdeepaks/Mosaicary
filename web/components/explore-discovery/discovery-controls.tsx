@@ -1,17 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 
 import type {
   DiscoveryAccessOption,
   DiscoveryCategoryOption,
 } from "./discovery-options";
-import {
-  discoveryHref,
-  type DiscoveryAccess,
-  type DiscoverySort,
-  type DiscoveryState,
+import type {
+  DiscoveryAccess,
+  DiscoverySort,
+  DiscoveryState,
 } from "./discovery-state";
 import styles from "./discovery-controls.module.css";
 
@@ -243,16 +241,6 @@ export function DiscoveryControls({
                 <span>More</span>
                 <ChevronIcon />
               </button>
-              {moreOpen ? (
-                <div
-                  aria-label="More resource categories"
-                  className={styles.morePanel}
-                  id="overflow-categories"
-                  role="group"
-                >
-                  {overflowCategories.map(categoryButton)}
-                </div>
-              ) : null}
             </div>
           </div>
           <div
@@ -274,35 +262,21 @@ export function DiscoveryControls({
             {categories.map(categoryButton)}
           </div>
         </div>
+        {moreOpen ? (
+          <div
+            aria-label="More resource categories"
+            className={styles.morePanel}
+            data-more-categories-panel
+            id="overflow-categories"
+            role="group"
+          >
+            {overflowCategories.map(categoryButton)}
+          </div>
+        ) : null}
       </div>
 
       <div className={`tessli-container ${styles.controlsFrame}`}>
         <div className={styles.primaryRow}>
-          <nav aria-label="Resource views" className={styles.viewNavigation}>
-            <Link
-              aria-current="page"
-              className={styles.viewLink}
-              data-resource-view="all"
-              href={discoveryHref("/", state)}
-            >
-              All resources
-            </Link>
-            <Link
-              className={styles.viewLink}
-              data-resource-view="saved"
-              href={discoveryHref("/saved", state)}
-            >
-              Saved
-            </Link>
-            <Link
-              className={styles.viewLink}
-              data-resource-view="full-reference"
-              href={discoveryHref("/resources", state)}
-            >
-              Full reference
-            </Link>
-          </nav>
-
           <div className={styles.toolbar}>
             <label className={styles.sortControl}>
               <span>Sort</span>

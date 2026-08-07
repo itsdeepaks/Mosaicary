@@ -153,6 +153,35 @@ assert.equal(
   "3",
 );
 
+await evaluate(`(() => {
+  const trigger = document.querySelector('[aria-controls="overflow-categories"]');
+  trigger?.scrollIntoView({ block: 'center' });
+  trigger?.click();
+})()`);
+await waitFor(
+  'Boolean(document.querySelector("[data-more-categories-panel]"))',
+  "More categories opening",
+);
+assert.equal(
+  await evaluate(`(() => {
+    const panel = document.querySelector('[data-more-categories-panel]');
+    const rect = panel.getBoundingClientRect();
+    const hit = document.elementFromPoint(rect.left + 16, rect.top + 16);
+    return rect.width > 0 && rect.height > 0 && panel.contains(hit);
+  })()`),
+  true,
+  "More categories must be visible rather than clipped by the category scroller.",
+);
+await pressKey({ code: "Escape", key: "Escape", virtualKeyCode: 27 });
+await waitFor(
+  '!document.querySelector("[data-more-categories-panel]")',
+  "More categories closing",
+);
+await waitFor(
+  'document.activeElement?.getAttribute("aria-controls") === "overflow-categories"',
+  "More trigger focus return",
+);
+
 await evaluate('document.querySelector("[data-filter-trigger]")?.click()');
 await waitFor(
   'document.querySelector("[data-filter-dialog]")?.open === true',
@@ -250,15 +279,13 @@ assert.equal(
   false,
 );
 
-const routeHrefs = await evaluate(`Object.fromEntries(
-  Array.from(document.querySelectorAll('[data-resource-view]')).map((link) => [
-    link.getAttribute('data-resource-view'),
-    link.getAttribute('href'),
-  ])
-)`);
-assert.equal(routeHrefs.all, "/?q=type&sort=name-desc");
-assert.equal(routeHrefs.saved, "/saved?q=type&sort=name-desc");
-assert.equal(routeHrefs["full-reference"], "/resources?q=type&sort=name-desc");
+assert.equal(
+  await evaluate(
+    'Boolean(document.querySelector("[aria-label=\\"Resource views\\"]"))',
+  ),
+  false,
+  "Homepage controls must not duplicate the dedicated Browse and Saved routes.",
+);
 
 await navigate("/?category=not-real&access=free,bogus&sort=not-real");
 assert.equal(
@@ -298,4 +325,4 @@ await waitFor(
 );
 
 socket.close();
-console.log("Discovery URL, modal, route, and history checks passed.");
+console.log("Discovery URL, menu, modal, and history checks passed.");
