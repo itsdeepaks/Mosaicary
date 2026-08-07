@@ -39,13 +39,6 @@ export type SourceStatus = "active" | "inactive" | "unknown";
 
 type CatalogueResource = (typeof catalogue.resources)[number];
 
-type ReviewAwareIntelligenceProfile = ResourceIntelligenceProfile & {
-  humanReview?: {
-    status?: string;
-    reviewedAt?: string;
-  };
-};
-
 export interface SourceAccessModel {
   access: string;
   subscriptionRequired: string;
@@ -146,19 +139,38 @@ export function deriveEvidenceConfidence(
 
 function deriveHumanReviewStatus(
   profile: ResourceIntelligenceProfile | null,
-  promotion: VerifiedResourcePromotion | null,
 ): HumanReviewStatus {
-  if (promotion) return "completed";
-  const review = (profile as ReviewAwareIntelligenceProfile | null)
-    ?.humanReview;
-  return review?.status === "completed" && isIsoDate(review.reviewedAt)
+  const review = profile?.humanReview;
+  return review?.status === "completed" &&
+    Boolean(review.reviewerId.trim()) &&
+    isIsoDate(review.reviewedAt) &&
+    Boolean(review.verificationRecordPath.trim())
     ? "completed"
     : "not-recorded";
 }
 
+export function isPromotionAlignedWithHumanReview(
+  profile: ResourceIntelligenceProfile | null,
+  promotion: VerifiedResourcePromotion | null,
+): boolean {
+  const review = profile?.humanReview;
+  return Boolean(
+    profile &&
+    promotion &&
+    review?.status === "completed" &&
+    (profile.resourceId === promotion.resourceId ||
+      profile.resourceId === promotion.resourceSlug) &&
+    review.reviewerId === promotion.reviewerId &&
+    review.reviewedAt === promotion.completedAt &&
+    review.verificationRecordPath === promotion.recordPath &&
+    isIsoDate(promotion.recheckBy) &&
+    promotion.recheckBy >= SOURCE_PROFILE_REVIEWED_AT,
+  );
+}
+
 export function deriveCoverageLevel(
   profile: ResourceIntelligenceProfile | null,
-  humanReviewStatus = deriveHumanReviewStatus(profile, null),
+  humanReviewStatus = deriveHumanReviewStatus(profile),
   promotionRecorded = false,
 ): SourceCoverageLevel {
   if (!profile) return "listed";
@@ -214,14 +226,21 @@ function buildSourceProfile(resource: CatalogueResource): SourceProfile {
   const intelligence = intelligenceForResource(resource);
   const promotion =
     getVerifiedPromotion(resource.id) ?? getVerifiedPromotion(resource.slug);
-  const humanReviewStatus = deriveHumanReviewStatus(intelligence, promotion);
+  const humanReviewStatus = deriveHumanReviewStatus(intelligence);
+  const promotionAligned = isPromotionAlignedWithHumanReview(
+    intelligence,
+    promotion,
+  );
   const profileLevel = deriveCoverageLevel(
     intelligence,
     humanReviewStatus,
-    promotion !== null,
+    promotionAligned,
   );
   const sourceType = SOURCE_TYPE_BY_CATEGORY[resource.category];
-  const lastVerifiedAt = promotion?.completedAt ?? intelligence?.verifiedAt ?? null;
+  const lastVerifiedAt =
+    (promotionAligned ? promotion?.completedAt : null) ??
+    intelligence?.verifiedAt ??
+    null;
 
   if (!sourceType) {
     throw new Error(`No source type classification for ${resource.category}.`);

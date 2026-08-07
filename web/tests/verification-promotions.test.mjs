@@ -48,7 +48,8 @@ function completedRadixRecord(decision = "verified") {
       terms: "confirmed",
       termsUrl: "https://github.com/radix-ui/primitives/blob/main/LICENSE",
       checkedAt: "2026-08-06",
-      notes: "MIT licence reviewed; copyright and permission notice must be retained.",
+      notes:
+        "MIT licence reviewed; copyright and permission notice must be retained.",
     },
     limitationsReviewed: true,
     freshness: {
@@ -158,4 +159,39 @@ test("duplicate promotion IDs and duplicate records are rejected", () => {
   assert.equal(result.valid, false);
   assert.match(result.errors.join(" "), /Duplicate promotion request/u);
   assert.match(result.errors.join(" "), /Duplicate verification record/u);
+});
+
+test("malformed or out-of-batch promotion requests are rejected", () => {
+  const malformed = buildVerifiedPromotionRegistry({
+    request: {
+      ...request([" resource-01db82f90e23 "]),
+      unexpected: true,
+    },
+    requestPath: "verification-records/promotions.json",
+    requestSha256:
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    records: [],
+  });
+  assert.equal(malformed.valid, false);
+  assert.match(malformed.errors.join(" "), /contain exactly/u);
+  assert.match(malformed.errors.join(" "), /whitespace padding/u);
+
+  const outOfBatch = build({ resourceIds: ["resource-000000000000"] });
+  assert.equal(outOfBatch.valid, false);
+  assert.match(outOfBatch.errors.join(" "), /Slice 1\.6 promotion requests/u);
+});
+
+test("completed records must use the canonical Slice 1.6 path", () => {
+  const record = completedRadixRecord();
+  const result = build({
+    records: [
+      {
+        path: "verification-records/drafts/../radix-ui.json",
+        record,
+      },
+    ],
+  });
+
+  assert.equal(result.valid, false);
+  assert.match(result.errors.join(" "), /canonical completed-record path/u);
 });

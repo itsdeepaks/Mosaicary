@@ -11,6 +11,9 @@ This directory may contain only completed `tessli.resource-verification.v1` reco
 - Promotion also requires the canonical resource ID to be added deliberately to `promotions.json`.
 - The promotion generator must reject missing, stale, invalid, duplicated, non-verified, or ineligible records.
 - Source-profile status and human-review provenance must still be aligned in the same bounded promotion change.
+- Slice 1.6 records are discovered only at the exact canonical path `verification-records/1.6/<source-slug>.json`; nested, padded, renamed, traversal-shaped, or out-of-batch paths are rejected.
+- Slice 1.6 promotion requests accept only the three canonical resource IDs listed below and no additional request fields.
+- Manual provider availability and recorded interfaces must use their required manual review methods. Documentation review cannot substitute for the Google Fonts API test.
 
 ## Slice 1.6 layout
 

@@ -21,10 +21,7 @@ const schemaPath = path.join(
   repositoryRoot,
   "schemas/resource-verification-record.schema.json",
 );
-const outputPath = path.join(
-  webRoot,
-  "data/verified-resource-promotions.json",
-);
+const outputPath = path.join(webRoot, "data/verified-resource-promotions.json");
 
 function validIsoDate(value) {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
@@ -92,7 +89,8 @@ function listJsonFiles(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const fullPath = path.join(directory, entry.name);
     if (entry.isDirectory()) files.push(...listJsonFiles(fullPath));
-    else if (entry.isFile() && entry.name.endsWith(".json")) files.push(fullPath);
+    else if (entry.isFile() && entry.name.endsWith(".json"))
+      files.push(fullPath);
   }
 
   return files.sort((left, right) => left.localeCompare(right, "en"));
