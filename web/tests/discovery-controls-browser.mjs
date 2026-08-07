@@ -153,6 +153,13 @@ assert.equal(
   "3",
 );
 
+await send("Emulation.setDeviceMetricsOverride", {
+  deviceScaleFactor: 1,
+  height: 900,
+  mobile: false,
+  width: 1280,
+});
+await delay(100);
 await evaluate(`(() => {
   const trigger = document.querySelector('[aria-controls="overflow-categories"]');
   trigger?.scrollIntoView({ block: 'center' });
@@ -181,6 +188,7 @@ await waitFor(
   'document.activeElement?.getAttribute("aria-controls") === "overflow-categories"',
   "More trigger focus return",
 );
+await send("Emulation.clearDeviceMetricsOverride");
 
 await evaluate('document.querySelector("[data-filter-trigger]")?.click()');
 await waitFor(
