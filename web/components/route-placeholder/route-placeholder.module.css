@@ -82,6 +82,7 @@
   padding: 0 var(--space-5);
   font-size: var(--text-body-sm);
   font-weight: 650;
+  cursor: pointer;
   text-decoration: none;
 }
 
