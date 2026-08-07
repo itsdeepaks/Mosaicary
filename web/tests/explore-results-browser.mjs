@@ -86,7 +86,7 @@ const previewAudit = await evaluate(`(() => ({
   profileLinks: document.querySelectorAll('[data-resource-grid] [data-resource-primary-link="profile"]').length,
   firstPrimaryHref: document.querySelector('[data-resource-grid] [data-resource-card] > a')?.getAttribute('href'),
   providerLinks: document.querySelectorAll('[data-resource-grid] [data-resource-card] a[target="_blank"]').length,
-  browseAllHref: document.querySelector('[data-browse-all-resources]')?.getAttribute('href'),
+  browseAllHref: document.querySelector('[data-browse-all-resources] a')?.getAttribute('href'),
   hasLoadMore: Boolean(document.querySelector('[data-load-more-resources]')),
   searchAction: document.querySelector('form[aria-label="Search Tessli resources"]')?.getAttribute('action'),
   searchName: document.querySelector('[data-explore-search-input]')?.getAttribute('name'),
