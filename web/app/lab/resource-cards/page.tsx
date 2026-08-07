@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import catalogue from "@/data/catalogue.json";
 import type {
   ResourceCardAccess,
@@ -10,10 +12,15 @@ import {
 } from "./resource-card-lab";
 import styles from "./resource-card-lab.module.css";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Resource card pilot lab",
   description:
     "A non-production Tessli lab for validating resource-card media fallbacks, content stress cases, and native external-link behaviour.",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
 };
 
 type FixtureSpec = Readonly<{

@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
+
 import { RoutePlaceholder } from "@/components/route-placeholder/route-placeholder";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Submit a resource",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function SubmitPage() {
