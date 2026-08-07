@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type {
-  ResourceCardAccess,
-  ResourceCardData,
+import {
+  ResourceCard,
+  type ResourceCardAccess,
+  type ResourceCardData,
 } from "@/components/resource-card/resource-card";
 import {
   readSavedResourceIds,
@@ -87,36 +88,14 @@ export function BrowseResults({ resources, view }: BrowseResultsProps) {
         </p>
         <div className={styles.cardGrid} data-browse-view="cards">
           {resources.map(({ profile, categoryLabel, card }) => (
-            <article className={styles.browseCard} key={profile.id}>
-              <Link
-                className={styles.browseCardPrimary}
-                href={`/resources/${profile.slug}`}
-              >
-                <p className={styles.domain}>{profile.domain}</p>
-                <h2>{profile.name}</h2>
-                <p>{profile.summary}</p>
-                <p className={styles.meta}>
-                  {categoryLabel} · {accessLabels[card.access]} ·{" "}
-                  {profile.profileLevel}
-                </p>
-                <span className={styles.inspectAction}>
-                  Inspect Tessli profile →
-                </span>
-              </Link>
-              <footer className={styles.browseCardActions}>
-                <button
-                  aria-label={saveLabel(card.name, savedIds.includes(card.id))}
-                  aria-pressed={savedIds.includes(card.id)}
-                  onClick={() =>
-                    handleSavedChange(card.id, !savedIds.includes(card.id))
-                  }
-                  type="button"
-                >
-                  {savedIds.includes(card.id) ? "Saved" : "Save"}
-                </button>
-                <ExternalLink resource={card} />
-              </footer>
-            </article>
+            <ResourceCard
+              categoryLabel={categoryLabel}
+              onSavedChange={handleSavedChange}
+              profileHref={`/resources/${profile.slug}`}
+              resource={{ ...card, description: profile.summary }}
+              saved={savedIds.includes(card.id)}
+              key={profile.id}
+            />
           ))}
         </div>
       </>
