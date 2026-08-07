@@ -1,0 +1,119 @@
+import assert from "node:assert/strict";
+import { access, readFile } from "node:fs/promises";
+import path from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+
+const currentFile = fileURLToPath(import.meta.url);
+const webRoot = path.resolve(path.dirname(currentFile), "..");
+
+async function read(relativePath) {
+  return readFile(path.join(webRoot, relativePath), "utf8");
+}
+
+const headerRoutes = [
+  "/resources",
+  "/collections",
+  "/for-ai",
+  "/saved",
+  "/boards",
+];
+
+const footerRoutes = [
+  "/resources",
+  "/collections",
+  "/for-ai",
+  "/saved",
+  "/boards",
+  "/about",
+  "/curation",
+  "/privacy",
+  "/terms",
+  "/content-policy",
+];
+
+test("public header and footer promote only implemented routes", async () => {
+  const [navigation, header, footerNavigation, footer, filters] =
+    await Promise.all([
+      read("components/site-header/navigation.ts"),
+      read("components/site-header/site-header.tsx"),
+      read("components/site-footer/footer-navigation.ts"),
+      read("components/site-footer/site-footer.tsx"),
+      read("components/browse/browse-filters.tsx"),
+    ]);
+
+  for (const route of new Set(["/", ...headerRoutes, ...footerRoutes])) {
+    await access(path.join(webRoot, `app${route}/page.tsx`));
+  }
+
+  for (const route of headerRoutes) {
+    assert.match(navigation, new RegExp(`href: "${route}"`));
+  }
+
+  for (const route of footerRoutes) {
+    assert.match(footerNavigation, new RegExp(`href: "${route}"`));
+  }
+
+  assert.match(header, /href="\/"/);
+  assert.match(footer, /href="\/"/);
+  assert.match(navigation, /href: "\/resources#browse-search"/);
+  assert.match(filters, /id="browse-search"/);
+
+  assert.doesNotMatch(
+    `${navigation}\n${header}\n${footer}`,
+    /href: "\/(?:auth|submit|suggest)"/u,
+  );
+});
+
+test("unfinished and internal-lab routes are non-indexable", async () => {
+  const [auth, submit, suggest, lab, resourceCardLab, proof, proofReview] =
+    await Promise.all([
+      read("app/auth/page.tsx"),
+      read("app/submit/page.tsx"),
+      read("app/suggest/page.tsx"),
+      read("app/lab/page.tsx"),
+      read("app/lab/resource-cards/page.tsx"),
+      read("app/proofs/oss-homepage/page.tsx"),
+      read("app/proofs/oss-homepage/review/page.tsx"),
+    ]);
+
+  for (const route of [
+    auth,
+    submit,
+    suggest,
+    lab,
+    resourceCardLab,
+    proof,
+    proofReview,
+  ]) {
+    assert.match(route, /index: false/);
+    assert.match(route, /follow: false/);
+  }
+});
+
+test("sitemap limits discovery to public routes and canonical documents", async () => {
+  const sitemap = await read("app/sitemap.ts");
+
+  for (const route of [
+    "",
+    "/resources",
+    "/collections",
+    "/for-ai",
+    "/about",
+    "/curation",
+    "/privacy",
+    "/terms",
+    "/content-policy",
+  ]) {
+    assert.match(sitemap, new RegExp(`"${route}"`));
+  }
+
+  assert.match(sitemap, /getPublishedCollections\(\)/);
+  assert.match(sitemap, /getAllSourceProfiles\(\)/);
+  assert.match(sitemap, /collection\.(?:json|md)/);
+  assert.match(sitemap, /profile\.(?:json|md)/);
+  assert.doesNotMatch(
+    sitemap,
+    /"\/(?:saved|boards|auth|submit|suggest|lab|proofs)/u,
+  );
+});

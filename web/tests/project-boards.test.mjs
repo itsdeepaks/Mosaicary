@@ -73,7 +73,7 @@ test("Board export is labelled, local-only, and validation-aware", async () => {
   assert.match(controls, /disabled={!result\.ok}/);
 });
 
-test("boards route uses canonical source profiles and remains discoverable", async () => {
+test("boards route uses canonical source profiles and remains local-navigation only", async () => {
   const page = await read("app/boards/page.tsx");
   const saved = await read("app/saved/page.tsx");
   const sitemap = await read("app/sitemap.ts");
@@ -81,5 +81,5 @@ test("boards route uses canonical source profiles and remains discoverable", asy
   assert.match(page, /profileLevel: profile\.profileLevel/);
   assert.match(page, /ProjectBoardsExperience/);
   assert.match(saved, /href="\/boards"/);
-  assert.match(sitemap, /"\/boards"/);
+  assert.doesNotMatch(sitemap, /"\/boards"/);
 });

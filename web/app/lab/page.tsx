@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 
 import { GrainToggle } from "./grain-toggle";
@@ -15,8 +16,13 @@ const swatches = [
   ["Accent text", "#b9380e", "var(--accent-text)", "dark"],
 ] as const;
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Design foundation lab",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
 };
 
 export default function DesignFoundationLabPage() {
