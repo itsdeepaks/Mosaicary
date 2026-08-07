@@ -156,7 +156,7 @@ await waitFor(
     );
     const noun = count === 1 ? 'resource matches' : 'resources match';
     return Number.isInteger(count) &&
-      status?.textContent.trim() === count + ' ' + noun + ' “motion”.';
+      status?.textContent.trim() === count + ' featured ' + noun + ' “motion”.';
   })()`,
   "the live catalogue search announcement",
 );

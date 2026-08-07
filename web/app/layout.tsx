@@ -22,7 +22,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" data-grain="on">
+    <html lang="en" data-grain="on" data-scroll-behavior="smooth">
       <body className={`${interfaceFont.variable} ${displayFont.variable}`}>
         <ViewportOverflowProbe />
         <a className="skip-link" href="#main-content">

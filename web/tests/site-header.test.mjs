@@ -20,7 +20,7 @@ test("public navigation separates primary research routes from utilities", async
   );
   assert.match(
     navigation,
-    /label: "Playbooks"[\s\S]*?href: "\/collections"[\s\S]*?available: true/,
+    /label: "Collections"[\s\S]*?href: "\/collections"[\s\S]*?available: true/,
   );
   assert.match(
     navigation,
@@ -33,6 +33,10 @@ test("public navigation separates primary research routes from utilities", async
   assert.match(
     navigation,
     /label: "Saved"[\s\S]*?href: "\/saved"[\s\S]*?available: true/,
+  );
+  assert.match(
+    navigation,
+    /label: "Boards"[\s\S]*?href: "\/boards"[\s\S]*?available: true/,
   );
   assert.doesNotMatch(
     navigation,

@@ -139,12 +139,13 @@ const desktop = await evaluate(`(() => {
 
 assert.deepEqual(desktop.primary, [
   ["Browse", "/resources"],
-  ["Playbooks", "/collections"],
+  ["Collections", "/collections"],
   ["For AI", "/for-ai"],
 ]);
 assert.deepEqual(desktop.utilities, [
   ["Search", "/resources#browse-search"],
   ["Saved", "/saved"],
+  ["Boards", "/boards"],
 ]);
 assert.deepEqual(desktop.current, ["Browse"]);
 assert.equal(desktop.authLinks, 0);
@@ -182,9 +183,9 @@ const mobileOpen = await evaluate(`(() => {
 
 assert.equal(mobileOpen.dialog, "dialog");
 assert.equal(mobileOpen.modal, "true");
-assert.deepEqual(mobileOpen.primary, ["Browse", "Playbooks", "For AI"]);
-assert.deepEqual(mobileOpen.current, ["Playbooks"]);
-assert.deepEqual(mobileOpen.utilities, ["Search", "Saved"]);
+assert.deepEqual(mobileOpen.primary, ["Browse", "Collections", "For AI"]);
+assert.deepEqual(mobileOpen.current, ["Collections"]);
+assert.deepEqual(mobileOpen.utilities, ["Search", "Saved", "Boards"]);
 assert.equal(mobileOpen.authLinks, 0);
 assert.equal(mobileOpen.bodyOverflow, "hidden");
 assert.equal(mobileOpen.contentInert, true);

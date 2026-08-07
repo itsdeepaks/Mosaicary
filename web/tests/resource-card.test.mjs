@@ -11,7 +11,7 @@ async function read(relativePath) {
   return readFile(path.join(webRoot, relativePath), "utf8");
 }
 
-test("resource card keeps external navigation native and save independent", async () => {
+test("resource card keeps provider navigation native and supports internal profiles", async () => {
   const component = await read("components/resource-card/resource-card.tsx");
   const anchorClose = component.indexOf("</a>");
   const saveButton = component.indexOf("<button", anchorClose);
@@ -20,7 +20,7 @@ test("resource card keeps external navigation native and save independent", asyn
   assert.match(component, /<a[\s\S]*?className=\{styles\.cardLink\}/);
   assert.match(component, /aria-labelledby=\{titleId\}/);
   assert.match(component, /aria-describedby=\{descriptionId\}/);
-  assert.match(component, /target="_blank"/);
+  assert.match(component, /target=\{opensExternal \? "_blank" : undefined\}/);
   assert.match(component, /rel="noopener noreferrer"/);
   assert.ok(anchorClose > 0 && saveButton > anchorClose);
   assert.match(component, /saved\?: boolean/);
@@ -28,6 +28,9 @@ test("resource card keeps external navigation native and save independent", asyn
   assert.match(component, /\{onSavedChange \? \(/);
   assert.match(component, /aria-pressed=\{saved\}/);
   assert.match(component, /data-resource-save=\{resource\.id\}/);
+  assert.match(component, /profileHref\?: string/);
+  assert.match(component, /data-resource-primary-link/);
+  assert.match(component, /Visit source ↗/);
   assert.match(component, /onSavedChange\(resource\.id, !saved\)/);
   assert.doesNotMatch(component, /window\.open|router\.push|preventDefault/);
 });

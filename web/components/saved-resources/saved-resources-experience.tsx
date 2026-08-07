@@ -400,6 +400,7 @@ export function SavedResourcesExperience({
                         categoryLabels[resource.category] ?? resource.category
                       }
                       onSavedChange={handleSavedChange}
+                      profileHref={`/resources/${resource.slug}`}
                       resource={resource}
                       saved
                     />

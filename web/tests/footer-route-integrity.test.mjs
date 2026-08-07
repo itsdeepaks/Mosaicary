@@ -17,8 +17,6 @@ const footerRoutes = [
   "/for-ai",
   "/saved",
   "/boards",
-  "/submit",
-  "/suggest",
   "/about",
   "/curation",
   "/privacy",
@@ -67,6 +65,7 @@ test("footer contains truthful research groups and safe external links", async (
   assert.match(navigation, /label: "For AI", href: "\/for-ai"/);
   assert.match(navigation, /label: "Saved sources", href: "\/saved"/);
   assert.match(navigation, /label: "Project boards", href: "\/boards"/);
+  assert.doesNotMatch(navigation, /href: "\/submit"|href: "\/suggest"/);
   assert.doesNotMatch(
     navigation,
     /Explore resources|Full reference|footer-explore/,
@@ -106,10 +105,11 @@ test("header exposes only working primary and utility routes", async () => {
   const navigation = await read("components/site-header/navigation.ts");
 
   assert.match(navigation, /label: "Browse"[\s\S]*?available: true/);
-  assert.match(navigation, /label: "Playbooks"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Collections"[\s\S]*?available: true/);
   assert.match(navigation, /label: "For AI"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Search"[\s\S]*?available: true/);
   assert.match(navigation, /label: "Saved"[\s\S]*?available: true/);
+  assert.match(navigation, /label: "Boards"[\s\S]*?available: true/);
   assert.doesNotMatch(
     navigation,
     /label: "Explore"|label: "Resources"|label: "About"|\/auth/,

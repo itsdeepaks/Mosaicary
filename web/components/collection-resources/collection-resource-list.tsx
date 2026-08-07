@@ -90,6 +90,7 @@ export function CollectionResourceList({
             <ResourceCard
               categoryLabel={categoryLabel}
               onSavedChange={handleSavedChange}
+              profileHref={`/resources/${resource.slug}`}
               resource={resource}
               saved={savedIds.includes(resource.id)}
             />

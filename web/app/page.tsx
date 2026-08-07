@@ -92,6 +92,7 @@ export default async function ExplorePage({ searchParams }: ExplorePageProps) {
         categories={categoryOptions}
         initialState={initialState}
         resources={resources}
+        totalResourceCount={catalogue.resources.length}
       />
     </main>
   );
