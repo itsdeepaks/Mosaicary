@@ -31,7 +31,7 @@ export async function generateMetadata({
   const playbook = getPublishedCollection(slug);
 
   if (!playbook) {
-    return { title: "Playbook not found" };
+    return { title: "Collection not found" };
   }
 
   return {
@@ -59,8 +59,8 @@ export default async function CollectionDetailPage({
       id="main-content"
     >
       <div className="tessli-container">
-        <nav aria-label="Playbook breadcrumb" className={styles.breadcrumb}>
-          <Link href="/collections">Playbooks</Link>
+        <nav aria-label="Collection breadcrumb" className={styles.breadcrumb}>
+          <Link href="/collections">Collections</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{playbook.title}</span>
         </nav>
@@ -113,7 +113,7 @@ export default async function CollectionDetailPage({
                 Open project Boards
               </Link>
               <Link className={styles.secondaryAction} href="/collections">
-                Browse all Playbooks
+                Browse all Collections
               </Link>
               <a
                 className={styles.secondaryAction}

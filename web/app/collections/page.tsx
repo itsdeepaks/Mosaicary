@@ -4,9 +4,9 @@ import { getPublishedCollections } from "@/lib/collections";
 import styles from "./collections.module.css";
 
 export const metadata = {
-  title: "Playbooks",
+  title: "Collections",
   description:
-    "Follow six staged Tessli Playbooks for researching practical design and frontend decisions.",
+    "Explore six staged Tessli collections, each a guided research playbook for practical design and frontend decisions.",
 };
 
 export default function CollectionsPage() {
@@ -25,17 +25,17 @@ export default function CollectionsPage() {
       <div className="tessli-container">
         <header className={styles.hero}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Research Playbooks</p>
+            <p className={styles.eyebrow}>Guided research playbooks</p>
             <h1>Move from source discovery to a defensible decision.</h1>
             <p className={styles.lede}>
-              Each Playbook turns a reviewed source set into an ordered research
-              path. Follow the stages, inspect the stated evidence, and record
-              the decision each source helps you make.
+              Each collection turns a reviewed source set into an ordered
+              research path. Follow the stages, inspect the stated evidence, and
+              record the decision each source helps you make.
             </p>
           </div>
-          <dl className={styles.facts} aria-label="Playbook catalogue facts">
+          <dl className={styles.facts} aria-label="Collection catalogue facts">
             <div>
-              <dt>Published Playbooks</dt>
+              <dt>Published collections</dt>
               <dd>{playbooks.length}</dd>
             </div>
             <div>
@@ -49,11 +49,11 @@ export default function CollectionsPage() {
           </dl>
         </header>
 
-        <section className={styles.section} aria-labelledby="playbooks-title">
+        <section className={styles.section} aria-labelledby="collections-title">
           <div className={styles.sectionHeading}>
             <div>
               <p className={styles.eyebrow}>Repository maintained</p>
-              <h2 id="playbooks-title">Six staged Playbooks</h2>
+              <h2 id="collections-title">Six staged collections</h2>
             </div>
             <p>
               The sequence is editorial guidance, not a ranking. Recheck each
