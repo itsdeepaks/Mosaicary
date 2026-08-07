@@ -1,6 +1,6 @@
 # Tessli Product Plan v2 — Build Slices
 
-Status: **active delivery plan — Phase 1 / Slice 1.6 NEXT; proof track remains BLOCKED**  
+Status: **active delivery plan — Phase 1 / Slice 1.6 NEXT; proof track remains BLOCKED**
 Rule: one independently reviewable vertical slice per branch and pull request.  
 Phase plan: `docs/product-plan-v2.md`
 
@@ -47,6 +47,8 @@ When documents conflict, resolve the conflict before product implementation cont
 17. Refresh updated `main` before the next slice.
 
 Do not start a later slice from an unmerged feature branch. Development is continued in the active conversation, not through recurring scheduled automation.
+
+One slice uses one short-lived branch and one draft pull request. A branch may not carry a later slice, even when that later work is documentation-only.
 
 ## 3. Status legend
 
@@ -125,6 +127,7 @@ Completed code is not automatically approval for later-phase functionality. Publ
 | ---- | ----------------------------------------------------- | -------- | ----------------------- | ---------------------------------------------------------------------- |
 | 0.1  | Product direction and operating reset                 | DONE     | previous baseline       | legacy `14.0`, PR #74                                                  |
 | 0.2  | Execution-track realignment                           | DONE     | 0.1                     | `docs/slices/0.2-execution-track-realignment.md`, PR #95               |
+| 0.3  | Documentation reconciliation                          | DONE     | 0.2                     | this documentation-only reconciliation                                 |
 | 1.1  | Canonical source-profile contract                     | DONE     | 0.1                     | legacy `14.1`                                                          |
 | 1.2  | Coverage mapping and intelligence adapter             | DONE     | 1.1                     | `docs/slices/14.1-source-profile-contract.md`                          |
 | 1.3  | Priority source profile expansion — Batch 1           | DONE     | 0.2, 1.2                | `docs/slices/1.3-priority-source-profile-expansion-batch-1.md`, PR #96 |
@@ -179,6 +182,12 @@ Evidence: PR #74.
 Separated independent Product Foundation work from the blocked Proof and UI Judgment track. The OSS human-review dependency still blocks Phase 5 outcome work, the evidence-led homepage, Pattern Candidates, and UI-taste claims; it no longer blocks canonical Source Intelligence expansion.
 
 Evidence: `docs/slices/0.2-execution-track-realignment.md`, PR #95.
+
+### Slice 0.3 — Documentation reconciliation
+
+Status: **DONE — documentation-only.**
+
+Reconciles the active plan and public component/page contracts with the canonical Browse → Source Detail → Board → Export loop. It preserves completed-slice evidence, records current coverage as **255 Listed / 40 Profiled / 0 Verified**, keeps Slice 1.6 as NEXT and Slice 5.3 as BLOCKED, and does not authorize product, data, or provider changes.
 
 ### Phase 1 — Source Intelligence Foundation
 
@@ -307,6 +316,25 @@ Delivered:
 Evidence: `docs/slices/4.3-public-machine-readable-representations.md`, PR #88.
 
 ## 10. Later phase boundaries
+
+### Operating flow and review roles
+
+```mermaid
+flowchart LR
+  G["Product goal: evidence-backed UI judgment"] --> F["Completed foundation: Browse → Profile → Board → Export"]
+  F --> V["Track A: 1.6 bounded provider verification"]
+  F --> H["Track B: 5.3 genuine human review"]
+  H --> O["5.4 outcome/evidence"]
+  O --> P["6.2 evidence-led homepage"]
+  P --> C["7.x reviewed Pattern Candidates"]
+  F -. "local value proven first" .-> A["Deferred: authentication and cloud Boards"]
+```
+
+- **Terra-high** owns bounded implementation inside the approved slice.
+- **Luna-max** independently audits or reviews bounded evidence, contracts, and diffs.
+- The **human owner** supplies genuine human-review artifacts and provider-verification evidence; neither can be invented or inferred by an agent.
+
+Keep one slice, one branch, and one draft PR active at a time. Track A may proceed independently; Track B and all downstream UI-Judgment work remain blocked until the required human artifact exists.
 
 ### BLOCKED — Phase 5 Real OSS Proof Project
 
