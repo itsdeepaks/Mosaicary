@@ -35,6 +35,16 @@ test("canonical Browse derives one paginated result set from source profiles", a
   assert.doesNotMatch(page, /FullReferenceExperience|fetch\(/);
 });
 
+test("reference support does not promote unready submission actions", async () => {
+  const reference = await read(
+    "components/full-reference/full-reference-experience.tsx",
+  );
+
+  assert.doesNotMatch(reference, /href="\/(submit|suggest)"/u);
+  assert.match(reference, /href="\/curation#corrections"/u);
+  assert.match(reference, /Read correction guidance/u);
+});
+
 test("Browse state is allowlisted, serializable, and rejects fake verification sorting", async () => {
   const browse = await read("lib/browse.ts");
 
