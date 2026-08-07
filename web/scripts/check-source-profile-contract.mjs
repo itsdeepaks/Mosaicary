@@ -230,11 +230,11 @@ export function validateSourceProfileContract() {
         }
       }
 
-      if (profile.verifiedAt !== intelligence.verifiedAt) {
+      if (profile.verifiedAt !== profile.coverage.lastVerifiedAt) {
         errors.push(
           issue(
             "verification-date",
-            `${profile.id} verification date does not match its intelligence profile.`,
+            `${profile.id} verification date does not match its canonical coverage record.`,
           ),
         );
       }
@@ -246,7 +246,10 @@ export function validateSourceProfileContract() {
           ),
         );
       }
-      if (profile.coverage.lastVerifiedAt !== intelligence.verifiedAt) {
+      if (
+        profile.profileLevel !== "verified" &&
+        profile.coverage.lastVerifiedAt !== intelligence.verifiedAt
+      ) {
         errors.push(
           issue(
             "coverage-verification-date",
@@ -335,20 +338,6 @@ export function validateSourceProfileContract() {
       ),
     );
   }
-  if (
-    summary.coverageCounts.listed !== 255 ||
-    summary.coverageCounts.profiled !== 40 ||
-    summary.coverageCounts.verified !== 0
-  ) {
-    errors.push(
-      issue(
-        "coverage-composition",
-        "Coverage composition is not the truthful Slice 1.4 baseline.",
-        { actual: summary.coverageCounts },
-      ),
-    );
-  }
-
   return {
     valid: errors.length === 0,
     contractVersion: SOURCE_PROFILE_CONTRACT_VERSION,

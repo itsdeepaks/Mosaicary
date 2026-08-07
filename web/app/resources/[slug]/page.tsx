@@ -163,6 +163,14 @@ export default async function SourceProfilePage({ params }: Props) {
                   <dt>Human review</dt>
                   <dd>{label(profile.coverage.humanReviewStatus)}</dd>
                 </div>
+                <div>
+                  <dt>Verification status</dt>
+                  <dd>
+                    {profile.profileLevel === "verified"
+                      ? "Completed human verification"
+                      : "No completed human verification record"}
+                  </dd>
+                </div>
               </dl>
             </section>
 

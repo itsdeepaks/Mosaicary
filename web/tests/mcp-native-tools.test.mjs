@@ -75,6 +75,8 @@ test("resource profiles resolve by slug and stable catalogue ID", () => {
 
   assert.deepEqual(bySlug, byId);
   assert.equal(bySlug.resource.profileAvailable, true);
+  assert.equal(bySlug.resource.profileLevel, "profiled");
+  assert.equal(bySlug.resource.coverage.humanReviewStatus, "not-recorded");
   assert.equal(bySlug.intelligenceProfile.status, "verified");
   assert.equal(bySlug.intelligenceProfile.verifiedAt, "2026-07-31");
   assert.ok(bySlug.intelligenceProfile.evidence.length > 0);
@@ -202,6 +204,8 @@ test("verification reports repository evidence without a live check", () => {
   assert.equal(verification.liveCheckPerformed, false);
   assert.equal(verification.verificationMode, "repository-recorded-only");
   assert.equal(verification.profileAvailable, true);
+  assert.equal(verification.profileLevel, "profiled");
+  assert.equal(verification.coverage.humanReviewStatus, "not-recorded");
   assert.equal(verification.profileVerifiedAt, "2026-07-31");
   assert.ok(verification.evidence.length > 0);
   assert.match(verification.warning, /No live website/i);

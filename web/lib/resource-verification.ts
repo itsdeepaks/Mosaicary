@@ -1,10 +1,10 @@
 import { createHash } from "node:crypto";
 
+import catalogue from "../data/catalogue.json" with { type: "json" };
 import {
   getIntelligenceProfile,
   type ResourceIntelligenceProfile,
 } from "./intelligence.ts";
-import { getSourceProfile, type SourceProfile } from "./source-profiles.ts";
 
 export const RESOURCE_VERIFICATION_CONTRACT =
   "tessli.resource-verification.v1" as const;
@@ -115,6 +115,19 @@ export interface VerificationValidationResult {
   errors: string[];
 }
 
+type CatalogueResource = (typeof catalogue.resources)[number];
+
+interface VerificationTarget {
+  source: Pick<CatalogueResource, "id" | "slug" | "name" | "url">;
+  intelligence: ResourceIntelligenceProfile;
+}
+
+const resourcesByIdentifier = new Map<string, CatalogueResource>();
+for (const resource of catalogue.resources) {
+  resourcesByIdentifier.set(resource.id, resource);
+  resourcesByIdentifier.set(resource.slug, resource);
+}
+
 function stableJsonValue(value: unknown): JsonValue {
   if (
     value === null ||
@@ -176,11 +189,8 @@ function requireIsoDate(value: string, field: string): string {
   return value;
 }
 
-function verificationTarget(identifier: string): {
-  source: SourceProfile;
-  intelligence: ResourceIntelligenceProfile;
-} {
-  const source = getSourceProfile(identifier.trim());
+function verificationTarget(identifier: string): VerificationTarget {
+  const source = resourcesByIdentifier.get(identifier.trim());
   if (!source) {
     throw new ResourceVerificationError(
       `Unknown Tessli source identifier: ${identifier.trim() || "(blank)"}.`,
@@ -188,7 +198,7 @@ function verificationTarget(identifier: string): {
   }
   const intelligence =
     getIntelligenceProfile(source.id) ?? getIntelligenceProfile(source.slug);
-  if (!intelligence || source.profileLevel === "listed") {
+  if (!intelligence) {
     throw new ResourceVerificationError(
       `${source.name} is Listed only and cannot enter verification.`,
     );
@@ -365,9 +375,7 @@ export function validateResourceVerificationRecord(
   record: ResourceVerificationRecord,
 ): VerificationValidationResult {
   const errors: string[] = [];
-  let target:
-    | { source: SourceProfile; intelligence: ResourceIntelligenceProfile }
-    | undefined;
+  let target: VerificationTarget | undefined;
 
   try {
     target = verificationTarget(record.resourceId);

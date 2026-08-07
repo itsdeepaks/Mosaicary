@@ -165,7 +165,7 @@ The command exits non-zero with actionable errors when validation fails. It neve
 
 ## 6. Storage and privacy
 
-Drafts may remain outside the repository while work is incomplete. A future completed record intended for promotion belongs under a reviewed repository path defined by Slice 1.6.
+Drafts may remain outside the repository while work is incomplete. A completed record intended for promotion belongs under `web/data/resource-verifications/` as one JSON file per resource. The repository batch loader reads those files in deterministic filename order and accepts only a one-to-three-record approved batch of schema-valid, semantically eligible completed records. Duplicate, stale, unknown, ineligible, secret-bearing, or oversized batches fail the batch check rather than changing coverage.
 
 Never store:
 

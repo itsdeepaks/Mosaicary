@@ -16,6 +16,7 @@
     "source-profiles:check": "node scripts/check-source-profile-contract.mjs",
     "verification:draft": "node scripts/resource-verification.mjs draft",
     "verification:check": "node scripts/resource-verification.mjs check",
+    "verification:batch-check": "node scripts/check-resource-verification-batch.mjs",
     "media:review:generate": "node scripts/generate-resource-media-review.mjs",
     "media:review:check": "node scripts/check-resource-media-candidates.mjs",
     "media:coverage:generate": "node scripts/generate-resource-media-coverage.mjs",

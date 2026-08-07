@@ -73,6 +73,7 @@ test("For AI page exposes truthful model paths, representations, and boundaries"
   assert.match(page, /npm run mcp/);
   assert.match(page, /TESSLI_MCP_TOOL_CATALOGUE\.map/);
   assert.match(page, /getSourceContractSummary\(\)/);
+  assert.match(page, /coverage\.coverageCounts\.verified === 0/);
   assert.match(page, /SOURCE_FRESHNESS_WINDOWS/);
   assert.match(page, /profile\.json/);
   assert.match(page, /profile\.md/);

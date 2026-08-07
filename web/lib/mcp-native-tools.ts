@@ -8,6 +8,7 @@ import {
   buildResearchStack,
   generateMarkdownReferencePacket,
 } from "./research-packet.ts";
+import { getSourceProfile } from "./source-profiles.ts";
 
 type CatalogueResource = (typeof catalogue.resources)[number];
 type CatalogueCollection = (typeof catalogue.collections)[number];
@@ -180,6 +181,7 @@ function createSearchDocument(
 
 function toResourceSummary(resource: CatalogueResource) {
   const profile = getProfile(resource);
+  const sourceProfile = getSourceProfile(resource.id);
 
   return {
     id: resource.id,
@@ -196,7 +198,9 @@ function toResourceSummary(resource: CatalogueResource) {
     profileAvailable: profile !== null,
     intelligenceBadge: profile ? getIntelligenceBadge(profile) : null,
     profileStatus: profile?.status ?? null,
-    verifiedAt: profile?.verifiedAt ?? null,
+    profileLevel: sourceProfile?.profileLevel ?? "listed",
+    coverage: sourceProfile?.coverage ?? null,
+    verifiedAt: sourceProfile?.verifiedAt ?? null,
     capabilities: profile?.capabilities ?? [],
     frameworks: profile?.frameworks ?? [],
     integrationMethods: profile?.integrationMethods ?? [],
@@ -415,7 +419,8 @@ export function createNativeReferencePacket(input: ResearchSelectionInput) {
 
 export function verifyNativeResource(identifier: string) {
   const resource = resolveResource(identifier);
-  const profile = getProfile(resource);
+  const sourceProfile = getSourceProfile(resource.id);
+  const profile = sourceProfile?.intelligence ?? getProfile(resource);
 
   return {
     liveCheckPerformed: false,
@@ -434,7 +439,9 @@ export function verifyNativeResource(identifier: string) {
     },
     profileAvailable: profile !== null,
     profileStatus: profile?.status ?? null,
-    profileVerifiedAt: profile?.verifiedAt ?? null,
+    profileLevel: sourceProfile?.profileLevel ?? "listed",
+    coverage: sourceProfile?.coverage ?? null,
+    profileVerifiedAt: sourceProfile?.verifiedAt ?? null,
     evidence: profile?.evidence ?? [],
     limitations: profile?.limitations ?? [],
     warning:

@@ -34,6 +34,7 @@ test("source detail exposes truthful progressive profile state", () => {
     "Freshness",
     "Evidence records",
     "Human review",
+    "Verification status",
     "Best-for information",
     "Known limitations",
     "Collections",

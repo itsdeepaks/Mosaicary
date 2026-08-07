@@ -1,9 +1,14 @@
 import catalogue from "../data/catalogue.json" with { type: "json" };
+import { getCommittedVerificationRecord } from "./committed-resource-verifications.ts";
 import {
   getAllIntelligenceProfiles,
   getIntelligenceProfile,
   type ResourceIntelligenceProfile,
 } from "./intelligence.ts";
+import {
+  validateResourceVerificationRecord,
+  type ResourceVerificationRecord,
+} from "./resource-verification.ts";
 
 export const SOURCE_PROFILE_CONTRACT_VERSION = 1 as const;
 export const SOURCE_PROFILE_REVIEWED_AT = "2026-08-05" as const;
@@ -33,14 +38,7 @@ export type HumanReviewStatus = "not-recorded" | "completed";
 export type FreshnessStatus = "current" | "aging" | "stale" | "unknown";
 export type SourceStatus = "active" | "inactive" | "unknown";
 
-type CatalogueResource = (typeof catalogue.resources)[number];
-
-type ReviewAwareIntelligenceProfile = ResourceIntelligenceProfile & {
-  humanReview?: {
-    status?: string;
-    reviewedAt?: string;
-  };
-};
+export type CatalogueResource = (typeof catalogue.resources)[number];
 
 export interface SourceAccessModel {
   access: string;
@@ -140,37 +138,37 @@ export function deriveEvidenceConfidence(
   return "certain";
 }
 
-function deriveHumanReviewStatus(
-  profile: ResourceIntelligenceProfile | null,
-): HumanReviewStatus {
-  const review = (profile as ReviewAwareIntelligenceProfile | null)
-    ?.humanReview;
-  return review?.status === "completed" && isIsoDate(review.reviewedAt)
-    ? "completed"
-    : "not-recorded";
-}
-
 export function deriveCoverageLevel(
   profile: ResourceIntelligenceProfile | null,
-  humanReviewStatus = deriveHumanReviewStatus(profile),
+  hasEligibleVerificationRecord = false,
 ): SourceCoverageLevel {
   if (!profile) return "listed";
+  return hasEligibleVerificationRecord ? "verified" : "profiled";
+}
 
-  const confidence = deriveEvidenceConfidence(profile);
-  const hasRecordedEvidence =
-    isIsoDate(profile.verifiedAt) &&
-    profile.evidence.length > 0 &&
-    confidence !== "unknown";
-
+export function deriveVerificationFreshnessStatus(
+  record: ResourceVerificationRecord,
+  reviewedAt: string,
+): FreshnessStatus {
   if (
-    profile.status === "verified" &&
-    humanReviewStatus === "completed" &&
-    hasRecordedEvidence
+    !isIsoDate(record.completedAt) ||
+    !isIsoDate(record.freshness.recheckBy) ||
+    !isIsoDate(reviewedAt)
   ) {
-    return "verified";
+    return "unknown";
   }
 
-  return "profiled";
+  const completedAt = Date.parse(`${record.completedAt}T00:00:00Z`);
+  const recheckBy = Date.parse(`${record.freshness.recheckBy}T00:00:00Z`);
+  const reviewDate = Date.parse(`${reviewedAt}T00:00:00Z`);
+  if (reviewDate < completedAt) return "unknown";
+  if (reviewDate > recheckBy) return "stale";
+
+  return record.freshness.status === "current" ||
+    record.freshness.status === "aging" ||
+    record.freshness.status === "stale"
+    ? record.freshness.status
+    : "unknown";
 }
 
 function coverageReason(
@@ -202,10 +200,45 @@ function intelligenceForResource(
   );
 }
 
-function buildSourceProfile(resource: CatalogueResource): SourceProfile {
-  const intelligence = intelligenceForResource(resource);
-  const humanReviewStatus = deriveHumanReviewStatus(intelligence);
-  const profileLevel = deriveCoverageLevel(intelligence, humanReviewStatus);
+function eligibleVerificationForResource(
+  resource: CatalogueResource,
+  verification: ResourceVerificationRecord | null,
+): ResourceVerificationRecord | null {
+  if (!verification) return null;
+  const validation = validateResourceVerificationRecord(verification);
+  if (!validation.valid || !validation.eligibleForPromotion) {
+    throw new Error(
+      `Verification record for ${resource.id} is not eligible for SourceProfile coverage.`,
+    );
+  }
+  if (
+    verification.resourceId !== resource.id ||
+    verification.resourceSlug !== resource.slug
+  ) {
+    throw new Error(
+      `Verification record identity does not match ${resource.id}.`,
+    );
+  }
+  return verification;
+}
+
+export function createSourceProfile(
+  resource: CatalogueResource,
+  intelligence = intelligenceForResource(resource),
+  verification: ResourceVerificationRecord | null = null,
+  reviewedAt = SOURCE_PROFILE_REVIEWED_AT,
+): SourceProfile {
+  const eligibleVerification = eligibleVerificationForResource(
+    resource,
+    verification,
+  );
+  const humanReviewStatus: HumanReviewStatus = eligibleVerification
+    ? "completed"
+    : "not-recorded";
+  const profileLevel = deriveCoverageLevel(
+    intelligence,
+    eligibleVerification !== null,
+  );
   const sourceType = SOURCE_TYPE_BY_CATEGORY[resource.category];
 
   if (!sourceType) {
@@ -236,23 +269,33 @@ function buildSourceProfile(resource: CatalogueResource): SourceProfile {
     limitations: intelligence?.limitations ?? [],
     profileLevel,
     status: sourceStatus(resource.status),
-    verifiedAt: intelligence?.verifiedAt ?? null,
+    verifiedAt:
+      eligibleVerification?.completedAt ?? intelligence?.verifiedAt ?? null,
     evidence: intelligence?.evidence ?? [],
     coverage: {
       level: profileLevel,
       reason: coverageReason(profileLevel, humanReviewStatus),
       profileStatus: intelligence?.status ?? null,
-      lastVerifiedAt: intelligence?.verifiedAt ?? null,
+      lastVerifiedAt:
+        eligibleVerification?.completedAt ?? intelligence?.verifiedAt ?? null,
       confidence: deriveEvidenceConfidence(intelligence),
       humanReviewStatus,
-      freshnessStatus: deriveFreshnessStatus(intelligence?.verifiedAt ?? null),
+      freshnessStatus: eligibleVerification
+        ? deriveVerificationFreshnessStatus(eligibleVerification, reviewedAt)
+        : deriveFreshnessStatus(intelligence?.verifiedAt ?? null),
       evidenceCount: intelligence?.evidence.length ?? 0,
     },
     intelligence,
   };
 }
 
-const sourceProfiles = catalogue.resources.map(buildSourceProfile);
+const sourceProfiles = catalogue.resources.map((resource) =>
+  createSourceProfile(
+    resource,
+    intelligenceForResource(resource),
+    getCommittedVerificationRecord(resource.id),
+  ),
+);
 const sourceProfilesByIdentifier = new Map<string, SourceProfile>();
 
 for (const profile of sourceProfiles) {
@@ -271,13 +314,19 @@ export function getSourceProfile(identifier: string): SourceProfile | null {
 export function getSourceCoverageCounts(): Readonly<
   Record<SourceCoverageLevel, number>
 > {
+  return getSourceCoverageCountsForProfiles(sourceProfiles);
+}
+
+export function getSourceCoverageCountsForProfiles(
+  profiles: readonly SourceProfile[],
+): Readonly<Record<SourceCoverageLevel, number>> {
   const counts: Record<SourceCoverageLevel, number> = {
     listed: 0,
     profiled: 0,
     verified: 0,
   };
 
-  for (const profile of sourceProfiles) {
+  for (const profile of profiles) {
     counts[profile.profileLevel] += 1;
   }
 

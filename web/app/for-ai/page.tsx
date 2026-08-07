@@ -426,8 +426,10 @@ export default function ForAiPage() {
               <h3>Verified</h3>
               <p>
                 Requires evidence, dates, confidence, governance, freshness, and
-                explicit human-review provenance. None currently meet the full
-                contract.
+                explicit human-review provenance.{" "}
+                {coverage.coverageCounts.verified === 0
+                  ? "No source currently meets the full contract."
+                  : `${coverage.coverageCounts.verified} ${coverage.coverageCounts.verified === 1 ? "source meets" : "sources meet"} the full contract.`}
               </p>
             </article>
           </div>

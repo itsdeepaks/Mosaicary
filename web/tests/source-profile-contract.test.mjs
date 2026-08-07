@@ -5,17 +5,23 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import catalogue from "../data/catalogue.json" with { type: "json" };
+import { createPublicSourceRepresentation } from "../lib/public-representations.mjs";
+import { createResourceVerificationDraft } from "../lib/resource-verification.ts";
 import { getNativeResourceProfile } from "../lib/mcp-native-tools.ts";
 import {
   SOURCE_PROFILE_CONTRACT_VERSION,
   SOURCE_PROFILE_REVIEWED_AT,
   SOURCE_TYPE_BY_CATEGORY,
   deriveCoverageLevel,
+  deriveVerificationFreshnessStatus,
+  createSourceProfile,
   getAllSourceProfiles,
   getSourceContractSummary,
   getSourceCoverageCounts,
+  getSourceCoverageCountsForProfiles,
   getSourceProfile,
 } from "../lib/source-profiles.ts";
+import { getIntelligenceProfile } from "../lib/intelligence.ts";
 import { validateSourceProfileContract } from "../scripts/check-source-profile-contract.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -74,6 +80,51 @@ const requiredSourceFields = [
   "verifiedAt",
   "evidence",
 ];
+
+function completedEligibleRecord(identifier) {
+  const record = createResourceVerificationDraft({
+    identifier,
+    reviewerId: "operator-1",
+    startedAt: "2026-08-06",
+  });
+  record.status = "completed";
+  record.completedAt = "2026-08-06";
+  record.availabilityCheck = {
+    ...record.availabilityCheck,
+    result: "passed",
+    method: "manual-browser",
+    checkedAt: "2026-08-06",
+    notes: "Observed the canonical destination manually.",
+  };
+  record.claimChecks = record.claimChecks.map((check) => ({
+    ...check,
+    result: "confirmed",
+    method: "document-review",
+    checkedAt: "2026-08-06",
+    notes: "Reviewed the linked official source.",
+  }));
+  record.interfaceChecks = record.interfaceChecks.map((check) => ({
+    ...check,
+    result: "passed",
+    method: "manual-api-test",
+    checkedAt: "2026-08-06",
+    notes: "Reviewed without recording credentials.",
+  }));
+  record.governanceCheck = {
+    persistence: "confirmed",
+    redistribution: "confirmed",
+    attribution: "confirmed",
+    terms: "confirmed",
+    termsUrl: "https://developers.google.com/fonts/faq/privacy",
+    checkedAt: "2026-08-06",
+    notes: "Reviewed current official governance material.",
+  };
+  record.limitationsReviewed = true;
+  record.freshness = { status: "current", recheckBy: "2026-11-04" };
+  record.decision = "verified";
+  record.decisionNotes = "All required human checks passed.";
+  return record;
+}
 
 test("source profile schema defines the complete canonical v1 contract", () => {
   const schema = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
@@ -164,9 +215,59 @@ test("Profiled records expose normalized intelligence without losing evidence", 
   );
   assert.deepEqual(relume.limitations, relume.intelligence.limitations);
   assert.deepEqual(relume.evidence, relume.intelligence.evidence);
+  assert.equal(deriveCoverageLevel(relume.intelligence, false), "profiled");
+  assert.equal(deriveCoverageLevel(relume.intelligence, true), "verified");
+});
+
+test("an eligible verification record derives end-to-end Verified source truth without mutating intelligence", () => {
+  const resource = catalogue.resources.find(
+    (candidate) => candidate.slug === "google-fonts",
+  );
+  const intelligence = getIntelligenceProfile("google-fonts");
+  assert.ok(resource);
+  assert.ok(intelligence);
+
+  const record = completedEligibleRecord("google-fonts");
+  const profile = createSourceProfile(
+    resource,
+    intelligence,
+    record,
+    "2026-08-06",
+  );
+
+  assert.equal(profile.profileLevel, "verified");
+  assert.equal(profile.coverage.level, "verified");
+  assert.equal(profile.coverage.humanReviewStatus, "completed");
+  assert.equal(profile.verifiedAt, "2026-08-06");
+  assert.equal(profile.coverage.lastVerifiedAt, "2026-08-06");
+  assert.equal(profile.coverage.freshnessStatus, "current");
+  assert.equal(profile.intelligence, intelligence);
+  assert.deepEqual(profile.evidence, intelligence.evidence);
+  assert.deepEqual(getSourceCoverageCountsForProfiles([profile]), {
+    listed: 0,
+    profiled: 0,
+    verified: 1,
+  });
+
+  const document = createPublicSourceRepresentation(profile);
+  assert.equal(document.source.profileLevel, "verified");
+  assert.equal(document.source.coverage.humanReviewStatus, "completed");
+  assert.equal(document.source.coverage.lastVerifiedAt, "2026-08-06");
+});
+
+test("record freshness is deterministic and becomes stale after the recheck deadline", () => {
+  const record = completedEligibleRecord("google-fonts");
   assert.equal(
-    deriveCoverageLevel(relume.intelligence, "completed"),
-    "verified",
+    deriveVerificationFreshnessStatus(record, "2026-08-06"),
+    "current",
+  );
+  assert.equal(
+    deriveVerificationFreshnessStatus(record, "2026-11-04"),
+    "current",
+  );
+  assert.equal(
+    deriveVerificationFreshnessStatus(record, "2026-11-05"),
+    "stale",
   );
 });
 
