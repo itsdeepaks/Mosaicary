@@ -259,7 +259,7 @@
     grid-column: auto;
   }
 
-  .mobileFilterTrigger {
+  .controls .mobileFilterTrigger {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
@@ -280,7 +280,7 @@
     display: block;
   }
 
-  .filterBackdrop {
+  .controls .filterBackdrop {
     position: absolute;
     display: block;
     inset: 0;
@@ -331,7 +331,7 @@
     text-transform: uppercase;
   }
 
-  .filterClose {
+  .controls .filterClose {
     display: inline-flex;
     width: 2.75rem;
     min-height: 2.75rem;

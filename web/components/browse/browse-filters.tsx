@@ -35,11 +35,13 @@ function activeFilterCount(state: BrowseState) {
 }
 
 function FilterSelect({
+  allLabel,
   label,
   name,
   options,
   value,
 }: Readonly<{
+  allLabel?: string;
   label: string;
   name: string;
   options: readonly BrowseFilterOption[];
@@ -49,6 +51,7 @@ function FilterSelect({
     <label>
       {label}
       <select defaultValue={value} name={name}>
+        {allLabel ? <option value="">{allLabel}</option> : null}
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
@@ -221,24 +224,28 @@ export function BrowseFilters({
 
           <div className={styles.filterGrid}>
             <FilterSelect
+              allLabel="All categories"
               label="Category"
               name="category"
               options={categories}
               value={state.category ?? ""}
             />
             <FilterSelect
+              allLabel="All access models"
               label="Access"
               name="access"
               options={accessOptions}
               value={state.access[0] ?? ""}
             />
             <FilterSelect
+              allLabel="All source types"
               label="Source type"
               name="sourceType"
               options={sourceTypeOptions}
               value={state.sourceType ?? ""}
             />
             <FilterSelect
+              allLabel="All coverage levels"
               label="Coverage"
               name="profileLevel"
               options={profileLevelOptions}
