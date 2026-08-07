@@ -24,11 +24,13 @@ test("Playbook adapter resolves staged roles from canonical catalogue data", asy
   assert.doesNotMatch(adapter, /fetch\(|Date\.now\(|Math\.random/);
 });
 
-test("Playbooks index uses staged workflow framing and repository facts", async () => {
+test("Collections index uses staged workflow framing and repository facts", async () => {
   const page = await read("app/collections/page.tsx");
 
-  assert.match(page, /title: "Playbooks"/);
-  assert.match(page, /Research Playbooks/);
+  assert.match(page, /title: "Collections"/);
+  assert.match(page, /Guided research playbooks/);
+  assert.match(page, /Published collections/);
+  assert.match(page, /Six staged collections/);
   assert.match(page, /Move from source discovery to a defensible decision/);
   assert.match(page, /playbook\.stages\.length/);
   assert.match(page, /data-playbooks-grid/);
